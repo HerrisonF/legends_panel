@@ -21,11 +21,10 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Legends Panel',
       debugShowCheckedModeBanner: false,
-      theme: box.read("theme") == "dark" ? appDarkTheme : appLightTheme,
-      darkTheme: appDarkTheme,
+      theme: appThemeData,
       themeMode: ThemeMode.system,
       getPages: AppPages.routes,
-      initialRoute: Routes.HOME,
+      initialRoute: Routes.SPLASHSCREEN,
       locale: ui.window.locale,
       translationsKeys: AppTranslation.translations,
     );

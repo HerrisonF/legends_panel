@@ -1,5 +1,7 @@
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 
-class HomeController extends MasterController {
+class SplashscreenController extends MasterController {
+
+
 
 }
