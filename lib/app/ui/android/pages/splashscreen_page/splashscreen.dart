@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import 'package:legends_panel/app/constants/assets.dart';
+import 'package:legends_panel/app/controller/home_controller/home_controller.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -12,6 +13,14 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
+  final HomeController homeController = HomeController();
+
+  @override
+  void initState() {
+    super.initState();
+    homeController.getAlgo();
+  }
 
   @override
   Widget build(BuildContext context) {
