@@ -5,8 +5,8 @@ class HomeRepository {
 
   final HomeApiClient homeApiClient = HomeApiClient();
 
-  Future<User> getAlgo(){
-    return homeApiClient.getAlgo();
+  Future<User> findUser(String userName){
+    return homeApiClient.findUser(userName);
   }
 
 }

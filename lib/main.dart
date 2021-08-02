@@ -14,8 +14,6 @@ void main() async {
 
 class MyApp extends StatelessWidget {
 
-  final GetStorage box = GetStorage('default_store');
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

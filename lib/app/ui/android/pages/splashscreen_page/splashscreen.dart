@@ -3,23 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import 'package:legends_panel/app/constants/assets.dart';
-import 'package:legends_panel/app/controller/home_controller/home_controller.dart';
+import 'package:legends_panel/app/controller/splashscreen_controller/splashscreen_controller.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
-  final HomeController homeController = HomeController();
+  SplashscreenController _splashscreenController = Get.find<SplashscreenController>();
 
   @override
   void initState() {
     super.initState();
-    homeController.getAlgo();
+    _splashscreenController.start();
   }
 
   @override
