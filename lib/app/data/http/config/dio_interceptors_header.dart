@@ -8,8 +8,6 @@ class HeadersInterceptor extends Interceptor {
 
   final log = Logger();
 
-  final errorAuth = 401;
-
   Dio dioClient;
 
   HeadersInterceptor({required this.dioClient});
@@ -30,18 +28,6 @@ class HeadersInterceptor extends Interceptor {
     log.d("HEADER: ${options.headers.toString()}");
 
     return super.onRequest(options, handler);
-  }
-
-  @override
-  Future<FutureOr> onError(
-    DioError dioError,
-    ErrorInterceptorHandler handler,
-  ) async {
-    log.d("statusCode:${dioError.response!.statusCode}");
-    log.d("statusMessage:${dioError.response!.statusMessage}");
-    log.d("message :${dioError.message}");
-
-    return dioError;
   }
 
   @override

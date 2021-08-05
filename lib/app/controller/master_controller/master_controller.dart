@@ -1,14 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:get_storage/get_storage.dart';
 
-abstract class MasterController extends GetxController {
+class MasterController {
 
-  GetStorage box = GetStorage('default_storage');
+  RxInt currentPageIndex = 0.obs;
 
-  closeKeyBoard(BuildContext context){
-    FocusScope.of(context).unfocus();
+  changeCurrentPageIndex(int newPageIndex){
+    currentPageIndex(newPageIndex);
   }
 
 }

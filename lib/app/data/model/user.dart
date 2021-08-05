@@ -36,4 +36,9 @@ class User {
       "summonerLevel": summonerLevel
     };
   }
+
+  @override
+  String toString() {
+    return "id: $id, accountId: $accountId, puuid: $puuid, profileIconId: $profileIconId, revisionDate: $revisionDate, summonerLevel: $summonerLevel";
+  }
 }
