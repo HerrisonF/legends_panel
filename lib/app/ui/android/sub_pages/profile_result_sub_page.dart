@@ -4,7 +4,6 @@ import 'package:legends_panel/app/controller/sub_controller/profile_result_sub_p
 import 'package:legends_panel/app/data/model/spectator/participant.dart';
 
 class ProfileResultSubPage extends StatelessWidget {
-
   final ProfileResultSubController _profileResultSubController =
       Get.find<ProfileResultSubController>();
 
@@ -22,9 +21,19 @@ class ProfileResultSubPage extends StatelessWidget {
                   height: MediaQuery.of(context).size.height / 4,
                   child: Text(_profileResultSubController.user.value.name),
                 ),
-                Obx(() {
-                  return _detachTeams();
-                }),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(child: Text("Summones Rift"),),
+                    Container(child: Text(_profileResultSubController.spectator.value.gameMode),),
+                  ],
+                ),
+                Container(
+                  child: Text(
+                    "${_profileResultSubController.minutes()} min",
+                  ),
+                ),
+                _detachTeams(),
               ],
             ),
           ),
@@ -39,7 +48,10 @@ class ProfileResultSubPage extends StatelessWidget {
         Obx(() {
           return _teamCard(_profileResultSubController.blueTeam);
         }),
-        Container(),
+        Container(
+          height: 30,
+          color: Colors.greenAccent,
+        ),
         Obx(() {
           return _teamCard(_profileResultSubController.redTeam);
         }),
@@ -52,21 +64,59 @@ class ProfileResultSubPage extends StatelessWidget {
       shrinkWrap: true,
       itemCount: team.length,
       itemBuilder: (_, index) {
-        return Column(
+        return _participantCard(team[index]);
+      },
+    );
+  }
+
+  _participantCard(Participant participant) {
+    return Row(
+      children: [
+        Row(
           children: [
             Container(
-              child: Text(
-                team[index].teamId.toString(),
-              ),
+              child: Text(participant.championId.toString()),
             ),
-            Container(
-              child: Text(
-                team[index].summonerName,
-              ),
-            )
+            Column(
+              children: [
+                Container(
+                  child: Text(
+                    participant.spell1Id.toString(),
+                  ),
+                ),
+                Container(
+                  child: Text(
+                    participant.spell2Id.toString(),
+                  ),
+                ),
+              ],
+            ),
+            Text(participant.summonerName),
+            Container(height: 10, child: VerticalDivider(color: Colors.black)),
+            Row(
+              children: [
+                Container(
+                  child: Text("elo"),
+                ),
+                Column(
+                  children: [
+                    Container(
+                      child: Text("Elo 2"),
+                    ),
+                    Container(
+                      child: Text("PDL"),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            Container(height: 10, child: VerticalDivider(color: Colors.black)),
+            Container(child: Text("V%"),),
+            Container(height: 10, child: VerticalDivider(color: Colors.black)),
+            Container(child: Text("B champ"),),
           ],
-        );
-      },
+        )
+      ],
     );
   }
 }

@@ -20,8 +20,14 @@ class ProfileResultSubController extends UtilController {
   }
 
   _getCurrentGame() async {
+    _clearOldSearch();
     spectator.value = await _subProfileResultRepository.fetchCurrentGame(user.value.id);
     _detachParticipantsIntoTeams();
+  }
+
+  _clearOldSearch(){
+    blueTeam.clear();
+    redTeam.clear();
   }
 
   _detachParticipantsIntoTeams(){
@@ -29,11 +35,16 @@ class ProfileResultSubController extends UtilController {
       Participant participant = spectator.value.participants[i];
       if(participant.teamId == 100){
         blueTeam.add(participant);
-        spectator.value.participants.removeAt(i);
       }else{
         redTeam.add(participant);
       }
     }
+  }
+
+  String minutes(){
+    int minutes = (spectator.value.gameLength / 60).truncate();
+    String minutesStr = (minutes % 60).toString().padLeft(2, '0');
+    return minutesStr;
   }
 
 }
