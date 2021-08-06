@@ -13,7 +13,18 @@ class Spectator {
   int gameQueueConfigId = 0;
   List<Participant> participants = [];
 
-  Spectator();
+  Spectator({
+    this.gameId = 0,
+    this.gameType = "",
+    this.gameStartTime = 0,
+    this.mapId = 0,
+    this.gameLength = 0,
+    this.platformId = "",
+    this.gameMode = "",
+    this.bannedChampions = const [],
+    this.gameQueueConfigId = 0,
+    this.participants = const [],
+  });
 
   Spectator.fromJson(Map<String, dynamic> json) {
     gameId = json['gameId'] ?? 0;
