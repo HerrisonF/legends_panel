@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/util_controller/util_controller.dart';
 import 'package:legends_panel/app/data/model/spectator/participant.dart';
 import 'package:legends_panel/app/data/model/spectator/spectator.dart';
@@ -14,15 +15,16 @@ class ProfileResultSubController extends UtilController {
 
   SubProfileResultRepository _subProfileResultRepository = SubProfileResultRepository();
 
+  MasterController _masterController = Get.find<MasterController>();
+
   setUser(User user){
     this.user.value = user;
-    _getCurrentGame();
   }
 
-  _getCurrentGame() async {
+  Future<bool> existCurrentGame(User user) async {
     _clearOldSearch();
-    spectator.value = await _subProfileResultRepository.fetchCurrentGame(user.value.id);
-    _detachParticipantsIntoTeams();
+    spectator.value = await _subProfileResultRepository.fetchCurrentGame(user.id);
+    return spectator.value.participants.length > 0;
   }
 
   _clearOldSearch(){
@@ -30,7 +32,7 @@ class ProfileResultSubController extends UtilController {
     redTeam.clear();
   }
 
-  _detachParticipantsIntoTeams(){
+  detachParticipantsIntoTeams(){
     for(int i = 0; i < 10; i++){
       Participant participant = spectator.value.participants[i];
       if(participant.teamId == 100){
@@ -47,4 +49,7 @@ class ProfileResultSubController extends UtilController {
     return minutesStr;
   }
 
+  String getImageUrl(String championId){
+    return _masterController.getImageUrl(championId);
+  }
 }

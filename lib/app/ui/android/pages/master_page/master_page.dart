@@ -4,8 +4,9 @@ import 'package:legends_panel/app/controller/master_controller/master_controller
 import 'package:legends_panel/app/ui/android/pages/home_page/home_page.dart';
 import 'package:legends_panel/app/ui/android/pages/profile_page/profile_page.dart';
 
-class MasterPage extends GetView<MasterController> {
-  final MasterController _masterController = Get.put(MasterController());
+class MasterPage extends StatelessWidget {
+
+  final MasterController _masterController = Get.find<MasterController>();
 
   @override
   Widget build(BuildContext context) {

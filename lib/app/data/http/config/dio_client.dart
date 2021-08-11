@@ -10,14 +10,28 @@ class DioClient {
   static const int _SUCCESS = 200;
   static const int _UNAUTHORIZED = 401;
 
-  DioClient() {
+  final String riotBaseUrl = "https://br1.api.riotgames.com";
+  final String riotDragonBaseUrl = "https://ddragon.leagueoflegends.com";
+  final String rawDragonBaseUrl = "https://https://raw.communitydragon.org";
+
+
+  DioClient({riotDragon = false, rawDragon = false}) {
     BaseOptions options = BaseOptions(
-      baseUrl: "https://br1.api.riotgames.com",
+      baseUrl: getBaseUrl(riotDragon, rawDragon),
       responseType: ResponseType.json,
     );
     instance = Dio(options);
     instance.interceptors.clear();
     instance.interceptors.add(HeadersInterceptor(dioClient: instance));
+  }
+
+  String getBaseUrl(bool riotDragon, bool rawDragon){
+    if(riotDragon){
+      return riotDragonBaseUrl;
+    }else if(rawDragon){
+      return rawDragonBaseUrl;
+    }
+    return riotBaseUrl;
   }
 
   Future<DioState> post(String path, String data, [queryParameters]) async {

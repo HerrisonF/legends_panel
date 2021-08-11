@@ -47,13 +47,26 @@ class _HomePageState extends State<HomePage> {
                       )
                     : OutlinedButton(
                         child: Text(_homeController.buttonMessage.value),
-                        onPressed: _homeController.isShowingMessage.value ? null : () {
-                          _submit();
-                        },
+                        onPressed: _homeController.isShowingMessage.value
+                            ? null
+                            : () {
+                                _submit();
+                              },
                       );
               },
             ),
           ),
+          Obx(() {
+            return Container(
+              child: Text(
+                _homeController.getLoLVersion(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+            );
+          }),
         ],
       ),
     );

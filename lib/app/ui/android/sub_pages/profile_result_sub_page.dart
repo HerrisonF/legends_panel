@@ -24,8 +24,13 @@ class ProfileResultSubPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Container(child: Text("Summones Rift"),),
-                    Container(child: Text(_profileResultSubController.spectator.value.gameMode),),
+                    Container(
+                      child: Text("Summones Rift"),
+                    ),
+                    Container(
+                      child: Text(
+                          _profileResultSubController.spectator.value.gameMode),
+                    ),
                   ],
                 ),
                 Container(
@@ -75,7 +80,13 @@ class ProfileResultSubPage extends StatelessWidget {
         Row(
           children: [
             Container(
-              child: Text(participant.championId.toString()),
+              child: Image.network(
+                _profileResultSubController.getImageUrl(
+                  participant.championId.toString(),
+                ),
+                width: 30,
+                height: 30,
+              ),
             ),
             Column(
               children: [
@@ -111,9 +122,13 @@ class ProfileResultSubPage extends StatelessWidget {
               ],
             ),
             Container(height: 10, child: VerticalDivider(color: Colors.black)),
-            Container(child: Text("V%"),),
+            Container(
+              child: Text("V%"),
+            ),
             Container(height: 10, child: VerticalDivider(color: Colors.black)),
-            Container(child: Text("B champ"),),
+            Container(
+              child: Text("B champ"),
+            ),
           ],
         )
       ],
