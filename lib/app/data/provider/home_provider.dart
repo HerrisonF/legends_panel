@@ -17,7 +17,7 @@ class HomeApiClient {
         return User.fromJson(response.result.data);
       }
     }catch(e){
-      _logger.i("Error to find User $e");
+      _logger.i("Error to find User ${e.toString()}");
       return User();
     }
     _logger.i("No user found...");

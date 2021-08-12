@@ -12,6 +12,8 @@ class SplashscreenController extends UtilController {
   start() async {
     await _masterController.setLoLVersion(await _initialRepository.getLOLVersion());
     await _masterController.setChampionList(await _initialRepository.getChampionList(_masterController.lolVersion.value));
+    await _masterController.setSpellList(await _initialRepository.getSpellList(_masterController.lolVersion.value));
+    await _masterController.setMapList(await _initialRepository.getMapList());
     Get.offAllNamed(Routes.MASTER);
   }
 

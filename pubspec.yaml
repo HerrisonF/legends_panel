@@ -20,6 +20,7 @@ dependencies:
   dio: ^4.0.0
   logger: ^1.0.0
   progress_indicators: ^1.0.0
+  basic_utils: ^3.4.0
 
 dev_dependencies:
   flutter_test:

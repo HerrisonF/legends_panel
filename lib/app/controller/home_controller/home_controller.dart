@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
-import 'package:legends_panel/app/controller/sub_controller/profile_result_sub_page/profile_result_sub_controller.dart';
+import 'package:legends_panel/app/controller/sub_controller/profile_result_sub_controller/profile_result_sub_controller.dart';
 import 'package:legends_panel/app/controller/util_controller/util_controller.dart';
 import 'package:legends_panel/app/data/model/user.dart';
 import 'package:legends_panel/app/data/repository/home_repository.dart';

@@ -12,12 +12,13 @@ class DioClient {
 
   final String riotBaseUrl = "https://br1.api.riotgames.com";
   final String riotDragonBaseUrl = "https://ddragon.leagueoflegends.com";
-  final String rawDragonBaseUrl = "https://https://raw.communitydragon.org";
+  final String rawDragonBaseUrl = "https://raw.communitydragon.org";
+  final String riotStaticConstBaseUrl = "https://static.developer.riotgames.com";
 
 
-  DioClient({riotDragon = false, rawDragon = false}) {
+  DioClient({riotDragon = false, rawDragon = false, riotStaticConst = false}) {
     BaseOptions options = BaseOptions(
-      baseUrl: getBaseUrl(riotDragon, rawDragon),
+      baseUrl: getBaseUrl(riotDragon, rawDragon, riotStaticConst),
       responseType: ResponseType.json,
     );
     instance = Dio(options);
@@ -25,11 +26,13 @@ class DioClient {
     instance.interceptors.add(HeadersInterceptor(dioClient: instance));
   }
 
-  String getBaseUrl(bool riotDragon, bool rawDragon){
+  String getBaseUrl(bool riotDragon, bool rawDragon, bool riotStaticConst){
     if(riotDragon){
       return riotDragonBaseUrl;
     }else if(rawDragon){
       return rawDragonBaseUrl;
+    }else if(riotStaticConst){
+      return riotStaticConstBaseUrl;
     }
     return riotBaseUrl;
   }
@@ -70,6 +73,7 @@ class DioClient {
       } else if (response.statusCode == _UNAUTHORIZED) {
         return DioState(CustomState.UNAUTHORIZED, response);
       }
+      log.d(' Not found:  ${response.data}');
       return DioState(CustomState.BAD_REQUEST, response);
     } on DioError catch (e) {
       print("ERROR: ${e.error.toString()}");

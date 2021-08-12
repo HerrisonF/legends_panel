@@ -9,4 +9,12 @@ class SubProfileResultRepository {
     return _subProfileResultProvider.fetchCurrentGame(userId);
   }
 
+  String getChampionBadgeUrl(String championId, String version){
+    return _subProfileResultProvider.getChampionBadgeUrl(championId, version);
+  }
+
+  String getSpellBadgeUrl(String spellName, String version){
+    return _subProfileResultProvider.getSpellBadgeUrl(spellName, version);
+  }
+
 }

@@ -6,8 +6,4 @@ class MasterRepository {
 
   final MasterProvider masterProvider = MasterProvider();
 
-  String getImageUrl(String championName, String version){
-    return masterProvider.getImageUrl(championName, version);
-  }
-
 }

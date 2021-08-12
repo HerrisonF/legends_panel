@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:legends_panel/app/controller/sub_controller/profile_result_sub_page/profile_result_sub_controller.dart';
+import 'package:legends_panel/app/controller/sub_controller/profile_result_sub_controller/profile_result_sub_controller.dart';
 import 'package:legends_panel/app/data/model/spectator/participant.dart';
 
-class ProfileResultSubPage extends StatelessWidget {
+class ProfileResultSubPage extends StatefulWidget {
+  @override
+  _ProfileResultSubPageState createState() => _ProfileResultSubPageState();
+}
+
+class _ProfileResultSubPageState extends State<ProfileResultSubPage> {
   final ProfileResultSubController _profileResultSubController =
       Get.find<ProfileResultSubController>();
+
+  @override
+  void initState() {
+    _profileResultSubController.getMap();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +35,11 @@ class ProfileResultSubPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Container(
-                      child: Text("Summones Rift"),
-                    ),
+                    Obx((){
+                      return Container(
+                        child: Text(_profileResultSubController.mapMode.value.mapName == "" ? "Loading" : _profileResultSubController.mapMode.value.mapName),
+                      );
+                    }),
                     Container(
                       child: Text(
                           _profileResultSubController.spectator.value.gameMode),
@@ -66,6 +79,7 @@ class ProfileResultSubPage extends StatelessWidget {
 
   _teamCard(RxList<Participant> team) {
     return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: team.length,
       itemBuilder: (_, index) {
@@ -81,7 +95,7 @@ class ProfileResultSubPage extends StatelessWidget {
           children: [
             Container(
               child: Image.network(
-                _profileResultSubController.getImageUrl(
+                _profileResultSubController.getChampionBadgeUrl(
                   participant.championId.toString(),
                 ),
                 width: 30,
@@ -91,13 +105,21 @@ class ProfileResultSubPage extends StatelessWidget {
             Column(
               children: [
                 Container(
-                  child: Text(
-                    participant.spell1Id.toString(),
+                  child: Image.network(
+                    _profileResultSubController.getSpellUrl(
+                      participant.spell1Id.toString(),
+                    ),
+                    width: 30,
+                    height: 30,
                   ),
                 ),
                 Container(
-                  child: Text(
-                    participant.spell2Id.toString(),
+                  child: Image.network(
+                    _profileResultSubController.getSpellUrl(
+                      participant.spell2Id.toString(),
+                    ),
+                    width: 30,
+                    height: 30,
                   ),
                 ),
               ],
