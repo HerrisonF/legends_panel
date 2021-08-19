@@ -10,21 +10,21 @@ class MasterController {
 
   RxInt currentPageIndex = 0.obs;
 
-  changeCurrentPageIndex(int newPageIndex){
-    currentPageIndex(newPageIndex);
-  }
-
-  RxString lolVersion = "".obs;
-
-  setLoLVersion(String version){
-    this.lolVersion(version);
-  }
-
   List<Champion> championList = <Champion>[];
 
   List<Spell> spellList = <Spell>[];
 
   List<MapMode> mapList = <MapMode>[];
+
+  RxString lolVersion = "".obs;
+
+  changeCurrentPageIndex(int newPageIndex){
+    currentPageIndex(newPageIndex);
+  }
+
+  setLoLVersion(String version){
+    this.lolVersion(version);
+  }
 
   setChampionList(List<Champion> championList){
     this.championList.addAll(championList);

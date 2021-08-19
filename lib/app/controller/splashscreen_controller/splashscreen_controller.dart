@@ -7,7 +7,7 @@ import 'package:legends_panel/app/routes/app_routes.dart';
 class SplashscreenController extends UtilController {
 
   final InitialRepository _initialRepository = InitialRepository();
-  final MasterController _masterController = Get.put(MasterController());
+  final MasterController _masterController = Get.put(MasterController(), permanent: true);
 
   start() async {
     await _masterController.setLoLVersion(await _initialRepository.getLOLVersion());

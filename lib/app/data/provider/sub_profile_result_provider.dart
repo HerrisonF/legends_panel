@@ -1,4 +1,3 @@
-import 'package:basic_utils/basic_utils.dart';
 import 'package:legends_panel/app/data/http/config/dio_client.dart';
 import 'package:legends_panel/app/data/http/config/dio_state.dart';
 import 'package:legends_panel/app/data/model/spectator/spectator.dart';
@@ -23,28 +22,6 @@ class SubProfileResultProvider {
     }
     _logger.i("No current game found ...");
     return Spectator();
-  }
-
-  String getChampionBadgeUrl(String championId, String version) {
-    final String path = "/cdn/$version/img/champion/$championId.png";
-    _logger.i("building Image Champion URL...");
-    try{
-      return _dioClient.riotDragonBaseUrl + path;
-    }catch(e){
-      _logger.i("Error to build Image Champion Url $e");
-      return "";
-    }
-  }
-
-  String getSpellBadgeUrl(String spellName, String version){
-    final String path = "/cdn/$version/img/spell/$spellName.png";
-    _logger.i("building Image Spell Url ...");
-    try{
-      return _dioClient.riotDragonBaseUrl + path;
-    }catch(e){
-      _logger.i("Error to build Spell Image URL");
-      return "";
-    }
   }
 
 }
