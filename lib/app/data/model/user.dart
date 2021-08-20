@@ -27,14 +27,14 @@ class User {
         summonerLevel = int.parse(json['summonerLevel'].toString());
 
   Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "accountId": accountId,
-      "puuid": puuid,
-      "profileIconId": profileIconId,
-      "revisionDate": revisionDate,
-      "summonerLevel": summonerLevel
-    };
+    Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['accountId'] = accountId;
+    data['puuid'] = puuid;
+    data['profileIconId']  = profileIconId;
+    data['revisionDate'] = revisionDate;
+    data['summonerLevel'] = summonerLevel;
+    return data;
   }
 
   @override
