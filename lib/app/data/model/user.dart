@@ -26,16 +26,15 @@ class User {
         revisionDate = int.parse(json['revisionDate'].toString()),
         summonerLevel = int.parse(json['summonerLevel'].toString());
 
-  Map<String, dynamic> toJson() {
-    Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = id;
-    data['accountId'] = accountId;
-    data['puuid'] = puuid;
-    data['profileIconId']  = profileIconId;
-    data['revisionDate'] = revisionDate;
-    data['summonerLevel'] = summonerLevel;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+    'id' : id,
+    'accountId' : accountId,
+    'puuid' : puuid,
+    'name' : name,
+    'profileIconId' : profileIconId,
+    'revisionDate' : revisionDate,
+    'summonerLevel' : summonerLevel,
+  };
 
   @override
   String toString() {

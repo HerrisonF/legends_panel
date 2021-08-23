@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/data/model/champion.dart';
-import 'package:legends_panel/app/data/model/spectator/banned_champion.dart';
 import 'package:legends_panel/app/data/model/spectator/spectator.dart';
 import 'package:legends_panel/app/data/model/spectator/summoner_spell.dart';
 import 'package:legends_panel/app/data/model/userTier.dart';

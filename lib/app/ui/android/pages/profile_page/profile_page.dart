@@ -20,13 +20,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx((){
-      return _profileController.user.value.id.isNotEmpty ?
-          profile() : field();
+    return Obx(() {
+      return _profileController.user.value.id.isNotEmpty ? profile() : field();
     });
   }
 
-  field(){
+  field() {
     return Scaffold(
       body: Container(
         color: Theme.of(context).backgroundColor,
@@ -53,20 +52,20 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             Container(
               child: Obx(
-                    () {
+                () {
                   return _profileController.isLoading.value
                       ? JumpingDotsProgressIndicator(
-                    fontSize: 30,
-                    color: Theme.of(context).primaryColor,
-                  )
+                          fontSize: 30,
+                          color: Theme.of(context).primaryColor,
+                        )
                       : OutlinedButton(
-                    child: Text(_profileController.buttonMessage.value),
-                    onPressed: _profileController.isShowingMessage.value
-                        ? null
-                        : () {
-                      _submit();
-                    },
-                  );
+                          child: Text(_profileController.buttonMessage.value),
+                          onPressed: _profileController.isShowingMessage.value
+                              ? null
+                              : () {
+                                  _submit();
+                                },
+                        );
                 },
               ),
             ),
@@ -94,7 +93,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  Widget profile(){
+  Widget profile() {
     return SingleChildScrollView(
       child: Container(
         color: Theme.of(context).backgroundColor.withOpacity(0.9),
@@ -108,6 +107,12 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Container(
                 height: 100,
                 color: Colors.blue,
+                child: IconButton(
+                  icon: Icon(Icons.exit_to_app),
+                  onPressed: (){
+                    _profileController.eraseUser();
+                  },
+                ),
               ),
             ),
             Container(
@@ -131,7 +136,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             Container(
                               child: Text("F"),
                             ),
-                            Container(child: Text("I"),)
+                            Container(
+                              child: Text("I"),
+                            )
                           ],
                         ),
                         Column(
@@ -139,32 +146,52 @@ class _ProfilePageState extends State<ProfilePage> {
                             Container(
                               child: Text("PA"),
                             ),
-                            Container(child: Text("PB"),)
+                            Container(
+                              child: Text("PB"),
+                            )
                           ],
                         ),
                         Column(
                           children: [
                             Row(
                               children: [
-                                Container(child: Text("I1"),),
-                                Container(child: Text("I2"),),
-                                Container(child: Text("I3"),),
+                                Container(
+                                  child: Text("I1"),
+                                ),
+                                Container(
+                                  child: Text("I2"),
+                                ),
+                                Container(
+                                  child: Text("I3"),
+                                ),
                               ],
                             ),
                             Row(
                               children: [
-                                Container(child: Text("I4"),),
-                                Container(child: Text("I5"),)
+                                Container(
+                                  child: Text("I4"),
+                                ),
+                                Container(
+                                  child: Text("I5"),
+                                )
                               ],
                             )
                           ],
                         ),
-                        Container(child: Text("Role"),),
+                        Container(
+                          child: Text("Role"),
+                        ),
                         Column(
                           children: [
-                            Container(child: Text("Frag"),),
-                            Container(child: Text("map Type"),),
-                            Container(child: Text("time ago"),),
+                            Container(
+                              child: Text("Frag"),
+                            ),
+                            Container(
+                              child: Text("map Type"),
+                            ),
+                            Container(
+                              child: Text("time ago"),
+                            ),
                           ],
                         )
                       ],
@@ -196,7 +223,15 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
+                margin: EdgeInsets.only(top: 10),
+                width: 85,
+                height: 85,
                 decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        _profileController.getProfileImage()
+                    ),
+                  ),
                   color: Colors.green,
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.elliptical(50, 60),
@@ -211,12 +246,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ],
                 ),
-                child: Container(
-                  margin: EdgeInsets.only(top: 5),
-                  width: 100,
-                  height: 80,
-                  child: Container(),
-                ),
               ),
             ],
           ),
@@ -227,12 +256,14 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                child: Text(
-                  "Houtebeen",
-                  style: TextStyle(fontSize: 24, color: Colors.blue),
-                ),
-              )
+              Obx((){
+                return Container(
+                  child: Text(
+                    _profileController.user.value.name,
+                    style: TextStyle(fontSize: 24, color: Colors.blue),
+                  ),
+                );
+              })
             ],
           ),
         ),
@@ -246,9 +277,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   Container(
                     child: Text("Brasil"),
                   ),
-                  Container(
-                    child: Text("Nível 147"),
-                  ),
+                  Obx((){
+                    return Container(
+                      child: Text("Nível ${_profileController.user.value.summonerLevel}"),
+                    );
+                  })
                 ],
               ),
               Column(
@@ -257,13 +290,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Text("Vitórias"),
                   ),
                   Container(
-                    child: Text("112"),
+                    child: Text(_profileController.userTierList.first.wins.toString()),
                   ),
                   Container(
                     child: Text("Derrotas"),
                   ),
                   Container(
-                    child: Text('99'),
+                    child: Text(_profileController.userTierList.first.losses.toString()),
                   )
                 ],
               )
@@ -276,10 +309,11 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Container(
             height: 80,
             width: 80,
-            color: Colors.orange,
-            child: Container(
-              child: Text("Elo"),
-            ),
+            child: Obx((){
+              return Container(
+                child: Image.asset("images/emblem_${_profileController.userTierList.first.tier.toLowerCase()}.png")
+              );
+            }),
           ),
         ),
       ],
