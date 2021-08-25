@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
+import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
+import 'package:legends_panel/app/ui/android/components/game_card.dart';
+import 'package:legends_panel/app/ui/android/components/mastery_champions.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -9,7 +12,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final ProfileController _profileController = Get.put(ProfileController());
+  final ProfileController _profileController = Get.put(ProfileController(), permanent: true);
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
@@ -109,97 +112,25 @@ class _ProfilePageState extends State<ProfilePage> {
                 color: Colors.blue,
                 child: IconButton(
                   icon: Icon(Icons.exit_to_app),
-                  onPressed: (){
+                  onPressed: () {
                     _profileController.eraseUser();
                   },
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 50),
-              child: ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 4,
-                itemBuilder: (context, index) {
-                  return Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    color: Colors.greenAccent,
-                    child: Row(
-                      children: [
-                        Container(
-                          child: Text("IMG"),
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              child: Text("F"),
-                            ),
-                            Container(
-                              child: Text("I"),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              child: Text("PA"),
-                            ),
-                            Container(
-                              child: Text("PB"),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  child: Text("I1"),
-                                ),
-                                Container(
-                                  child: Text("I2"),
-                                ),
-                                Container(
-                                  child: Text("I3"),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  child: Text("I4"),
-                                ),
-                                Container(
-                                  child: Text("I5"),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                        Container(
-                          child: Text("Role"),
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              child: Text("Frag"),
-                            ),
-                            Container(
-                              child: Text("map Type"),
-                            ),
-                            Container(
-                              child: Text("time ago"),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
+            MasteryChampions(),
+            Obx((){
+              return _profileController.matchList.value.totalGames > 0 ?  Container(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 5,
+                  itemBuilder: (_, index) {
+                    return GameCard(_profileController.matchList.value.matches[index]);
+                  },
+                ),
+              ) : DotsLoading();
+            }),
           ],
         ),
       ),
@@ -228,9 +159,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 85,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(
-                        _profileController.getProfileImage()
-                    ),
+                    image: NetworkImage(_profileController.getProfileImage()),
                   ),
                   color: Colors.green,
                   borderRadius: BorderRadius.only(
@@ -256,7 +185,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Obx((){
+              Obx(() {
                 return Container(
                   child: Text(
                     _profileController.user.value.name,
@@ -277,9 +206,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   Container(
                     child: Text("Brasil"),
                   ),
-                  Obx((){
+                  Obx(() {
                     return Container(
-                      child: Text("Nível ${_profileController.user.value.summonerLevel}"),
+                      child: Text(
+                          "Nível ${_profileController.user.value.summonerLevel}"),
                     );
                   })
                 ],
@@ -290,13 +220,15 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Text("Vitórias"),
                   ),
                   Container(
-                    child: Text(_profileController.userTierList.first.wins.toString()),
+                    child: Text(
+                        _profileController.userTierList.first.wins.toString()),
                   ),
                   Container(
                     child: Text("Derrotas"),
                   ),
                   Container(
-                    child: Text(_profileController.userTierList.first.losses.toString()),
+                    child: Text(_profileController.userTierList.first.losses
+                        .toString()),
                   )
                 ],
               )
@@ -309,10 +241,10 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Container(
             height: 80,
             width: 80,
-            child: Obx((){
+            child: Obx(() {
               return Container(
-                child: Image.asset("images/emblem_${_profileController.userTierList.first.tier.toLowerCase()}.png")
-              );
+                  child: Image.asset(
+                      "images/emblem_${_profileController.userTierList.first.tier.toLowerCase()}.png"));
             }),
           ),
         ),
