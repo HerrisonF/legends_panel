@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
-import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
-import 'package:legends_panel/app/ui/android/components/game_card.dart';
-import 'package:legends_panel/app/ui/android/components/mastery_champions.dart';
-import 'package:progress_indicators/progress_indicators.dart';
+import 'package:legends_panel/app/ui/android/components/general/dots_loading.dart';
+import 'package:legends_panel/app/ui/android/components/profile/item_match_list_game_card.dart';
+import 'package:legends_panel/app/ui/android/components/profile/mastery_champions.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -12,91 +12,91 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final ProfileController _profileController = Get.put(ProfileController(), permanent: true);
+  final ProfileController _profileController =
+      Get.put(ProfileController(), permanent: true);
+  final MasterController _masterController = Get.find<MasterController>();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
+    _profileController.startProfileController();
     super.initState();
-    _profileController.start();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return _profileController.user.value.id.isNotEmpty ? profile() : field();
-    });
+    return Scaffold(
+      body: Obx(() {
+        return _profileController.isLoading.value
+            ? DotsLoading()
+            : _masterController.userProfile.value.id.isNotEmpty
+                ? userProfile()
+                : searchUserField();
+      }),
+    );
   }
 
-  field() {
-    return Scaffold(
-      body: Container(
-        color: Theme.of(context).backgroundColor,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              child: Form(
-                key: formKey,
-                child: TextFormField(
-                  controller: _profileController.userNameInputController,
-                  onFieldSubmitted: (value) {
-                    _submit();
-                  },
-                  validator: (value) {
-                    if (value!.trim().isEmpty) {
-                      _profileController.userNameInputController.clear();
-                      return "INPUT_VALIDATOR_HOME".tr;
-                    }
-                    return null;
-                  },
-                ),
-              ),
-            ),
-            Container(
-              child: Obx(
-                () {
-                  return _profileController.isLoading.value
-                      ? JumpingDotsProgressIndicator(
-                          fontSize: 30,
-                          color: Theme.of(context).primaryColor,
-                        )
-                      : OutlinedButton(
-                          child: Text(_profileController.buttonMessage.value),
-                          onPressed: _profileController.isShowingMessage.value
-                              ? null
-                              : () {
-                                  _submit();
-                                },
-                        );
+  searchUserField() {
+    return Container(
+      color: Theme.of(context).backgroundColor,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            child: Form(
+              key: formKey,
+              child: TextFormField(
+                controller: _profileController.userNameInputController,
+                onFieldSubmitted: (value) {
+                  _submit();
+                },
+                validator: (value) {
+                  if (value!.trim().isEmpty) {
+                    _profileController.userNameInputController.clear();
+                    return "INPUT_VALIDATOR_HOME".tr;
+                  }
+                  return null;
                 },
               ),
             ),
-            Obx(() {
-              return Container(
-                child: Text(
-                  _profileController.getLoLVersion(),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                ),
-              );
-            }),
-          ],
-        ),
+          ),
+          Container(
+            child: Obx(
+              () {
+                return _profileController.isLoading.value
+                    ? DotsLoading()
+                    : OutlinedButton(
+                        child: Text(_profileController.buttonMessage.value),
+                        onPressed: _profileController.isShowingMessage.value
+                            ? null
+                            : () {
+                                _submit();
+                              },
+                      );
+              },
+            ),
+          ),
+          Container(
+            child: Text(
+              _profileController.getLoLVersion(),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   _submit() {
-    _profileController.closeKeyBoard(context);
     if (formKey.currentState!.validate()) {
-      _profileController.findUser();
+      _profileController.getUserOnCloud();
     }
   }
 
-  Widget profile() {
+  Widget userProfile() {
     return SingleChildScrollView(
       child: Container(
         color: Theme.of(context).backgroundColor.withOpacity(0.9),
@@ -104,7 +104,7 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             Container(
               height: MediaQuery.of(context).size.height / 3,
-              child: foundSummoner(context),
+              child: summonerPanel(context),
             ),
             Container(
               child: Container(
@@ -113,7 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: IconButton(
                   icon: Icon(Icons.exit_to_app),
                   onPressed: () {
-                    _profileController.eraseUser();
+                    _profileController.deletePersistedUser();
                   },
                 ),
               ),
@@ -126,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: 5,
                   itemBuilder: (_, index) {
-                    return GameCard(_profileController.matchList.value.matches[index]);
+                    return ItemMatchListGameCard(_profileController.matchList.value.matches[index]);
                   },
                 ),
               ) : DotsLoading();
@@ -137,7 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget foundSummoner(BuildContext context) {
+  Widget summonerPanel(BuildContext context) {
     return Stack(
       children: [
         ClipRRect(
@@ -159,7 +159,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 85,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(_profileController.getProfileImage()),
+                    image: NetworkImage(_profileController.getUserProfileImage()),
                   ),
                   color: Colors.green,
                   borderRadius: BorderRadius.only(
@@ -188,7 +188,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Obx(() {
                 return Container(
                   child: Text(
-                    _profileController.user.value.name,
+                    _masterController.userProfile.value.name,
                     style: TextStyle(fontSize: 24, color: Colors.blue),
                   ),
                 );
@@ -209,7 +209,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Obx(() {
                     return Container(
                       child: Text(
-                          "Nível ${_profileController.user.value.summonerLevel}"),
+                          "Nível ${_masterController.userProfile.value.summonerLevel}"),
                     );
                   })
                 ],

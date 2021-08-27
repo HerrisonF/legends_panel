@@ -1,28 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
-import 'package:legends_panel/app/controller/util_controller/util_controller.dart';
-import 'package:legends_panel/app/data/model/champion.dart';
-import 'package:legends_panel/app/data/model/champion_mastery.dart';
-import 'package:legends_panel/app/data/model/match_list.dart';
-import 'package:legends_panel/app/data/model/user.dart';
-import 'package:legends_panel/app/data/model/userTier.dart';
-import 'package:legends_panel/app/data/repository/profile_repository.dart';
+import 'package:legends_panel/app/data/model/general/champion.dart';
+import 'package:legends_panel/app/data/model/general/champion_mastery.dart';
+import 'package:legends_panel/app/data/model/general/match_list.dart';
+import 'package:legends_panel/app/data/model/general/user_tier.dart';
+import 'package:legends_panel/app/data/repository/profile_repository/profile_repository.dart';
 
-class ProfileController extends UtilController {
-  ProfileRepository _profileRepository = ProfileRepository();
-  TextEditingController userNameInputController = TextEditingController();
-  MasterController _masterController = Get.find<MasterController>();
+class ProfileController {
+  final ProfileRepository _profileRepository = ProfileRepository();
+  final TextEditingController userNameInputController = TextEditingController();
+  final MasterController _masterController = Get.find<MasterController>();
 
   Rx<String> buttonMessage = "BUTTON_MESSAGE_SEARCH".tr.obs;
 
-  Rx<User> user = User().obs;
   RxList<UserTier> userTierList = RxList<UserTier>();
   RxList<ChampionMastery> championMasteryList = RxList<ChampionMastery>();
   Rx<MatchList> matchList = MatchList().obs;
 
   Rx<bool> isLoading = false.obs;
-
   Rx<bool> isShowingMessage = false.obs;
 
   startLoading() {
@@ -33,9 +29,40 @@ class ProfileController extends UtilController {
     isLoading(false);
   }
 
+  startProfileController() {
+    checkUserExist();
+  }
+
+  checkUserExist() async {
+    if (_masterController.userProfileExist()) {
+      startLoading();
+      await getUserTierInformation();
+      await getMasteryChampions();
+      await getMatchList();
+      stopLoading();
+    }
+  }
+
+  getUserTierInformation() async {
+    userTierList.value =
+        await _profileRepository.getUserTier(_masterController.userProfile.value.id);
+  }
+
+  getMasteryChampions() async {
+    championMasteryList.addAll(
+      await _profileRepository
+          .getChampionMastery(_masterController.userProfile.value.id),
+    );
+  }
+
+  getMatchList() async {
+    matchList.value = await _profileRepository
+        .getMatchList(_masterController.userProfile.value.accountId);
+  }
+
   String getChampionImage(int championId) {
-    Champion champion = _masterController
-        .getChampionById(championId.toString());
+    Champion champion =
+        _masterController.getChampionById(championId.toString());
     return _profileRepository.getChampionImage(champion.detail.id);
   }
 
@@ -44,67 +71,42 @@ class ProfileController extends UtilController {
         .getMasteryImage(championMasteryList[index].championLevel.toString());
   }
 
-  _showNotFoundMessage() {
+  String getLoLVersion() {
+    return _masterController.lolVersion;
+  }
+
+  getUserOnCloud() async {
+    startLoading();
+    await _masterController.getUserProfileOnCloud(userNameInputController.text);
+    if (_masterController.userProfileExist()) {
+      await getUserTierInformation();
+      await getMasteryChampions();
+      await getMatchList();
+      userNameInputController.clear();
+      stopLoading();
+    } else {
+      _showUserNotFoundMessage();
+    }
+  }
+
+  _showUserNotFoundMessage() {
     stopLoading();
     isShowingMessage(true);
-    buttonMessage("BUTTON_MESSAGE_NOT_FOUND".tr);
+    buttonMessage("BUTTON_MESSAGE_USER_NOT_FOUND".tr);
     Future.delayed(Duration(seconds: 3)).then((value) {
       buttonMessage("BUTTON_MESSAGE_SEARCH".tr);
       isShowingMessage(false);
     });
   }
 
-  String getLoLVersion() {
-    return _masterController.lolVersion.value;
+  deletePersistedUser() {
+    _masterController.deleteUserProfile();
   }
 
-  start() async {
-    user.value = await _profileRepository.getUserProfile();
-    if (user.value.id.isNotEmpty) {
-      getUserTierInformation();
-      getMasteryChampions();
-      getMatchList();
-    }
-    user.refresh();
-  }
-
-  getMatchList() async {
-    matchList.value = await _profileRepository.getMatchList(user.value.accountId);
-    matchList.refresh();
-  }
-
-  getMasteryChampions() async {
-    championMasteryList
-        .addAll(await _profileRepository.getChampionMastery(user.value.id));
-    championMasteryList.refresh();
-  }
-
-  findUser() async {
-    startLoading();
-    user.value =
-        await _profileRepository.fetchUser(userNameInputController.text);
-    if (user.value.id.isEmpty) {
-      _showNotFoundMessage();
-    } else {
-      _profileRepository.writeProfileUser(user.value);
-      getUserTierInformation();
-      getMasteryChampions();
-      getMatchList();
-    }
-  }
-
-  getUserTierInformation() async {
-    userTierList.value = await _profileRepository.getUserTier(user.value.id);
-  }
-
-  eraseUser() {
-    _profileRepository.eraseUser();
-    user.value = User();
-  }
-
-  String getProfileImage() {
+  String getUserProfileImage() {
     return _profileRepository.getProfileImage(
-        _masterController.lolVersion.toString(),
-        user.value.profileIconId.toString());
+      _masterController.lolVersion.toString(),
+      _masterController.userProfile.value.profileIconId.toString(),
+    );
   }
 }

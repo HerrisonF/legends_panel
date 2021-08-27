@@ -9,4 +9,10 @@ abstract class UtilController {
     FocusScope.of(context).unfocus();
   }
 
+  String getConvertedTimeInMinutes(int time){
+    int minutes = (time / 60).truncate();
+    String minutesStr = (minutes % 60).toString().padLeft(2, '0');
+    return minutesStr;
+  }
+
 }
