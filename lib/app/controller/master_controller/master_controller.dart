@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
-import 'package:legends_panel/app/data/model/current_game_spectator/current_game_summoner_spell.dart';
-import 'package:legends_panel/app/data/model/general/champion.dart';
-import 'package:legends_panel/app/data/model/general/map_mode.dart';
-import 'package:legends_panel/app/data/model/general/user.dart';
+import 'package:legends_panel/app/model/current_game_spectator/current_game_summoner_spell.dart';
+import 'package:legends_panel/app/model/general/champion.dart';
+import 'package:legends_panel/app/model/general/map_mode.dart';
+import 'package:legends_panel/app/model/general/user.dart';
 import 'package:legends_panel/app/data/repository/general/master_repository.dart';
+import 'package:legends_panel/app/routes/app_routes.dart';
 
 class MasterController {
 
@@ -24,6 +25,7 @@ class MasterController {
     await getChampionList();
     await getSummonerSpells();
     await getMapList();
+    Get.offAllNamed(Routes.MASTER);
   }
 
   readPersistedUser() async {

@@ -4,6 +4,7 @@ import 'package:legends_panel/app/controller/current_game_controller/current_gam
 import 'package:progress_indicators/progress_indicators.dart';
 
 class CurrentGamePage extends StatelessWidget {
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final CurrentGameController _currentGameController =
       Get.put(CurrentGameController());
@@ -36,7 +37,7 @@ class CurrentGamePage extends StatelessWidget {
           Container(
             child: Obx(
               () {
-                return _currentGameController.isLoading.value
+                return _currentGameController.isLoadingUser.value
                     ? JumpingDotsProgressIndicator(
                         fontSize: 30,
                         color: Theme.of(context).primaryColor,

@@ -1,6 +1,6 @@
 import 'package:legends_panel/app/data/http/config/dio_client.dart';
 import 'package:legends_panel/app/data/http/config/dio_state.dart';
-import 'package:legends_panel/app/data/model/current_game_spectator/current_game_spectator.dart';
+import 'package:legends_panel/app/model/current_game_spectator/current_game_spectator.dart';
 import 'package:logger/logger.dart';
 
 class CurrentGameResultProvider {

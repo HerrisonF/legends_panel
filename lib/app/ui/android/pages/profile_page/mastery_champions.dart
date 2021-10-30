@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
-import 'package:legends_panel/app/ui/android/components/general/dots_loading.dart';
+import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
 
 class MasteryChampions extends StatelessWidget {
   final ProfileController _profileController = Get.find<ProfileController>();

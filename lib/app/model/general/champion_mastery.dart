@@ -1,13 +1,13 @@
 class ChampionMastery {
-  int championId = 0;
-  int championLevel = 0;
-  int championPoints = 0;
-  int lastPlayTime = 0;
-  int championPointsSinceLastLevel = 0;
-  int championPointsUntilNextLevel = 0;
-  bool chestGranted = false;
-  int tokensEarned = 0;
-  String summonerId = "";
+  dynamic championId = 0;
+  dynamic championLevel = 0;
+  dynamic championPoints = 0;
+  dynamic lastPlayTime = 0;
+  dynamic championPointsSinceLastLevel = 0;
+  dynamic championPointsUntilNextLevel = 0;
+  dynamic chestGranted = false;
+  dynamic tokensEarned = 0;
+  dynamic summonerId = "";
 
   ChampionMastery();
 

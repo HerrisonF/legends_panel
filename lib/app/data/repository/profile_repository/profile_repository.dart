@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:legends_panel/app/data/model/general/champion_mastery.dart';
-import 'package:legends_panel/app/data/model/general/match_list.dart';
-import 'package:legends_panel/app/data/model/general/user_tier.dart';
+import 'package:legends_panel/app/model/general/champion_mastery.dart';
+import 'package:legends_panel/app/model/general/match_detail.dart';
+import 'package:legends_panel/app/model/general/user_tier.dart';
 import 'package:legends_panel/app/data/provider/profile_provider/profile_provider.dart';
 
 class ProfileRepository {
@@ -28,8 +28,12 @@ class ProfileRepository {
     return _profileProvider.getMasteryImage(level);
   }
 
-  Future<MatchList> getMatchList(String accountId){
-    return _profileProvider.getMatchList(accountId);
+  Future<List<String>> getMatchListIds(String puuid, int start, int count) {
+    return _profileProvider.getMatchListIds(puuid, start, count);
+  }
+
+  Future<MatchDetail> getMatchById(String matchId){
+    return _profileProvider.getMatchById(matchId);
   }
 
 }

@@ -3,20 +3,21 @@ class User {
   String accountId = "";
   String puuid = "";
   String name = "";
-  int profileIconId = 0;
-  int revisionDate = 0;
-  int summonerLevel = 0;
+  dynamic profileIconId = 0;
+  dynamic revisionDate = 0;
+  dynamic summonerLevel = 0;
 
   User();
 
-  User.fromJson(Map<String, dynamic> json)
-      : id = json['id']??"",
-        accountId = json['accountId']??"",
-        puuid = json['puuid']??"",
-        name = json['name']??"",
-        profileIconId = int.parse(json['profileIconId']!.toString()),
-        revisionDate = int.parse(json['revisionDate']!.toString()),
-        summonerLevel = int.parse(json['summonerLevel']!.toString());
+  User.fromJson(Map<String, dynamic> json){
+    id = json['id'];
+    accountId = json['accountId'];
+    puuid = json['puuid'];
+    name = json['name'];
+    profileIconId = json['profileIconId'];
+    revisionDate = json['revisionDate'];
+    summonerLevel = json['summonerLevel'];
+  }
 
   Map<String, dynamic> toJson() => {
     'id' : id,

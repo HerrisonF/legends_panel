@@ -1,4 +1,4 @@
-import 'package:legends_panel/app/data/model/current_game_spectator/current_game_spectator.dart';
+import 'package:legends_panel/app/model/current_game_spectator/current_game_spectator.dart';
 import 'package:legends_panel/app/data/provider/current_game_provider/current_game_provider.dart';
 
 class CurrentGameRepository {

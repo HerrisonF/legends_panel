@@ -11,14 +11,15 @@ class DioClient {
   static const int _UNAUTHORIZED = 401;
 
   final String riotBaseUrl = "https://br1.api.riotgames.com";
+  final String riotBaseAmericasUrl = "https://americas.api.riotgames.com";
   final String riotDragonBaseUrl = "https://ddragon.leagueoflegends.com";
   final String rawDragonBaseUrl = "https://raw.communitydragon.org";
   final String riotStaticConstBaseUrl = "https://static.developer.riotgames.com";
 
 
-  DioClient({riotDragon = false, rawDragon = false, riotStaticConst = false}) {
+  DioClient({riotDragon = false, rawDragon = false, riotStaticConst = false, americas = false}) {
     BaseOptions options = BaseOptions(
-      baseUrl: getBaseUrl(riotDragon, rawDragon, riotStaticConst),
+      baseUrl: getBaseUrl(riotDragon, rawDragon, riotStaticConst, americas),
       responseType: ResponseType.json,
     );
     instance = Dio(options);
@@ -26,13 +27,15 @@ class DioClient {
     instance.interceptors.add(HeadersInterceptor(dioClient: instance));
   }
 
-  String getBaseUrl(bool riotDragon, bool rawDragon, bool riotStaticConst){
+  String getBaseUrl(bool riotDragon, bool rawDragon, bool riotStaticConst, bool americas){
     if(riotDragon){
       return riotDragonBaseUrl;
     }else if(rawDragon){
       return rawDragonBaseUrl;
     }else if(riotStaticConst){
       return riotStaticConstBaseUrl;
+    }else if(americas){
+      return riotBaseAmericasUrl;
     }
     return riotBaseUrl;
   }

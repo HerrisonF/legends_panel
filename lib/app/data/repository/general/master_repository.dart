@@ -1,7 +1,7 @@
-import 'package:legends_panel/app/data/model/current_game_spectator/current_game_summoner_spell.dart';
-import 'package:legends_panel/app/data/model/general/champion.dart';
-import 'package:legends_panel/app/data/model/general/map_mode.dart';
-import 'package:legends_panel/app/data/model/general/user.dart';
+import 'package:legends_panel/app/model/current_game_spectator/current_game_summoner_spell.dart';
+import 'package:legends_panel/app/model/general/champion.dart';
+import 'package:legends_panel/app/model/general/map_mode.dart';
+import 'package:legends_panel/app/model/general/user.dart';
 import 'package:legends_panel/app/data/provider/general/master_provider.dart';
 
 class MasterRepository {

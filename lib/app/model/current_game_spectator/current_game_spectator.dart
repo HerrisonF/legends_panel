@@ -1,5 +1,5 @@
-import 'package:legends_panel/app/data/model/current_game_spectator/current_game_banned_champion.dart';
-import 'package:legends_panel/app/data/model/current_game_spectator/current_game_participant.dart';
+import 'package:legends_panel/app/model/current_game_spectator/current_game_banned_champion.dart';
+import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
 
 class CurrentGameSpectator {
   int gameId = 0;

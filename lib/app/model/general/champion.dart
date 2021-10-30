@@ -1,7 +1,7 @@
 class Champion {
-  String type = "";
-  String format = "";
-  String version = "";
+  dynamic type = "";
+  dynamic format = "";
+  dynamic version = "";
   Detail detail = Detail();
 
   Champion();
@@ -29,16 +29,16 @@ class Champion {
 }
 
 class Detail {
-  String version = "";
-  String id = "";
-  String key = "";
-  String name = "";
-  String title = "";
-  String blurb = "";
+  dynamic version = "";
+  dynamic id = "";
+  dynamic key = "";
+  dynamic name = "";
+  dynamic title = "";
+  dynamic blurb = "";
   Information info = Information();
   Image image = Image();
   List<String> tags = [];
-  String partype = "";
+  dynamic partype = "";
   Stats stats = Stats();
 
   Detail();
@@ -113,9 +113,9 @@ class Information {
 }
 
 class Image {
-  String full = "";
-  String sprite = "";
-  String group = "";
+  dynamic full = "";
+  dynamic sprite = "";
+  dynamic group = "";
   dynamic x = 0;
   dynamic y = 0;
   dynamic w = 0;

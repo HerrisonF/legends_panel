@@ -10,7 +10,7 @@ import 'dart:ui' as ui;
 
 void main() async {
   await GetStorage.init('store');
-  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.bottom]);
   runApp(MyApp());
 }
 

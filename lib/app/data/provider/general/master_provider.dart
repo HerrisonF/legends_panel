@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:get_storage/get_storage.dart';
 import 'package:legends_panel/app/data/http/config/dio_client.dart';
 import 'package:legends_panel/app/data/http/config/dio_state.dart';
-import 'package:legends_panel/app/data/model/current_game_spectator/current_game_summoner_spell.dart';
-import 'package:legends_panel/app/data/model/general/champion.dart';
-import 'package:legends_panel/app/data/model/general/map_mode.dart';
-import 'package:legends_panel/app/data/model/general/user.dart';
+import 'package:legends_panel/app/model/current_game_spectator/current_game_summoner_spell.dart';
+import 'package:legends_panel/app/model/general/champion.dart';
+import 'package:legends_panel/app/model/general/map_mode.dart';
+import 'package:legends_panel/app/model/general/user.dart';
 import 'package:logger/logger.dart';
 
 const PROFILE_KEY = "userProfile";
@@ -131,9 +131,9 @@ class MasterProvider {
     }
   }
 
-  Future<User> getUserOnCloud(String userName) async {
+  Future<User> getUserOnCloud(String summonerName) async {
     DioClient _dioClient = DioClient();
-    final String path = "/lol/summoner/v4/summoners/by-name/$userName";
+    final String path = "/lol/summoner/v4/summoners/by-name/$summonerName";
     _logger.i("Finding User...");
     try{
       final response = await _dioClient.get(path);

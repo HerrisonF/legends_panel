@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/result_controllers/current_game_result_controller/current_game_result_controller.dart';
-import 'package:legends_panel/app/data/model/current_game_spectator/current_game_banned_champion.dart';
-import 'package:legends_panel/app/data/model/current_game_spectator/current_game_participant.dart';
-import 'package:legends_panel/app/ui/android/components/current_game/current_game_participant_card.dart';
+import 'package:legends_panel/app/model/current_game_spectator/current_game_banned_champion.dart';
+import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
+import 'package:legends_panel/app/ui/android/pages/current_game_page/current_game_participant_card.dart';
 
 
 class CurrentGameResultPage extends StatelessWidget {

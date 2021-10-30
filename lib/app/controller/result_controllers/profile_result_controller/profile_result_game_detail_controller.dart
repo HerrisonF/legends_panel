@@ -1,38 +1,31 @@
 import 'package:get/get.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/result_controllers/current_game_result_controller/current_game_participant_controller.dart';
-import 'package:legends_panel/app/data/model/general/match_detail.dart';
-import 'package:legends_panel/app/data/repository/profile_repository/profile_resutlt_game_detail_repository.dart';
+import 'package:legends_panel/app/model/general/match_detail.dart';
 
 class ProfileResultGameDetailController {
-  final ProfileResultGameDetailRepository _profileResultGameDetailRepository =
-      ProfileResultGameDetailRepository();
   final MasterController _masterController = Get.find<MasterController>();
   final CurrentGameParticipantController _currentGameParticipantController =
       Get.put(CurrentGameParticipantController());
 
   Rx<MatchDetail> matchDetail = MatchDetail().obs;
-  Rx<ParticipantIdentitie> participantIdentitie = ParticipantIdentitie().obs;
-  Rx<Participant> participant = Participant().obs;
+  Rx<Participant> currentParticipant = Participant().obs;
 
-  startProfileResultGame(String gameId) async {
-    matchDetail.value =
-        await _profileResultGameDetailRepository.getMatchDetail(gameId);
-    getParticipantById(
-        _masterController.userProfile.value.accountId.toString());
+  startProfileResultGame(MatchDetail matchDetail) async {
+    this.matchDetail.value = matchDetail;
+
+    getParticipantById(_masterController.userProfile.value.name);
   }
 
-  getParticipantById(String accountId) {
-    if (matchDetail.value.participantIdentities.length > 0) {
-      participantIdentitie.value = matchDetail.value.participantIdentities
-          .where((participant) =>
-              participant.player.accountId.toString() == accountId)
-          .first;
-      participant.value = matchDetail.value.participants
-          .where((participantEl) =>
-              participantEl.participantId.toString() ==
-              participantIdentitie.value.participantId.toString())
-          .first;
+  getParticipantById(String summonerName) {
+    if (matchDetail.value.matchInfo.participants.length > 0) {
+      for (Participant elementParticipant
+          in matchDetail.value.matchInfo.participants) {
+        if (elementParticipant.summonerName == summonerName) {
+          this.currentParticipant.value = elementParticipant;
+          break;
+        }
+      }
     }
   }
 
@@ -42,17 +35,26 @@ class ProfileResultGameDetailController {
     );
   }
 
+  String getItemUrl(String itemId){
+    return _currentGameParticipantController.getItemUrl(itemId);
+  }
+
+  String getPositionUrl(String position){
+    return _currentGameParticipantController.getPositionUrl(position);
+  }
+
+
   String _getParticipantSpellId(int id) {
     if (id == 1) {
-      return participant.value.spell1d.toString();
+      return currentParticipant.value.summoner1Id.toString();
     } else {
-      return participant.value.spell2d.toString();
+      return currentParticipant.value.summoner2Id.toString();
     }
   }
 
-  String getChampionBadgeUrl(String championId) {
+  String getChampionBadgeUrl() {
     return _currentGameParticipantController.getChampionBadgeUrl(
-      championId,
+      currentParticipant.value.championId.toString()
     );
   }
 }

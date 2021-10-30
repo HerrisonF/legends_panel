@@ -1,6 +1,6 @@
 import 'package:legends_panel/app/data/http/config/dio_client.dart';
 import 'package:legends_panel/app/data/http/config/dio_state.dart';
-import 'package:legends_panel/app/data/model/general/match_detail.dart';
+import 'package:legends_panel/app/model/general/match_detail.dart';
 import 'package:logger/logger.dart';
 
 class ProfileResultGameDetailProvider {

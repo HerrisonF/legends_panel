@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
-import 'package:legends_panel/app/data/model/current_game_spectator/current_game_spectator.dart';
-import 'package:legends_panel/app/data/model/current_game_spectator/current_game_summoner_spell.dart';
-import 'package:legends_panel/app/data/model/general/champion.dart';
-import 'package:legends_panel/app/data/model/general/user_tier.dart';
+import 'package:legends_panel/app/model/current_game_spectator/current_game_spectator.dart';
+import 'package:legends_panel/app/model/current_game_spectator/current_game_summoner_spell.dart';
+import 'package:legends_panel/app/model/general/champion.dart';
+import 'package:legends_panel/app/model/general/user_tier.dart';
 import 'package:legends_panel/app/data/repository/profile_repository/participant_repository.dart';
 
 class CurrentGameParticipantController extends MasterController {
@@ -47,6 +47,14 @@ class CurrentGameParticipantController extends MasterController {
     Spell spell = _masterController.getSpellById(spellId);
     return _participantRepository.getSpellBadgeUrl(
         spell.id, _masterController.lolVersion);
+  }
+
+  String getItemUrl(String itemId){
+    return _participantRepository.getItemUrl(itemId, _masterController.lolVersion);
+  }
+
+  String getPositionUrl(String position){
+    return _participantRepository.getPosition(position, _masterController.lolVersion);
   }
 
   getSpectator(String summonerId) async {

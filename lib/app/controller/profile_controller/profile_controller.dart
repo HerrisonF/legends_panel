@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
-import 'package:legends_panel/app/data/model/general/champion.dart';
-import 'package:legends_panel/app/data/model/general/champion_mastery.dart';
-import 'package:legends_panel/app/data/model/general/match_list.dart';
-import 'package:legends_panel/app/data/model/general/user_tier.dart';
+import 'package:legends_panel/app/model/general/champion.dart';
+import 'package:legends_panel/app/model/general/champion_mastery.dart';
+import 'package:legends_panel/app/model/general/match_detail.dart';
+import 'package:legends_panel/app/model/general/user_tier.dart';
 import 'package:legends_panel/app/data/repository/profile_repository/profile_repository.dart';
 
 class ProfileController {
@@ -16,36 +16,38 @@ class ProfileController {
 
   RxList<UserTier> userTierList = RxList<UserTier>();
   RxList<ChampionMastery> championMasteryList = RxList<ChampionMastery>();
-  Rx<MatchList> matchList = MatchList().obs;
+  List<String> matchIdList = [];
+  RxList<MatchDetail> matchList = RxList<MatchDetail>();
 
-  Rx<bool> isLoading = false.obs;
+  Rx<bool> isUserLoading = false.obs;
   Rx<bool> isShowingMessage = false.obs;
 
-  startLoading() {
-    isLoading(true);
+  starUserLoading() {
+    isUserLoading(true);
   }
 
-  stopLoading() {
-    isLoading(false);
+  stopUserLoading() {
+    isUserLoading(false);
   }
 
-  startProfileController() {
-    checkUserExist();
+  startProfileController() async{
+    await checkUserExist();
   }
 
   checkUserExist() async {
     if (_masterController.userProfileExist()) {
-      startLoading();
+      starUserLoading();
       await getUserTierInformation();
       await getMasteryChampions();
-      await getMatchList();
-      stopLoading();
+      await getMatchListIds();
+      await getMatches();
+      stopUserLoading();
     }
   }
 
   getUserTierInformation() async {
-    userTierList.value =
-        await _profileRepository.getUserTier(_masterController.userProfile.value.id);
+    userTierList.value = await _profileRepository
+        .getUserTier(_masterController.userProfile.value.id);
   }
 
   getMasteryChampions() async {
@@ -55,9 +57,18 @@ class ProfileController {
     );
   }
 
-  getMatchList() async {
-    matchList.value = await _profileRepository
-        .getMatchList(_masterController.userProfile.value.accountId);
+  getMatchListIds() async {
+    matchIdList.addAll(
+      await _profileRepository
+          .getMatchListIds(_masterController.userProfile.value.puuid, 0, 5),
+    );
+  }
+
+  getMatches() async {
+    for (String matchId in matchIdList) {
+      MatchDetail matchDetail = await _profileRepository.getMatchById(matchId);
+      matchList.add(matchDetail);
+    }
   }
 
   String getChampionImage(int championId) {
@@ -76,21 +87,22 @@ class ProfileController {
   }
 
   getUserOnCloud() async {
-    startLoading();
+    starUserLoading();
     await _masterController.getUserProfileOnCloud(userNameInputController.text);
     if (_masterController.userProfileExist()) {
       await getUserTierInformation();
       await getMasteryChampions();
-      await getMatchList();
+      await getMatchListIds();
+      await getMatches();
       userNameInputController.clear();
-      stopLoading();
+      stopUserLoading();
     } else {
       _showUserNotFoundMessage();
     }
   }
 
   _showUserNotFoundMessage() {
-    stopLoading();
+    stopUserLoading();
     isShowingMessage(true);
     buttonMessage("BUTTON_MESSAGE_USER_NOT_FOUND".tr);
     Future.delayed(Duration(seconds: 3)).then((value) {

@@ -1,5 +1,5 @@
-import 'package:legends_panel/app/data/model/current_game_spectator/current_game_customization.dart';
-import 'package:legends_panel/app/data/model/current_game_spectator/current_game_perk.dart';
+import 'package:legends_panel/app/model/current_game_spectator/current_game_customization.dart';
+import 'package:legends_panel/app/model/current_game_spectator/current_game_perk.dart';
 
 class CurrentGameParticipant {
   int championId = 0;

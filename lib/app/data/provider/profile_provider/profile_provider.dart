@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:legends_panel/app/data/http/config/dio_client.dart';
 import 'package:legends_panel/app/data/http/config/dio_state.dart';
-import 'package:legends_panel/app/data/model/general/champion_mastery.dart';
-import 'package:legends_panel/app/data/model/general/match_list.dart';
-import 'package:legends_panel/app/data/model/general/user_tier.dart';
+import 'package:legends_panel/app/model/general/champion_mastery.dart';
+import 'package:legends_panel/app/model/general/match_detail.dart';
+import 'package:legends_panel/app/model/general/user_tier.dart';
 import 'package:logger/logger.dart';
 
 class ProfileProvider {
@@ -86,21 +86,46 @@ class ProfileProvider {
     }
   }
 
-  Future<MatchList> getMatchList(String accountId) async {
-    final String path = "/lol/match/v4/matchlists/by-account/$accountId";
+  Future<List<String>> getMatchListIds(String puuid, int start, int count) async {
+    final String path = "/lol/match/v5/matches/by-puuid/$puuid/ids";
     _logger.i("Getting MatchList ...");
+    List<String> matchListId = [];
+    DioClient americasDioClient = DioClient(americas: true);
+    final  params = {"start": "${start.toString()}", "count" : "${count.toString()}"};
     try{
-      final response = await _dioClient.get(path);
+      final response = await americasDioClient.get(path, params);
       if(response.state == CustomState.SUCCESS){
         if(response.result.data != null){
-          return MatchList.fromJson(response.result.data);
+          for (String id in response.result.data){
+            matchListId.add(id);
+          }
+          return matchListId;
         }
       }
       _logger.i("MatchList not found ...");
-      return MatchList();
+      return matchListId;
     }catch(e){
       _logger.i("Error to get MatchList $e");
-      return MatchList();
+      return matchListId;
+    }
+  }
+
+  Future<MatchDetail> getMatchById(String matchId) async {
+    final String path = "/lol/match/v5/matches/$matchId";
+    _logger.i("Getting Match by id ...");
+    DioClient americasDioClient = DioClient(americas: true);
+    try{
+      final response = await americasDioClient.get(path);
+      if(response.state == CustomState.SUCCESS){
+        if(response.result.data != null){
+          return MatchDetail.fromJson(response.result.data);
+        }
+      }
+      _logger.i("Match not found ...");
+      return MatchDetail();
+    }catch(e){
+      _logger.i("Error to get MAtch by id $e");
+      return MatchDetail();
     }
   }
 

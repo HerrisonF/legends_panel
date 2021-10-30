@@ -8,8 +8,7 @@ class SplashscreenController extends UtilController {
   final MasterController _masterController = Get.put(MasterController(), permanent: true);
 
   start() async {
-    await _masterController.start();
-    Get.offAllNamed(Routes.MASTER);
+     _masterController.start();
   }
 
 }

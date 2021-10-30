@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
-import 'package:legends_panel/app/ui/android/components/general/dots_loading.dart';
-import 'package:legends_panel/app/ui/android/components/profile/item_match_list_game_card.dart';
-import 'package:legends_panel/app/ui/android/components/profile/mastery_champions.dart';
+import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
+import 'package:legends_panel/app/ui/android/pages/profile_page/item_match_list_game_card.dart';
+import 'package:legends_panel/app/ui/android/pages/profile_page/mastery_champions.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -26,13 +26,15 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(() {
-        return _profileController.isLoading.value
-            ? DotsLoading()
-            : _masterController.userProfile.value.id.isNotEmpty
-                ? userProfile()
-                : searchUserField();
-      }),
+      body: Obx(
+        () {
+          return _profileController.isUserLoading.value
+              ? DotsLoading()
+              : _masterController.userProfile.value.id.isNotEmpty
+                  ? userProfile()
+                  : searchUserField();
+        },
+      ),
     );
   }
 
@@ -63,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
           Container(
             child: Obx(
               () {
-                return _profileController.isLoading.value
+                return _profileController.isUserLoading.value
                     ? DotsLoading()
                     : OutlinedButton(
                         child: Text(_profileController.buttonMessage.value),
@@ -119,17 +121,20 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             MasteryChampions(),
-            Obx((){
-              return _profileController.matchList.value.totalGames > 0 ?  Container(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: 5,
-                  itemBuilder: (_, index) {
-                    return ItemMatchListGameCard(_profileController.matchList.value.matches[index]);
-                  },
-                ),
-              ) : DotsLoading();
+            Obx(() {
+              return _profileController.matchList.length > 0
+                  ? Container(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: _profileController.matchList.length,
+                        itemBuilder: (_, index) {
+                          return ItemMatchListGameCard(
+                              _profileController.matchList[index]);
+                        },
+                      ),
+                    )
+                  : DotsLoading();
             }),
           ],
         ),
@@ -159,7 +164,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 85,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(_profileController.getUserProfileImage()),
+                    image:
+                        NetworkImage(_profileController.getUserProfileImage()),
                   ),
                   color: Colors.green,
                   borderRadius: BorderRadius.only(

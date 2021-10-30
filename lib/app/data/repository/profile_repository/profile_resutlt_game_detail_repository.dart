@@ -1,4 +1,4 @@
-import 'package:legends_panel/app/data/model/general/match_detail.dart';
+import 'package:legends_panel/app/model/general/match_detail.dart';
 import 'package:legends_panel/app/data/provider/profile_provider/profile_result_game_detail_provider.dart';
 
 class ProfileResultGameDetailRepository {

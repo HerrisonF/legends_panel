@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:legends_panel/app/data/http/config/dio_client.dart';
 import 'package:legends_panel/app/data/http/config/dio_state.dart';
-import 'package:legends_panel/app/data/model/current_game_spectator/current_game_spectator.dart';
-import 'package:legends_panel/app/data/model/general/user_tier.dart';
+import 'package:legends_panel/app/model/current_game_spectator/current_game_spectator.dart';
+import 'package:legends_panel/app/model/general/user_tier.dart';
 import 'package:logger/logger.dart';
 
 class ParticipantProvider {
@@ -50,6 +50,28 @@ class ParticipantProvider {
       return _dioClient.riotDragonBaseUrl + path;
     }catch(e){
       _logger.i("Error to build Image Champion Url $e");
+      return "";
+    }
+  }
+
+  String getItemUrl(String itemId, String version) {
+    final String path = "/cdn/$version/img/item/$itemId.png";
+    _logger.i("building Image Item URL...");
+    try{
+      return _dioClient.riotDragonBaseUrl + path;
+    }catch(e){
+      _logger.i("Error to build Image Item Url $e");
+      return "";
+    }
+  }
+
+  String getPositionUrl(String position, String version) {
+    final String path = "/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-${position.toLowerCase()}.png";
+    _logger.i("building Image Positon URL...");
+    try{
+      return _dioClient.rawDragonBaseUrl + path;
+    }catch(e){
+      _logger.i("Error to build Image Position Url $e");
       return "";
     }
   }
