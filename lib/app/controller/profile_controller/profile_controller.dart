@@ -13,6 +13,9 @@ class ProfileController {
   final MasterController _masterController = Get.find<MasterController>();
 
   Rx<String> buttonMessage = "BUTTON_MESSAGE_SEARCH".tr.obs;
+  int amountMatches = 5;
+  Rx<int> oldIndex = 0.obs;
+  Rx<int> newIndex = 0.obs;
 
   RxList<UserTier> userTierList = RxList<UserTier>();
   RxList<ChampionMastery> championMasteryList = RxList<ChampionMastery>();
@@ -21,6 +24,8 @@ class ProfileController {
 
   Rx<bool> isUserLoading = false.obs;
   Rx<bool> isShowingMessage = false.obs;
+  Rx<bool> lockNewLoadings = false.obs;
+  Rx<bool> isLoadingNewMatches = false.obs;
 
   starUserLoading() {
     isUserLoading(true);
@@ -30,7 +35,15 @@ class ProfileController {
     isUserLoading(false);
   }
 
-  startProfileController() async{
+  startLoadingNewMatches() {
+    isLoadingNewMatches(true);
+  }
+
+  stopLoadingNewMatches() {
+    isLoadingNewMatches(false);
+  }
+
+  startProfileController() async {
     await checkUserExist();
   }
 
@@ -58,10 +71,20 @@ class ProfileController {
   }
 
   getMatchListIds() async {
-    matchIdList.addAll(
-      await _profileRepository
-          .getMatchListIds(_masterController.userProfile.value.puuid, 0, 5),
-    );
+    this.newIndex.value += 5;
+    List<String> tempMatchIdList = [];
+
+    tempMatchIdList = await _profileRepository.getMatchListIds(
+        _masterController.userProfile.value.puuid,
+        this.newIndex.value,
+        this.amountMatches);
+    if (tempMatchIdList.length > 0) {
+      oldIndex.value = newIndex.value;
+      this.matchIdList.addAll(tempMatchIdList);
+    } else {
+      newIndex.value = oldIndex.value;
+      lockNewLoadings.value = true;
+    }
   }
 
   getMatches() async {
@@ -69,6 +92,17 @@ class ProfileController {
       MatchDetail matchDetail = await _profileRepository.getMatchById(matchId);
       matchList.add(matchDetail);
     }
+  }
+
+  loadMoreMatches() async {
+    startLoadingNewMatches();
+    await getMatchListIds();
+    for (int i = matchList.length; i < matchIdList.length; i++) {
+      MatchDetail matchDetail =
+          await _profileRepository.getMatchById(matchIdList[i]);
+      matchList.add(matchDetail);
+    }
+    stopLoadingNewMatches();
   }
 
   String getChampionImage(int championId) {

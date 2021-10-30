@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
+import 'package:legends_panel/app/ui/android/pages/about_page/about_page.dart';
 import 'package:legends_panel/app/ui/android/pages/current_game_page/current_game_page.dart';
 import 'package:legends_panel/app/ui/android/pages/profile_page/profile_page.dart';
 
@@ -17,6 +18,7 @@ class MasterPage extends StatelessWidget {
           children: [
             CurrentGamePage(),
             ProfilePage(),
+            AboutPage(),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -39,6 +41,10 @@ class MasterPage extends StatelessWidget {
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.perm_identity_rounded),
+        label: "",
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.account_balance_outlined),
         label: "",
       ),
     ];

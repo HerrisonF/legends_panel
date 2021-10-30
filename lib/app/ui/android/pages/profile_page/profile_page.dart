@@ -16,11 +16,34 @@ class _ProfilePageState extends State<ProfilePage> {
       Get.put(ProfileController(), permanent: true);
   final MasterController _masterController = Get.find<MasterController>();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final ScrollController _scrollController = ScrollController();
+
+  List<String> _locations = [
+    'BR1',
+    'EUN1',
+    'EUW1',
+    'JP1',
+    'KR',
+    'LA1',
+    'LA2',
+    'NA1',
+    'OC1',
+    'TR1',
+    'RU'
+  ]; // Option 2
+  String _selectedLocation = 'BR1';
 
   @override
   void initState() {
     _profileController.startProfileController();
+    this._scrollController.addListener(this._scrollListenerFunction);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    this._scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -78,6 +101,23 @@ class _ProfilePageState extends State<ProfilePage> {
               },
             ),
           ),
+          // Container(
+          //   child: DropdownButton(
+          //     hint: Text('Please choose a location'),
+          //     value: _selectedLocation,
+          //     onChanged: (newValue) {
+          //       setState(() {
+          //         _selectedLocation = newValue.toString();
+          //       });
+          //     },
+          //     items: _locations.map((location) {
+          //       return DropdownMenuItem(
+          //         child: new Text(location),
+          //         value: location,
+          //       );
+          //     }).toList(),
+          //   ),
+          // ),
           Container(
             child: Text(
               _profileController.getLoLVersion(),
@@ -108,29 +148,16 @@ class _ProfilePageState extends State<ProfilePage> {
               height: MediaQuery.of(context).size.height / 3,
               child: summonerPanel(context),
             ),
-            Container(
-              child: Container(
-                height: 100,
-                color: Colors.blue,
-                child: IconButton(
-                  icon: Icon(Icons.exit_to_app),
-                  onPressed: () {
-                    _profileController.deletePersistedUser();
-                  },
-                ),
-              ),
-            ),
             MasteryChampions(),
             Obx(() {
               return _profileController.matchList.length > 0
                   ? Container(
+                      height: 300,
                       child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: _profileController.matchList.length,
-                        itemBuilder: (_, index) {
-                          return ItemMatchListGameCard(
-                              _profileController.matchList[index]);
+                        itemCount: _hasMoreMatchesToLoad(),
+                        controller: this._scrollController,
+                        itemBuilder: (_, myCurrentPosition) {
+                          return _isLoadingGameCard(myCurrentPosition);
                         },
                       ),
                     )
@@ -140,6 +167,46 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  _scrollListenerFunction() {
+    Future.delayed(Duration(milliseconds: 200)).then(
+      (_) {
+        if (isUserScrollingDown() &&
+            (this._profileController.newIndex ==
+                this._profileController.oldIndex)) {
+          this._profileController.loadMoreMatches();
+        }
+      },
+    );
+  }
+
+  bool isUserScrollingDown() {
+    return (this._scrollController.offset * 2) >=
+            this._scrollController.position.maxScrollExtent &&
+        !this._scrollController.position.outOfRange;
+  }
+
+  int _hasMoreMatchesToLoad() {
+    if (_profileController.lockNewLoadings.value) {
+      return _profileController.matchList.length;
+    }
+    if (_profileController.isLoadingNewMatches.value) {
+      return _profileController.matchList.length + 1;
+    }
+    return _profileController.matchList.length;
+  }
+
+  Widget _isLoadingGameCard(int myCurrentPosition) {
+    if (myCurrentPosition < this._profileController.matchList.length) {
+      return ItemMatchListGameCard(
+          _profileController.matchList[myCurrentPosition]);
+    } else {
+      return Container(
+        padding: EdgeInsets.all(50),
+        child: CircularProgressIndicator(color: Colors.white),
+      );
+    }
   }
 
   Widget summonerPanel(BuildContext context) {
