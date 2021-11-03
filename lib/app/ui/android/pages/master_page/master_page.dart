@@ -6,7 +6,6 @@ import 'package:legends_panel/app/ui/android/pages/current_game_page/current_gam
 import 'package:legends_panel/app/ui/android/pages/profile_page/profile_page.dart';
 
 class MasterPage extends StatelessWidget {
-
   final MasterController _masterController = Get.find<MasterController>();
 
   @override
@@ -22,9 +21,9 @@ class MasterPage extends StatelessWidget {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Theme.of(context).primaryColor,
-          unselectedItemColor: Theme.of(context).primaryColor.withOpacity(0.4),
-          backgroundColor: Theme.of(context).backgroundColor,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white.withOpacity(0.4),
+          backgroundColor: Colors.brown[800],
           currentIndex: _masterController.currentPageIndex.value,
           onTap: _masterController.changeCurrentPageIndex,
           items: bottomNavigatorItems(),
@@ -36,15 +35,22 @@ class MasterPage extends StatelessWidget {
   bottomNavigatorItems() {
     return <BottomNavigationBarItem>[
       BottomNavigationBarItem(
-        icon: Icon(Icons.assignment_ind_outlined),
+        icon: Container(
+          margin: EdgeInsets.only(top: 10),
+          child: Icon(Icons.assignment_ind_outlined),
+        ),
         label: "",
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.perm_identity_rounded),
+        icon: Container(
+            margin: EdgeInsets.only(top: 10),
+            child: Icon(Icons.perm_identity_rounded)),
         label: "",
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.account_balance_outlined),
+        icon: Container(
+            margin: EdgeInsets.only(top: 10),
+            child: Icon(Icons.account_balance_outlined)),
         label: "",
       ),
     ];

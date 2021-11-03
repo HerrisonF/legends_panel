@@ -25,7 +25,7 @@ class MasterController {
     await getChampionList();
     await getSummonerSpells();
     await getMapList();
-    Get.offAllNamed(Routes.MASTER);
+   Get.offAllNamed(Routes.MASTER);
   }
 
   readPersistedUser() async {

@@ -109,7 +109,7 @@ class MasterProvider {
     User user = User();
     try{
       String userString = await box.read(PROFILE_KEY);
-      if(userString.isNotEmpty){
+      if(userString != null || userString.isNotEmpty){
         return User.fromJson(jsonDecode(userString));
       }
       _logger.i("No userProfile persisted found ...");
