@@ -15,8 +15,8 @@ class CurrentGameParticipantController extends MasterController {
   Rx<UserTier> soloUserTier = UserTier().obs;
   Rx<CurrentGameSpectator> currentGameSpectator = CurrentGameSpectator().obs;
 
-  getUserTier(String id) async {
-    userTierList.value = await _participantRepository.getUserTier(id);
+  getUserTier(String id, String region) async {
+    userTierList.value = await _participantRepository.getUserTier(id, region);
     _getSoloRankedOnly(userTierList);
   }
 
@@ -57,8 +57,8 @@ class CurrentGameParticipantController extends MasterController {
     return _participantRepository.getPosition(position, _masterController.lolVersion);
   }
 
-  getSpectator(String summonerId) async {
+  getSpectator(String summonerId, String region) async {
     currentGameSpectator.value =
-        await _participantRepository.getSpectator(summonerId);
+        await _participantRepository.getSpectator(summonerId, region);
   }
 }

@@ -6,6 +6,6 @@ final Map<String, String> ptBr = {
   'INPUT_VALIDATOR_HOME' : 'Esse campo é obrigatório !',
   'BUTTON_MESSAGE_SEARCH' : 'Procurar',
   'BUTTON_MESSAGE_USER_NOT_FOUND' : 'Não encontramos esse usuário !',
-  'BUTTON_MESSAGE_GAME_NOT_FOUND' : 'Esse usuário não está jogando !',
-  'LOADING_MESSAGE' : 'Procurando pelo jogador ...'
+  'BUTTON_MESSAGE_GAME_NOT_FOUND' : 'Este invocador não está jogando !',
+  'LOADING_MESSAGE' : 'Procurando pelo jogador ...',
 };

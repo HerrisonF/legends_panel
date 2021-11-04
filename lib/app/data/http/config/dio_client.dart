@@ -10,16 +10,26 @@ class DioClient {
   static const int _SUCCESS = 200;
   static const int _UNAUTHORIZED = 401;
 
-  final String riotBaseUrl = "https://br1.api.riotgames.com";
   final String riotBaseAmericasUrl = "https://americas.api.riotgames.com";
+  final String riotBaseAsiaUrl = "https://asia.api.riotgames.com";
+  final String riotBaseEuropeUrl = "https://europe.api.riotgames.com";
   final String riotDragonBaseUrl = "https://ddragon.leagueoflegends.com";
   final String rawDragonBaseUrl = "https://raw.communitydragon.org";
-  final String riotStaticConstBaseUrl = "https://static.developer.riotgames.com";
+  final String riotStaticConstBaseUrl =
+      "https://static.developer.riotgames.com";
 
-
-  DioClient({riotDragon = false, rawDragon = false, riotStaticConst = false, americas = false}) {
+  DioClient({
+    riotDragon = false,
+    rawDragon = false,
+    riotStaticConst = false,
+    americas = false,
+    asia = false,
+    europe = false,
+    region = "br1",
+  }) {
     BaseOptions options = BaseOptions(
-      baseUrl: getBaseUrl(riotDragon, rawDragon, riotStaticConst, americas),
+      baseUrl:
+          getBaseUrl(riotDragon, rawDragon, riotStaticConst, americas, region, asia, europe),
       responseType: ResponseType.json,
     );
     instance = Dio(options);
@@ -27,17 +37,22 @@ class DioClient {
     instance.interceptors.add(HeadersInterceptor(dioClient: instance));
   }
 
-  String getBaseUrl(bool riotDragon, bool rawDragon, bool riotStaticConst, bool americas){
-    if(riotDragon){
+  String getBaseUrl(bool riotDragon, bool rawDragon, bool riotStaticConst,
+      bool americas, String region, bool asia, bool europe) {
+    if (riotDragon) {
       return riotDragonBaseUrl;
-    }else if(rawDragon){
+    } else if (rawDragon) {
       return rawDragonBaseUrl;
-    }else if(riotStaticConst){
+    } else if (riotStaticConst) {
       return riotStaticConstBaseUrl;
-    }else if(americas){
+    } else if (americas) {
       return riotBaseAmericasUrl;
+    }else if (asia) {
+      return riotBaseAsiaUrl;
+    }else if (europe) {
+      return riotBaseEuropeUrl;
     }
-    return riotBaseUrl;
+    return "https://$region.api.riotgames.com";
   }
 
   Future<DioState> post(String path, String data, [queryParameters]) async {

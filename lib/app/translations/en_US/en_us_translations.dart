@@ -6,6 +6,6 @@ final Map<String, String> enUs = {
   'INPUT_VALIDATOR_HOME' : 'This Field is Mandatory !',
   'BUTTON_MESSAGE_SEARCH' : 'Search',
   'BUTTON_MESSAGE_USER_NOT_FOUND' : 'User not found !',
-  'BUTTON_MESSAGE_GAME_NOT_FOUND' : 'That user isn\'t playing !',
-  'LOADING_MESSAGE' : 'Looking for the player ...'
+  'BUTTON_MESSAGE_GAME_NOT_FOUND' : 'That summoner isn\'t playing !',
+  'LOADING_MESSAGE' : 'Looking for the player ...',
 };

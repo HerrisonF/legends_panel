@@ -7,8 +7,8 @@ class ParticipantRepository {
 
   ParticipantProvider _participantProvider = ParticipantProvider();
 
-  Future<RxList<UserTier>> getUserTier(String encryptedSummonerId){
-    return _participantProvider.getUserTier(encryptedSummonerId);
+  Future<RxList<UserTier>> getUserTier(String encryptedSummonerId, String region){
+    return _participantProvider.getUserTier(encryptedSummonerId, region);
   }
 
   String getUserTierImage(String tier){
@@ -31,7 +31,7 @@ class ParticipantRepository {
     return _participantProvider.getSpellBadgeUrl(spellName, version);
   }
 
-  Future<CurrentGameSpectator> getSpectator(String summonerId){
-    return _participantProvider.getSpectator(summonerId);
+  Future<CurrentGameSpectator> getSpectator(String summonerId, String region){
+    return _participantProvider.getSpectator(summonerId, region);
   }
 }

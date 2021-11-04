@@ -21,9 +21,9 @@ class MasterPage extends StatelessWidget {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white.withOpacity(0.4),
-          backgroundColor: Colors.brown[800],
+          selectedItemColor: Color(0xFF4248A5),
+          unselectedItemColor: Color(0xFF292E78).withOpacity(0.3),
+          backgroundColor: Colors.white,
           currentIndex: _masterController.currentPageIndex.value,
           onTap: _masterController.changeCurrentPageIndex,
           items: bottomNavigatorItems(),

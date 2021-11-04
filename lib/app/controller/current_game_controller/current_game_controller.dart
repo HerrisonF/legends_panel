@@ -26,21 +26,21 @@ class CurrentGameController extends GetxController {
     isLoadingUser(false);
   }
 
-  getUserFromCloud() async {
+  getUserFromCloud(String region) async {
     _startUserLoading();
-    await _masterController.getCurrentUserOnCloud(userNameInputController.text);
+    await _masterController.getCurrentUserOnCloud(userNameInputController.text, region);
     if (_masterController.userCurrentGame.value.id.isNotEmpty) {
-      _checkUserIsInCurrentGame();
+      _checkUserIsInCurrentGame(region);
     } else {
       _showUserNotFoundMessage();
     }
   }
 
-  _checkUserIsInCurrentGame() async {
+  _checkUserIsInCurrentGame(String region) async {
     currentGameSpectator = await _currentGameRepository
-        .checkCurrentGameExists(_masterController.userCurrentGame.value.id);
+        .checkCurrentGameExists(_masterController.userCurrentGame.value.id, region);
     if (gameExist()) {
-      _pushToCurrentResultGame();
+      _pushToCurrentResultGame(region);
       _stopUserLoading();
       userNameInputController.clear();
     } else {
@@ -52,8 +52,8 @@ class CurrentGameController extends GetxController {
     return currentGameSpectator.gameId > 0;
   }
 
-  _pushToCurrentResultGame() {
-    _currentGameResultController.startController(currentGameSpectator);
+  _pushToCurrentResultGame(String region) {
+    _currentGameResultController.startController(currentGameSpectator, region);
     Get.toNamed(Routes.PROFILE_SUB);
   }
 

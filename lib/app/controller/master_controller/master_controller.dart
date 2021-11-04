@@ -65,12 +65,12 @@ class MasterController {
     return mapList.where((map) => map.mapId.toString() == mapId).first;
   }
 
-  getCurrentUserOnCloud(String userName) async {
-    userCurrentGame.value = await _masterRepository.getUserOnCloud(userName);
+  getCurrentUserOnCloud(String userName, String region) async {
+    userCurrentGame.value = await _masterRepository.getUserOnCloud(userName, region);
   }
 
-  getUserProfileOnCloud(String userName) async {
-    userProfile.value = await _masterRepository.getUserOnCloud(userName);
+  getUserProfileOnCloud(String userName, String region) async {
+    userProfile.value = await _masterRepository.getUserOnCloud(userName, region);
     if(userProfile.value.id.isNotEmpty){
       saveUserProfile();
     }

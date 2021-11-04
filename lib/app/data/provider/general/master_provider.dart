@@ -131,8 +131,8 @@ class MasterProvider {
     }
   }
 
-  Future<User> getUserOnCloud(String summonerName) async {
-    DioClient _dioClient = DioClient();
+  Future<User> getUserOnCloud(String summonerName, String region) async {
+    DioClient _dioClient = DioClient(region: region);
     final String path = "/lol/summoner/v4/summoners/by-name/$summonerName";
     _logger.i("Finding User...");
     try{

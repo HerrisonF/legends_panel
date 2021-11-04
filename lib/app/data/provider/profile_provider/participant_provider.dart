@@ -10,10 +10,11 @@ class ParticipantProvider {
   DioClient _dioClient = DioClient();
   Logger _logger = Logger();
 
-  Future<RxList<UserTier>> getUserTier(String encryptedSummonerId) async {
+  Future<RxList<UserTier>> getUserTier(String encryptedSummonerId, String region) async {
     final String path = "/lol/league/v4/entries/by-summoner/$encryptedSummonerId";
     _logger.i("Getting Summoner Tier");
     try{
+      DioClient _dioClient = DioClient(region: region);
       final response = await _dioClient.get(path);
       RxList<UserTier> listTier  = RxList<UserTier>();
       if(response.state == CustomState.SUCCESS){
@@ -44,6 +45,7 @@ class ParticipantProvider {
   }
 
   String getChampionBadgeUrl(String championId, String version) {
+
     final String path = "/cdn/$version/img/champion/$championId.png";
     _logger.i("building Image Champion URL...");
     try{
@@ -87,10 +89,11 @@ class ParticipantProvider {
     }
   }
 
-  Future<CurrentGameSpectator> getSpectator(String userId) async {
+  Future<CurrentGameSpectator> getSpectator(String userId, String region) async {
     final String path = "/lol/spectator/v4/active-games/by-summoner/$userId";
     _logger.i("Fetching Current Game ...");
     try{
+      DioClient _dioClient = DioClient(region: region);
       final response = await _dioClient.get(path);
       if(response.state == CustomState.SUCCESS){
         return CurrentGameSpectator.fromJson(response.result.data);

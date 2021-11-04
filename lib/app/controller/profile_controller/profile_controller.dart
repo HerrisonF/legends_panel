@@ -43,41 +43,41 @@ class ProfileController {
     isLoadingNewMatches(false);
   }
 
-  startProfileController() async {
-    await checkUserExist();
+  startProfileController(String region) async {
+    //await checkUserExist(region);
   }
 
-  checkUserExist() async {
+  checkUserExist(String region) async {
     if (_masterController.userProfileExist()) {
       starUserLoading();
-      await getUserTierInformation();
-      await getMasteryChampions();
-      await getMatchListIds();
-      await getMatches();
+      await getUserTierInformation(region);
+      await getMasteryChampions(region);
+      await getMatchListIds(region);
+      await getMatches(region);
       stopUserLoading();
     }
   }
 
-  getUserTierInformation() async {
+  getUserTierInformation(String region) async {
     userTierList.value = await _profileRepository
-        .getUserTier(_masterController.userProfile.value.id);
+        .getUserTier(_masterController.userProfile.value.id, region);
   }
 
-  getMasteryChampions() async {
+  getMasteryChampions(String region) async {
     championMasteryList.addAll(
       await _profileRepository
-          .getChampionMastery(_masterController.userProfile.value.id),
+          .getChampionMastery(_masterController.userProfile.value.id, region),
     );
   }
 
-  getMatchListIds() async {
+  getMatchListIds(String region) async {
     this.newIndex.value += 5;
     List<String> tempMatchIdList = [];
 
     tempMatchIdList = await _profileRepository.getMatchListIds(
         _masterController.userProfile.value.puuid,
         this.newIndex.value,
-        this.amountMatches);
+        this.amountMatches, region);
     if (tempMatchIdList.length > 0) {
       oldIndex.value = newIndex.value;
       this.matchIdList.addAll(tempMatchIdList);
@@ -87,19 +87,19 @@ class ProfileController {
     }
   }
 
-  getMatches() async {
+  getMatches(String region) async {
     for (String matchId in matchIdList) {
-      MatchDetail matchDetail = await _profileRepository.getMatchById(matchId);
+      MatchDetail matchDetail = await _profileRepository.getMatchById(matchId, region);
       matchList.add(matchDetail);
     }
   }
 
-  loadMoreMatches() async {
+  loadMoreMatches(String region) async {
     startLoadingNewMatches();
-    await getMatchListIds();
+    await getMatchListIds(region);
     for (int i = matchList.length; i < matchIdList.length; i++) {
       MatchDetail matchDetail =
-          await _profileRepository.getMatchById(matchIdList[i]);
+          await _profileRepository.getMatchById(matchIdList[i], region);
       matchList.add(matchDetail);
     }
     stopLoadingNewMatches();
@@ -116,18 +116,14 @@ class ProfileController {
         .getMasteryImage(championMasteryList[index].championLevel.toString());
   }
 
-  String getLoLVersion() {
-    return _masterController.lolVersion;
-  }
-
-  getUserOnCloud() async {
+  getUserOnCloud(String region) async {
     starUserLoading();
-    await _masterController.getUserProfileOnCloud(userNameInputController.text);
+    await _masterController.getUserProfileOnCloud(userNameInputController.text, region);
     if (_masterController.userProfileExist()) {
-      await getUserTierInformation();
-      await getMasteryChampions();
-      await getMatchListIds();
-      await getMatches();
+      await getUserTierInformation(region);
+      await getMasteryChampions(region);
+      await getMatchListIds(region);
+      await getMatches(region);
       userNameInputController.clear();
       stopUserLoading();
     } else {

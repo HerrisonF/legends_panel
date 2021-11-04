@@ -5,13 +5,13 @@ import 'package:logger/logger.dart';
 
 class CurrentGameProvider {
 
-  DioClient _dioClient = DioClient();
   Logger _logger = Logger();
 
-  Future<CurrentGameSpectator> checkCurrentGameExists(String encryptedSummonerId) async {
+  Future<CurrentGameSpectator> checkCurrentGameExists(String encryptedSummonerId, String region) async {
     final String path = "/lol/spectator/v4/active-games/by-summoner/$encryptedSummonerId";
     _logger.i("Checking Current Game exists ...");
     try{
+      DioClient _dioClient = DioClient(region: region);
       final response = await _dioClient.get(path);
       if(response.state == CustomState.SUCCESS){
         return CurrentGameSpectator.fromJson(response.result.data);

@@ -28,8 +28,8 @@ class MasterRepository {
     return _masterProvider.readPersistedUserProfile();
   }
 
-  Future<User> getUserOnCloud(String userName){
-    return _masterProvider.getUserOnCloud(userName);
+  Future<User> getUserOnCloud(String userName, String region){
+    return _masterProvider.getUserOnCloud(userName, region);
   }
 
   Future<bool> saveUserProfile(User user){

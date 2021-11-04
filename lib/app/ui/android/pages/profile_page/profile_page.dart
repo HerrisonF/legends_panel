@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
 import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
+import 'package:legends_panel/app/ui/android/components/region_dropdown_component.dart';
 import 'package:legends_panel/app/ui/android/pages/profile_page/item_match_list_game_card.dart';
 import 'package:legends_panel/app/ui/android/pages/profile_page/mastery_champions.dart';
+import 'package:progress_indicators/progress_indicators.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -18,24 +21,11 @@ class _ProfilePageState extends State<ProfilePage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final ScrollController _scrollController = ScrollController();
 
-  List<String> _locations = [
-    'BR1',
-    'EUN1',
-    'EUW1',
-    'JP1',
-    'KR',
-    'LA1',
-    'LA2',
-    'NA1',
-    'OC1',
-    'TR1',
-    'RU'
-  ]; // Option 2
-  String _selectedLocation = 'BR1';
+  String selectedRegion = 'NA1';
 
   @override
   void initState() {
-    _profileController.startProfileController();
+    _profileController.startProfileController(selectedRegion);
     this._scrollController.addListener(this._scrollListenerFunction);
     super.initState();
   }
@@ -54,91 +44,118 @@ class _ProfilePageState extends State<ProfilePage> {
           return _profileController.isUserLoading.value
               ? DotsLoading()
               : _masterController.userProfile.value.id.isNotEmpty
-                  ? userProfile()
-                  : searchUserField();
+                  ? foundUserProfile()
+                  : searchUserFieldContent();
         },
       ),
     );
   }
 
-  searchUserField() {
+  searchUserFieldContent() {
     return Container(
-      color: Theme.of(context).backgroundColor,
+      padding: EdgeInsets.symmetric(horizontal: 30),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Theme.of(context).primaryColor,
+            Theme.of(context).primaryColor.withOpacity(0.5),
+          ],
+          begin: FractionalOffset.topCenter,
+          end: FractionalOffset.bottomCenter,
+        ),
+        image: DecorationImage(
+          image: AssetImage(imageBackgroundProfilePengu),
+          fit: BoxFit.cover,
+        ),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            child: Form(
-              key: formKey,
-              child: TextFormField(
-                controller: _profileController.userNameInputController,
-                onFieldSubmitted: (value) {
-                  _submit();
-                },
-                validator: (value) {
-                  if (value!.trim().isEmpty) {
-                    _profileController.userNameInputController.clear();
-                    return "INPUT_VALIDATOR_HOME".tr;
-                  }
-                  return null;
-                },
-              ),
-            ),
-          ),
-          Container(
-            child: Obx(
-              () {
-                return _profileController.isUserLoading.value
-                    ? DotsLoading()
-                    : OutlinedButton(
-                        child: Text(_profileController.buttonMessage.value),
-                        onPressed: _profileController.isShowingMessage.value
-                            ? null
-                            : () {
-                                _submit();
-                              },
-                      );
-              },
-            ),
-          ),
-          // Container(
-          //   child: DropdownButton(
-          //     hint: Text('Please choose a location'),
-          //     value: _selectedLocation,
-          //     onChanged: (newValue) {
-          //       setState(() {
-          //         _selectedLocation = newValue.toString();
-          //       });
-          //     },
-          //     items: _locations.map((location) {
-          //       return DropdownMenuItem(
-          //         child: new Text(location),
-          //         value: location,
-          //       );
-          //     }).toList(),
-          //   ),
-          // ),
-          Container(
-            child: Text(
-              _profileController.getLoLVersion(),
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-              ),
-            ),
+          _inputSummonerName(),
+          _buttonSearchSummoner(),
+          RegionDropDownComponent(
+            onRegionChoose: (region) {
+              setState(() {
+                this.selectedRegion = region;
+              });
+            },
           ),
         ],
       ),
     );
   }
 
+  Container _buttonSearchSummoner() {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 30),
+      width: MediaQuery.of(context).size.width,
+      height: 50,
+      child: Obx(
+        () {
+          return OutlinedButton(
+            child: _profileController.isUserLoading.value
+                ? JumpingDotsProgressIndicator(
+                    fontSize: 30,
+                    color: Colors.white,
+                  )
+                : Text(
+                    _profileController.buttonMessage.value,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 2),
+                  ),
+            onPressed: _profileController.isShowingMessage.value
+                ? null
+                : () {
+                    _submit();
+                  },
+          );
+        },
+      ),
+    );
+  }
+
+  Container _inputSummonerName() {
+    return Container(
+      child: Form(
+        key: formKey,
+        child: TextFormField(
+          controller: _profileController.userNameInputController,
+          decoration: InputDecoration(
+            hintText: "HINT_SUMMONER_NAME".tr,
+            errorStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          onFieldSubmitted: (value) {
+            _submit();
+          },
+          validator: (value) {
+            if (value!.trim().isEmpty) {
+              _profileController.userNameInputController.clear();
+              return "INPUT_VALIDATOR_HOME".tr;
+            }
+            if (selectedRegion.isEmpty) {
+              _profileController.userNameInputController.clear();
+              return "INPUT_VALIDATOR_HOME".tr;
+            }
+            return null;
+          },
+        ),
+      ),
+    );
+  }
+
   _submit() {
     if (formKey.currentState!.validate()) {
-      _profileController.getUserOnCloud();
+      _profileController.getUserOnCloud(selectedRegion);
     }
   }
 
-  Widget userProfile() {
+  Widget foundUserProfile() {
     return SingleChildScrollView(
       child: Container(
         color: Theme.of(context).backgroundColor.withOpacity(0.9),
@@ -175,7 +192,7 @@ class _ProfilePageState extends State<ProfilePage> {
         if (isUserScrollingDown() &&
             (this._profileController.newIndex ==
                 this._profileController.oldIndex)) {
-          this._profileController.loadMoreMatches();
+          this._profileController.loadMoreMatches(selectedRegion);
         }
       },
     );
@@ -276,9 +293,6 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               Column(
                 children: [
-                  Container(
-                    child: Text("Brasil"),
-                  ),
                   Obx(() {
                     return Container(
                       child: Text(

@@ -8,6 +8,7 @@ import 'package:legends_panel/app/model/general/map_mode.dart';
 
 class CurrentGameResultController extends UtilController {
   final MasterController _masterController = Get.find<MasterController>();
+  String region = "";
 
   CurrentGameSpectator currentGameSpectator = CurrentGameSpectator();
   Rx<MapMode> mapMode = MapMode().obs;
@@ -18,7 +19,8 @@ class CurrentGameResultController extends UtilController {
   RxList<CurrentGameBannedChampion> redTeamBannedChamp =
       RxList<CurrentGameBannedChampion>();
 
-  startController(CurrentGameSpectator currentGameSpectator) {
+  startController(CurrentGameSpectator currentGameSpectator, String region) {
+    this.region = region;
     _clearOldSearch();
     setCurrentGameSpectator(currentGameSpectator);
     detachParticipantsIntoTeams();
@@ -53,7 +55,11 @@ class CurrentGameResultController extends UtilController {
   }
 
   String getCurrentGameMinutes() {
-    return getConvertedTimeInMinutes(currentGameSpectator.gameLength);
+    if (getConvertedTimeInMinutes(currentGameSpectator.gameLength) == "00") {
+      return "01";
+    } else {
+      return getConvertedTimeInMinutes(currentGameSpectator.gameLength);
+    }
   }
 
   getMapById(String mapId) {

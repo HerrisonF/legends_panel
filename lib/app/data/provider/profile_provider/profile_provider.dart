@@ -22,10 +22,11 @@ class ProfileProvider {
     }
   }
 
-  Future<RxList<UserTier>> getUserTier(String encryptedSummonerId) async {
+  Future<RxList<UserTier>> getUserTier(String encryptedSummonerId, String region) async {
     final String path = "/lol/league/v4/entries/by-summoner/$encryptedSummonerId";
     _logger.i("Getting Summoner Tier");
     try{
+      DioClient _dioClient = DioClient(region: region);
       final response = await _dioClient.get(path);
       RxList<UserTier> listTier  = RxList<UserTier>();
       if(response.state == CustomState.SUCCESS){
@@ -44,10 +45,11 @@ class ProfileProvider {
     }
   }
 
-  Future<RxList<ChampionMastery>> getChampionMastery(String summonerId) async {
+  Future<RxList<ChampionMastery>> getChampionMastery(String summonerId, String region) async {
     final String path  = "/lol/champion-mastery/v4/champion-masteries/by-summoner/$summonerId";
     _logger.i("Getting Champion Mastery");
     try{
+      DioClient _dioClient = DioClient(region: region.isEmpty ? "BR1" : region);
       final response = await _dioClient.get(path);
       RxList<ChampionMastery> championMasteryList = RxList<ChampionMastery>();
       if(response.state == CustomState.SUCCESS){
@@ -86,14 +88,25 @@ class ProfileProvider {
     }
   }
 
-  Future<List<String>> getMatchListIds(String puuid, int start, int count) async {
+  Future<List<String>> getMatchListIds(String puuid, int start, int count, String region) async {
     final String path = "/lol/match/v5/matches/by-puuid/$puuid/ids";
     _logger.i("Getting MatchList ...");
     List<String> matchListId = [];
-    DioClient americasDioClient = DioClient(americas: true);
+    DioClient tempDio = DioClient();
+    if(region == "KR" || region == "RU" || region == "JP1" || region == "TR1" || region == "OC1"){
+      tempDio = DioClient(asia: true);
+    }
+    if(region == "EUN1" || region == "EUW1" || region == "NA1"){
+      tempDio = DioClient(europe: true);
+    }
+
+    if(region == "LA1" || region == "LA2" || region == "BR1" || region.isEmpty){
+      tempDio = DioClient(americas: true);
+    }
+
     final  params = {"start": "${start.toString()}", "count" : "${count.toString()}"};
     try{
-      final response = await americasDioClient.get(path, params);
+      final response = await tempDio.get(path, params);
       if(response.state == CustomState.SUCCESS){
         if(response.result.data != null){
           for (String id in response.result.data){
@@ -110,12 +123,22 @@ class ProfileProvider {
     }
   }
 
-  Future<MatchDetail> getMatchById(String matchId) async {
+  Future<MatchDetail> getMatchById(String matchId, String region) async {
     final String path = "/lol/match/v5/matches/$matchId";
     _logger.i("Getting Match by id ...");
-    DioClient americasDioClient = DioClient(americas: true);
+    DioClient tempDio = DioClient();
+    if(region == "KR" || region == "RU" || region == "JP1" || region == "TR1" || region == "OC1"){
+      tempDio = DioClient(asia: true);
+    }
+    if(region == "EUN1" || region == "EUW1" || region == "NA1"){
+      tempDio = DioClient(europe: true);
+    }
+
+    if(region == "LA1" || region == "LA2" || region == "BR1" || region.isEmpty){
+      tempDio = DioClient(americas: true);
+    }
     try{
-      final response = await americasDioClient.get(path);
+      final response = await tempDio.get(path);
       if(response.state == CustomState.SUCCESS){
         if(response.result.data != null){
           return MatchDetail.fromJson(response.result.data);
