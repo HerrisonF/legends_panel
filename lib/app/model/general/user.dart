@@ -3,6 +3,7 @@ class User {
   String accountId = "";
   String puuid = "";
   String name = "";
+  String region = "";
   dynamic profileIconId = 0;
   dynamic revisionDate = 0;
   dynamic summonerLevel = 0;
@@ -17,6 +18,7 @@ class User {
     profileIconId = json['profileIconId'];
     revisionDate = json['revisionDate'];
     summonerLevel = json['summonerLevel'];
+    region = json['region']??"";
   }
 
   Map<String, dynamic> toJson() => {
@@ -27,10 +29,11 @@ class User {
     'profileIconId' : profileIconId,
     'revisionDate' : revisionDate,
     'summonerLevel' : summonerLevel,
+    'region': region,
   };
 
   @override
   String toString() {
-    return "id: $id, accountId: $accountId, puuid: $puuid, profileIconId: $profileIconId, revisionDate: $revisionDate, summonerLevel: $summonerLevel";
+    return 'User{id: $id, accountId: $accountId, puuid: $puuid, name: $name, region: $region, profileIconId: $profileIconId, revisionDate: $revisionDate, summonerLevel: $summonerLevel}';
   }
 }

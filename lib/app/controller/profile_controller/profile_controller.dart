@@ -43,18 +43,35 @@ class ProfileController {
     isLoadingNewMatches(false);
   }
 
-  startProfileController(String region) async {
-    //await checkUserExist(region);
+  startProfileController() async {
+    await checkIsUserStored();
   }
 
-  checkUserExist(String region) async {
-    if (_masterController.userProfileExist()) {
-      starUserLoading();
-      await getUserTierInformation(region);
-      await getMasteryChampions(region);
-      await getMatchListIds(region);
-      await getMatches(region);
-      stopUserLoading();
+
+  int getImageFromBestChampionPlayer() {
+    int championId = 0;
+    dynamic oldPoints = 0;
+    championMasteryList.forEach((element) {
+      if(element.championPoints > oldPoints){
+        oldPoints = element.championPoints;
+        championId = element.championId;
+      }
+    });
+    return championId;
+  }
+
+
+  checkIsUserStored() async {
+    if(_masterController.userProfileExist()){
+      if(_masterController.userProfile.value.region != ""){
+        final tempRegion = _masterController.userProfile.value.region;
+        starUserLoading();
+        await getUserTierInformation(tempRegion);
+        await getMasteryChampions(tempRegion);
+        await getMatchListIds(tempRegion);
+        await getMatches(tempRegion);
+        stopUserLoading();
+      }
     }
   }
 

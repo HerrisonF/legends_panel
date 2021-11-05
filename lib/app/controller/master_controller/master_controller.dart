@@ -72,11 +72,12 @@ class MasterController {
   getUserProfileOnCloud(String userName, String region) async {
     userProfile.value = await _masterRepository.getUserOnCloud(userName, region);
     if(userProfile.value.id.isNotEmpty){
-      saveUserProfile();
+      saveUserProfile(region);
     }
   }
 
-  saveUserProfile(){
+  saveUserProfile(String region){
+    this.userProfile.value.region = region;
     _masterRepository.saveUserProfile(this.userProfile.value);
   }
 

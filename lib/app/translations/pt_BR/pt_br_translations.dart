@@ -8,4 +8,7 @@ final Map<String, String> ptBr = {
   'BUTTON_MESSAGE_USER_NOT_FOUND' : 'Não encontramos esse usuário !',
   'BUTTON_MESSAGE_GAME_NOT_FOUND' : 'Este invocador não está jogando !',
   'LOADING_MESSAGE' : 'Procurando pelo jogador ...',
+  'LEVEL' : 'Level',
+  'VICTORY' : 'Vitórias',
+  'LOSE' : 'Derrotas',
 };

@@ -8,4 +8,7 @@ final Map<String, String> enUs = {
   'BUTTON_MESSAGE_USER_NOT_FOUND' : 'User not found !',
   'BUTTON_MESSAGE_GAME_NOT_FOUND' : 'That summoner isn\'t playing !',
   'LOADING_MESSAGE' : 'Looking for the player ...',
+  'LEVEL' : 'Level',
+  'VICTORY' : 'Wins',
+  'LOSE' : 'Losses',
 };

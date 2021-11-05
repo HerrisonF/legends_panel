@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
@@ -25,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
-    _profileController.startProfileController(selectedRegion);
+    _profileController.startProfileController();
     this._scrollController.addListener(this._scrollListenerFunction);
     super.initState();
   }
@@ -162,7 +163,7 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           children: [
             Container(
-              height: MediaQuery.of(context).size.height / 3,
+              height: MediaQuery.of(context).size.height / 2.2,
               child: summonerPanel(context),
             ),
             MasteryChampions(),
@@ -229,113 +230,218 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget summonerPanel(BuildContext context) {
     return Stack(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.elliptical(250, 90),
-              bottomRight: Radius.elliptical(250, 90)),
-          child: Container(
-            color: Colors.amber,
-            height: MediaQuery.of(context).size.height / 3.5,
-          ),
-        ),
-        SafeArea(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: EdgeInsets.only(top: 10),
-                width: 85,
-                height: 85,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image:
-                        NetworkImage(_profileController.getUserProfileImage()),
-                  ),
-                  color: Colors.green,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.elliptical(50, 60),
-                    bottomRight: Radius.elliptical(50, 60),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.white,
-                      spreadRadius: 0,
-                      blurRadius: 8,
-                      offset: Offset(0, 1), // changes position of shadow
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              bottomLeft:
+                  Radius.elliptical(MediaQuery.of(context).size.width / 2, 70),
+              bottomRight:
+                  Radius.elliptical(MediaQuery.of(context).size.width / 2, 70),
+            ),
+            child: Container(
+              height: MediaQuery.of(context).size.height / 3,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(
+                    _profileController.getChampionImage(
+                      _profileController.getImageFromBestChampionPlayer(),
                     ),
-                  ],
+                  ),
+                  fit: BoxFit.fill,
+                  colorFilter: ColorFilter.mode(Colors.black26, BlendMode.overlay)
                 ),
               ),
-            ],
+            ),
           ),
         ),
-        Container(
-          margin:
-              EdgeInsets.only(top: MediaQuery.of(context).size.height / 6.3),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+        _profileImage(),
+        _profileName(context),
+        _profileStatistics(),
+        _playerEloEmblem(context),
+      ],
+    );
+  }
+
+  Positioned _playerEloEmblem(BuildContext context) {
+    return Positioned(
+      top: MediaQuery.of(context).size.height / 3.5,
+      left: 0,
+      right: 0,
+      child: Container(
+        height: 80,
+        width: 80,
+        child: Obx(() {
+          return Container(
+              child: Image.asset(
+                  "images/emblem_${_profileController.userTierList.first.tier.toLowerCase()}.png"));
+        }),
+      ),
+    );
+  }
+
+  Container _profileStatistics() {
+    return Container(
+      margin: EdgeInsets.only(top: 50, left: 40, right: 40),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
             children: [
               Obx(() {
                 return Container(
+                  margin: EdgeInsets.only(top: 55),
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                        color: Colors.black,
+                        offset: Offset(1.0, 0.0),
+                        blurRadius: 25)
+                  ]),
                   child: Text(
-                    _masterController.userProfile.value.name,
-                    style: TextStyle(fontSize: 24, color: Colors.blue),
+                    "LEVEL".tr +
+                        " ${_masterController.userProfile.value.summonerLevel}",
+                    style: GoogleFonts.montserrat(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16),
                   ),
                 );
               })
             ],
           ),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 50, left: 40, right: 40),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
             children: [
-              Column(
-                children: [
-                  Obx(() {
-                    return Container(
-                      child: Text(
-                          "Nível ${_masterController.userProfile.value.summonerLevel}"),
-                    );
-                  })
-                ],
+              Container(
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
+                      color: Colors.black,
+                      offset: Offset(1.0, 0.0),
+                      blurRadius: 25)
+                ]),
+                child: Text(
+                  'VICTORY'.tr,
+                  style: GoogleFonts.montserrat(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16),
+                ),
               ),
-              Column(
-                children: [
-                  Container(
-                    child: Text("Vitórias"),
-                  ),
-                  Container(
-                    child: Text(
-                        _profileController.userTierList.first.wins.toString()),
-                  ),
-                  Container(
-                    child: Text("Derrotas"),
-                  ),
-                  Container(
-                    child: Text(_profileController.userTierList.first.losses
-                        .toString()),
-                  )
-                ],
+              Container(
+                child: Text(
+                    _profileController.userTierList.first.wins.toString(),
+                    style: GoogleFonts.montserrat(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14)),
+              ),
+              Container(
+                height: 50,
+              ),
+              Container(
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
+                      color: Colors.black,
+                      offset: Offset(1.0, 0.0),
+                      blurRadius: 25)
+                ]),
+                child: Text('LOSE'.tr,
+                    style: GoogleFonts.montserrat(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16)),
+              ),
+              Container(
+                child: Text(
+                    _profileController.userTierList.first.losses.toString(),
+                    style: GoogleFonts.montserrat(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14)),
               )
             ],
-          ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Positioned _profileName(BuildContext context) {
+    return Positioned(
+      top: MediaQuery.of(context).size.height / 5,
+      left: 0,
+      right: 0,
+      child: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Obx(() {
+              return Stack(
+                children: [
+                  Positioned(
+                    child: Container(
+                      child: Text(
+                        _masterController.userProfile.value.name,
+                        style: GoogleFonts.montserrat(
+                          fontSize: 24,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 1,
+                    child: Container(
+                      child: Text(
+                        _masterController.userProfile.value.name,
+                        style: GoogleFonts.montserrat(
+                          fontSize: 24,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              );
+            })
+          ],
         ),
-        Positioned(
-          top: MediaQuery.of(context).size.height / 4.5,
-          left: MediaQuery.of(context).size.width / 2.5,
-          child: Container(
-            height: 80,
-            width: 80,
-            child: Obx(() {
-              return Container(
-                  child: Image.asset(
-                      "images/emblem_${_profileController.userTierList.first.tier.toLowerCase()}.png"));
-            }),
+      ),
+    );
+  }
+
+  SafeArea _profileImage() {
+    return SafeArea(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 10),
+            width: 85,
+            height: 85,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(_profileController.getUserProfileImage()),
+              ),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.elliptical(50, 60),
+                bottomRight: Radius.elliptical(50, 60),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white,
+                  spreadRadius: 1,
+                  blurRadius: 8,
+                  offset: Offset(0, 2), // changes position of shadow
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
