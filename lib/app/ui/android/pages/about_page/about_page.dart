@@ -11,22 +11,6 @@ class AboutPage extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Obx(() {
-            return _masterController.userProfile.value.name != ""
-                ? Container(
-                    child: Container(
-                      height: 100,
-                      color: Colors.blue,
-                      child: IconButton(
-                        icon: Icon(Icons.exit_to_app),
-                        onPressed: () {
-                          goToProfile();
-                        },
-                      ),
-                    ),
-                  )
-                : SizedBox.shrink();
-          }),
           Container(child: Text("1.0")),
           Container(
               child: Text(
@@ -37,9 +21,4 @@ class AboutPage extends StatelessWidget {
     );
   }
 
-  goToProfile() {
-    final ProfileController _profileController = Get.find<ProfileController>();
-    _profileController.deletePersistedUser();
-    _masterController.changeCurrentPageIndex(0);
-  }
 }

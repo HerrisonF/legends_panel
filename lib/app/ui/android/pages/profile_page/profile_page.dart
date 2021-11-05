@@ -157,34 +157,63 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget foundUserProfile() {
-    return SingleChildScrollView(
-      child: Container(
-        color: Theme.of(context).backgroundColor.withOpacity(0.9),
-        child: Column(
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height / 2.2,
-              child: summonerPanel(context),
-            ),
-            MasteryChampions(),
-            Obx(() {
-              return _profileController.matchList.length > 0
-                  ? Container(
-                      height: 300,
-                      child: ListView.builder(
-                        itemCount: _hasMoreMatchesToLoad(),
-                        controller: this._scrollController,
-                        itemBuilder: (_, myCurrentPosition) {
-                          return _isLoadingGameCard(myCurrentPosition);
-                        },
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+            image: NetworkImage(
+                "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/content/src/leagueclient/gamemodeassets/classic_sru/img/parties-background.jpg"),
+            fit: BoxFit.cover),
+      ),
+      child: Column(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height / 2.35,
+            child: summonerPanel(context),
+          ),
+          MasteryChampions(),
+          Obx(() {
+            return _masterController.userProfile.value.name != ""
+                ? Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(80),
+                      color: Colors.black26,
+                    ),
+                    height: 40,
+                    width: 40,
+                    margin: EdgeInsets.only(bottom: 20),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.exit_to_app,
+                        color: Colors.white,
                       ),
-                    )
-                  : DotsLoading();
-            }),
-          ],
-        ),
+                      onPressed: () {
+                        goToProfile();
+                      },
+                    ),
+                  )
+                : SizedBox.shrink();
+          }),
+          Obx(() {
+            return _profileController.matchList.length > 0
+                ? Expanded(
+                    child: ListView.builder(
+                      itemCount: _hasMoreMatchesToLoad(),
+                      controller: this._scrollController,
+                      itemBuilder: (_, myCurrentPosition) {
+                        return _isLoadingGameCard(myCurrentPosition);
+                      },
+                    ),
+                  )
+                : DotsLoading();
+          }),
+        ],
       ),
     );
+  }
+
+  goToProfile() {
+    _profileController.deletePersistedUser();
+    _masterController.changeCurrentPageIndex(0);
   }
 
   _scrollListenerFunction() {
@@ -234,24 +263,35 @@ class _ProfilePageState extends State<ProfilePage> {
           top: 0,
           left: 0,
           right: 0,
-          child: ClipRRect(
-            borderRadius: BorderRadius.only(
-              bottomLeft:
-                  Radius.elliptical(MediaQuery.of(context).size.width / 2, 70),
-              bottomRight:
-                  Radius.elliptical(MediaQuery.of(context).size.width / 2, 70),
-            ),
-            child: Container(
-              height: MediaQuery.of(context).size.height / 3,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(
-                    _profileController.getChampionImage(
-                      _profileController.getImageFromBestChampionPlayer(),
-                    ),
-                  ),
-                  fit: BoxFit.fill,
-                  colorFilter: ColorFilter.mode(Colors.black26, BlendMode.overlay)
+          child: ShaderMask(
+            shaderCallback: (rect) {
+              return LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.black, Colors.transparent],
+              ).createShader(
+                  Rect.fromLTRB(0, 60, rect.width, rect.height - 40));
+            },
+            blendMode: BlendMode.dstIn,
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.elliptical(
+                    MediaQuery.of(context).size.width / 2, 70),
+                bottomRight: Radius.elliptical(
+                    MediaQuery.of(context).size.width / 2, 70),
+              ),
+              child: Container(
+                height: MediaQuery.of(context).size.height / 3,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: NetworkImage(
+                        _profileController.getChampionImage(
+                          _profileController.championMasteryList[0].championId,
+                        ),
+                      ),
+                      fit: BoxFit.fill,
+                      colorFilter:
+                          ColorFilter.mode(Colors.black26, BlendMode.overlay)),
                 ),
               ),
             ),
@@ -267,24 +307,29 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Positioned _playerEloEmblem(BuildContext context) {
     return Positioned(
-      top: MediaQuery.of(context).size.height / 3.5,
+      top: MediaQuery.of(context).size.height / 3.8,
       left: 0,
       right: 0,
-      child: Container(
-        height: 80,
-        width: 80,
-        child: Obx(() {
-          return Container(
-              child: Image.asset(
-                  "images/emblem_${_profileController.userTierList.first.tier.toLowerCase()}.png"));
-        }),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: 120,
+            width: 120,
+            child: Obx(() {
+              return Container(
+                  child: Image.asset(
+                      "images/emblem_${_profileController.userTierList.first.tier.toLowerCase()}.png"));
+            }),
+          ),
+        ],
       ),
     );
   }
 
   Container _profileStatistics() {
     return Container(
-      margin: EdgeInsets.only(top: 50, left: 40, right: 40),
+      margin: EdgeInsets.only(top: 80, left: 40, right: 40),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -419,7 +464,7 @@ class _ProfilePageState extends State<ProfilePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 10),
+            margin: EdgeInsets.only(top: 30),
             width: 85,
             height: 85,
             decoration: BoxDecoration(

@@ -13,45 +13,55 @@ class MasteryChampions extends StatelessWidget {
       () {
         return _profileController.championMasteryList.length > 0
             ? Container(
-                color: Colors.green,
-                margin: EdgeInsets.only(top: 20),
                 width: MediaQuery.of(context).size.width,
                 height: 150,
-                child: ListView.builder(
-                  itemCount: 3,
+                child: ListView(
                   scrollDirection: Axis.horizontal,
-                  itemBuilder: (_, index) {
-                    return Container(
-                      width: 100,
-                      height: 100,
-                      margin: EdgeInsets.only(left: 28),
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            _profileController.getChampionImage(_profileController.championMasteryList[index].championId),
-                          ),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            top: MediaQuery.of(context).size.height / 7,
-                            left: MediaQuery.of(context).size.width / 13,
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              child: Image.network(_profileController.getMasteryImage(index)),
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  },
+                  children: [
+                    _championBadge(1, false),
+                    _championBadge(0, true),
+                    _championBadge(2, false),
+                  ],
                 ),
               )
             : DotsLoading();
       },
+    );
+  }
+
+  Container _championBadge(int index, bool best) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 30, vertical: best ? 0 : 25),
+      child: Stack(
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(
+                  _profileController.getCircularChampionImage(
+                      _profileController.championMasteryList[index].championId),
+                ),
+                fit: BoxFit.fill,
+              ),
+              borderRadius: BorderRadius.circular(100),
+            ),
+          ),
+          Positioned(
+            top: 60,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 40,
+              width: 40,
+              child: Image.network(
+                _profileController.getMasteryImage(index),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

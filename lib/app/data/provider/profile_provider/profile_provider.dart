@@ -77,6 +77,17 @@ class ProfileProvider {
     }
   }
 
+  String getCircularChampionImage(String championId) {
+    final String path = "/cdn/11.22.1/img/champion/$championId.png";
+    _logger.i("building Image Champion for mastery URL...");
+    try{
+      return _dioClient.riotDragonBaseUrl + path;
+    }catch(e){
+      _logger.i("Error to build Image Champion for mastery Url $e");
+      return "";
+    }
+  }
+
   String getMasteryImage(String championLevel) {
     final String path = "/latest/game/assets/ux/mastery/mastery_icon_$championLevel.png";
     _logger.i("building Image Champion for mastery URL...");

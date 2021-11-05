@@ -48,19 +48,6 @@ class ProfileController {
   }
 
 
-  int getImageFromBestChampionPlayer() {
-    int championId = 0;
-    dynamic oldPoints = 0;
-    championMasteryList.forEach((element) {
-      if(element.championPoints > oldPoints){
-        oldPoints = element.championPoints;
-        championId = element.championId;
-      }
-    });
-    return championId;
-  }
-
-
   checkIsUserStored() async {
     if(_masterController.userProfileExist()){
       if(_masterController.userProfile.value.region != ""){
@@ -85,6 +72,7 @@ class ProfileController {
       await _profileRepository
           .getChampionMastery(_masterController.userProfile.value.id, region),
     );
+    championMasteryList.sort((b,a)=> a.championPoints.compareTo(b.championPoints));
   }
 
   getMatchListIds(String region) async {
@@ -128,6 +116,12 @@ class ProfileController {
     return _profileRepository.getChampionImage(champion.detail.id);
   }
 
+  String getCircularChampionImage(int championId) {
+    Champion champion =
+    _masterController.getChampionById(championId.toString());
+    return _profileRepository.getCircularChampionImage(champion.detail.id);
+  }
+
   String getMasteryImage(int index) {
     return _profileRepository
         .getMasteryImage(championMasteryList[index].championLevel.toString());
@@ -160,6 +154,15 @@ class ProfileController {
 
   deletePersistedUser() {
     _masterController.deleteUserProfile();
+    buttonMessage = "BUTTON_MESSAGE_SEARCH".tr.obs;
+    amountMatches = 5;
+    oldIndex = 0.obs;
+    newIndex = 0.obs;
+
+    userTierList = RxList<UserTier>();
+    championMasteryList = RxList<ChampionMastery>();
+    matchIdList = [];
+    matchList = RxList<MatchDetail>();
   }
 
   String getUserProfileImage() {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/controller/result_controllers/profile_result_controller/profile_result_game_detail_controller.dart';
 import 'package:legends_panel/app/model/general/match_detail.dart';
 import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
@@ -27,11 +28,9 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
-      width: 100,
-      padding: EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       margin: EdgeInsets.symmetric(vertical: 10),
-      color: Colors.greenAccent,
+      color: Colors.black12,
       child: Row(
         children: [
           Container(
@@ -46,6 +45,7 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
             children: [
               Obx(() {
                 return Container(
+                  margin: EdgeInsets.only(right: 10),
                   child: _profileResultGameDetailController
                               .currentParticipant.value.summoner1Id >
                           0
@@ -54,11 +54,16 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                           width: 25,
                           height: 25,
                         )
-                      : DotsLoading(),
+                      : Image.network(
+                          "https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-none-disabled.png",
+                          width: 25,
+                          height: 25,
+                        ),
                 );
               }),
               Obx(() {
                 return Container(
+                  margin: EdgeInsets.only(right: 10),
                   child: _profileResultGameDetailController
                               .currentParticipant.value.summoner2Id >
                           0
@@ -67,7 +72,11 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                           width: 25,
                           height: 25,
                         )
-                      : DotsLoading(),
+                      : Image.network(
+                          "https://raw.communitydragon.org/latest/game/data/spells/icons2d/summoner_empty.png",
+                          width: 25,
+                          height: 25,
+                        ),
                 );
               })
             ],
@@ -89,7 +98,11 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                               width: 25,
                               height: 25,
                             )
-                          : DotsLoading(),
+                          : Image.network(
+                              "https://raw.communitydragon.org/latest/game/data/spells/icons2d/summoner_empty.png",
+                              width: 25,
+                              height: 25,
+                            ),
                     ),
                   ),
                   Container(
@@ -105,7 +118,11 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                               width: 25,
                               height: 25,
                             )
-                          : DotsLoading(),
+                          : Image.network(
+                              "https://raw.communitydragon.org/latest/game/data/spells/icons2d/summoner_empty.png",
+                              width: 25,
+                              height: 25,
+                            ),
                     ),
                   ),
                   Container(
@@ -121,7 +138,11 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                               width: 25,
                               height: 25,
                             )
-                          : DotsLoading(),
+                          : Image.network(
+                              "https://raw.communitydragon.org/latest/game/data/spells/icons2d/summoner_empty.png",
+                              width: 25,
+                              height: 25,
+                            ),
                     ),
                   ),
                   Container(
@@ -137,7 +158,11 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                               width: 25,
                               height: 25,
                             )
-                          : DotsLoading(),
+                          : Image.network(
+                              "https://raw.communitydragon.org/latest/game/data/spells/icons2d/summoner_empty.png",
+                              width: 25,
+                              height: 25,
+                            ),
                     ),
                   ),
                   Container(
@@ -153,7 +178,11 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                               width: 25,
                               height: 25,
                             )
-                          : DotsLoading(),
+                          : Image.network(
+                              "https://raw.communitydragon.org/latest/game/data/spells/icons2d/summoner_empty.png",
+                              width: 25,
+                              height: 25,
+                            ),
                     ),
                   ),
                   Container(
@@ -169,7 +198,11 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                               width: 25,
                               height: 25,
                             )
-                          : DotsLoading(),
+                          : Image.network(
+                              "https://raw.communitydragon.org/latest/game/data/spells/icons2d/summoner_empty.png",
+                              width: 25,
+                              height: 25,
+                            ),
                     ),
                   ),
                   Container(
@@ -185,7 +218,11 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                               width: 25,
                               height: 25,
                             )
-                          : DotsLoading(),
+                          : Image.network(
+                              "https://raw.communitydragon.org/latest/game/data/spells/icons2d/summoner_empty.png",
+                              width: 25,
+                              height: 25,
+                            ),
                     ),
                   ),
                 ],
@@ -193,26 +230,37 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
             ],
           ),
           Container(
+            margin: EdgeInsets.only(left: 10, right: 10),
             child: Container(
               child: _profileResultGameDetailController
-                          .currentParticipant.value.teamPosition != ""
+                          .currentParticipant.value.teamPosition !=
+                      ""
                   ? Image.network(
                       _profileResultGameDetailController.getPositionUrl(
-                          _profileResultGameDetailController
-                              .currentParticipant.value.teamPosition),
+                        _profileResultGameDetailController
+                            .currentParticipant.value.teamPosition,
+                      ),
                       width: 25,
                       height: 25,
                     )
-                  : DotsLoading(),
+                  : Image.network(
+                      "https://raw.communitydragon.org/latest/game/data/spells/icons2d/summoner_empty.png",
+                      width: 25,
+                      height: 25,
+                    ),
             ),
           ),
           Column(
             children: [
               Container(
-                child: Text("${_profileResultGameDetailController
-                    .currentParticipant.value.kills}/${_profileResultGameDetailController
-                    .currentParticipant.value.deaths}/${_profileResultGameDetailController
-                    .currentParticipant.value.assists}"),
+                child: Text(
+                  "${_profileResultGameDetailController.currentParticipant.value.kills} / ${_profileResultGameDetailController.currentParticipant.value.deaths} / ${_profileResultGameDetailController.currentParticipant.value.assists}",
+                  style: GoogleFonts.montserrat(
+                    color: Colors.yellow,
+                    fontSize: 16,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           )
