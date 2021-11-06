@@ -42,11 +42,8 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       body: Obx(
         () {
-          return _profileController.isUserLoading.value
-              ? DotsLoading()
-              : _masterController.userProfile.value.id.isNotEmpty
-                  ? foundUserProfile()
-                  : searchUserFieldContent();
+          return _masterController.userProfile.value.id.isEmpty || _profileController.isUserLoading.value
+                  ? searchUserFieldContent() : foundUserProfile();
         },
       ),
     );
@@ -213,7 +210,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   goToProfile() {
     _profileController.deletePersistedUser();
-    _masterController.changeCurrentPageIndex(0);
+    _masterController.changeCurrentPageIndex(1);
   }
 
   _scrollListenerFunction() {
@@ -249,9 +246,9 @@ class _ProfilePageState extends State<ProfilePage> {
       return ItemMatchListGameCard(
           _profileController.matchList[myCurrentPosition]);
     } else {
-      return Container(
-        padding: EdgeInsets.all(50),
-        child: CircularProgressIndicator(color: Colors.white),
+      return JumpingDotsProgressIndicator(
+        color: Colors.white,
+        fontSize: 20,
       );
     }
   }
