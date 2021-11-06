@@ -11,4 +11,7 @@ final Map<String, String> ptBr = {
   'LEVEL' : 'Level',
   'VICTORY' : 'Vitórias',
   'LOSE' : 'Derrotas',
+  'DEVELOPMENT' : 'Um aplicativo experimental sendo desenvolvido por: ',
+  'LINKEDIN_INSTALL' : 'O linkedin não está instalado ! ',
+  'GIT_INSTALL' : 'Tivemos problemas para abrir o linkedin ! ',
 };

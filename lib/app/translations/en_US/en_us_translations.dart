@@ -11,4 +11,7 @@ final Map<String, String> enUs = {
   'LEVEL' : 'Level',
   'VICTORY' : 'Wins',
   'LOSE' : 'Losses',
+  'DEVELOPMENT' : 'An experimental app beeing developed by ',
+  'LINKEDIN_INSTALL' : 'Linkedin is not installed ! ',
+  'GIT_INSTALL' : 'We got problems to open Git ! ',
 };

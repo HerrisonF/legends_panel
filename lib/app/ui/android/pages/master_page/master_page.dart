@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/ui/android/pages/about_page/about_page.dart';
@@ -37,20 +38,20 @@ class MasterPage extends StatelessWidget {
       BottomNavigationBarItem(
         icon: Container(
           margin: EdgeInsets.only(top: 10),
-          child: Icon(Icons.assignment_ind_outlined),
+          child: Icon(FeatherIcons.crosshair),
         ),
         label: "",
       ),
       BottomNavigationBarItem(
         icon: Container(
             margin: EdgeInsets.only(top: 10),
-            child: Icon(Icons.perm_identity_rounded)),
+            child: Icon(FeatherIcons.user)),
         label: "",
       ),
       BottomNavigationBarItem(
         icon: Container(
             margin: EdgeInsets.only(top: 10),
-            child: Icon(Icons.account_balance_outlined)),
+            child: Icon(FeatherIcons.coffee)),
         label: "",
       ),
     ];
