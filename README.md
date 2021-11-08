@@ -2,7 +2,9 @@
 
 An application for user see their profiles.
 
-## Flutter
+## Usefull commands
+
+flutter pub run flutter_launcher_icons:main
 
 An application built in Flutter
 
