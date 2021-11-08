@@ -41,7 +41,6 @@ class MasterPage extends StatelessWidget {
       BottomNavigationBarItem(
         icon: Container(
           height: 10,
-          padding: EdgeInsets.only(top: 10),
           child: Icon(FeatherIcons.crosshair, ),
         ),
         label: "",
@@ -49,14 +48,12 @@ class MasterPage extends StatelessWidget {
       BottomNavigationBarItem(
         icon: Container(
             height: 10,
-            padding: EdgeInsets.only(top: 10),
             child: Icon(FeatherIcons.user)),
         label: "",
       ),
       BottomNavigationBarItem(
         icon: Container(
             height: 10,
-            padding: EdgeInsets.only(top: 10),
             child: Icon(FeatherIcons.coffee)),
         label: "",
       ),
