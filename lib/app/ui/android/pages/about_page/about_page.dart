@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:legends_panel/app/constants/assets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutPage extends StatelessWidget {
@@ -45,9 +46,7 @@ class AboutPage extends StatelessWidget {
                   height: MediaQuery.of(context).size.height / 2,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(
-                        "https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/vignette_background.png",
-                      ),
+                      image: AssetImage(imageBackgroundAboutPage),
                       fit: BoxFit.cover,
                     ),
                     color: Colors.white.withOpacity(0.45),
