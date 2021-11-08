@@ -14,8 +14,8 @@ class AboutPage extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(
-                  "https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-store/global/default/background.png",
+                image: AssetImage(
+                  imageBackgroundAboutPage2,
                 ),
                 fit: BoxFit.cover,
               ),

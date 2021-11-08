@@ -149,6 +149,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   _submit() {
     if (formKey.currentState!.validate()) {
+      FocusScope.of(context).unfocus();
       _profileController.getUserOnCloud(selectedRegion);
     }
   }

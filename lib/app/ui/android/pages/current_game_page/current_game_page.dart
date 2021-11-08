@@ -117,6 +117,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
 
   _submit() {
     if (formKey.currentState!.validate()) {
+      FocusScope.of(context).unfocus();
       _currentGameController.getUserFromCloud(selectedRegion);
     }
   }
