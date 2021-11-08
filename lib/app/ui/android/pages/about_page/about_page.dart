@@ -46,7 +46,9 @@ class AboutPage extends StatelessWidget {
                   height: MediaQuery.of(context).size.height / 2,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(imageBackgroundAboutPage),
+                      image: AssetImage(
+                          imageBackgroundAboutPage
+                        ),
                       fit: BoxFit.cover,
                     ),
                     color: Colors.white.withOpacity(0.45),
