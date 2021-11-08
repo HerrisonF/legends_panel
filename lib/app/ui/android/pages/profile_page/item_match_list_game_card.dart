@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/result_controllers/profile_result_controller/profile_result_game_detail_controller.dart';
 import 'package:legends_panel/app/model/general/match_detail.dart';
 import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
@@ -54,8 +55,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                           width: 25,
                           height: 25,
                         )
-                      : Image.network(
-                          "https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-none-disabled.png",
+                      : Image.asset(
+                          imageIconItemNone,
                           width: 25,
                           height: 25,
                         ),
@@ -73,7 +74,7 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                           height: 25,
                         )
                       : Image.network(
-                          "https://raw.communitydragon.org/latest/game/data/spells/icons2d/summoner_empty.png",
+                          imageIconItemNone,
                           width: 25,
                           height: 25,
                         ),
@@ -98,8 +99,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                               width: 25,
                               height: 25,
                             )
-                          : Image.network(
-                              "https://raw.communitydragon.org/latest/game/data/spells/icons2d/summoner_empty.png",
+                          : Image.asset(
+                              imageIconItemNone,
                               width: 25,
                               height: 25,
                             ),
@@ -118,8 +119,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                               width: 25,
                               height: 25,
                             )
-                          : Image.network(
-                              "https://raw.communitydragon.org/latest/game/data/spells/icons2d/summoner_empty.png",
+                          : Image.asset(
+                              imageIconItemNone,
                               width: 25,
                               height: 25,
                             ),
@@ -138,8 +139,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                               width: 25,
                               height: 25,
                             )
-                          : Image.network(
-                              "https://raw.communitydragon.org/latest/game/data/spells/icons2d/summoner_empty.png",
+                          : Image.asset(
+                              imageIconItemNone,
                               width: 25,
                               height: 25,
                             ),
@@ -158,8 +159,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                               width: 25,
                               height: 25,
                             )
-                          : Image.network(
-                              "https://raw.communitydragon.org/latest/game/data/spells/icons2d/summoner_empty.png",
+                          : Image.asset(
+                              imageIconItemNone,
                               width: 25,
                               height: 25,
                             ),
@@ -178,8 +179,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                               width: 25,
                               height: 25,
                             )
-                          : Image.network(
-                              "https://raw.communitydragon.org/latest/game/data/spells/icons2d/summoner_empty.png",
+                          : Image.asset(
+                              imageIconItemNone,
                               width: 25,
                               height: 25,
                             ),
@@ -198,8 +199,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                               width: 25,
                               height: 25,
                             )
-                          : Image.network(
-                              "https://raw.communitydragon.org/latest/game/data/spells/icons2d/summoner_empty.png",
+                          : Image.asset(
+                              imageIconItemNone,
                               width: 25,
                               height: 25,
                             ),
@@ -218,8 +219,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                               width: 25,
                               height: 25,
                             )
-                          : Image.network(
-                              "https://raw.communitydragon.org/latest/game/data/spells/icons2d/summoner_empty.png",
+                          : Image.asset(
+                              imageIconItemNone,
                               width: 25,
                               height: 25,
                             ),
@@ -243,8 +244,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                       width: 25,
                       height: 25,
                     )
-                  : Image.network(
-                      "https://raw.communitydragon.org/latest/game/data/spells/icons2d/summoner_empty.png",
+                  : Image.asset(
+                      imageIconItemNone,
                       width: 25,
                       height: 25,
                     ),

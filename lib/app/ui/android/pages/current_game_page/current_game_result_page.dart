@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/result_controllers/current_game_result_controller/current_game_result_controller.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_banned_champion.dart';
@@ -82,8 +83,8 @@ class CurrentGameResultPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            child: Image.network(
-              "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/ux/traiticons/trait_icon_6_clockwork.png",
+            child: Image.asset(
+              imageIconClock,
               height: 20,
             ),
             margin: EdgeInsets.only(right: 10),
@@ -125,8 +126,8 @@ class CurrentGameResultPage extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: NetworkImage(
-                "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/content/src/leagueclient/gamemodeassets/classic_sru/img/champ-select-planning-intro.jpg"),
+            image: AssetImage(
+                imageMapSelect),
             fit: BoxFit.cover,
           ),
         ),
@@ -142,8 +143,8 @@ class CurrentGameResultPage extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
         image: DecorationImage(
-            image: NetworkImage(
-                "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/content/src/leagueclient/gamemodeassets/classic_sru/img/parties-background.jpg"),
+            image: AssetImage(
+                imageBackgroundProfilePage),
             fit: BoxFit.cover),
       ),
     );
@@ -159,8 +160,8 @@ class CurrentGameResultPage extends StatelessWidget {
               left: 0,
               right: 0,
               child: Container(
-                child: Image.network(
-                    "https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/npe-rewards-divider.png"),
+                child: Image.asset(
+                    imageDivider),
               ),
             ),
             Obx(() {
@@ -176,8 +177,8 @@ class CurrentGameResultPage extends StatelessWidget {
               left: 0,
               right: 0,
               child: Container(
-                child: Image.network(
-                    "https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/npe-rewards-divider.png"),
+                child: Image.asset(
+                    imageDivider),
               ),
             ),
             Obx(() {

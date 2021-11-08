@@ -42,8 +42,10 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       body: Obx(
         () {
-          return _masterController.userProfile.value.id.isEmpty || _profileController.isUserLoading.value
-                  ? searchUserFieldContent() : foundUserProfile();
+          return _masterController.userProfile.value.id.isEmpty ||
+                  _profileController.isUserLoading.value
+              ? searchUserFieldContent()
+              : foundUserProfile();
         },
       ),
     );
@@ -158,37 +160,18 @@ class _ProfilePageState extends State<ProfilePage> {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-            image: NetworkImage(
-                "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/content/src/leagueclient/gamemodeassets/classic_sru/img/parties-background.jpg"),
-            fit: BoxFit.cover),
+            image: AssetImage(imageBackgroundProfilePage), fit: BoxFit.cover),
       ),
       child: Column(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height / 2.35,
+            height: MediaQuery.of(context).size.height / 2.55,
             child: summonerPanel(context),
           ),
           MasteryChampions(),
           Obx(() {
             return _masterController.userProfile.value.name != ""
-                ? Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(80),
-                      color: Colors.black26,
-                    ),
-                    height: 40,
-                    width: 40,
-                    margin: EdgeInsets.only(bottom: 20),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.exit_to_app,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        goToProfile();
-                      },
-                    ),
-                  )
+                ? _outButton()
                 : SizedBox.shrink();
           }),
           Obx(() {
@@ -207,6 +190,27 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       ),
     );
+  }
+
+  Container _outButton() {
+    return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(80),
+                    color: Colors.black26,
+                  ),
+                  height: 40,
+                  width: 40,
+                  margin: EdgeInsets.only(bottom: 25),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.exit_to_app,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      goToProfile();
+                    },
+                  ),
+                );
   }
 
   goToProfile() {
@@ -305,15 +309,15 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Positioned _playerEloEmblem(BuildContext context) {
     return Positioned(
-      top: MediaQuery.of(context).size.height / 3.8,
+      top: MediaQuery.of(context).size.height / 4.3,
       left: 0,
       right: 0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            height: 120,
-            width: 120,
+            height: 115,
+            width: 115,
             child: Obx(() {
               return Container(
                   child: Image.asset(
@@ -327,7 +331,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Container _profileStatistics() {
     return Container(
-      margin: EdgeInsets.only(top: 80, left: 40, right: 40),
+      margin: EdgeInsets.only(top: 70, left: 40, right: 40),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -412,7 +416,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Positioned _profileName(BuildContext context) {
     return Positioned(
-      top: MediaQuery.of(context).size.height / 5,
+      top: MediaQuery.of(context).size.height / 5.5,
       left: 0,
       right: 0,
       child: Container(
@@ -427,7 +431,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Text(
                         _masterController.userProfile.value.name,
                         style: GoogleFonts.montserrat(
-                          fontSize: 24,
+                          fontSize: 22,
                           color: Colors.black,
                           fontWeight: FontWeight.w500,
                         ),
@@ -440,7 +444,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Text(
                         _masterController.userProfile.value.name,
                         style: GoogleFonts.montserrat(
-                          fontSize: 24,
+                          fontSize: 22,
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
                         ),
@@ -462,9 +466,9 @@ class _ProfilePageState extends State<ProfilePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 30),
-            width: 85,
-            height: 85,
+            margin: EdgeInsets.only(top: 10),
+            width: 75,
+            height: 75,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(_profileController.getUserProfileImage()),

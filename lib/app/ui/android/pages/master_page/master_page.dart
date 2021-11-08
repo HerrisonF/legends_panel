@@ -21,13 +21,16 @@ class MasterPage extends StatelessWidget {
             AboutPage(),
           ],
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Color(0xFF4248A5),
-          unselectedItemColor: Color(0xFF292E78).withOpacity(0.3),
-          backgroundColor: Colors.white,
-          currentIndex: _masterController.currentPageIndex.value,
-          onTap: _masterController.changeCurrentPageIndex,
-          items: bottomNavigatorItems(),
+        bottomNavigationBar: SizedBox(
+          height: MediaQuery.of(context).size.height/11,
+          child: BottomNavigationBar(
+            selectedItemColor: Color(0xFF4248A5),
+            unselectedItemColor: Color(0xFF292E78).withOpacity(0.3),
+            backgroundColor: Colors.white,
+            currentIndex: _masterController.currentPageIndex.value,
+            onTap: _masterController.changeCurrentPageIndex,
+            items: bottomNavigatorItems(),
+          ),
         ),
       ),
     );
@@ -37,20 +40,23 @@ class MasterPage extends StatelessWidget {
     return <BottomNavigationBarItem>[
       BottomNavigationBarItem(
         icon: Container(
-          margin: EdgeInsets.only(top: 10),
-          child: Icon(FeatherIcons.crosshair),
+          height: 10,
+          padding: EdgeInsets.only(top: 10),
+          child: Icon(FeatherIcons.crosshair, ),
         ),
         label: "",
       ),
       BottomNavigationBarItem(
         icon: Container(
-            margin: EdgeInsets.only(top: 10),
+            height: 10,
+            padding: EdgeInsets.only(top: 10),
             child: Icon(FeatherIcons.user)),
         label: "",
       ),
       BottomNavigationBarItem(
         icon: Container(
-            margin: EdgeInsets.only(top: 10),
+            height: 10,
+            padding: EdgeInsets.only(top: 10),
             child: Icon(FeatherIcons.coffee)),
         label: "",
       ),

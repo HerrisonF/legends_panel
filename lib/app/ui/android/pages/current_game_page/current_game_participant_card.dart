@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/result_controllers/current_game_result_controller/current_game_participant_controller.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_banned_champion.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
@@ -64,8 +65,8 @@ class _CurrentGameParticipantCardState
                 width: 30,
                 height: 30,
               )
-            : Image.network(
-                "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/-1.png",
+            : Image.asset(
+                imageNoChampion,
                 width: 30,
                 height: 30,
               ),
@@ -109,8 +110,8 @@ class _CurrentGameParticipantCardState
                       width: 26,
                       height: 26,
                     )
-                  : Image.network(
-               "https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-mini-regalia/unranked.png",
+                  : Image.asset(
+                imageUnranked,
                 width: 26,
                 height: 26,
               );

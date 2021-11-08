@@ -14,7 +14,7 @@ class MasteryChampions extends StatelessWidget {
         return _profileController.championMasteryList.length > 0
             ? Container(
                 width: MediaQuery.of(context).size.width,
-                height: 150,
+                height: 130,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
@@ -31,12 +31,12 @@ class MasteryChampions extends StatelessWidget {
 
   Container _championBadge(int index, bool best) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 30, vertical: best ? 0 : 25),
+      margin: EdgeInsets.symmetric(horizontal: 35, vertical: best ? 0 : 25),
       child: Stack(
         children: [
           Container(
-            width: 80,
-            height: 80,
+            width: 70,
+            height: 70,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(
@@ -49,12 +49,12 @@ class MasteryChampions extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 60,
+            top: 50,
             left: 0,
             right: 0,
             child: Container(
-              height: 40,
-              width: 40,
+              height: 35,
+              width: 35,
               child: Image.network(
                 _profileController.getMasteryImage(index),
               ),
