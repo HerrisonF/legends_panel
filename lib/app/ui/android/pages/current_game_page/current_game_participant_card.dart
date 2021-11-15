@@ -12,6 +12,8 @@ class CurrentGameParticipantCard extends StatefulWidget {
   final CurrentGameBannedChampion bannedChampion;
   final String region;
 
+  static const int NEXUS_ONE_SCREEN = 800;
+
   CurrentGameParticipantCard(
       this.participant, this.bannedChampion, this.region);
 
@@ -39,7 +41,9 @@ class _CurrentGameParticipantCardState
     return Container(
       color: Colors.black26,
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(horizontal: 15),
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.height > 800 ? 15 : 10,
+          vertical: MediaQuery.of(context).size.height > 800 ? 12 : 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -62,13 +66,11 @@ class _CurrentGameParticipantCardState
                 _currentGameParticipantController.getChampionBadgeUrl(
                   widget.bannedChampion.championId.toString(),
                 ),
-                width: 30,
-                height: 30,
+                width: MediaQuery.of(context).size.width / 14,
               )
             : Image.asset(
                 imageNoChampion,
-                width: 30,
-                height: 30,
+                width: MediaQuery.of(context).size.width / 14,
               ),
       ),
     );
@@ -83,7 +85,7 @@ class _CurrentGameParticipantCardState
                 _currentGameParticipantController.soloUserTier.value.winRate +
                     "%",
                 style: GoogleFonts.montserrat(
-                  fontSize: 12,
+                  fontSize: MediaQuery.of(context).size.height > 800 ? 12 : 8,
                   color: Colors.white,
                 ),
               ),
@@ -107,14 +109,12 @@ class _CurrentGameParticipantCardState
                       _currentGameParticipantController.getUserTierImage(
                           _currentGameParticipantController
                               .soloUserTier.value.tier),
-                      width: 26,
-                      height: 26,
+                      width: MediaQuery.of(context).size.width / 22,
                     )
                   : Image.asset(
-                imageUnranked,
-                width: 26,
-                height: 26,
-              );
+                      imageUnranked,
+                      width: MediaQuery.of(context).size.width / 22,
+                    );
             }),
           ),
           Column(
@@ -130,18 +130,22 @@ class _CurrentGameParticipantCardState
                               " " +
                               _currentGameParticipantController
                                   .soloUserTier.value.rank,
-                    style: GoogleFonts.montserrat(
-                      fontSize: 10,
-                      color: Colors.white,
-                    ),
+                          style: GoogleFonts.montserrat(
+                            fontSize: MediaQuery.of(context).size.height > 800
+                                ? 10
+                                : 6,
+                            color: Colors.white,
+                          ),
                         )
                       : Text(
-                    "UNRANKED",
-                    style: GoogleFonts.montserrat(
-                      fontSize: 10,
-                      color: Colors.white,
-                    ),
-                  ),
+                          "UNRANKED",
+                          style: GoogleFonts.montserrat(
+                            fontSize: MediaQuery.of(context).size.height > 800
+                                ? 10
+                                : 6,
+                            color: Colors.white,
+                          ),
+                        ),
                 );
               }),
               Obx(() {
@@ -154,10 +158,12 @@ class _CurrentGameParticipantCardState
                                   .soloUserTier.value.leaguePoints
                                   .toString() +
                               "LP)",
-                    style: GoogleFonts.montserrat(
-                      fontSize: 12,
-                      color: Colors.white,
-                    ),
+                          style: GoogleFonts.montserrat(
+                            fontSize: MediaQuery.of(context).size.height > 800
+                                ? 12
+                                : 8,
+                            color: Colors.white,
+                          ),
                         )
                       : SizedBox.shrink(),
                 );
@@ -176,7 +182,7 @@ class _CurrentGameParticipantCardState
       child: Text(
         widget.participant.summonerName,
         style: GoogleFonts.montserrat(
-          fontSize: 12,
+          fontSize: MediaQuery.of(context).size.height > 800 ? 12 : 8,
           color: Colors.white,
         ),
       ),
@@ -191,8 +197,7 @@ class _CurrentGameParticipantCardState
             _currentGameParticipantController.getSpellUrl(
               widget.participant.spell1Id.toString(),
             ),
-            width: 22,
-            height: 22,
+            width: MediaQuery.of(context).size.width / 20,
           ),
         ),
         Container(
@@ -200,8 +205,7 @@ class _CurrentGameParticipantCardState
             _currentGameParticipantController.getSpellUrl(
               widget.participant.spell2Id.toString(),
             ),
-            width: 22,
-            height: 22,
+            width: MediaQuery.of(context).size.width / 20,
           ),
         ),
       ],
@@ -211,12 +215,10 @@ class _CurrentGameParticipantCardState
   Container _playerChampionBadge() {
     return Container(
       child: Image.network(
-        _currentGameParticipantController.getChampionBadgeUrl(
-          widget.participant.championId.toString(),
-        ),
-        width: 45,
-        height: 80,
-      ),
+          _currentGameParticipantController.getChampionBadgeUrl(
+            widget.participant.championId.toString(),
+          ),
+          width: MediaQuery.of(context).size.width / 10),
     );
   }
 }

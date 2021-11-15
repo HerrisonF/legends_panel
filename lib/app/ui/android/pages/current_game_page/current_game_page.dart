@@ -19,6 +19,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
       Get.put(CurrentGameController());
 
   String selectedRegion = 'NA1';
+  static const int NEXUS_ONE_SCREEN = 800;
 
   @override
   Widget build(BuildContext context) {

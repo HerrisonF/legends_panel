@@ -37,6 +37,8 @@ class _SplashScreenState extends State<SplashScreen>
     super.dispose();
   }
 
+  static const int NEXUS_ONE_SCREEN = 800;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,7 +114,9 @@ class _SplashScreenState extends State<SplashScreen>
 
   Widget _subTitle(BuildContext context) {
     return _textSplashscreenMaker(
-        "APP_NAME_SUB_TITLE".tr, MediaQuery.of(context).size.height / 2.1);
+      "APP_NAME_SUB_TITLE".tr,
+      MediaQuery.of(context).size.height / 2.1,
+    );
   }
 
   Widget _title(BuildContext context) {
@@ -135,7 +139,8 @@ class _SplashScreenState extends State<SplashScreen>
                 BoxShadow(
                     color: Colors.black, blurRadius: 16, offset: Offset(0, 2)),
               ],
-              fontSize: 40,
+              fontSize: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN
+                  ? 40 : 20,
               fontWeight: FontWeight.w700,
             ),
           ),

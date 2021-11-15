@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/result_controllers/profile_result_controller/profile_result_game_detail_controller.dart';
 import 'package:legends_panel/app/model/general/match_detail.dart';
-import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
 
 class ItemMatchListGameCard extends StatefulWidget {
   final MatchDetail matchDetail;
@@ -19,6 +18,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
   final ProfileResultGameDetailController _profileResultGameDetailController =
       ProfileResultGameDetailController();
 
+  static const int NEXUS_ONE_SCREEN = 480;
+
   @override
   void initState() {
     _profileResultGameDetailController
@@ -29,16 +30,15 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      margin: EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      margin: EdgeInsets.symmetric(vertical: 2),
       color: Colors.black12,
       child: Row(
         children: [
           Container(
             child: Image.network(
               _profileResultGameDetailController.getChampionBadgeUrl(),
-              height: 50,
-              width: 50,
+              width: MediaQuery.of(context).size.width / 10,
             ),
           ),
           Column(
@@ -46,37 +46,33 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
             children: [
               Obx(() {
                 return Container(
-                  margin: EdgeInsets.only(right: 10),
+                  margin: EdgeInsets.only(right: 8),
                   child: _profileResultGameDetailController
                               .currentParticipant.value.summoner1Id >
                           0
                       ? Image.network(
                           _profileResultGameDetailController.getSpellImage(1),
-                          width: 25,
-                          height: 25,
+                          width: MediaQuery.of(context).size.width / 20,
                         )
                       : Image.asset(
                           imageIconItemNone,
-                          width: 25,
-                          height: 25,
+                          width: MediaQuery.of(context).size.width / 20,
                         ),
                 );
               }),
               Obx(() {
                 return Container(
-                  margin: EdgeInsets.only(right: 10),
+                  margin: EdgeInsets.only(right: 8),
                   child: _profileResultGameDetailController
                               .currentParticipant.value.summoner2Id >
                           0
                       ? Image.network(
                           _profileResultGameDetailController.getSpellImage(2),
-                          width: 25,
-                          height: 25,
+                          width: MediaQuery.of(context).size.width / 20,
                         )
                       : Image.network(
                           imageIconItemNone,
-                          width: 25,
-                          height: 25,
+                          width: MediaQuery.of(context).size.width / 20,
                         ),
                 );
               })
@@ -96,13 +92,11 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                                   _profileResultGameDetailController
                                       .currentParticipant.value.item0
                                       .toString()),
-                              width: 25,
-                              height: 25,
+                              width: MediaQuery.of(context).size.width / 16,
                             )
                           : Image.asset(
                               imageIconItemNone,
-                              width: 25,
-                              height: 25,
+                              width: MediaQuery.of(context).size.width / 16,
                             ),
                     ),
                   ),
@@ -116,13 +110,11 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                                   _profileResultGameDetailController
                                       .currentParticipant.value.item1
                                       .toString()),
-                              width: 25,
-                              height: 25,
+                              width: MediaQuery.of(context).size.width / 16,
                             )
                           : Image.asset(
                               imageIconItemNone,
-                              width: 25,
-                              height: 25,
+                              width: MediaQuery.of(context).size.width / 16,
                             ),
                     ),
                   ),
@@ -136,13 +128,11 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                                   _profileResultGameDetailController
                                       .currentParticipant.value.item2
                                       .toString()),
-                              width: 25,
-                              height: 25,
+                              width: MediaQuery.of(context).size.width / 16,
                             )
                           : Image.asset(
                               imageIconItemNone,
-                              width: 25,
-                              height: 25,
+                              width: MediaQuery.of(context).size.width / 16,
                             ),
                     ),
                   ),
@@ -156,13 +146,11 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                                   _profileResultGameDetailController
                                       .currentParticipant.value.item3
                                       .toString()),
-                              width: 25,
-                              height: 25,
+                              width: MediaQuery.of(context).size.width / 16,
                             )
                           : Image.asset(
                               imageIconItemNone,
-                              width: 25,
-                              height: 25,
+                              width: MediaQuery.of(context).size.width / 16,
                             ),
                     ),
                   ),
@@ -176,13 +164,11 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                                   _profileResultGameDetailController
                                       .currentParticipant.value.item4
                                       .toString()),
-                              width: 25,
-                              height: 25,
+                              width: MediaQuery.of(context).size.width / 16,
                             )
                           : Image.asset(
                               imageIconItemNone,
-                              width: 25,
-                              height: 25,
+                              width: MediaQuery.of(context).size.width / 16,
                             ),
                     ),
                   ),
@@ -196,13 +182,11 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                                   _profileResultGameDetailController
                                       .currentParticipant.value.item5
                                       .toString()),
-                              width: 25,
-                              height: 25,
+                              width: MediaQuery.of(context).size.width / 16,
                             )
                           : Image.asset(
                               imageIconItemNone,
-                              width: 25,
-                              height: 25,
+                              width: MediaQuery.of(context).size.width / 16,
                             ),
                     ),
                   ),
@@ -216,13 +200,11 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                                   _profileResultGameDetailController
                                       .currentParticipant.value.item6
                                       .toString()),
-                              width: 25,
-                              height: 25,
+                              width: MediaQuery.of(context).size.width / 16,
                             )
                           : Image.asset(
                               imageIconItemNone,
-                              width: 25,
-                              height: 25,
+                              width: MediaQuery.of(context).size.width / 16,
                             ),
                     ),
                   ),
@@ -241,13 +223,11 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                         _profileResultGameDetailController
                             .currentParticipant.value.teamPosition,
                       ),
-                      width: 25,
-                      height: 25,
+                      width: MediaQuery.of(context).size.width / 16,
                     )
                   : Image.asset(
                       imageIconItemNone,
-                      width: 25,
-                      height: 25,
+                      width: MediaQuery.of(context).size.width / 16,
                     ),
             ),
           ),
@@ -258,7 +238,9 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                   "${_profileResultGameDetailController.currentParticipant.value.kills} / ${_profileResultGameDetailController.currentParticipant.value.deaths} / ${_profileResultGameDetailController.currentParticipant.value.assists}",
                   style: GoogleFonts.montserrat(
                     color: Colors.yellow,
-                    fontSize: 16,
+                    fontSize: MediaQuery.of(context).size.width > NEXUS_ONE_SCREEN
+                        ? 16
+                        : 11,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),

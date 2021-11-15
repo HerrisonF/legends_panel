@@ -14,13 +14,14 @@ class MasteryChampions extends StatelessWidget {
         return _profileController.championMasteryList.length > 0
             ? Container(
                 width: MediaQuery.of(context).size.width,
-                height: 130,
+                height: MediaQuery.of(context).size.height / 6,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
+                  physics: NeverScrollableScrollPhysics(),
                   children: [
-                    _championBadge(1, false),
-                    _championBadge(0, true),
-                    _championBadge(2, false),
+                    _championBadge(1, false, context),
+                    _championBadge(0, true, context),
+                    _championBadge(2, false, context),
                   ],
                 ),
               )
@@ -29,14 +30,20 @@ class MasteryChampions extends StatelessWidget {
     );
   }
 
-  Container _championBadge(int index, bool best) {
+
+  static const int NEXUS_ONE_SCREEN = 800;
+
+  Container _championBadge(int index, bool best, BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 35, vertical: best ? 0 : 25),
+      margin: EdgeInsets.symmetric(
+        horizontal:  MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? 35 : 31,
+        vertical: best ? 0 : 10,
+      ),
       child: Stack(
         children: [
           Container(
-            width: 70,
-            height: 70,
+            width: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? MediaQuery.of(context).size.width/6 : MediaQuery.of(context).size.width / 7,
+            height: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? MediaQuery.of(context).size.height / 13 : MediaQuery.of(context).size.height / 12,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(
@@ -49,12 +56,11 @@ class MasteryChampions extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 50,
+            top: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? MediaQuery.of(context).size.height / 20 : MediaQuery.of(context).size.height / 18,
             left: 0,
             right: 0,
             child: Container(
-              height: 35,
-              width: 35,
+              height: MediaQuery.of(context).size.height/20,
               child: Image.network(
                 _profileController.getMasteryImage(index),
               ),

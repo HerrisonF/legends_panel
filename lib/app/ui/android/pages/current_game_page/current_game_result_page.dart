@@ -13,20 +13,26 @@ class CurrentGameResultPage extends StatelessWidget {
       Get.find<CurrentGameResultController>();
   final MasterController _masterController = Get.find<MasterController>();
 
+  static const int NEXUS_ONE_SCREEN = 800;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: WillPopScope(
         onWillPop: () => this._backToHome(context),
         child: Stack(
-          children: [_backgroundFullImage(), _mapImage(context), _listUser(context)],
+          children: [
+            _backgroundFullImage(),
+            _mapImage(context),
+            _listUser(context)
+          ],
         ),
       ),
     );
   }
 
-  _backToHome(context){
-   Navigator.pop(context);
+  _backToHome(context) {
+    Navigator.pop(context);
   }
 
   Widget _listUser(context) {
@@ -35,10 +41,10 @@ class CurrentGameResultPage extends StatelessWidget {
         SingleChildScrollView(
           child: Column(
             children: [
-              _mapName(),
-              _gameClock(),
-              _userName(),
-              _detachTeams(),
+              _mapName(context),
+              _gameClock(context),
+              _userName(context),
+              _detachTeams(context),
             ],
           ),
         ),
@@ -46,9 +52,14 @@ class CurrentGameResultPage extends StatelessWidget {
           child: Container(
             margin: EdgeInsets.only(left: 20, top: 20),
             child: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: Icon(
+                Icons.arrow_back,
+                size: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN
+                    ? 22
+                    : 16,
+              ),
               onPressed: () {
-                 Navigator.pop(context);
+                Navigator.pop(context);
               },
               color: Colors.white,
             ),
@@ -58,26 +69,33 @@ class CurrentGameResultPage extends StatelessWidget {
     );
   }
 
-  Row _mapName() {
+  Row _mapName(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Obx(() {
           return Container(
-            margin: EdgeInsets.only(top: 90),
+            margin: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN
+                    ? 90
+                    : 80),
             child: Text(
-                _currentGameResultController.mapMode.value.mapName == ""
-                    ? "LOADING_MESSAGE".tr
-                    : _currentGameResultController.mapMode.value.mapName,
-                style: GoogleFonts.adamina(
-                    fontSize: 16, color: Colors.white, letterSpacing: 0.5)),
+              _currentGameResultController.mapMode.value.mapName == ""
+                  ? "LOADING_MESSAGE".tr
+                  : _currentGameResultController.mapMode.value.mapName,
+              style: GoogleFonts.adamina(
+                fontSize: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? 16: 12,
+                color: Colors.white,
+                letterSpacing: 0.5,
+              ),
+            ),
           );
         }),
       ],
     );
   }
 
-  Container _gameClock() {
+  Container _gameClock(BuildContext context) {
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -85,14 +103,14 @@ class CurrentGameResultPage extends StatelessWidget {
           Container(
             child: Image.asset(
               imageIconClock,
-              height: 20,
+              height: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? 20: 16,
             ),
             margin: EdgeInsets.only(right: 10),
           ),
           Text(
             "${_currentGameResultController.getCurrentGameMinutes()} Min",
             style: GoogleFonts.aBeeZee(
-              fontSize: 16,
+              fontSize: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? 16: 12,
               color: Colors.white,
               letterSpacing: 0.5,
             ),
@@ -102,11 +120,11 @@ class CurrentGameResultPage extends StatelessWidget {
     );
   }
 
-  Container _userName() {
+  Container _userName(BuildContext context) {
     return Container(
       child: Text(_masterController.userCurrentGame.value.name,
           style: GoogleFonts.aBeeZee(
-            fontSize: 16,
+            fontSize: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? 16: 14,
             color: Colors.white,
             letterSpacing: 0.5,
           )),
@@ -126,8 +144,7 @@ class CurrentGameResultPage extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(
-                imageMapSelect),
+            image: AssetImage(imageMapSelect),
             fit: BoxFit.cover,
           ),
         ),
@@ -143,25 +160,22 @@ class CurrentGameResultPage extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
         image: DecorationImage(
-            image: AssetImage(
-                imageBackgroundProfilePage),
-            fit: BoxFit.cover),
+            image: AssetImage(imageBackgroundProfilePage), fit: BoxFit.cover),
       ),
     );
   }
 
-  _detachTeams() {
+  _detachTeams(BuildContext context) {
     return Column(
       children: [
         Stack(
           children: [
             Positioned(
-              top: 0,
-              left: 0,
+              top: MediaQuery.of(context).size.height > 800 ? 24 : 6.5,
+              left: 10,
               right: 0,
               child: Container(
-                child: Image.asset(
-                    imageDivider),
+                child: Image.asset(imageDivider, height: MediaQuery.of(context).size.height > 800 ? 40 : 30),
               ),
             ),
             Obx(() {
@@ -173,12 +187,11 @@ class CurrentGameResultPage extends StatelessWidget {
         Stack(
           children: [
             Positioned(
-              top: 0,
-              left: 0,
+              top: MediaQuery.of(context).size.height > 800 ? 24 : 6.5,
+              left: 10,
               right: 0,
               child: Container(
-                child: Image.asset(
-                    imageDivider),
+                child: Image.asset(imageDivider, height: MediaQuery.of(context).size.height > 800 ? 40 : 30),
               ),
             ),
             Obx(() {

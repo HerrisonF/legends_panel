@@ -22,6 +22,8 @@ class _ProfilePageState extends State<ProfilePage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final ScrollController _scrollController = ScrollController();
 
+  static const int NEXUS_ONE_SCREEN = 800;
+
   String selectedRegion = 'NA1';
 
   @override
@@ -53,7 +55,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
   searchUserFieldContent() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 30),
+      padding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN
+            ? MediaQuery.of(context).size.width / 12
+            : MediaQuery.of(context).size.width / 15,
+      ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -87,9 +93,15 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Container _buttonSearchSummoner() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 30),
+      margin: EdgeInsets.symmetric(
+        vertical: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN
+            ? MediaQuery.of(context).size.width / 13.5
+            : MediaQuery.of(context).size.width / 11,
+      ),
       width: MediaQuery.of(context).size.width,
-      height: 50,
+      height: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN
+          ? MediaQuery.of(context).size.height / 18
+          : MediaQuery.of(context).size.height / 13,
       child: Obx(
         () {
           return OutlinedButton(
@@ -102,7 +114,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     _profileController.buttonMessage.value,
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 14,
+                        fontSize: MediaQuery.of(context).size.height >
+                                NEXUS_ONE_SCREEN
+                            ? 14
+                            : 12,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 2),
                   ),
@@ -168,7 +183,10 @@ class _ProfilePageState extends State<ProfilePage> {
             height: MediaQuery.of(context).size.height / 2.55,
             child: summonerPanel(context),
           ),
-          MasteryChampions(),
+          Container(
+            margin: EdgeInsets.only(top: 15),
+            child: MasteryChampions(),
+          ),
           Obx(() {
             return _masterController.userProfile.value.name != ""
                 ? _outButton()
@@ -194,23 +212,26 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Container _outButton() {
     return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(80),
-                    color: Colors.black26,
-                  ),
-                  height: 40,
-                  width: 40,
-                  margin: EdgeInsets.only(bottom: 25),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.exit_to_app,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      goToProfile();
-                    },
-                  ),
-                );
+      margin: EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(80),
+        color: Colors.black26,
+      ),
+      height: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN
+          ? MediaQuery.of(context).size.height / 17
+          : MediaQuery.of(context).size.height / 14,
+      width: MediaQuery.of(context).size.width / 8,
+      child: IconButton(
+        icon: Icon(
+          Icons.exit_to_app,
+          color: Colors.white,
+          size: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? 22 : 15,
+        ),
+        onPressed: () {
+          goToProfile();
+        },
+      ),
+    );
   }
 
   goToProfile() {
@@ -272,7 +293,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 end: Alignment.bottomCenter,
                 colors: [Colors.black, Colors.transparent],
               ).createShader(
-                  Rect.fromLTRB(0, 60, rect.width, rect.height - 40));
+                Rect.fromLTRB(
+                    0,
+                    MediaQuery.of(context).size.height / 11,
+                    rect.width,
+                    rect.height - MediaQuery.of(context).size.height / 11),
+              );
             },
             blendMode: BlendMode.dstIn,
             child: ClipRRect(
@@ -282,27 +308,40 @@ class _ProfilePageState extends State<ProfilePage> {
                 bottomRight: Radius.elliptical(
                     MediaQuery.of(context).size.width / 2, 70),
               ),
-              child: Container(
-                height: MediaQuery.of(context).size.height / 3,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: NetworkImage(
-                        _profileController.getChampionImage(
-                          _profileController.championMasteryList[0].championId,
+              child: _profileController.championMasteryList.isNotEmpty
+                  ? Container(
+                      height: MediaQuery.of(context).size.height / 3,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(
+                            _profileController.getChampionImage(
+                              _profileController
+                                  .championMasteryList[0].championId,
+                            ),
+                          ),
+                          fit: BoxFit.fill,
+                          colorFilter: ColorFilter.mode(
+                              Colors.black26, BlendMode.overlay),
                         ),
                       ),
-                      fit: BoxFit.fill,
-                      colorFilter:
-                          ColorFilter.mode(Colors.black26, BlendMode.overlay)),
-                ),
-              ),
+                    )
+                  : SizedBox.shrink(),
             ),
           ),
         ),
-        _profileImage(),
-        _profileName(context),
-        _profileStatistics(),
-        _playerEloEmblem(context),
+        _profileController.getUserProfileImage() != ""
+            ? _profileImage()
+            : SizedBox.shrink(),
+        _masterController.userProfile.value.name != ""
+            ? _profileName(context)
+            : SizedBox.shrink(),
+        _masterController.userProfile.value.summonerLevel != "" &&
+                _profileController.userTierList.length > 0
+            ? _profileStatistics()
+            : SizedBox.shrink(),
+        _profileController.userTierList.length > 0
+            ? _playerEloEmblem(context)
+            : SizedBox.shrink(),
       ],
     );
   }
@@ -316,8 +355,8 @@ class _ProfilePageState extends State<ProfilePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            height: 115,
-            width: 115,
+            height: MediaQuery.of(context).size.height / 6.5,
+            width: MediaQuery.of(context).size.width / 4,
             child: Obx(() {
               return Container(
                   child: Image.asset(
@@ -331,7 +370,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Container _profileStatistics() {
     return Container(
-      margin: EdgeInsets.only(top: 70, left: 40, right: 40),
+      margin: EdgeInsets.only(
+          top: MediaQuery.of(context).size.height / 10,
+          left: MediaQuery.of(context).size.width / 10,
+          right: MediaQuery.of(context).size.width / 9),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -339,7 +381,8 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               Obx(() {
                 return Container(
-                  margin: EdgeInsets.only(top: 55),
+                  margin: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height / 10),
                   decoration: BoxDecoration(boxShadow: [
                     BoxShadow(
                         color: Colors.black,
@@ -352,7 +395,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: GoogleFonts.montserrat(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: 16),
+                        fontSize: MediaQuery.of(context).size.height >
+                                NEXUS_ONE_SCREEN
+                            ? 18
+                            : 11),
                   ),
                 );
               })
@@ -372,7 +418,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   style: GoogleFonts.montserrat(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      fontSize: 16),
+                      fontSize:
+                          MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN
+                              ? 16
+                              : 11),
                 ),
               ),
               Container(
@@ -381,7 +430,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: GoogleFonts.montserrat(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: 14)),
+                        fontSize: MediaQuery.of(context).size.height >
+                                NEXUS_ONE_SCREEN
+                            ? 16
+                            : 11)),
               ),
               Container(
                 height: 50,
@@ -397,7 +449,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: GoogleFonts.montserrat(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: 16)),
+                        fontSize: MediaQuery.of(context).size.height >
+                                NEXUS_ONE_SCREEN
+                            ? 16
+                            : 11)),
               ),
               Container(
                 child: Text(
@@ -405,7 +460,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: GoogleFonts.montserrat(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: 14)),
+                        fontSize: MediaQuery.of(context).size.height >
+                                NEXUS_ONE_SCREEN
+                            ? 14
+                            : 11)),
               )
             ],
           )
@@ -431,7 +489,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Text(
                         _masterController.userProfile.value.name,
                         style: GoogleFonts.montserrat(
-                          fontSize: 22,
+                          fontSize: MediaQuery.of(context).size.height >
+                                  NEXUS_ONE_SCREEN
+                              ? 22
+                              : 16,
                           color: Colors.black,
                           fontWeight: FontWeight.w500,
                         ),
@@ -444,7 +505,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Text(
                         _masterController.userProfile.value.name,
                         style: GoogleFonts.montserrat(
-                          fontSize: 22,
+                          fontSize: MediaQuery.of(context).size.height >
+                                  NEXUS_ONE_SCREEN
+                              ? 22
+                              : 16,
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
                         ),
@@ -466,9 +530,12 @@ class _ProfilePageState extends State<ProfilePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 10),
-            width: 75,
-            height: 75,
+            margin:
+                EdgeInsets.only(top: MediaQuery.of(context).size.height / 45),
+            width: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN
+                ? MediaQuery.of(context).size.width / 5
+                : MediaQuery.of(context).size.width / 6,
+            height: MediaQuery.of(context).size.height / 11,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(_profileController.getUserProfileImage()),
@@ -481,7 +548,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 BoxShadow(
                   color: Colors.white,
                   spreadRadius: 1,
-                  blurRadius: 8,
+                  blurRadius: 5,
                   offset: Offset(0, 2), // changes position of shadow
                 ),
               ],
