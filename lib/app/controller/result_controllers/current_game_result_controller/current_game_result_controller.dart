@@ -42,14 +42,21 @@ class CurrentGameResultController extends UtilController {
     for (int i = 0; i < 10; i++) {
       CurrentGameParticipant currentGameParticipant =
           currentGameSpectator.currentGameParticipants[i];
-      CurrentGameBannedChampion currentGameBannedChampion =
-          currentGameSpectator.bannedChampions[i];
+
       if (currentGameParticipant.teamId == 100) {
         blueTeam.add(currentGameParticipant);
-        blueTeamBannedChamp.add(currentGameBannedChampion);
       } else {
         redTeam.add(currentGameParticipant);
-        redTeamBannedChamp.add(currentGameBannedChampion);
+      }
+
+      if (currentGameSpectator.bannedChampions.length > 0) {
+        CurrentGameBannedChampion currentGameBannedChampion =
+            currentGameSpectator.bannedChampions[i];
+        if (currentGameParticipant.teamId == 100) {
+          blueTeamBannedChamp.add(currentGameBannedChampion);
+        } else {
+          redTeamBannedChamp.add(currentGameBannedChampion);
+        }
       }
     }
   }

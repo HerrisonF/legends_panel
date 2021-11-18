@@ -13,9 +13,10 @@ class MasterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        body: Column(
+        body: Stack(
           children: [
             Expanded(
+              //flex: 10,
               child: IndexedStack(
                 index: _masterController.currentPageIndex.value,
                 children: [
@@ -25,21 +26,22 @@ class MasterPage extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width / 15,
-                right: MediaQuery.of(context).size.width / 15,
-                bottom: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? 20 : 5
-              ),
-              color: Colors.white,
-              height: MediaQuery.of(context).size.height / 11,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  customIconButton(context, 0, FeatherIcons.crosshair),
-                  customIconButton(context, 1, FeatherIcons.user),
-                  customIconButton(context, 2, FeatherIcons.coffee),
-                ],
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                //height: 100,
+                color: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    customIconButton(context, 0, FeatherIcons.crosshair),
+                    customIconButton(context, 1, FeatherIcons.user),
+                    customIconButton(context, 2, FeatherIcons.coffee),
+                  ],
+                ),
               ),
             ),
           ],
@@ -47,19 +49,22 @@ class MasterPage extends StatelessWidget {
       ),
     );
   }
-  static const int NEXUS_ONE_SCREEN = 800;
-  customIconButton(BuildContext context, int indexPage, IconData icon) {
+
+  customIconButton(BuildContext context, int selectedIcon, IconData icon) {
     return Container(
       child: IconButton(
         onPressed: () {
-          _masterController.changeCurrentPageIndex(indexPage);
+          _masterController.changeCurrentPageIndex(selectedIcon);
         },
         icon: Icon(
           icon,
-          color: _masterController.currentPageIndex.value == indexPage
+          color: _masterController.currentPageIndex.value == selectedIcon
               ? Color(0xFF4248A5)
               : Color(0xFF292E78).withOpacity(0.3),
-          size:  MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? 22 : 16,
+          size: MediaQuery.of(context).size.height >
+                  MasterController.NEXUS_ONE_SCREEN
+              ? 22
+              : 16,
         ),
       ),
     );

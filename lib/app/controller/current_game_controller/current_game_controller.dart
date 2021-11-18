@@ -28,6 +28,7 @@ class CurrentGameController extends GetxController {
 
   getUserFromCloud(String region) async {
     _startUserLoading();
+    buttonMessage("SEARCHING".tr);
     await _masterController.getCurrentUserOnCloud(userNameInputController.text, region);
     if (_masterController.userCurrentGame.value.id.isNotEmpty) {
       _checkUserIsInCurrentGame(region);

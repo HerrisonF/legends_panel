@@ -10,16 +10,15 @@ import 'dart:ui' as ui;
 
 void main() async {
   await GetStorage.init('store');
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.bottom]);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,
+      overlays: [SystemUiOverlay.bottom]);
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Legends Panel',
       debugShowCheckedModeBanner: false,
       theme: appThemeData,
       themeMode: ThemeMode.system,

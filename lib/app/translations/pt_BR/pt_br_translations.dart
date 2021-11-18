@@ -5,8 +5,8 @@ final Map<String, String> ptBr = {
   'TITLE_HOME_PAGE' : 'Jogo Atual',
   'INPUT_VALIDATOR_HOME' : 'Esse campo é obrigatório !',
   'BUTTON_MESSAGE_SEARCH' : 'Procurar',
-  'BUTTON_MESSAGE_USER_NOT_FOUND' : 'Não encontramos esse usuário !',
-  'BUTTON_MESSAGE_GAME_NOT_FOUND' : 'Este invocador não está jogando !',
+  'BUTTON_MESSAGE_USER_NOT_FOUND' : 'Não encontramos o usuário !',
+  'BUTTON_MESSAGE_GAME_NOT_FOUND' : 'O invocador não está jogando !',
   'LOADING_MESSAGE' : 'Procurando pelo jogador ...',
   'LEVEL' : 'Level',
   'VICTORY' : 'Vitórias',
@@ -14,4 +14,6 @@ final Map<String, String> ptBr = {
   'DEVELOPMENT' : 'Um aplicativo experimental sendo desenvolvido por: ',
   'LINKEDIN_INSTALL' : 'O linkedin não está instalado ! ',
   'GIT_INSTALL' : 'Tivemos problemas para abrir o linkedin ! ',
+  'USER_FOUND' : 'Te encontramos ! ',
+  'SEARCHING': 'Estamos procurando ',
 };

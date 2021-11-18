@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: Duration(seconds: 1),
     );
     _animation = Tween(begin: 0.0, end: 1.0).animate(_controller);
     _controller.repeat(reverse: true);
@@ -43,104 +43,143 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: [
-                Theme.of(context).primaryColor,
-                Theme.of(context).primaryColor.withOpacity(0.1),
-              ],
-              begin: FractionalOffset.topCenter,
-              end: FractionalOffset.bottomCenter),
-        ),
+        decoration: _linearBlueBackground(context),
         child: Stack(
           children: [
-            Positioned(
-              child: Image(
-                image: AssetImage(imageRockTopRight),
-                height: MediaQuery.of(context).size.height / 2.5,
-              ),
-              left: 0,
-              top: 0,
-            ),
-            Positioned(
-              child: Image(
-                image: AssetImage(imageRockTopRight),
-                height: MediaQuery.of(context).size.height / 2.5,
-              ),
-              left: MediaQuery.of(context).size.width / 2,
-              top: 150,
-            ),
-            Positioned(
-              child: Image(
-                image: AssetImage(imageRockTopLeft),
-                height: MediaQuery.of(context).size.height / 2.5,
-              ),
-              left: MediaQuery.of(context).size.width / 1.5,
-              top: -150,
-            ),
-            Positioned(
-              child: Image(
-                image: AssetImage(imageRockTopLeft),
-                height: MediaQuery.of(context).size.height / 2.2,
-              ),
-              left: 0,
-              bottom: 0,
-            ),
-            Positioned(
-              child: Image(
-                image: AssetImage(imageRockTopLeft),
-                height: MediaQuery.of(context).size.height / 2.2,
-              ),
-              left: MediaQuery.of(context).size.width / 2,
-              bottom: MediaQuery.of(context).size.width / 2,
-            ),
-            Positioned(
-              child: Image(
-                image: AssetImage(imagePengu),
-                height: MediaQuery.of(context).size.height / 2.5,
-              ),
-              right: 0,
-              bottom: 0,
-            ),
-            _title(context),
-            _subTitle(context),
+            _rockImageOne(context),
+            _rockImageTwo(context),
+            _rockImageThree(context),
+            _rockImageFour(context),
+            _rockImageFive(context),
+            _penguImage(context),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _applicationNameTitle(context),
+                _applicationNameSubTitle(context),
+              ],
+            )
           ],
         ),
       ),
     );
   }
 
-  Widget _subTitle(BuildContext context) {
+  Widget _applicationNameTitle(BuildContext context) {
     return _textSplashscreenMaker(
-      "APP_NAME_SUB_TITLE".tr,
-      MediaQuery.of(context).size.height / 2.1,
+      text: "APP_NAME_TITLE".tr,
     );
   }
 
-  Widget _title(BuildContext context) {
+  Widget _applicationNameSubTitle(BuildContext context) {
     return _textSplashscreenMaker(
-        "APP_NAME_TITLE".tr, MediaQuery.of(context).size.height / 2.5);
+      text: "APP_NAME_SUB_TITLE".tr,
+      margin: 15,
+    );
   }
 
-  Widget _textSplashscreenMaker(String text, double margin) {
+  Positioned _penguImage(BuildContext context) {
+    return Positioned(
+      child: Image(
+        image: AssetImage(imagePengu),
+        height: MediaQuery.of(context).size.height / 2.5,
+      ),
+      right: 0,
+      bottom: 0,
+    );
+  }
+
+  Positioned _rockImageFive(BuildContext context) {
+    return Positioned(
+      child: Image(
+        image: AssetImage(imageRockTopLeft),
+        height: MediaQuery.of(context).size.height / 2.2,
+      ),
+      left: MediaQuery.of(context).size.width / 2,
+      bottom: MediaQuery.of(context).size.width / 2,
+    );
+  }
+
+  Positioned _rockImageFour(BuildContext context) {
+    return Positioned(
+      child: Image(
+        image: AssetImage(imageRockTopLeft),
+        height: MediaQuery.of(context).size.height / 2.2,
+      ),
+      left: 0,
+      bottom: 0,
+    );
+  }
+
+  Positioned _rockImageThree(BuildContext context) {
+    return Positioned(
+      child: Image(
+        image: AssetImage(imageRockTopLeft),
+        height: MediaQuery.of(context).size.height / 2.5,
+      ),
+      left: MediaQuery.of(context).size.width / 1.5,
+      top: -150,
+    );
+  }
+
+  Positioned _rockImageTwo(BuildContext context) {
+    return Positioned(
+      child: Image(
+        image: AssetImage(imageRockTopRight),
+        height: MediaQuery.of(context).size.height / 2.5,
+      ),
+      left: MediaQuery.of(context).size.width / 2,
+      top: 150,
+    );
+  }
+
+  Positioned _rockImageOne(BuildContext context) {
+    return Positioned(
+      child: Image(
+        image: AssetImage(imageRockTopRight),
+        height: MediaQuery.of(context).size.height / 2.5,
+      ),
+      left: 0,
+      top: 0,
+    );
+  }
+
+  BoxDecoration _linearBlueBackground(BuildContext context) {
+    return BoxDecoration(
+      gradient: LinearGradient(
+        colors: [
+          Theme.of(context).primaryColor,
+          Theme.of(context).primaryColor.withOpacity(0.1),
+        ],
+        begin: FractionalOffset.topCenter,
+        end: FractionalOffset.bottomCenter,
+      ),
+    );
+  }
+
+  Widget _textSplashscreenMaker({String? text, double? margin}) {
     return Container(
-      margin: EdgeInsets.only(top: margin),
-      alignment: Alignment.topCenter,
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(top: margin ?? 0),
       child: FadeTransition(
         opacity: _animation,
         child: Text(
-          text,
+          text ?? "",
           style: GoogleFonts.montserrat(
             textStyle: TextStyle(
+              letterSpacing: 1.2,
               color: Colors.white,
               shadows: [
                 BoxShadow(
-                    color: Colors.black, blurRadius: 16, offset: Offset(0, 2)),
+                  color: Colors.black,
+                  blurRadius: 16,
+                  offset: Offset(0, 2),
+                ),
               ],
               fontSize: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN
-                  ? 40 : 20,
+                  ? 40
+                  : 22,
               fontWeight: FontWeight.w700,
             ),
           ),

@@ -14,4 +14,6 @@ final Map<String, String> enUs = {
   'DEVELOPMENT' : 'An experimental app beeing developed by ',
   'LINKEDIN_INSTALL' : 'Linkedin is not installed ! ',
   'GIT_INSTALL' : 'We got problems to open Git ! ',
+  'USER_FOUND' : 'We found you ! ',
+  'SEARCHING': 'Searching ',
 };

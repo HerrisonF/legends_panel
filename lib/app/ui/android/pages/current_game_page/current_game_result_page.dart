@@ -11,9 +11,8 @@ import 'package:legends_panel/app/ui/android/pages/current_game_page/current_gam
 class CurrentGameResultPage extends StatelessWidget {
   final CurrentGameResultController _currentGameResultController =
       Get.find<CurrentGameResultController>();
-  final MasterController _masterController = Get.find<MasterController>();
 
-  static const int NEXUS_ONE_SCREEN = 800;
+  final MasterController _masterController = Get.find<MasterController>();
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +53,8 @@ class CurrentGameResultPage extends StatelessWidget {
             child: IconButton(
               icon: Icon(
                 Icons.arrow_back,
-                size: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN
+                size: MediaQuery.of(context).size.height >
+                        MasterController.NEXUS_ONE_SCREEN
                     ? 22
                     : 16,
               ),
@@ -69,30 +69,29 @@ class CurrentGameResultPage extends StatelessWidget {
     );
   }
 
-  Row _mapName(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Obx(() {
-          return Container(
-            margin: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN
-                    ? 90
-                    : 80),
-            child: Text(
-              _currentGameResultController.mapMode.value.mapName == ""
-                  ? "LOADING_MESSAGE".tr
-                  : _currentGameResultController.mapMode.value.mapName,
-              style: GoogleFonts.adamina(
-                fontSize: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? 16: 12,
-                color: Colors.white,
-                letterSpacing: 0.5,
-              ),
-            ),
-          );
-        }),
-      ],
-    );
+  _mapName(BuildContext context) {
+    return Obx(() {
+      return Container(
+        margin: EdgeInsets.only(
+            top: MediaQuery.of(context).size.height >
+                    MasterController.NEXUS_ONE_SCREEN
+                ? 90
+                : 80),
+        child: Text(
+          _currentGameResultController.mapMode.value.mapName == ""
+              ? "LOADING_MESSAGE".tr
+              : _currentGameResultController.mapMode.value.mapName,
+          style: GoogleFonts.adamina(
+            fontSize: MediaQuery.of(context).size.height >
+                    MasterController.NEXUS_ONE_SCREEN
+                ? 16
+                : 12,
+            color: Colors.white,
+            letterSpacing: 0.5,
+          ),
+        ),
+      );
+    });
   }
 
   Container _gameClock(BuildContext context) {
@@ -103,14 +102,20 @@ class CurrentGameResultPage extends StatelessWidget {
           Container(
             child: Image.asset(
               imageIconClock,
-              height: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? 20: 16,
+              height: MediaQuery.of(context).size.height >
+                      MasterController.NEXUS_ONE_SCREEN
+                  ? 20
+                  : 16,
             ),
             margin: EdgeInsets.only(right: 10),
           ),
           Text(
             "${_currentGameResultController.getCurrentGameMinutes()} Min",
             style: GoogleFonts.aBeeZee(
-              fontSize: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? 16: 12,
+              fontSize: MediaQuery.of(context).size.height >
+                      MasterController.NEXUS_ONE_SCREEN
+                  ? 16
+                  : 12,
               color: Colors.white,
               letterSpacing: 0.5,
             ),
@@ -122,12 +127,17 @@ class CurrentGameResultPage extends StatelessWidget {
 
   Container _userName(BuildContext context) {
     return Container(
-      child: Text(_masterController.userCurrentGame.value.name,
-          style: GoogleFonts.aBeeZee(
-            fontSize: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? 16: 14,
-            color: Colors.white,
-            letterSpacing: 0.5,
-          )),
+      child: Text(
+        _masterController.userCurrentGame.value.name,
+        style: GoogleFonts.aBeeZee(
+          fontSize: MediaQuery.of(context).size.height >
+                  MasterController.NEXUS_ONE_SCREEN
+              ? 16
+              : 14,
+          color: Colors.white,
+          letterSpacing: 0.5,
+        ),
+      ),
     );
   }
 
@@ -138,7 +148,9 @@ class CurrentGameResultPage extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [Colors.black, Colors.transparent],
-        ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height));
+        ).createShader(
+          Rect.fromLTRB(0, 0, rect.width, rect.height),
+        );
       },
       blendMode: BlendMode.dstIn,
       child: Container(
@@ -150,17 +162,17 @@ class CurrentGameResultPage extends StatelessWidget {
         ),
         //color: Colors.amber,
         height: MediaQuery.of(context).size.height / 3,
-        width: MediaQuery.of(context).size.width,
       ),
     );
   }
 
   Container _backgroundFullImage() {
     return Container(
-      padding: EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
         image: DecorationImage(
-            image: AssetImage(imageBackgroundProfilePage), fit: BoxFit.cover),
+          image: AssetImage(imageBackgroundProfilePage),
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }
@@ -171,11 +183,14 @@ class CurrentGameResultPage extends StatelessWidget {
         Stack(
           children: [
             Positioned(
-              top: MediaQuery.of(context).size.height > 800 ? 24 : 6.5,
+              top: -7,
               left: 10,
               right: 0,
               child: Container(
-                child: Image.asset(imageDivider, height: MediaQuery.of(context).size.height > 800 ? 40 : 30),
+                child: Image.asset(
+                  imageDivider,
+                  height: 30,
+                ),
               ),
             ),
             Obx(() {
@@ -187,11 +202,14 @@ class CurrentGameResultPage extends StatelessWidget {
         Stack(
           children: [
             Positioned(
-              top: MediaQuery.of(context).size.height > 800 ? 24 : 6.5,
+              top: -7,
               left: 10,
               right: 0,
               child: Container(
-                child: Image.asset(imageDivider, height: MediaQuery.of(context).size.height > 800 ? 40 : 30),
+                child: Image.asset(
+                  imageDivider,
+                  height: 30,
+                ),
               ),
             ),
             Obx(() {
@@ -206,14 +224,26 @@ class CurrentGameResultPage extends StatelessWidget {
 
   _teamCard(RxList<CurrentGameParticipant> participants,
       RxList<CurrentGameBannedChampion> bannedChampions) {
-    return ListView.builder(
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: participants.length,
-      itemBuilder: (_, index) {
-        return CurrentGameParticipantCard(participants[index],
-            bannedChampions[index], _currentGameResultController.region);
-      },
+    return Container(
+      height: 380,
+      margin: EdgeInsets.only(top: 10),
+      child: ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: participants.length,
+        itemBuilder: (_, index) {
+          return CurrentGameParticipantCard(
+            participant: participants[index],
+            bannedChampion: _existBannedChampions(bannedChampions)
+                ? bannedChampions[index]
+                : CurrentGameBannedChampion(),
+            region: _currentGameResultController.region,
+          );
+        },
+      ),
     );
   }
+
+  bool _existBannedChampions(
+          RxList<CurrentGameBannedChampion>? bannedChampions) =>
+      bannedChampions != null && bannedChampions.length > 0;
 }

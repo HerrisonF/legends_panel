@@ -6,6 +6,8 @@ import 'package:legends_panel/app/model/general/champion_mastery.dart';
 import 'package:legends_panel/app/model/general/match_detail.dart';
 import 'package:legends_panel/app/model/general/user_tier.dart';
 import 'package:legends_panel/app/data/repository/profile_repository/profile_repository.dart';
+import 'package:legends_panel/app/ui/android/pages/profile_page/found_user_profile.dart';
+import 'package:legends_panel/app/ui/android/pages/profile_page/search_user_profile_component.dart';
 
 class ProfileController {
   final ProfileRepository _profileRepository = ProfileRepository();
@@ -17,6 +19,8 @@ class ProfileController {
   Rx<int> oldIndex = 0.obs;
   Rx<int> newIndex = 0.obs;
 
+  Rx<int> currentProfilePage = 0.obs;
+
   RxList<UserTier> userTierList = RxList<UserTier>();
   RxList<ChampionMastery> championMasteryList = RxList<ChampionMastery>();
   List<String> matchIdList = [];
@@ -26,6 +30,19 @@ class ProfileController {
   Rx<bool> isShowingMessage = false.obs;
   Rx<bool> lockNewLoadings = false.obs;
   Rx<bool> isLoadingNewMatches = false.obs;
+
+  List<Widget> pages = [];
+
+  buildPages() {
+    pages = [
+      SearchUserProfileComponent(),
+      FoundUserComponent(),
+    ];
+  }
+
+  changeCurrentProfilePage(int index){
+    currentProfilePage.value = index;
+  }
 
   starUserLoading() {
     isUserLoading(true);
@@ -47,32 +64,34 @@ class ProfileController {
     await checkIsUserStored();
   }
 
-
   checkIsUserStored() async {
-    if(_masterController.userProfileExist()){
-      if(_masterController.userProfile.value.region != ""){
+    if (_masterController.userProfileExist()) {
+      if (_masterController.userProfile.value.region != "") {
+        buttonMessage("USER_FOUND".tr);
         final tempRegion = _masterController.userProfile.value.region;
         starUserLoading();
         await getUserTierInformation(tempRegion);
         await getMasteryChampions(tempRegion);
         await getMatchListIds(tempRegion);
         await getMatches(tempRegion);
+        changeCurrentProfilePage(1);
         stopUserLoading();
       }
     }
   }
 
   getUserTierInformation(String region) async {
-    userTierList.value = await _profileRepository
-        .getUserTier(_masterController.userProfile.value.id, region);
+    userTierList.value = await _profileRepository.getUserTier(
+        _masterController.userProfile.value.id, region);
   }
 
   getMasteryChampions(String region) async {
     championMasteryList.addAll(
-      await _profileRepository
-          .getChampionMastery(_masterController.userProfile.value.id, region),
+      await _profileRepository.getChampionMastery(
+          _masterController.userProfile.value.id, region),
     );
-    championMasteryList.sort((b,a)=> a.championPoints.compareTo(b.championPoints));
+    championMasteryList
+        .sort((b, a) => a.championPoints.compareTo(b.championPoints));
   }
 
   getMatchListIds(String region) async {
@@ -82,7 +101,8 @@ class ProfileController {
     tempMatchIdList = await _profileRepository.getMatchListIds(
         _masterController.userProfile.value.puuid,
         this.newIndex.value,
-        this.amountMatches, region);
+        this.amountMatches,
+        region);
     if (tempMatchIdList.length > 0) {
       oldIndex.value = newIndex.value;
       this.matchIdList.addAll(tempMatchIdList);
@@ -94,7 +114,8 @@ class ProfileController {
 
   getMatches(String region) async {
     for (String matchId in matchIdList) {
-      MatchDetail matchDetail = await _profileRepository.getMatchById(matchId, region);
+      MatchDetail matchDetail =
+          await _profileRepository.getMatchById(matchId, region);
       matchList.add(matchDetail);
     }
   }
@@ -118,7 +139,7 @@ class ProfileController {
 
   String getCircularChampionImage(int championId) {
     Champion champion =
-    _masterController.getChampionById(championId.toString());
+        _masterController.getChampionById(championId.toString());
     return _profileRepository.getCircularChampionImage(champion.detail.id);
   }
 
@@ -129,17 +150,25 @@ class ProfileController {
 
   getUserOnCloud(String region) async {
     starUserLoading();
-    await _masterController.getUserProfileOnCloud(userNameInputController.text, region);
+    buttonMessage("SEARCHING".tr);
+    await _masterController.getUserProfileOnCloud(
+        userNameInputController.text, region);
     if (_masterController.userProfileExist()) {
       await getUserTierInformation(region);
       await getMasteryChampions(region);
       await getMatchListIds(region);
       await getMatches(region);
+      setUserRegion(region);
+      changeCurrentProfilePage(1);
       userNameInputController.clear();
       stopUserLoading();
     } else {
       _showUserNotFoundMessage();
     }
+  }
+
+  setUserRegion(String region){
+    _masterController.userProfile.value.region = region;
   }
 
   _showUserNotFoundMessage() {

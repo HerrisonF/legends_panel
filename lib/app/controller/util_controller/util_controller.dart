@@ -5,7 +5,7 @@ abstract class UtilController {
 
   GetStorage box = GetStorage('default_storage');
 
-  closeKeyBoard(BuildContext context){
+  static closeKeyBoard(BuildContext context){
     FocusScope.of(context).unfocus();
   }
 

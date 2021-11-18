@@ -19,6 +19,8 @@ class MasterController {
   List<MapMode> mapList = <MapMode>[];
   String lolVersion = "";
 
+  static const int NEXUS_ONE_SCREEN = 800;
+
   start() async {
     await readPersistedUser();
     await getLolVersion();
