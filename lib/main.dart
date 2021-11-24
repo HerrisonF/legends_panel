@@ -6,7 +6,6 @@ import 'package:legends_panel/app/routes/app_pages.dart';
 import 'package:legends_panel/app/routes/app_routes.dart';
 import 'package:legends_panel/app/translations/app_translations.dart';
 import 'package:legends_panel/app/ui/theme/app_theme.dart';
-import 'dart:ui' as ui;
 
 void main() async {
   await GetStorage.init('store');
