@@ -61,27 +61,28 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
   }
 
   Container _inputSummonerNameForSearchCurrentGame() {
+    //print("TESTE -"+ "HINT_SUMMONER_NAME".tr == "HINT_SUMMONER_NAME".tr? );
     return Container(
       child: Form(
         key: formKey,
-        child: TextFormField(
-          decoration: InputDecoration(
-            hintText: "HINT_SUMMONER_NAME".tr,
-            errorStyle: GoogleFonts.montserrat(
-                fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-          controller: _currentGameController.userNameInputController,
-          onFieldSubmitted: (_) {
-            _validateAndSearchSummoner();
-          },
-          validator: (value) {
-            if (value!.trim().isEmpty) {
-              _currentGameController.userNameInputController.clear();
-              return "INPUT_VALIDATOR_HOME".tr;
-            }
-            return null;
-          },
-        ),
+        child: Obx((){
+          return TextFormField(
+            enabled: !_currentGameController.isLoadingUser.value,
+            decoration: InputDecoration(
+              hintText: "HINT_SUMMONER_NAME".tr,
+              errorStyle: GoogleFonts.montserrat(
+                  fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+            controller: _currentGameController.userNameInputController,
+            validator: (value) {
+              if (value!.trim().isEmpty) {
+                _currentGameController.userNameInputController.clear();
+                return "INPUT_VALIDATOR_HOME".tr;
+              }
+              return null;
+            },
+          );
+        }),
       ),
     );
   }
@@ -99,9 +100,8 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                 _currentGameController.buttonMessage.value,
                 style: GoogleFonts.montserrat(
                   color: Colors.white,
-                  fontSize: 14,
+                  fontSize: 13,
                   fontWeight: FontWeight.w500,
-                  letterSpacing: 1.5,
                 ),
               ),
               _currentGameController.isLoadingUser.value

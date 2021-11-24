@@ -35,13 +35,13 @@ class _RegionDropDownComponentState extends State<RegionDropDownComponent> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      margin: EdgeInsets.symmetric(horizontal: 75),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: Theme.of(context).backgroundColor,
       ),
       child: DropdownButton(
-        menuMaxHeight: 250,
+        menuMaxHeight: 200,
         icon: Icon(Icons.arrow_drop_down, color: Colors.white),
         elevation: 8,
         underline: SizedBox.shrink(),
@@ -61,7 +61,6 @@ class _RegionDropDownComponentState extends State<RegionDropDownComponent> {
               location,
               style: GoogleFonts.montserrat(
                 color: Colors.white,
-                letterSpacing: 1.5,
                 fontWeight: FontWeight.w400,
               ),
             ),

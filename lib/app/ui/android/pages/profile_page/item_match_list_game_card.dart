@@ -191,6 +191,7 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                     ),
                   ),
                   Container(
+                    margin: EdgeInsets.only(left: 10),
                     child: Container(
                       child: _profileResultGameDetailController
                                   .currentParticipant.value.item6 >
@@ -213,7 +214,7 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
             ],
           ),
           Container(
-            margin: EdgeInsets.only(left: 10, right: 10),
+            margin: EdgeInsets.only(right: 10),
             child: Container(
               child: _profileResultGameDetailController
                           .currentParticipant.value.teamPosition !=

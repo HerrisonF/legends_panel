@@ -84,9 +84,8 @@ class _SearchUserProfileComponentState
                   _profileController.buttonMessage.value,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 12,
+                    fontSize: 13,
                     fontWeight: FontWeight.w700,
-                    letterSpacing: 2,
                   ),
                 ),
                 _profileController.isUserLoading.value
@@ -112,30 +111,30 @@ class _SearchUserProfileComponentState
     return Container(
       child: Form(
         key: formKey,
-        child: TextFormField(
-          controller: _profileController.userNameInputController,
-          decoration: InputDecoration(
-            hintText: "HINT_SUMMONER_NAME".tr,
-            errorStyle: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+        child: Obx((){
+          return TextFormField(
+            enabled: !_profileController.isUserLoading.value,
+            controller: _profileController.userNameInputController,
+            decoration: InputDecoration(
+              hintText: "HINT_SUMMONER_NAME".tr,
+              errorStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
-          ),
-          onFieldSubmitted: (value) {
-            _searchForUserOnCloud();
-          },
-          validator: (value) {
-            if (value!.trim().isEmpty) {
-              _profileController.userNameInputController.clear();
-              return "INPUT_VALIDATOR_HOME".tr;
-            }
-            if (selectedRegion.isEmpty) {
-              _profileController.userNameInputController.clear();
-              return "INPUT_VALIDATOR_HOME".tr;
-            }
-            return null;
-          },
-        ),
+            validator: (value) {
+              if (value!.trim().isEmpty) {
+                _profileController.userNameInputController.clear();
+                return "INPUT_VALIDATOR_HOME".tr;
+              }
+              if (selectedRegion.isEmpty) {
+                _profileController.userNameInputController.clear();
+                return "INPUT_VALIDATOR_HOME".tr;
+              }
+              return null;
+            },
+          );
+        }),
       ),
     );
   }

@@ -12,62 +12,51 @@ class MasteryChampions extends StatelessWidget {
     return Obx(
       () {
         return _profileController.championMasteryList.length > 0
-            ? Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 6,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: [
-                    _championBadge(1, false, context),
-                    _championBadge(0, true, context),
-                    _championBadge(2, false, context),
-                  ],
-                ),
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _championBadge(1, context),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 20),
+                    child: _championBadge(0, context),
+                  ),
+                  _championBadge(2, context),
+                ],
               )
             : DotsLoading();
       },
     );
   }
 
-
-  static const int NEXUS_ONE_SCREEN = 800;
-
-  Container _championBadge(int index, bool best, BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal:  MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? 35 : 31,
-        vertical: best ? 0 : 10,
-      ),
-      child: Stack(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? MediaQuery.of(context).size.width/6 : MediaQuery.of(context).size.width / 7,
-            height: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? MediaQuery.of(context).size.height / 13 : MediaQuery.of(context).size.height / 12,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(
-                  _profileController.getCircularChampionImage(
-                      _profileController.championMasteryList[index].championId),
-                ),
-                fit: BoxFit.fill,
+  _championBadge(int index, BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 23, vertical: 13),
+          width: 70,
+          height: 70,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(
+                _profileController.getCircularChampionImage(
+                    _profileController.championMasteryList[index].championId),
               ),
-              borderRadius: BorderRadius.circular(100),
+              fit: BoxFit.fill,
+            ),
+            borderRadius: BorderRadius.circular(100),
+          ),
+        ),
+        Positioned(
+          bottom: -3,
+          child: Container(
+            height: 35,
+            child: Image.network(
+              _profileController.getMasteryImage(index),
             ),
           ),
-          Positioned(
-            top: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN ? MediaQuery.of(context).size.height / 20 : MediaQuery.of(context).size.height / 18,
-            left: 0,
-            right: 0,
-            child: Container(
-              height: MediaQuery.of(context).size.height/20,
-              child: Image.network(
-                _profileController.getMasteryImage(index),
-              ),
-            ),
-          )
-        ],
-      ),
+        )
+      ],
     );
   }
 }

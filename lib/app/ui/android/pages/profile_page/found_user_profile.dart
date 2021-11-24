@@ -338,43 +338,41 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
       top: MediaQuery.of(context).size.height / 5.5,
       left: 0,
       right: 0,
-      child: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Obx(() {
-              return Stack(
-                children: [
-                  Positioned(
-                    child: Container(
-                      child: Text(
-                        _masterController.userProfile.value.name,
-                        style: GoogleFonts.montserrat(
-                          fontSize: 18,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Obx(() {
+            return Stack(
+              children: [
+                Positioned(
+                  child: Container(
+                    child: Text(
+                      _masterController.userProfile.value.name,
+                      style: GoogleFonts.montserrat(
+                        fontSize: 18,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
-                  Positioned(
-                    left: 1,
-                    child: Container(
-                      child: Text(
-                        _masterController.userProfile.value.name,
-                        style: GoogleFonts.montserrat(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                        ),
+                ),
+                Positioned(
+                  left: 1,
+                  child: Container(
+                    child: Text(
+                      _masterController.userProfile.value.name,
+                      style: GoogleFonts.montserrat(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                  )
-                ],
-              );
-            })
-          ],
-        ),
+                  ),
+                )
+              ],
+            );
+          })
+        ],
       ),
     );
   }

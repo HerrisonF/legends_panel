@@ -18,7 +18,7 @@ class HeadersInterceptor extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     final tokenHeader = {
-      "X-Riot-Token": "RGAPI-884f601a-5a05-4ee1-a90e-d100c03357f9"
+      "X-Riot-Token": "RGAPI-463b3317-5dec-4222-819c-d010a822c83f" // essa é a de producao
     };
     options.headers.addAll(tokenHeader);
 

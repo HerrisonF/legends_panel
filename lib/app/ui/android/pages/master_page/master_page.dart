@@ -15,16 +15,13 @@ class MasterPage extends StatelessWidget {
       () => Scaffold(
         body: Stack(
           children: [
-            Expanded(
-              //flex: 10,
-              child: IndexedStack(
-                index: _masterController.currentPageIndex.value,
-                children: [
-                  CurrentGamePage(),
-                  ProfilePage(),
-                  AboutPage(),
-                ],
-              ),
+            IndexedStack(
+              index: _masterController.currentPageIndex.value,
+              children: [
+                CurrentGamePage(),
+                ProfilePage(),
+                AboutPage(),
+              ],
             ),
             Positioned(
               left: 0,

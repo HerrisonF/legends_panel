@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       getPages: AppPages.routes,
       initialRoute: Routes.SPLASHSCREEN,
-      locale: ui.window.locale,
+      locale: Locale('en_US'),
       translationsKeys: AppTranslation.translations,
     );
   }
