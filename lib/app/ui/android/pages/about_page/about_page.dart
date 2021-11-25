@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AboutPage extends StatelessWidget {
   @override
@@ -100,7 +100,7 @@ class AboutPage extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.only(top: 50),
                       child: Text(
-                        "DEVELOPMENT".tr + "Herrison Féres",
+                        AppLocalizations.of(context)!.development + " Herrison Féres",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.montserrat(
                           color: Colors.white,
@@ -153,14 +153,14 @@ class AboutPage extends StatelessWidget {
         "https://www.linkedin.com/in/herrison-f%C3%A9res-423023103/";
     await canLaunch(linkedinUrl)
         ? launch(linkedinUrl)
-        : showToast(context, "LINKEDIN_INSTALL".tr);
+        : showToast(context, AppLocalizations.of(context)!.linkedinInstall);
   }
 
   openGit(BuildContext context) async {
     var gitUrl = "https://github.com/HerrisonF";
     await canLaunch(gitUrl)
         ? launch(gitUrl)
-        : showToast(context, "GIT_INSTALL".tr);
+        : showToast(context, AppLocalizations.of(context)!.gitInstall);
   }
 
   showToast(BuildContext context, String text) {

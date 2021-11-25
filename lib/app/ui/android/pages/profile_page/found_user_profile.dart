@@ -10,6 +10,8 @@ import 'package:progress_indicators/progress_indicators.dart';
 import 'item_match_list_game_card.dart';
 import 'mastery_champions.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class FoundUserComponent extends StatefulWidget {
   const FoundUserComponent({Key? key}) : super(key: key);
 
@@ -260,7 +262,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                         blurRadius: 25)
                   ]),
                   child: Text(
-                    "LEVEL".tr +
+                    AppLocalizations.of(context)!.level +
                         " ${_masterController.userProfile.value.summonerLevel}",
                     style: GoogleFonts.montserrat(
                         color: Colors.white,
@@ -281,7 +283,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                       blurRadius: 25)
                 ]),
                 child: Text(
-                  'VICTORY'.tr,
+                  AppLocalizations.of(context)!.victory,
                   style: GoogleFonts.montserrat(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
@@ -308,7 +310,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                       blurRadius: 25)
                 ]),
                 child: Text(
-                  'LOSE'.tr,
+                  AppLocalizations.of(context)!.lose,
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,

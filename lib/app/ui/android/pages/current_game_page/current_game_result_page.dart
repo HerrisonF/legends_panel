@@ -7,6 +7,7 @@ import 'package:legends_panel/app/controller/result_controllers/current_game_res
 import 'package:legends_panel/app/model/current_game_spectator/current_game_banned_champion.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
 import 'package:legends_panel/app/ui/android/pages/current_game_page/current_game_participant_card.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CurrentGameResultPage extends StatelessWidget {
   final CurrentGameResultController _currentGameResultController =
@@ -79,7 +80,7 @@ class CurrentGameResultPage extends StatelessWidget {
                 : 80),
         child: Text(
           _currentGameResultController.mapMode.value.mapName == ""
-              ? "LOADING_MESSAGE".tr
+              ? AppLocalizations.of(context)!.loadingMessage
               : _currentGameResultController.mapMode.value.mapName,
           style: GoogleFonts.adamina(
             fontSize: MediaQuery.of(context).size.height >
@@ -180,44 +181,14 @@ class CurrentGameResultPage extends StatelessWidget {
   _detachTeams(BuildContext context) {
     return Column(
       children: [
-        Stack(
-          children: [
-            Positioned(
-              top: -7,
-              left: 10,
-              right: 0,
-              child: Container(
-                child: Image.asset(
-                  imageDivider,
-                  height: 30,
-                ),
-              ),
-            ),
-            Obx(() {
-              return _teamCard(_currentGameResultController.blueTeam,
-                  _currentGameResultController.blueTeamBannedChamp);
-            }),
-          ],
-        ),
-        Stack(
-          children: [
-            Positioned(
-              top: -7,
-              left: 10,
-              right: 0,
-              child: Container(
-                child: Image.asset(
-                  imageDivider,
-                  height: 30,
-                ),
-              ),
-            ),
-            Obx(() {
-              return _teamCard(_currentGameResultController.redTeam,
-                  _currentGameResultController.redTeamBannedChamp);
-            }),
-          ],
-        ),
+        Obx(() {
+          return _teamCard(_currentGameResultController.blueTeam,
+              _currentGameResultController.blueTeamBannedChamp);
+        }),
+        Obx(() {
+          return _teamCard(_currentGameResultController.redTeam,
+              _currentGameResultController.redTeamBannedChamp);
+        }),
       ],
     );
   }
@@ -225,8 +196,8 @@ class CurrentGameResultPage extends StatelessWidget {
   _teamCard(RxList<CurrentGameParticipant> participants,
       RxList<CurrentGameBannedChampion> bannedChampions) {
     return Container(
-      height: 380,
-      margin: EdgeInsets.only(top: 10),
+      height: 400,
+      margin: EdgeInsets.only(top: 10, bottom: 10),
       child: ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         itemCount: participants.length,

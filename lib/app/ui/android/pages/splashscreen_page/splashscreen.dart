@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/splashscreen_controller/splashscreen_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -68,13 +69,13 @@ class _SplashScreenState extends State<SplashScreen>
 
   Widget _applicationNameTitle(BuildContext context) {
     return _textSplashscreenMaker(
-      text: "APP_NAME_TITLE".tr,
+      text: AppLocalizations.of(context)!.appNameTitle,
     );
   }
 
   Widget _applicationNameSubTitle(BuildContext context) {
     return _textSplashscreenMaker(
-      text: "APP_NAME_SUB_TITLE".tr,
+      text: AppLocalizations.of(context)!.appNameSubTitle,
       margin: 15,
     );
   }

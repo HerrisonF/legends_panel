@@ -5,6 +5,7 @@ import 'package:legends_panel/app/controller/master_controller/master_controller
 import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
 import 'package:legends_panel/app/ui/android/components/region_dropdown_component.dart';
 import 'package:progress_indicators/progress_indicators.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchUserProfileComponent extends StatefulWidget {
   const SearchUserProfileComponent({Key? key}) : super(key: key);
@@ -81,7 +82,19 @@ class _SearchUserProfileComponentState
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  _profileController.buttonMessage.value,
+                  _profileController.isUserFound.value
+                      ? AppLocalizations.of(context)!.userFound
+                      : _profileController.isUserLoading.value
+                          ? AppLocalizations.of(context)!.searching
+                          : _profileController.isShowingMessage.value
+                              ? AppLocalizations.of(context)!
+                                  .buttonMessageUserNotFound
+                              : _profileController
+                                      .isShowingMessageUserIsNotPlaying.value
+                                  ? AppLocalizations.of(context)!
+                                      .buttonMessageGameNotFound
+                                  : AppLocalizations.of(context)!
+                                      .buttonMessageSearch,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 13,
@@ -111,12 +124,12 @@ class _SearchUserProfileComponentState
     return Container(
       child: Form(
         key: formKey,
-        child: Obx((){
+        child: Obx(() {
           return TextFormField(
             enabled: !_profileController.isUserLoading.value,
             controller: _profileController.userNameInputController,
             decoration: InputDecoration(
-              hintText: "HINT_SUMMONER_NAME".tr,
+              hintText: AppLocalizations.of(context)!.hintSummonerName,
               errorStyle: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
@@ -125,11 +138,11 @@ class _SearchUserProfileComponentState
             validator: (value) {
               if (value!.trim().isEmpty) {
                 _profileController.userNameInputController.clear();
-                return "INPUT_VALIDATOR_HOME".tr;
+                return AppLocalizations.of(context)!.inputValidatorHome;
               }
               if (selectedRegion.isEmpty) {
                 _profileController.userNameInputController.clear();
-                return "INPUT_VALIDATOR_HOME".tr;
+                return AppLocalizations.of(context)!.inputValidatorHome;
               }
               return null;
             },

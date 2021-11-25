@@ -39,7 +39,7 @@ class _CurrentGameParticipantCardState
   Widget build(BuildContext context) {
     return Container(
       color: Colors.black26,
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      padding: EdgeInsets.symmetric(horizontal:5, vertical: 15),
       child: Row(
         children: [
           _playerChampionBadge(),
@@ -127,13 +127,10 @@ class _CurrentGameParticipantCardState
               .soloUserTier.value.winRate.isNotEmpty
           ? Container(
               child: Text(
-                _currentGameParticipantController.soloUserTier.value.winRate +
+                "WR " + _currentGameParticipantController.soloUserTier.value.winRate +
                     "%",
                 style: GoogleFonts.montserrat(
-                  fontSize: MediaQuery.of(context).size.height >
-                          MasterController.NEXUS_ONE_SCREEN
-                      ? 12
-                      : 8,
+                  fontSize: 8,
                   color: Colors.white,
                 ),
               ),
@@ -158,7 +155,7 @@ class _CurrentGameParticipantCardState
           return Container(
             alignment: Alignment.center,
             margin: EdgeInsets.only(left: 5),
-            width: 120,
+            width: 80,
             child: _currentGameParticipantController
                     .soloUserTier.value.tier.isNotEmpty
                 ? Text(
@@ -167,20 +164,14 @@ class _CurrentGameParticipantCardState
                         _currentGameParticipantController
                             .soloUserTier.value.rank,
                     style: GoogleFonts.montserrat(
-                      fontSize: MediaQuery.of(context).size.height >
-                              MasterController.NEXUS_ONE_SCREEN
-                          ? 10
-                          : 6,
+                      fontSize: 8,
                       color: Colors.white,
                     ),
                   )
                 : Text(
                     "UNRANKED",
                     style: GoogleFonts.montserrat(
-                      fontSize: MediaQuery.of(context).size.height >
-                              MasterController.NEXUS_ONE_SCREEN
-                          ? 10
-                          : 6,
+                      fontSize: 8,
                       color: Colors.white,
                     ),
                   ),
@@ -189,7 +180,7 @@ class _CurrentGameParticipantCardState
         Obx(() {
           return Container(
             alignment: Alignment.center,
-            width: 120,
+            width: 80,
             child: _currentGameParticipantController
                     .soloUserTier.value.tier.isNotEmpty
                 ? Text(

@@ -14,7 +14,6 @@ class ProfileController {
   final TextEditingController userNameInputController = TextEditingController();
   final MasterController _masterController = Get.find<MasterController>();
 
-  Rx<String> buttonMessage = "BUTTON_MESSAGE_SEARCH".tr.obs;
   int amountMatches = 5;
   Rx<int> oldIndex = 0.obs;
   Rx<int> newIndex = 0.obs;
@@ -28,6 +27,8 @@ class ProfileController {
 
   Rx<bool> isUserLoading = false.obs;
   Rx<bool> isShowingMessage = false.obs;
+  Rx<bool> isUserFound = false.obs;
+  Rx<bool> isShowingMessageUserIsNotPlaying = false.obs;
   Rx<bool> lockNewLoadings = false.obs;
   Rx<bool> isLoadingNewMatches = false.obs;
 
@@ -67,7 +68,7 @@ class ProfileController {
   checkIsUserStored() async {
     if (_masterController.userProfileExist()) {
       if (_masterController.userProfile.value.region != "") {
-        buttonMessage("USER_FOUND".tr);
+        isUserFound(true);
         final tempRegion = _masterController.userProfile.value.region;
         starUserLoading();
         await getUserTierInformation(tempRegion);
@@ -150,7 +151,6 @@ class ProfileController {
 
   getUserOnCloud(String region) async {
     starUserLoading();
-    buttonMessage("SEARCHING".tr);
     await _masterController.getUserProfileOnCloud(
         userNameInputController.text, region);
     if (_masterController.userProfileExist()) {
@@ -174,16 +174,14 @@ class ProfileController {
   _showUserNotFoundMessage() {
     stopUserLoading();
     isShowingMessage(true);
-    buttonMessage("BUTTON_MESSAGE_USER_NOT_FOUND".tr);
     Future.delayed(Duration(seconds: 3)).then((value) {
-      buttonMessage("BUTTON_MESSAGE_SEARCH".tr);
       isShowingMessage(false);
     });
   }
 
   deletePersistedUser() {
     _masterController.deleteUserProfile();
-    buttonMessage = "BUTTON_MESSAGE_SEARCH".tr.obs;
+    isShowingMessage(false);
     amountMatches = 5;
     oldIndex = 0.obs;
     newIndex = 0.obs;

@@ -13,9 +13,9 @@ class CurrentGameController extends GetxController {
   final CurrentGameRepository _currentGameRepository = CurrentGameRepository();
   final TextEditingController userNameInputController = TextEditingController();
 
-  Rx<String> buttonMessage = "BUTTON_MESSAGE_SEARCH".tr.obs;
   Rx<bool> isLoadingUser = false.obs;
   Rx<bool> isShowingMessage = false.obs;
+  Rx<bool> isShowingMessageUserIsNotPlaying = false.obs;
   CurrentGameSpectator currentGameSpectator = CurrentGameSpectator();
 
   _startUserLoading() {
@@ -28,7 +28,6 @@ class CurrentGameController extends GetxController {
 
   getUserFromCloud(String region) async {
     _startUserLoading();
-    buttonMessage("SEARCHING".tr);
     await _masterController.getCurrentUserOnCloud(userNameInputController.text, region);
     if (_masterController.userCurrentGame.value.id.isNotEmpty) {
       _checkUserIsInCurrentGame(region);
@@ -61,20 +60,16 @@ class CurrentGameController extends GetxController {
   _showUserNotFoundMessage() {
     _stopUserLoading();
     isShowingMessage(true);
-    buttonMessage("BUTTON_MESSAGE_USER_NOT_FOUND".tr);
     Future.delayed(Duration(seconds: 3)).then((value) {
-      buttonMessage("BUTTON_MESSAGE_SEARCH".tr);
       isShowingMessage(false);
     });
   }
 
   _showUserIsNotInAGameMessage() {
     _stopUserLoading();
-    isShowingMessage(true);
-    buttonMessage("BUTTON_MESSAGE_GAME_NOT_FOUND".tr);
+    isShowingMessageUserIsNotPlaying(true);
     Future.delayed(Duration(seconds: 3)).then((value) {
-      buttonMessage("BUTTON_MESSAGE_SEARCH".tr);
-      isShowingMessage(false);
+      isShowingMessageUserIsNotPlaying(false);
     });
   }
 

@@ -1,0 +1,74 @@
+{
+  "language": "English",
+  "@language": {
+    "description": "The current Language"
+  },
+  "appNameTitle" : "Watch",
+  "@appNameTitle": {
+    "description": "Watch"
+  },
+  "appNameSubTitle" : "Summoner",
+  "@appNameSubTitle": {
+    "description": "Summoner"
+  },
+  "titleHomePage" : "Current Game",
+  "@titleHomePage": {
+    "description": "Current Game"
+  },
+  "hintSummonerName" : "Summoner's name",
+  "@hintSummonerName": {
+    "description": "Summoner's name"
+  },
+  "inputValidatorHome" : "This Field is Mandatory !",
+  "@inputValidatorHome": {
+    "description": "This Field is Mandatory !"
+  },
+  "buttonMessageSearch" : "Search",
+  "@buttonMessageSearch": {
+    "description": "Search"
+  },
+  "buttonMessageUserNotFound" : "User not found !",
+  "@buttonMessageUserNotFound": {
+    "description": "User not found !"
+  },
+  "buttonMessageGameNotFound" : "That summoner isn't playing !",
+  "@buttonMessageGameNotFound": {
+    "description": "That summoner isn't playing !"
+  },
+  "loadingMessage" : "Looking for the player ...",
+  "@loadingMessage": {
+    "description": "Looking for the player ..."
+  },
+  "level" : "Level",
+  "@level": {
+    "description": "Level"
+  },
+  "victory" : "Wins",
+  "@victory": {
+    "description": "Wins"
+  },
+  "lose" : "Losses",
+  "@lose": {
+    "description": "Losses"
+  },
+  "development" : "An experimental app beeing developed by",
+  "@development": {
+    "description": "An experimental app beeing developed by"
+  },
+  "linkedinInstall" : "Linkedin is not installed !",
+  "@linkedinInstall": {
+    "description": "Linkedin is not installed !"
+  },
+  "gitInstall" : "We got problems to open Git !",
+  "@gitInstall": {
+    "description": "We got problems to open Git !"
+  },
+  "userFound" : "We found you ! ",
+  "@userFound": {
+    "description": "We found you ! "
+  },
+  "searching" : "Searching ",
+  "@searching": {
+    "description": "Searching "
+  }
+}
