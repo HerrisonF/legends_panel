@@ -67,13 +67,10 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
       child: Column(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height / 2.55,
+            height: MediaQuery.of(context).size.height > 800 ? MediaQuery.of(context).size.height / 3.4 : MediaQuery.of(context).size.height / 3.2,
             child: summonerPanel(context),
           ),
-          Container(
-            margin: EdgeInsets.only(top: 15),
-            child: MasteryChampions(),
-          ),
+          MasteryChampions(),
           Obx(() {
             return _masterController.userProfile.value.name != ""
                 ? _outButton()
@@ -82,12 +79,15 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
           Obx(() {
             return _profileController.matchList.length > 0
                 ? Expanded(
-                    child: ListView.builder(
-                      itemCount: _hasMoreMatchesToLoad(),
-                      controller: this._scrollController,
-                      itemBuilder: (_, myCurrentPosition) {
-                        return _isLoadingGameCard(myCurrentPosition);
-                      },
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 55),
+                      child: ListView.builder(
+                        itemCount: _hasMoreMatchesToLoad(),
+                        controller: this._scrollController,
+                        itemBuilder: (_, myCurrentPosition) {
+                          return _isLoadingGameCard(myCurrentPosition);
+                        },
+                      ),
                     ),
                   )
                 : DotsLoading();
@@ -99,24 +99,26 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
 
   Container _outButton() {
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
+      margin: EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(80),
         color: Colors.black26,
       ),
       height:
           MediaQuery.of(context).size.height > MasterController.NEXUS_ONE_SCREEN
-              ? MediaQuery.of(context).size.height / 17
-              : MediaQuery.of(context).size.height / 14,
-      width: MediaQuery.of(context).size.width / 8,
+              ? MediaQuery.of(context).size.height / 18
+              : MediaQuery.of(context).size.height / 15,
+      width: MediaQuery.of(context).size.height > MasterController.NEXUS_ONE_SCREEN
+          ? MediaQuery.of(context).size.height / 18
+          : MediaQuery.of(context).size.height / 15,
       child: IconButton(
         icon: Icon(
           Icons.exit_to_app,
           color: Colors.white,
           size: MediaQuery.of(context).size.height >
                   MasterController.NEXUS_ONE_SCREEN
-              ? 22
-              : 15,
+              ? 20
+              : 13,
         ),
         onPressed: () {
           goToProfile();
@@ -147,7 +149,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
     } else {
       return JumpingDotsProgressIndicator(
         color: Colors.white,
-        fontSize: 20,
+        fontSize: 22,
       );
     }
   }
@@ -167,24 +169,20 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   end: Alignment.bottomCenter,
                   colors: [Colors.black, Colors.transparent],
                 ).createShader(
-                  Rect.fromLTRB(
-                      0,
-                      MediaQuery.of(context).size.height / 11,
-                      rect.width,
-                      rect.height - MediaQuery.of(context).size.height / 11),
+                  Rect.fromLTRB(0, 0, rect.width, rect.height),
                 );
               },
               blendMode: BlendMode.dstIn,
               child: ClipRRect(
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.elliptical(
-                      MediaQuery.of(context).size.width / 2, 70),
+                      MediaQuery.of(context).size.width / 2, 0),
                   bottomRight: Radius.elliptical(
-                      MediaQuery.of(context).size.width / 2, 70),
+                      MediaQuery.of(context).size.width / 3, 100),
                 ),
                 child: _profileController.championMasteryList.isNotEmpty
                     ? Container(
-                        height: MediaQuery.of(context).size.height / 3,
+                        height: MediaQuery.of(context).size.height / 4,
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: NetworkImage(
@@ -193,7 +191,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                                     .championMasteryList[0].championId,
                               ),
                             ),
-                            fit: BoxFit.fill,
+                            fit: BoxFit.cover,
                             colorFilter: ColorFilter.mode(
                                 Colors.black26, BlendMode.overlay),
                           ),
@@ -223,15 +221,14 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
 
   Positioned _playerEloEmblem(BuildContext context) {
     return Positioned(
-      top: MediaQuery.of(context).size.height / 4.3,
+      top: MediaQuery.of(context).size.height > 800  ? MediaQuery.of(context).size.height / 5.9 : MediaQuery.of(context).size.height / 5.2,
       left: 0,
       right: 0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            height: MediaQuery.of(context).size.height / 6.5,
-            width: MediaQuery.of(context).size.width / 4,
+            height: MediaQuery.of(context).size.height / 8.5,
             child: Image.asset(
                 "images/emblem_${_profileController.userTierList.first.tier.toLowerCase()}.png"),
           ),
@@ -243,7 +240,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
   Container _profileStatistics() {
     return Container(
       margin: EdgeInsets.only(
-          top: MediaQuery.of(context).size.height / 10,
+          top: MediaQuery.of(context).size.height / 14,
           left: MediaQuery.of(context).size.width / 10,
           right: MediaQuery.of(context).size.width / 9),
       child: Row(
@@ -254,7 +251,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
               Obx(() {
                 return Container(
                   margin: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height / 10),
+                      top: MediaQuery.of(context).size.height / 20),
                   decoration: BoxDecoration(boxShadow: [
                     BoxShadow(
                         color: Colors.black,
@@ -337,7 +334,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
 
   Positioned _profileName(BuildContext context) {
     return Positioned(
-      top: MediaQuery.of(context).size.height / 5.5,
+      top: MediaQuery.of(context).size.height / 6.6,
       left: 0,
       right: 0,
       child: Row(
@@ -386,12 +383,12 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
         children: [
           Container(
             margin:
-                EdgeInsets.only(top: MediaQuery.of(context).size.height / 45),
+                EdgeInsets.only(top: 10),
             width: MediaQuery.of(context).size.height >
                     MasterController.NEXUS_ONE_SCREEN
-                ? MediaQuery.of(context).size.width / 5
-                : MediaQuery.of(context).size.width / 6,
-            height: MediaQuery.of(context).size.height / 11,
+                ? MediaQuery.of(context).size.width / 6
+                : MediaQuery.of(context).size.width / 7,
+            height: MediaQuery.of(context).size.height / 13,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(_profileController.getUserProfileImage()),

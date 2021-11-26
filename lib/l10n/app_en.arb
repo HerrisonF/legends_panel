@@ -35,9 +35,9 @@
   "@buttonMessageGameNotFound": {
     "description": "That summoner isn't playing !"
   },
-  "loadingMessage" : "Looking for the player ...",
+  "loadingMessage" : "Looking for the player",
   "@loadingMessage": {
-    "description": "Looking for the player ..."
+    "description": "Looking for the player"
   },
   "level" : "Level",
   "@level": {
@@ -51,13 +51,9 @@
   "@lose": {
     "description": "Losses"
   },
-  "development" : "An experimental app beeing developed by",
+  "development" : "Do you like the application and have Brave Browser ? You can help me going to GIT and donating BATs :)",
   "@development": {
     "description": "An experimental app beeing developed by"
-  },
-  "linkedinInstall" : "Linkedin is not installed !",
-  "@linkedinInstall": {
-    "description": "Linkedin is not installed !"
   },
   "gitInstall" : "We got problems to open Git !",
   "@gitInstall": {

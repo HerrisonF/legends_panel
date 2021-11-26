@@ -34,15 +34,24 @@ class _RegionDropDownComponentState extends State<RegionDropDownComponent> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 38,
       alignment: Alignment.center,
-      margin: EdgeInsets.symmetric(horizontal: 75),
+      margin: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.height > 800
+            ? MediaQuery.of(context).size.width / 3.6
+            : MediaQuery.of(context).size.width / 4,
+      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: Theme.of(context).backgroundColor,
       ),
       child: DropdownButton(
         menuMaxHeight: 200,
-        icon: Icon(Icons.arrow_drop_down, color: Colors.white),
+        icon: Icon(
+          Icons.arrow_drop_down,
+          color: Colors.white,
+          size: MediaQuery.of(context).size.height > 800 ? 25 : 20,
+        ),
         elevation: 8,
         underline: SizedBox.shrink(),
         dropdownColor: Theme.of(context).backgroundColor,
@@ -60,9 +69,9 @@ class _RegionDropDownComponentState extends State<RegionDropDownComponent> {
             child: Text(
               location,
               style: GoogleFonts.montserrat(
-                color: Colors.white,
-                fontWeight: FontWeight.w400,
-              ),
+                  color: Colors.white,
+                  fontWeight: FontWeight.w300,
+                  fontSize: MediaQuery.of(context).size.height > 800 ? 14 : 12),
             ),
             value: location,
           );

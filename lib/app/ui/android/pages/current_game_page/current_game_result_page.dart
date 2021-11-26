@@ -183,21 +183,22 @@ class CurrentGameResultPage extends StatelessWidget {
       children: [
         Obx(() {
           return _teamCard(_currentGameResultController.blueTeam,
-              _currentGameResultController.blueTeamBannedChamp);
+              _currentGameResultController.blueTeamBannedChamp, context);
         }),
         Obx(() {
           return _teamCard(_currentGameResultController.redTeam,
-              _currentGameResultController.redTeamBannedChamp);
+              _currentGameResultController.redTeamBannedChamp, context);
         }),
       ],
     );
   }
 
   _teamCard(RxList<CurrentGameParticipant> participants,
-      RxList<CurrentGameBannedChampion> bannedChampions) {
+      RxList<CurrentGameBannedChampion> bannedChampions, context) {
     return Container(
-      height: 400,
-      margin: EdgeInsets.only(top: 10, bottom: 10),
+      height:  MediaQuery.of(context).size.height > 800 ? 355 : 210,
+      margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height > 800 ? 0
+      : 5, top: MediaQuery.of(context).size.height > 800 ? 0 : 10),
       child: ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         itemCount: participants.length,

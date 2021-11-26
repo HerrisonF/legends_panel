@@ -28,9 +28,12 @@ class MasterPage extends StatelessWidget {
               right: 0,
               bottom: 0,
               child: Container(
-                //height: 100,
                 color: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: MediaQuery.of(context).size.height >
+                      MasterController.NEXUS_ONE_SCREEN ? 11 : 3,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -48,21 +51,19 @@ class MasterPage extends StatelessWidget {
   }
 
   customIconButton(BuildContext context, int selectedIcon, IconData icon) {
-    return Container(
-      child: IconButton(
-        onPressed: () {
-          _masterController.changeCurrentPageIndex(selectedIcon);
-        },
-        icon: Icon(
-          icon,
-          color: _masterController.currentPageIndex.value == selectedIcon
-              ? Color(0xFF4248A5)
-              : Color(0xFF292E78).withOpacity(0.3),
-          size: MediaQuery.of(context).size.height >
-                  MasterController.NEXUS_ONE_SCREEN
-              ? 22
-              : 16,
-        ),
+    return IconButton(
+      onPressed: () {
+        _masterController.changeCurrentPageIndex(selectedIcon);
+      },
+      icon: Icon(
+        icon,
+        color: _masterController.currentPageIndex.value == selectedIcon
+            ? Color(0xFF4248A5)
+            : Color(0xFF292E78).withOpacity(0.3),
+        size: MediaQuery.of(context).size.height >
+                MasterController.NEXUS_ONE_SCREEN
+            ? 23
+            : 16,
       ),
     );
   }

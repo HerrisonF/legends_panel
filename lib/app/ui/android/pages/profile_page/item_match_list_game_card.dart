@@ -214,7 +214,7 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
             ],
           ),
           Container(
-            margin: EdgeInsets.only(right: 10),
+            margin: EdgeInsets.only(right: 10, left: 10),
             child: Container(
               child: _profileResultGameDetailController
                           .currentParticipant.value.teamPosition !=

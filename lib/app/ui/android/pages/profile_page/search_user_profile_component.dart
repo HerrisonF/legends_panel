@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
-import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
 import 'package:legends_panel/app/ui/android/components/region_dropdown_component.dart';
 import 'package:progress_indicators/progress_indicators.dart';
@@ -26,10 +26,7 @@ class _SearchUserProfileComponentState
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.height >
-                MasterController.NEXUS_ONE_SCREEN
-            ? MediaQuery.of(context).size.width / 12
-            : MediaQuery.of(context).size.width / 15,
+        horizontal: MediaQuery.of(context).size.width / 8,
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -64,91 +61,81 @@ class _SearchUserProfileComponentState
 
   Container _buttonSearchSummoner() {
     return Container(
-      margin: EdgeInsets.symmetric(
-        vertical: MediaQuery.of(context).size.height >
-                MasterController.NEXUS_ONE_SCREEN
-            ? MediaQuery.of(context).size.width / 13.5
-            : MediaQuery.of(context).size.width / 11,
-      ),
-      width: MediaQuery.of(context).size.width,
-      height:
-          MediaQuery.of(context).size.height > MasterController.NEXUS_ONE_SCREEN
-              ? MediaQuery.of(context).size.height / 18
-              : MediaQuery.of(context).size.height / 13,
-      child: Obx(
-        () {
-          return OutlinedButton(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  _profileController.isUserFound.value
-                      ? AppLocalizations.of(context)!.userFound
-                      : _profileController.isUserLoading.value
-                          ? AppLocalizations.of(context)!.searching
-                          : _profileController.isShowingMessage.value
-                              ? AppLocalizations.of(context)!
-                                  .buttonMessageUserNotFound
-                              : _profileController
-                                      .isShowingMessageUserIsNotPlaying.value
-                                  ? AppLocalizations.of(context)!
-                                      .buttonMessageGameNotFound
-                                  : AppLocalizations.of(context)!
-                                      .buttonMessageSearch,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                  ),
+      margin: EdgeInsets.symmetric(vertical: 30),
+      height: MediaQuery.of(context).size.height > 800 ? 50 : 40,
+      child: Obx(() {
+        return OutlinedButton(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                _profileController.isUserFound.value
+                    ? AppLocalizations.of(context)!.userFound
+                    : _profileController.isUserLoading.value
+                        ? AppLocalizations.of(context)!.searching
+                        : _profileController.isShowingMessage.value
+                            ? AppLocalizations.of(context)!
+                                .buttonMessageUserNotFound
+                            : _profileController
+                                    .isShowingMessageUserIsNotPlaying.value
+                                ? AppLocalizations.of(context)!
+                                    .buttonMessageGameNotFound
+                                : AppLocalizations.of(context)!
+                                    .buttonMessageSearch,
+                style: GoogleFonts.montserrat(
+                  color: Colors.white,
+                  fontSize: MediaQuery.of(context).size.height > 800 ? 15 : 12,
+                  fontWeight: FontWeight.w500,
                 ),
-                _profileController.isUserLoading.value
-                    ? JumpingDotsProgressIndicator(
-                        fontSize: 22,
-                        color: Colors.white,
-                      )
-                    : SizedBox.shrink()
-              ],
-            ),
-            onPressed: _profileController.isShowingMessage.value
-                ? null
-                : () {
-                    _searchForUserOnCloud();
-                  },
-          );
-        },
-      ),
+              ),
+              _profileController.isUserLoading.value
+                  ? JumpingDotsProgressIndicator(
+                      fontSize: 22,
+                      color: Colors.white,
+                    )
+                  : SizedBox.shrink()
+            ],
+          ),
+          onPressed: _profileController.isShowingMessage.value
+              ? null
+              : () {
+                  _searchForUserOnCloud();
+                },
+        );
+      }),
     );
   }
 
-  Container _inputSummonerName() {
-    return Container(
-      child: Form(
-        key: formKey,
-        child: Obx(() {
-          return TextFormField(
-            enabled: !_profileController.isUserLoading.value,
-            controller: _profileController.userNameInputController,
-            decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)!.hintSummonerName,
-              errorStyle: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+  _inputSummonerName() {
+    return Form(
+      key: formKey,
+      child: Obx(() {
+        return TextFormField(
+          enabled: !_profileController.isUserLoading.value,
+          controller: _profileController.userNameInputController,
+          decoration: InputDecoration(
+            hintText: AppLocalizations.of(context)!.hintSummonerName,
+            hintStyle: TextStyle(
+              fontSize: MediaQuery.of(context).size.height > 800 ? 16 : 12,
             ),
-            validator: (value) {
-              if (value!.trim().isEmpty) {
-                _profileController.userNameInputController.clear();
-                return AppLocalizations.of(context)!.inputValidatorHome;
-              }
-              if (selectedRegion.isEmpty) {
-                _profileController.userNameInputController.clear();
-                return AppLocalizations.of(context)!.inputValidatorHome;
-              }
-              return null;
-            },
-          );
-        }),
-      ),
+            errorStyle: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Colors.black,
+            ),
+          ),
+          validator: (value) {
+            if (value!.trim().isEmpty) {
+              _profileController.userNameInputController.clear();
+              return AppLocalizations.of(context)!.inputValidatorHome;
+            }
+            if (selectedRegion.isEmpty) {
+              _profileController.userNameInputController.clear();
+              return AppLocalizations.of(context)!.inputValidatorHome;
+            }
+            return null;
+          },
+        );
+      }),
     );
   }
 

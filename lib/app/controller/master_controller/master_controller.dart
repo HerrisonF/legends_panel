@@ -5,6 +5,7 @@ import 'package:legends_panel/app/model/general/map_mode.dart';
 import 'package:legends_panel/app/model/general/user.dart';
 import 'package:legends_panel/app/data/repository/general/master_repository.dart';
 import 'package:legends_panel/app/routes/app_routes.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class MasterController {
 
@@ -12,6 +13,7 @@ class MasterController {
 
   Rx<User> userCurrentGame = User().obs;
   Rx<User> userProfile = User().obs;
+  late PackageInfo packageInfo;
 
   RxInt currentPageIndex = 0.obs;
   List<Champion> championList = <Champion>[];
@@ -27,6 +29,7 @@ class MasterController {
     await getChampionList();
     await getSummonerSpells();
     await getMapList();
+    packageInfo = await PackageInfo.fromPlatform();
    Get.offAllNamed(Routes.MASTER);
   }
 

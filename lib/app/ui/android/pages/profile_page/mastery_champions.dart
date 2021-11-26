@@ -33,9 +33,9 @@ class MasteryChampions extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 23, vertical: 13),
-          width: 70,
-          height: 70,
+          margin: EdgeInsets.symmetric(horizontal: 23, vertical: 12),
+          width: MediaQuery.of(context).size.height > 800 ? 60 : 40,
+          height: MediaQuery.of(context).size.height > 800 ? 60 : 40,
           decoration: BoxDecoration(
             image: DecorationImage(
               image: NetworkImage(
@@ -48,9 +48,9 @@ class MasteryChampions extends StatelessWidget {
           ),
         ),
         Positioned(
-          bottom: -3,
+          bottom: MediaQuery.of(context).size.height > 800 ? -3 : 3,
           child: Container(
-            height: 35,
+            height: MediaQuery.of(context).size.height > 800 ? 30 : 20,
             child: Image.network(
               _profileController.getMasteryImage(index),
             ),

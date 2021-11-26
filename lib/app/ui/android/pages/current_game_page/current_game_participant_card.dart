@@ -39,7 +39,7 @@ class _CurrentGameParticipantCardState
   Widget build(BuildContext context) {
     return Container(
       color: Colors.black26,
-      padding: EdgeInsets.symmetric(horizontal:5, vertical: 15),
+      padding: EdgeInsets.symmetric(horizontal:5, vertical: MediaQuery.of(context).size.height > 800 ? 10 : 5),
       child: Row(
         children: [
           _playerChampionBadge(),
@@ -69,13 +69,13 @@ class _CurrentGameParticipantCardState
           _currentGameParticipantController.getSpellUrl(
             widget.participant!.spell1Id.toString(),
           ),
-          width: MediaQuery.of(context).size.width / 20,
+          width: MediaQuery.of(context).size.width / 21.5,
         ),
         Image.network(
           _currentGameParticipantController.getSpellUrl(
             widget.participant!.spell2Id.toString(),
           ),
-          width: MediaQuery.of(context).size.width / 20,
+          width: MediaQuery.of(context).size.width / 21.5,
         ),
       ],
     );
@@ -141,7 +141,7 @@ class _CurrentGameParticipantCardState
 
   Container _userTierNameAndSymbol() {
     return Container(
-      margin: EdgeInsets.only(right: 5),
+      margin: EdgeInsets.only(right: 5, left: MediaQuery.of(context).size.height > 800 ? 10 : 0),
       child: Row(
         children: [_userTierSymbol(), _userTierName()],
       ),

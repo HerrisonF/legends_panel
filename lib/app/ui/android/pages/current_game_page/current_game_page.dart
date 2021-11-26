@@ -26,11 +26,11 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        Container(decoration: _blueAndImageBackground(context)),
         Container(
-          decoration: _blueAndImageBackground(context),
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 35),
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width / 8,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -59,36 +59,39 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
     );
   }
 
-  Container _inputSummonerNameForSearchCurrentGame() {
-    return Container(
-      child: Form(
-        key: formKey,
-        child: Obx(() {
-          return TextFormField(
-            enabled: !_currentGameController.isLoadingUser.value,
-            decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)!.hintSummonerName,
-              errorStyle: GoogleFonts.montserrat(
-                  fontWeight: FontWeight.bold, color: Colors.white),
+  _inputSummonerNameForSearchCurrentGame() {
+    return Form(
+      key: formKey,
+      child: Obx(() {
+        return TextFormField(
+          enabled: !_currentGameController.isLoadingUser.value,
+          decoration: InputDecoration(
+            hintText: AppLocalizations.of(context)!.hintSummonerName,
+            hintStyle: TextStyle(
+              fontSize: MediaQuery.of(context).size.height > 800 ? 16 : 12,
             ),
-            controller: _currentGameController.userNameInputController,
-            validator: (value) {
-              if (value!.trim().isEmpty) {
-                _currentGameController.userNameInputController.clear();
-                return AppLocalizations.of(context)!.inputValidatorHome;
-              }
-              return null;
-            },
-          );
-        }),
-      ),
+            errorStyle: GoogleFonts.montserrat(
+              fontWeight: FontWeight.w500,
+              color: Colors.black,
+            ),
+          ),
+          controller: _currentGameController.userNameInputController,
+          validator: (value) {
+            if (value!.trim().isEmpty) {
+              _currentGameController.userNameInputController.clear();
+              return AppLocalizations.of(context)!.inputValidatorHome;
+            }
+            return null;
+          },
+        );
+      }),
     );
   }
 
   Container _buttonSearchForSummoner(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 25),
-      height: 50,
+      margin: EdgeInsets.symmetric(vertical: 30),
+      height: MediaQuery.of(context).size.height > 800 ? 50 : 40,
       child: Obx(() {
         return OutlinedButton(
           child: Row(
@@ -107,8 +110,8 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                             : AppLocalizations.of(context)!.buttonMessageSearch,
                 style: GoogleFonts.montserrat(
                   color: Colors.white,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
+                  fontSize: MediaQuery.of(context).size.height > 800 ? 15 : 12,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
               _currentGameController.isLoadingUser.value

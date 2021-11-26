@@ -14,7 +14,7 @@ class ProfileController {
   final TextEditingController userNameInputController = TextEditingController();
   final MasterController _masterController = Get.find<MasterController>();
 
-  int amountMatches = 5;
+  int amountMatches = 6;
   Rx<int> oldIndex = 0.obs;
   Rx<int> newIndex = 0.obs;
 
@@ -96,7 +96,7 @@ class ProfileController {
   }
 
   getMatchListIds(String region) async {
-    this.newIndex.value += 5;
+    this.newIndex.value += 6;
     List<String> tempMatchIdList = [];
 
     tempMatchIdList = await _profileRepository.getMatchListIds(
@@ -182,7 +182,7 @@ class ProfileController {
   deletePersistedUser() {
     _masterController.deleteUserProfile();
     isShowingMessage(false);
-    amountMatches = 5;
+    amountMatches = 6;
     oldIndex = 0.obs;
     newIndex = 0.obs;
 
