@@ -13,7 +13,9 @@ import 'l10n/l10n.dart';
 void main() async {
   await GetStorage.init('store');
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,
-      overlays: [SystemUiOverlay.bottom]);
+      overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(MyApp());
 }
 
