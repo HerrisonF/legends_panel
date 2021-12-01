@@ -1,7 +1,7 @@
 class SummonerSpell {
   String type = "";
   String version = "";
-  List<Spell> spell = <Spell>[];
+  List<Spell> spells = <Spell>[];
 
   SummonerSpell();
 
@@ -10,14 +10,20 @@ class SummonerSpell {
     version = json['version']??"";
     if(json['data'] != null){
       for (final name in json['data'].keys) {
-        spell.add(Spell.fromJson(json['data'][name]));
+        spells.add(Spell.fromJson(json['data'][name]));
       }
     }
   }
 
+  Map<String, dynamic> toJson()=> {
+    'type': type,
+    'version' : version,
+    'spell' : spells,
+  };
+
   @override
   String toString() {
-    return 'SummonerSpell{type: $type, version: $version, spell: $spell}';
+    return 'SummonerSpell{type: $type, version: $version, spell: $spells}';
   }
 }
 
@@ -38,6 +44,14 @@ class Spell {
     image = Image.fromJson(json['image']);
   }
 
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name' : name,
+    'description' : description,
+    'key' : key,
+    'image' : image,
+  };
+
   @override
   String toString() {
     return 'Spell{id: $id, name: $name, description: $description, key: $key, image: $image}';
@@ -56,6 +70,12 @@ class Image {
     sprite = json['sprite']??"";
     group = json['group']??"";
   }
+
+  Map<String, dynamic> toJson() => {
+    'full' : full,
+    'sprite' : sprite,
+    'group' : group,
+  };
 
   @override
   String toString() {

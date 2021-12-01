@@ -73,7 +73,7 @@ class CurrentGameController extends GetxController {
     });
   }
 
-  String getLoLVersion() {
-    return _masterController.lolVersion;
-  }
+  // String getLoLVersion() {
+  //   return _masterController.lolVersion;
+  // }
 }

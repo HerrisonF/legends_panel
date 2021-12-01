@@ -5,8 +5,8 @@ class ProfileResultGameDetailRepository {
 
   ProfileResultGameDetailProvider _profileResultGameDetailProvider = ProfileResultGameDetailProvider();
 
-  Future<MatchDetail> getMatchDetail(String matchId){
-    return _profileResultGameDetailProvider.getMatchDetail(matchId);
-  }
+  // Future<MatchDetail> getMatchDetail(String matchId){
+  //   return _profileResultGameDetailProvider.getMatchDetail(matchId);
+  // }
 
 }

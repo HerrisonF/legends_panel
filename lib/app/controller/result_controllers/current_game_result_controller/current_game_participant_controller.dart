@@ -40,21 +40,21 @@ class CurrentGameParticipantController extends MasterController {
   String getChampionBadgeUrl(String championId) {
     Champion champion = _masterController.getChampionById(championId);
     return _participantRepository.getChampionBadgeUrl(
-        champion.detail.id, _masterController.lolVersion);
+        champion.detail.id, _masterController.lolVersion.value.actualVersion);
   }
 
   String getSpellUrl(String spellId) {
     Spell spell = _masterController.getSpellById(spellId);
     return _participantRepository.getSpellBadgeUrl(
-        spell.id, _masterController.lolVersion);
+        spell.id, _masterController.lolVersion.value.actualVersion);
   }
 
   String getItemUrl(String itemId){
-    return _participantRepository.getItemUrl(itemId, _masterController.lolVersion);
+    return _participantRepository.getItemUrl(itemId, _masterController.lolVersion.value.actualVersion);
   }
 
   String getPositionUrl(String position){
-    return _participantRepository.getPosition(position, _masterController.lolVersion);
+    return _participantRepository.getPosition(position, _masterController.lolVersion.value.actualVersion);
   }
 
   getSpectator(String summonerId, String region) async {

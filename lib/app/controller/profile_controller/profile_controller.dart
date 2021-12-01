@@ -194,7 +194,7 @@ class ProfileController {
 
   String getUserProfileImage() {
     return _profileRepository.getProfileImage(
-      _masterController.lolVersion.toString(),
+      _masterController.lolVersion.value.actualVersion,
       _masterController.userProfile.value.profileIconId.toString(),
     );
   }

@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
-import 'package:legends_panel/app/model/current_game_spectator/current_game_summoner_spell.dart';
-import 'package:legends_panel/app/model/general/champion.dart';
-import 'package:legends_panel/app/model/general/map_mode.dart';
+import 'package:legends_panel/app/model/general/champion_room.dart';
+import 'package:legends_panel/app/model/general/lol_version.dart';
+import 'package:legends_panel/app/model/general/map_room.dart';
+import 'package:legends_panel/app/model/general/spell_room.dart';
 import 'package:legends_panel/app/model/general/user.dart';
 import 'package:legends_panel/app/data/repository/general/master_repository.dart';
 import 'package:legends_panel/app/routes/app_routes.dart';
@@ -16,21 +17,21 @@ class MasterController {
   late PackageInfo packageInfo;
 
   RxInt currentPageIndex = 0.obs;
-  List<Champion> championList = <Champion>[];
-  SummonerSpell summonerSpell = SummonerSpell();
-  List<MapMode> mapList = <MapMode>[];
-  String lolVersion = "";
+  Rx<LolVersion> lolVersion = LolVersion().obs;
+  Rx<ChampionRoom> championRoom = ChampionRoom().obs;
+  Rx<SpellRoom> spellRoom = SpellRoom().obs;
+  Rx<MapRoom> mapRoom = MapRoom().obs;
 
   static const int NEXUS_ONE_SCREEN = 800;
 
   start() async {
     await readPersistedUser();
     await getLolVersion();
-    await getChampionList();
-    await getSummonerSpells();
-    await getMapList();
+    await getChampionRoom();
+    await getSummonerSpellsRoom();
+    await getMapRoom();
     packageInfo = await PackageInfo.fromPlatform();
-   Get.offAllNamed(Routes.MASTER);
+    Get.offAllNamed(Routes.MASTER);
   }
 
   readPersistedUser() async {
@@ -38,19 +39,72 @@ class MasterController {
   }
 
   getLolVersion() async {
-    lolVersion = await _masterRepository.getLOLVersion();
+    lolVersion.value = await _masterRepository.getLOLVersionOnLocal();
+    if(!isLolVersionStored() || lolVersion.value.needToLoadVersionFromWeb()){
+      await getLolVersionOnWeb();
+    }
+    lolVersion.refresh();
   }
 
-  getChampionList() async {
-    championList.addAll(await _masterRepository.getChampionList(lolVersion));
+  bool isLolVersionStored(){
+    return lolVersion.value.actualVersion.isNotEmpty;
   }
 
-  getSummonerSpells() async {
-    summonerSpell = await _masterRepository.getSpellList(lolVersion);
+  getLolVersionOnWeb() async {
+    lolVersion.value.versions.addAll(await _masterRepository.getLOLVersionOnWeb());
+    lolVersion.value.actualVersion = lolVersion.value.versions.first;
+    _masterRepository.saveLolVersion(lolVersion.value.toJson());
   }
 
-  getMapList() async {
-    mapList.addAll(await _masterRepository.getMapList());
+  getChampionRoom() async {
+    championRoom.value = await _masterRepository.getChampionRoomOnLocal();
+    if(!isChampionRoomStored() || championRoom.value.needToLoadVersionFromWeb()){
+      await getChampionRoomOnWeb();
+    }
+    championRoom.refresh();
+  }
+
+  bool isChampionRoomStored(){
+    return championRoom.value.lastDate.isNotEmpty;
+  }
+
+  getChampionRoomOnWeb() async {
+    championRoom.value = await _masterRepository.getChampionRoomOnWeb(lolVersion.value.actualVersion);
+    _masterRepository.saveChampionRoom(championRoom.value.toJson());
+  }
+
+  getSummonerSpellsRoom() async {
+    spellRoom.value = await _masterRepository.getSpellRoomOnLocal();
+    if(!isSpellRoomStored() || spellRoom.value.needToLoadVersionFromWeb()){
+      await getSpellRoomOnWeb();
+    }
+    spellRoom.refresh();
+  }
+
+  bool isSpellRoomStored(){
+    return spellRoom.value.lastDate.isNotEmpty;
+  }
+
+  getSpellRoomOnWeb() async {
+    spellRoom.value = await _masterRepository.getSpellRoomOnWeb(lolVersion.value.actualVersion);
+    _masterRepository.saveSpellRoom(spellRoom.value.toJson());
+  }
+
+  getMapRoom() async {
+    mapRoom.value = await _masterRepository.getMapRoomOnLocal();
+    if(!isMapRoomStored() || mapRoom.value.needToLoadVersionFromWeb()){
+      await getMapRoomOnWeb();
+    }
+    mapRoom.refresh();
+  }
+
+  isMapRoomStored(){
+    return mapRoom.value.lastDate.isNotEmpty;
+  }
+
+  getMapRoomOnWeb() async {
+    mapRoom.value = await _masterRepository.getMapRoomOnWeb();
+    _masterRepository.saveMapRoom(mapRoom.value.toJson());
   }
 
   changeCurrentPageIndex(int newPageIndex){
@@ -58,16 +112,16 @@ class MasterController {
   }
 
   getChampionById(String championId){
-    return championList.where((champ) => champ.detail.key.toString() == championId).first;
+    return championRoom.value.champions.where((champ) => champ.detail.key.toString() == championId).first;
   }
 
   getSpellById(String spellId){
-    return summonerSpell.spell.where((spell) => spell.key.toString() == spellId).first;
+    return spellRoom.value.summonerSpell.spells.where((spell) => spell.key.toString() == spellId).first;
   }
 
 
   getMapById(String mapId){
-    return mapList.where((map) => map.mapId.toString() == mapId).first;
+    return mapRoom.value.maps.where((map) => map.mapId.toString() == mapId).first;
   }
 
   getCurrentUserOnCloud(String userName, String region) async {

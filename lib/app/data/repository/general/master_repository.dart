@@ -1,6 +1,7 @@
-import 'package:legends_panel/app/model/current_game_spectator/current_game_summoner_spell.dart';
-import 'package:legends_panel/app/model/general/champion.dart';
-import 'package:legends_panel/app/model/general/map_mode.dart';
+import 'package:legends_panel/app/model/general/champion_room.dart';
+import 'package:legends_panel/app/model/general/lol_version.dart';
+import 'package:legends_panel/app/model/general/map_room.dart';
+import 'package:legends_panel/app/model/general/spell_room.dart';
 import 'package:legends_panel/app/model/general/user.dart';
 import 'package:legends_panel/app/data/provider/general/master_provider.dart';
 
@@ -8,20 +9,52 @@ class MasterRepository {
 
   final MasterProvider _masterProvider = MasterProvider();
 
-  Future<String> getLOLVersion() async {
-    return _masterProvider.getLOLVersion();
+  Future<List<String>> getLOLVersionOnWeb() async {
+    return _masterProvider.getLOLVersionOnWeb();
   }
 
-  Future<List<Champion>> getChampionList(String version) async {
-    return _masterProvider.getChampionList(version);
+  Future<LolVersion> getLOLVersionOnLocal() async {
+    return _masterProvider.getLOLVersionOnLocal();
   }
 
-  Future<SummonerSpell> getSpellList(String version) {
-    return _masterProvider.getSpellList(version);
+  saveLolVersion(Map<String, dynamic> lolVersion){
+    _masterProvider.saveLolVersion(lolVersion);
   }
 
-  Future<List<MapMode>> getMapList() async {
-    return _masterProvider.getMapList();
+  Future<ChampionRoom> getChampionRoomOnWeb(String version) async {
+    return _masterProvider.getChampionRoomOnWeb(version);
+  }
+
+  Future<ChampionRoom> getChampionRoomOnLocal() async {
+    return _masterProvider.getChampionRoomOnLocal();
+  }
+
+  saveChampionRoom(Map<String, dynamic> championRoom){
+    _masterProvider.saveChampionRoom(championRoom);
+  }
+
+  Future<SpellRoom> getSpellRoomOnWeb(String version) {
+    return _masterProvider.getSpellRoomOnWeb(version);
+  }
+
+  Future<SpellRoom> getSpellRoomOnLocal() {
+    return _masterProvider.getSpellRoomOnLocal();
+  }
+
+  saveSpellRoom(Map<String, dynamic> spellRoom) {
+    return _masterProvider.saveSpellRoom(spellRoom);
+  }
+
+  Future<MapRoom> getMapRoomOnWeb() async {
+    return _masterProvider.getMapRoomOnWeb();
+  }
+
+  Future<MapRoom> getMapRoomOnLocal() {
+    return _masterProvider.getMapRoomOnLocal();
+  }
+
+  saveMapRoom(Map<String, dynamic> mapRoom) {
+    return _masterProvider.saveMapRoom(mapRoom);
   }
 
   Future<User> readPersistedUserProfile(){

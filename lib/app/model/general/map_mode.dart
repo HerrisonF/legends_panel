@@ -11,6 +11,12 @@ class MapMode {
     notes = json['notes']??"";
   }
 
+  Map<String, dynamic> toJson() => {
+    'mapId': mapId,
+    'mapName': mapName,
+    'notes': notes,
+  };
+
   @override
   String toString() {
     return 'MapMode{mapId: $mapId, mapName: $mapName, notes: $notes}';

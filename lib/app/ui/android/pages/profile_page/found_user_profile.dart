@@ -129,6 +129,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
 
   goToProfile() {
     _profileController.deletePersistedUser();
+    _profileController.isUserFound(false);
     _profileController.changeCurrentProfilePage(0);
   }
 

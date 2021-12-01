@@ -8,10 +8,11 @@ import 'package:legends_panel/app/routes/app_routes.dart';
 import 'package:legends_panel/app/ui/theme/app_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'app/constants/storage_keys.dart';
 import 'l10n/l10n.dart';
 
 void main() async {
-  await GetStorage.init('store');
+  await GetStorage.init(StorageKeys.globalStorageKey);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
   SystemChrome.setPreferredOrientations(

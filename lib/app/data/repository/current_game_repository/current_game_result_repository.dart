@@ -3,9 +3,9 @@ import 'package:legends_panel/app/data/provider/current_game_provider/current_ga
 
 class CurrentGameResultRepository {
 
-  final CurrentGameResultProvider _currentGameResultProvider = CurrentGameResultProvider();
-
-  Future<CurrentGameSpectator> fetchCurrentGame(String userId){
-    return _currentGameResultProvider.fetchCurrentGame(userId);
-  }
+  // final CurrentGameResultProvider _currentGameResultProvider = CurrentGameResultProvider();
+  //
+  // Future<CurrentGameSpectator> fetchCurrentGame(String userId){
+  //   return _currentGameResultProvider.fetchCurrentGame(userId);
+  // }
 }

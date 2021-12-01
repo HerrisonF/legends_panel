@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:legends_panel/app/constants/storage_keys.dart';
 import 'package:logger/logger.dart';
 
 class HeadersInterceptor extends Interceptor {
@@ -18,7 +19,7 @@ class HeadersInterceptor extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     final tokenHeader = {
-      "X-Riot-Token": "RGAPI-463b3317-5dec-4222-819c-d010a822c83f" // essa é a de producao
+      "X-Riot-Token": StorageKeys.riotTokenProd
     };
     options.headers.addAll(tokenHeader);
 

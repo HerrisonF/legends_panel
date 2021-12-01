@@ -1,5 +1,6 @@
 import 'package:legends_panel/app/data/http/config/dio_client.dart';
 import 'package:legends_panel/app/data/http/config/dio_state.dart';
+import 'package:legends_panel/app/data/http/config/riot_and_raw_dragon_urls.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_spectator.dart';
 import 'package:logger/logger.dart';
 
@@ -11,7 +12,7 @@ class CurrentGameProvider {
     final String path = "/lol/spectator/v4/active-games/by-summoner/$encryptedSummonerId";
     _logger.i("Checking Current Game exists ...");
     try{
-      DioClient _dioClient = DioClient(region: region);
+      DioClient _dioClient = DioClient(url: RiotAndRawDragonUrls.riotBaseUrl(region));
       final response = await _dioClient.get(path);
       if(response.state == CustomState.SUCCESS){
         return CurrentGameSpectator.fromJson(response.result.data);

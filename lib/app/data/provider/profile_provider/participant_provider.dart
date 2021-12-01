@@ -1,20 +1,20 @@
 import 'package:get/get.dart';
 import 'package:legends_panel/app/data/http/config/dio_client.dart';
 import 'package:legends_panel/app/data/http/config/dio_state.dart';
+import 'package:legends_panel/app/data/http/config/riot_and_raw_dragon_urls.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_spectator.dart';
 import 'package:legends_panel/app/model/general/user_tier.dart';
 import 'package:logger/logger.dart';
 
 class ParticipantProvider {
 
-  DioClient _dioClient = DioClient();
   Logger _logger = Logger();
 
   Future<RxList<UserTier>> getUserTier(String encryptedSummonerId, String region) async {
     final String path = "/lol/league/v4/entries/by-summoner/$encryptedSummonerId";
     _logger.i("Getting Summoner Tier");
     try{
-      DioClient _dioClient = DioClient(region: region);
+      DioClient _dioClient = DioClient(url: RiotAndRawDragonUrls.riotBaseUrl(region));
       final response = await _dioClient.get(path);
       RxList<UserTier> listTier  = RxList<UserTier>();
       if(response.state == CustomState.SUCCESS){
@@ -37,7 +37,7 @@ class ParticipantProvider {
     final String path = "/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-mini-regalia/${tier.toLowerCase()}.png";
     _logger.i("building Image Tier Url ...");
     try{
-      return _dioClient.rawDragonBaseUrl + path;
+      return RiotAndRawDragonUrls.rawDataDragonUrl + path;
     }catch(e){
       _logger.i("Error to build Tier Image URL ... $e");
       return "";
@@ -49,7 +49,7 @@ class ParticipantProvider {
     final String path = "/cdn/$version/img/champion/$championId.png";
     _logger.i("building Image Champion URL...");
     try{
-      return _dioClient.riotDragonBaseUrl + path;
+      return RiotAndRawDragonUrls.riotDragonUrl + path;
     }catch(e){
       _logger.i("Error to build Image Champion Url $e");
       return "";
@@ -60,7 +60,7 @@ class ParticipantProvider {
     final String path = "/cdn/$version/img/item/$itemId.png";
     _logger.i("building Image Item URL...");
     try{
-      return _dioClient.riotDragonBaseUrl + path;
+      return RiotAndRawDragonUrls.riotDragonUrl + path;
     }catch(e){
       _logger.i("Error to build Image Item Url $e");
       return "";
@@ -71,7 +71,7 @@ class ParticipantProvider {
     final String path = "/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-${position.toLowerCase()}.png";
     _logger.i("building Image Positon URL...");
     try{
-      return _dioClient.rawDragonBaseUrl + path;
+      return RiotAndRawDragonUrls.rawDataDragonUrl + path;
     }catch(e){
       _logger.i("Error to build Image Position Url $e");
       return "";
@@ -82,7 +82,7 @@ class ParticipantProvider {
     final String path = "/cdn/$version/img/spell/$spellName.png";
     _logger.i("building Image Spell Url ...");
     try{
-      return _dioClient.riotDragonBaseUrl + path;
+      return RiotAndRawDragonUrls.riotDragonUrl + path;
     }catch(e){
       _logger.i("Error to build Spell Image URL ... $e");
       return "";
@@ -93,7 +93,7 @@ class ParticipantProvider {
     final String path = "/lol/spectator/v4/active-games/by-summoner/$userId";
     _logger.i("Fetching Current Game ...");
     try{
-      DioClient _dioClient = DioClient(region: region);
+      DioClient _dioClient = DioClient(url: RiotAndRawDragonUrls.riotBaseUrl(region));
       final response = await _dioClient.get(path);
       if(response.state == CustomState.SUCCESS){
         return CurrentGameSpectator.fromJson(response.result.data);
