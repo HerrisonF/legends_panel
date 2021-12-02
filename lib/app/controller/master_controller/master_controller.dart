@@ -3,6 +3,7 @@ import 'package:legends_panel/app/model/general/champion_room.dart';
 import 'package:legends_panel/app/model/general/lol_version.dart';
 import 'package:legends_panel/app/model/general/map_room.dart';
 import 'package:legends_panel/app/model/general/spell_room.dart';
+import 'package:legends_panel/app/model/general/stored_region.dart';
 import 'package:legends_panel/app/model/general/user.dart';
 import 'package:legends_panel/app/data/repository/general/master_repository.dart';
 import 'package:legends_panel/app/routes/app_routes.dart';
@@ -12,19 +13,20 @@ class MasterController {
 
   final MasterRepository _masterRepository = MasterRepository();
 
-  Rx<User> userCurrentGame = User().obs;
-  Rx<User> userProfile = User().obs;
+  Rx<User> userForCurrentGame = User().obs;
+  Rx<User> userForProfile = User().obs;
   late PackageInfo packageInfo;
-
+  Rx<StoredRegion> storedRegion = StoredRegion().obs;
   RxInt currentPageIndex = 0.obs;
   Rx<LolVersion> lolVersion = LolVersion().obs;
   Rx<ChampionRoom> championRoom = ChampionRoom().obs;
   Rx<SpellRoom> spellRoom = SpellRoom().obs;
   Rx<MapRoom> mapRoom = MapRoom().obs;
 
-  static const int NEXUS_ONE_SCREEN = 800;
+  static const int NEXUS_ONE_SCREEN_HEIGHT = 800;
 
   start() async {
+    await getLastStoredRegions();
     await readPersistedUser();
     await getLolVersion();
     await getChampionRoom();
@@ -34,8 +36,18 @@ class MasterController {
     Get.offAllNamed(Routes.MASTER);
   }
 
+  getLastStoredRegions() async {
+    storedRegion.value = await _masterRepository.getLastStoredRegion();
+    storedRegion.refresh();
+  }
+
+  saveActualRegion() async {
+    await _masterRepository.saveActualRegion(storedRegion.value);
+    getLastStoredRegions();
+  }
+
   readPersistedUser() async {
-    userProfile.value = await _masterRepository.readPersistedUserProfile();
+    userForProfile.value = await _masterRepository.readPersistedUserProfile();
   }
 
   getLolVersion() async {
@@ -125,28 +137,28 @@ class MasterController {
   }
 
   getCurrentUserOnCloud(String userName, String region) async {
-    userCurrentGame.value = await _masterRepository.getUserOnCloud(userName, region);
+    userForCurrentGame.value = await _masterRepository.getUserOnCloud(userName, region);
   }
 
   getUserProfileOnCloud(String userName, String region) async {
-    userProfile.value = await _masterRepository.getUserOnCloud(userName, region);
-    if(userProfile.value.id.isNotEmpty){
+    userForProfile.value = await _masterRepository.getUserOnCloud(userName, region);
+    if(userForProfile.value.id.isNotEmpty){
       saveUserProfile(region);
     }
   }
 
   saveUserProfile(String region){
-    this.userProfile.value.region = region;
-    _masterRepository.saveUserProfile(this.userProfile.value);
+    this.userForProfile.value.region = region;
+    _masterRepository.saveUserProfile(this.userForProfile.value);
   }
 
   deleteUserProfile(){
     _masterRepository.deletePersistedUser();
-    userProfile.value = User();
+    userForProfile.value = User();
   }
 
   userProfileExist(){
-    return userProfile.value.id.isNotEmpty;
+    return userForProfile.value.id.isNotEmpty;
   }
 
 }

@@ -83,13 +83,13 @@ class _CurrentGameParticipantCardState
 
   Container _summonerName() {
     return Container(
-      margin: EdgeInsets.only(left: 10),
+      margin: const EdgeInsets.only(left: 10),
       width: 70,
       child: Text(
         widget.participant!.summonerName,
         style: GoogleFonts.montserrat(
           fontSize: MediaQuery.of(context).size.height >
-                  MasterController.NEXUS_ONE_SCREEN
+                  MasterController.NEXUS_ONE_SCREEN_HEIGHT
               ? 12
               : 8,
           color: Colors.white,
@@ -101,7 +101,7 @@ class _CurrentGameParticipantCardState
   _bannedChampion() {
     if(widget.bannedChampion != null){
       return Container(
-        margin: EdgeInsets.only(left: 10),
+        margin: const EdgeInsets.only(left: 10),
         child: widget.bannedChampion!.championId > 0
             ? Image.network(
           _currentGameParticipantController.getChampionBadgeUrl(
@@ -154,7 +154,7 @@ class _CurrentGameParticipantCardState
         Obx(() {
           return Container(
             alignment: Alignment.center,
-            margin: EdgeInsets.only(left: 5),
+            margin: const EdgeInsets.only(left: 5),
             width: 80,
             child: _currentGameParticipantController
                     .soloUserTier.value.tier.isNotEmpty
@@ -191,7 +191,7 @@ class _CurrentGameParticipantCardState
                         "LP)",
                     style: GoogleFonts.montserrat(
                       fontSize: MediaQuery.of(context).size.height >
-                              MasterController.NEXUS_ONE_SCREEN
+                              MasterController.NEXUS_ONE_SCREEN_HEIGHT
                           ? 12
                           : 8,
                       color: Colors.white,
@@ -206,7 +206,7 @@ class _CurrentGameParticipantCardState
 
   Container _userTierSymbol() {
     return Container(
-      margin: EdgeInsets.only(right: 5),
+      margin: const EdgeInsets.only(right: 5),
       child: Obx(() {
         return _currentGameParticipantController
                 .soloUserTier.value.tier.isNotEmpty

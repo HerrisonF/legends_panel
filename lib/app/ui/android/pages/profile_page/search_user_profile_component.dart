@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
+import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
 import 'package:legends_panel/app/ui/android/components/region_dropdown_component.dart';
-import 'package:progress_indicators/progress_indicators.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchUserProfileComponent extends StatefulWidget {
@@ -20,14 +20,23 @@ class _SearchUserProfileComponentState
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final ProfileController _profileController = Get.find<ProfileController>();
 
-  String selectedRegion = 'NA1';
+  String initialRegion = '';
+
+  @override
+  void initState() {
+    getLastStoredRegionForProfile();
+    super.initState();
+  }
+
+  getLastStoredRegionForProfile() {
+    String receivedRegion = _profileController.getLastStoredRegionForProfile();
+    initialRegion = receivedRegion.isEmpty ? 'NA1' : receivedRegion;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width / 8,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 50),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -48,9 +57,10 @@ class _SearchUserProfileComponentState
           _inputSummonerName(),
           _buttonSearchSummoner(),
           RegionDropDownComponent(
+            initialRegion: initialRegion,
             onRegionChoose: (region) {
               setState(() {
-                this.selectedRegion = region;
+                _profileController.saveActualRegion(region);
               });
             },
           ),
@@ -61,7 +71,7 @@ class _SearchUserProfileComponentState
 
   Container _buttonSearchSummoner() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 30),
+      margin: const EdgeInsets.symmetric(vertical: 30),
       height: MediaQuery.of(context).size.height > 800 ? 50 : 40,
       child: Obx(() {
         return OutlinedButton(
@@ -69,31 +79,14 @@ class _SearchUserProfileComponentState
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                _profileController.isUserFound.value
-                    ? AppLocalizations.of(context)!.userFound
-                    : _profileController.isUserLoading.value
-                        ? AppLocalizations.of(context)!.searching
-                        : _profileController.isShowingMessage.value
-                            ? AppLocalizations.of(context)!
-                                .buttonMessageUserNotFound
-                            : _profileController
-                                    .isShowingMessageUserIsNotPlaying.value
-                                ? AppLocalizations.of(context)!
-                                    .buttonMessageGameNotFound
-                                : AppLocalizations.of(context)!
-                                    .buttonMessageSearch,
+                whichMessageShowToUser(),
                 style: GoogleFonts.montserrat(
                   color: Colors.white,
                   fontSize: MediaQuery.of(context).size.height > 800 ? 15 : 12,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              _profileController.isUserLoading.value
-                  ? JumpingDotsProgressIndicator(
-                      fontSize: 22,
-                      color: Colors.white,
-                    )
-                  : SizedBox.shrink()
+              if (_profileController.isUserLoading.value) DotsLoading()
             ],
           ),
           onPressed: _profileController.isShowingMessage.value
@@ -104,6 +97,18 @@ class _SearchUserProfileComponentState
         );
       }),
     );
+  }
+
+  String whichMessageShowToUser() {
+    return _profileController.isUserFound.value
+        ? AppLocalizations.of(context)!.userFound
+        : _profileController.isUserLoading.value
+            ? AppLocalizations.of(context)!.searching
+            : _profileController.isShowingMessage.value
+                ? AppLocalizations.of(context)!.buttonMessageUserNotFound
+                : _profileController.isShowingMessageUserIsNotPlaying.value
+                    ? AppLocalizations.of(context)!.buttonMessageGameNotFound
+                    : AppLocalizations.of(context)!.buttonMessageSearch;
   }
 
   _inputSummonerName() {
@@ -128,7 +133,7 @@ class _SearchUserProfileComponentState
               _profileController.userNameInputController.clear();
               return AppLocalizations.of(context)!.inputValidatorHome;
             }
-            if (selectedRegion.isEmpty) {
+            if (initialRegion.isEmpty) {
               _profileController.userNameInputController.clear();
               return AppLocalizations.of(context)!.inputValidatorHome;
             }
@@ -142,7 +147,8 @@ class _SearchUserProfileComponentState
   _searchForUserOnCloud() {
     if (formKey.currentState!.validate()) {
       FocusScope.of(context).unfocus();
-      _profileController.getUserOnCloud(selectedRegion);
+      _profileController
+          .getUser(_profileController.getLastStoredRegionForProfile());
     }
   }
 }

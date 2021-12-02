@@ -86,8 +86,8 @@ class _SplashScreenState extends State<SplashScreen>
         image: AssetImage(imagePengu),
         height: MediaQuery.of(context).size.height / 2.5,
       ),
-      right: 0,
-      bottom: 0,
+      right: -2,
+      bottom: -2,
     );
   }
 

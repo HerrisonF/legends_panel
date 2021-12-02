@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:legends_panel/app/constants/string_constants.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_spectator.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_summoner_spell.dart';
@@ -22,7 +23,7 @@ class CurrentGameParticipantController extends MasterController {
 
   _getSoloRankedOnly(RxList<UserTier> userTierList) {
     soloUserTier.value =
-        userTierList.where((tier) => tier.queueType == 'RANKED_SOLO_5x5').first;
+        userTierList.where((tier) => tier.queueType == StringConstants.rankedSolo).first;
     soloUserTier.value.winRate = getUserWinRate();
   }
 

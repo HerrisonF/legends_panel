@@ -55,7 +55,7 @@ class CurrentGameResultPage extends StatelessWidget {
               icon: Icon(
                 Icons.arrow_back,
                 size: MediaQuery.of(context).size.height >
-                        MasterController.NEXUS_ONE_SCREEN
+                        MasterController.NEXUS_ONE_SCREEN_HEIGHT
                     ? 22
                     : 16,
               ),
@@ -75,16 +75,16 @@ class CurrentGameResultPage extends StatelessWidget {
       return Container(
         margin: EdgeInsets.only(
             top: MediaQuery.of(context).size.height >
-                    MasterController.NEXUS_ONE_SCREEN
+                    MasterController.NEXUS_ONE_SCREEN_HEIGHT
                 ? 90
                 : 80),
         child: Text(
-          _currentGameResultController.mapMode.value.mapName == ""
+          _currentGameResultController.currentMapToShow.value.mapName.isEmpty
               ? AppLocalizations.of(context)!.loadingMessage
-              : _currentGameResultController.mapMode.value.mapName,
+              : _currentGameResultController.currentMapToShow.value.mapName,
           style: GoogleFonts.adamina(
             fontSize: MediaQuery.of(context).size.height >
-                    MasterController.NEXUS_ONE_SCREEN
+                    MasterController.NEXUS_ONE_SCREEN_HEIGHT
                 ? 16
                 : 12,
             color: Colors.white,
@@ -104,7 +104,7 @@ class CurrentGameResultPage extends StatelessWidget {
             child: Image.asset(
               imageIconClock,
               height: MediaQuery.of(context).size.height >
-                      MasterController.NEXUS_ONE_SCREEN
+                      MasterController.NEXUS_ONE_SCREEN_HEIGHT
                   ? 20
                   : 16,
             ),
@@ -114,7 +114,7 @@ class CurrentGameResultPage extends StatelessWidget {
             "${_currentGameResultController.getCurrentGameMinutes()} Min",
             style: GoogleFonts.aBeeZee(
               fontSize: MediaQuery.of(context).size.height >
-                      MasterController.NEXUS_ONE_SCREEN
+                      MasterController.NEXUS_ONE_SCREEN_HEIGHT
                   ? 16
                   : 12,
               color: Colors.white,
@@ -129,10 +129,10 @@ class CurrentGameResultPage extends StatelessWidget {
   Container _userName(BuildContext context) {
     return Container(
       child: Text(
-        _masterController.userCurrentGame.value.name,
+        _masterController.userForCurrentGame.value.name,
         style: GoogleFonts.aBeeZee(
           fontSize: MediaQuery.of(context).size.height >
-                  MasterController.NEXUS_ONE_SCREEN
+                  MasterController.NEXUS_ONE_SCREEN_HEIGHT
               ? 16
               : 14,
           color: Colors.white,

@@ -24,7 +24,7 @@ class ProfileProvider {
 
   Future<RxList<UserTier>> getUserTier(String encryptedSummonerId, String region) async {
     final String path = "/lol/league/v4/entries/by-summoner/$encryptedSummonerId";
-    _logger.i("Getting Summoner Tier");
+    _logger.i("Getting SummonerTier");
     try{
       DioClient _dioClient = DioClient(url: RiotAndRawDragonUrls.riotBaseUrl(region));
       final response = await _dioClient.get(path);
@@ -35,12 +35,13 @@ class ProfileProvider {
             listTier.add(UserTier.fromJson(tier));
           }
         }
+        _logger.i("Success to get SummonerTier");
         return listTier;
       }
-      _logger.i("UserTier not found ...");
+      _logger.i("SummonerTier not found ...");
       return listTier;
     }catch(e){
-      _logger.i("Error to get UserTier ... $e");
+      _logger.i("Error to get SummonerTier ... $e");
       return RxList<UserTier>();
     }
   }

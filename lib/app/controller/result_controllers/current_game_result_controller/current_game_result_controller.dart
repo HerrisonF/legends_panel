@@ -11,7 +11,7 @@ class CurrentGameResultController extends UtilController {
   String region = "";
 
   CurrentGameSpectator currentGameSpectator = CurrentGameSpectator();
-  Rx<MapMode> mapMode = MapMode().obs;
+  Rx<MapMode> currentMapToShow = MapMode().obs;
   RxList<CurrentGameParticipant> blueTeam = RxList<CurrentGameParticipant>();
   RxList<CurrentGameParticipant> redTeam = RxList<CurrentGameParticipant>();
   RxList<CurrentGameBannedChampion> blueTeamBannedChamp =
@@ -70,6 +70,6 @@ class CurrentGameResultController extends UtilController {
   }
 
   getMapById(String mapId) {
-    this.mapMode.value = _masterController.getMapById(mapId);
+    this.currentMapToShow.value = _masterController.getMapById(mapId);
   }
 }

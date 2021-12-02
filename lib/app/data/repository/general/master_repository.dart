@@ -2,6 +2,7 @@ import 'package:legends_panel/app/model/general/champion_room.dart';
 import 'package:legends_panel/app/model/general/lol_version.dart';
 import 'package:legends_panel/app/model/general/map_room.dart';
 import 'package:legends_panel/app/model/general/spell_room.dart';
+import 'package:legends_panel/app/model/general/stored_region.dart';
 import 'package:legends_panel/app/model/general/user.dart';
 import 'package:legends_panel/app/data/provider/general/master_provider.dart';
 
@@ -65,12 +66,20 @@ class MasterRepository {
     return _masterProvider.getUserOnCloud(userName, region);
   }
 
-  Future<bool> saveUserProfile(User user){
-    return _masterProvider.saveUserProfile(user);
+  saveUserProfile(User user){
+    _masterProvider.saveUserProfile(user);
   }
 
   deletePersistedUser(){
     _masterProvider.deletePersistedUser();
+  }
+
+  Future<StoredRegion> getLastStoredRegion(){
+    return _masterProvider.getLastStoredRegion();
+  }
+
+  saveActualRegion(StoredRegion storedRegion) async {
+    await _masterProvider.saveActualRegion(storedRegion);
   }
 
 }

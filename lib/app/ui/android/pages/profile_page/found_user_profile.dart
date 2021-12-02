@@ -45,7 +45,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                 this._profileController.oldIndex)) {
           this
               ._profileController
-              .loadMoreMatches(_masterController.userProfile.value.region);
+              .loadMoreMatches(_masterController.userForProfile.value.region);
         }
       },
     );
@@ -72,7 +72,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
           ),
           MasteryChampions(),
           Obx(() {
-            return _masterController.userProfile.value.name != ""
+            return _masterController.userForProfile.value.name != ""
                 ? _outButton()
                 : SizedBox.shrink();
           }),
@@ -105,10 +105,10 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
         color: Colors.black26,
       ),
       height:
-          MediaQuery.of(context).size.height > MasterController.NEXUS_ONE_SCREEN
+          MediaQuery.of(context).size.height > MasterController.NEXUS_ONE_SCREEN_HEIGHT
               ? MediaQuery.of(context).size.height / 18
               : MediaQuery.of(context).size.height / 15,
-      width: MediaQuery.of(context).size.height > MasterController.NEXUS_ONE_SCREEN
+      width: MediaQuery.of(context).size.height > MasterController.NEXUS_ONE_SCREEN_HEIGHT
           ? MediaQuery.of(context).size.height / 18
           : MediaQuery.of(context).size.height / 15,
       child: IconButton(
@@ -116,7 +116,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
           Icons.exit_to_app,
           color: Colors.white,
           size: MediaQuery.of(context).size.height >
-                  MasterController.NEXUS_ONE_SCREEN
+                  MasterController.NEXUS_ONE_SCREEN_HEIGHT
               ? 20
               : 13,
         ),
@@ -130,7 +130,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
   goToProfile() {
     _profileController.deletePersistedUser();
     _profileController.isUserFound(false);
-    _profileController.changeCurrentProfilePage(0);
+    _profileController.changeCurrentProfilePageTo(ProfileController.SEARCH_USER_PROFILE_COMPONENT);
   }
 
   int _hasMoreMatchesToLoad() {
@@ -206,10 +206,10 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
         _profileController.getUserProfileImage() != ""
             ? _profileImage()
             : SizedBox.shrink(),
-        _masterController.userProfile.value.name != ""
+        _masterController.userForProfile.value.name != ""
             ? _profileName(context)
             : SizedBox.shrink(),
-        _masterController.userProfile.value.summonerLevel != "" &&
+        _masterController.userForProfile.value.summonerLevel != "" &&
                 _profileController.userTierList.length > 0
             ? _profileStatistics()
             : SizedBox.shrink(),
@@ -261,7 +261,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   ]),
                   child: Text(
                     AppLocalizations.of(context)!.level +
-                        " ${_masterController.userProfile.value.summonerLevel}",
+                        " ${_masterController.userForProfile.value.summonerLevel}",
                     style: GoogleFonts.montserrat(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
@@ -347,7 +347,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                 Positioned(
                   child: Container(
                     child: Text(
-                      _masterController.userProfile.value.name,
+                      _masterController.userForProfile.value.name,
                       style: GoogleFonts.montserrat(
                         fontSize: 18,
                         color: Colors.black,
@@ -360,7 +360,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   left: 1,
                   child: Container(
                     child: Text(
-                      _masterController.userProfile.value.name,
+                      _masterController.userForProfile.value.name,
                       style: GoogleFonts.montserrat(
                         fontSize: 18,
                         color: Colors.white,
@@ -386,7 +386,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
             margin:
                 EdgeInsets.only(top: 10),
             width: MediaQuery.of(context).size.height >
-                    MasterController.NEXUS_ONE_SCREEN
+                    MasterController.NEXUS_ONE_SCREEN_HEIGHT
                 ? MediaQuery.of(context).size.width / 6
                 : MediaQuery.of(context).size.width / 7,
             height: MediaQuery.of(context).size.height / 13,

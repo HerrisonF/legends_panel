@@ -32,7 +32,7 @@ class MasterPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(
                   horizontal: 30,
                   vertical: MediaQuery.of(context).size.height >
-                      MasterController.NEXUS_ONE_SCREEN ? 11 : 3,
+                      MasterController.NEXUS_ONE_SCREEN_HEIGHT ? 11 : 3,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,7 +61,7 @@ class MasterPage extends StatelessWidget {
             ? Color(0xFF4248A5)
             : Color(0xFF292E78).withOpacity(0.3),
         size: MediaQuery.of(context).size.height >
-                MasterController.NEXUS_ONE_SCREEN
+                MasterController.NEXUS_ONE_SCREEN_HEIGHT
             ? 23
             : 16,
       ),

@@ -9,14 +9,14 @@ import 'package:legends_panel/app/routes/app_routes.dart';
 class CurrentGameController extends GetxController {
   final CurrentGameResultController _currentGameResultController =
       Get.put(CurrentGameResultController());
-  final MasterController _masterController = Get.find<MasterController>();
+  final MasterController masterController = Get.find<MasterController>();
   final CurrentGameRepository _currentGameRepository = CurrentGameRepository();
   final TextEditingController userNameInputController = TextEditingController();
 
   Rx<bool> isLoadingUser = false.obs;
   Rx<bool> isShowingMessage = false.obs;
   Rx<bool> isShowingMessageUserIsNotPlaying = false.obs;
-  CurrentGameSpectator currentGameSpectator = CurrentGameSpectator();
+  CurrentGameSpectator currentGameForASpectator = CurrentGameSpectator();
 
   _startUserLoading() {
     isLoadingUser(true);
@@ -26,38 +26,52 @@ class CurrentGameController extends GetxController {
     isLoadingUser(false);
   }
 
-  getUserFromCloud(String region) async {
+  String getLastStoredRegionForCurrentGame(){
+    if(masterController.storedRegion.value.lastStoredCurrentGameRegion.isEmpty){
+      return 'NA1';
+    }
+    return masterController.storedRegion.value.lastStoredCurrentGameRegion;
+  }
+
+  saveActualRegion(String region){
+    masterController.storedRegion.value.lastStoredCurrentGameRegion = region;
+    masterController.saveActualRegion();
+  }
+
+  loadUserCurrentGame(String region) async {
     _startUserLoading();
-    await _masterController.getCurrentUserOnCloud(userNameInputController.text, region);
-    if (_masterController.userCurrentGame.value.id.isNotEmpty) {
-      _checkUserIsInCurrentGame(region);
+    await masterController.getCurrentUserOnCloud(userNameInputController.text, region);
+    if (userExist()) {
+      _checkUserIsPlayingOnRegion(region);
     } else {
-      _showUserNotFoundMessage();
+      _showMessageUserNotFound();
     }
   }
 
-  _checkUserIsInCurrentGame(String region) async {
-    currentGameSpectator = await _currentGameRepository
-        .checkCurrentGameExists(_masterController.userCurrentGame.value.id, region);
+  bool userExist() => masterController.userForCurrentGame.value.id.isNotEmpty;
+
+  _checkUserIsPlayingOnRegion(String region) async {
+    currentGameForASpectator = await _currentGameRepository
+        .checkCurrentGameExists(masterController.userForCurrentGame.value.id, region);
     if (gameExist()) {
       _pushToCurrentResultGame(region);
       _stopUserLoading();
       userNameInputController.clear();
     } else {
-      _showUserIsNotInAGameMessage();
+      _showMessageUserIsNotInAGame();
     }
   }
 
   bool gameExist() {
-    return currentGameSpectator.gameId > 0;
+    return currentGameForASpectator.gameId > 0;
   }
 
   _pushToCurrentResultGame(String region) {
-    _currentGameResultController.startController(currentGameSpectator, region);
+    _currentGameResultController.startController(currentGameForASpectator, region);
     Get.toNamed(Routes.PROFILE_SUB);
   }
 
-  _showUserNotFoundMessage() {
+  _showMessageUserNotFound() {
     _stopUserLoading();
     isShowingMessage(true);
     Future.delayed(Duration(seconds: 3)).then((value) {
@@ -65,15 +79,11 @@ class CurrentGameController extends GetxController {
     });
   }
 
-  _showUserIsNotInAGameMessage() {
+  _showMessageUserIsNotInAGame() {
     _stopUserLoading();
     isShowingMessageUserIsNotPlaying(true);
     Future.delayed(Duration(seconds: 3)).then((value) {
       isShowingMessageUserIsNotPlaying(false);
     });
   }
-
-  // String getLoLVersion() {
-  //   return _masterController.lolVersion;
-  // }
 }

@@ -12,6 +12,7 @@ import 'package:legends_panel/app/model/general/lol_version.dart';
 import 'package:legends_panel/app/model/general/map_mode.dart';
 import 'package:legends_panel/app/model/general/map_room.dart';
 import 'package:legends_panel/app/model/general/spell_room.dart';
+import 'package:legends_panel/app/model/general/stored_region.dart';
 import 'package:legends_panel/app/model/general/user.dart';
 import 'package:logger/logger.dart';
 
@@ -44,8 +45,8 @@ class MasterProvider {
   Future<LolVersion> getLOLVersionOnLocal() async {
     _logger.i("Getting lol Version on local ...");
     try {
-      String lolVersionString = await box.read(StorageKeys.lolVersion);
-      if (lolVersionString != null || lolVersionString.isNotEmpty) {
+      String lolVersionString = await box.read(StorageKeys.lolVersionKey);
+      if (lolVersionString.isNotEmpty) {
         _logger.i("Success to get lol Version on Local ...");
         return LolVersion.fromJson(jsonDecode(lolVersionString));
       }
@@ -60,7 +61,7 @@ class MasterProvider {
   saveLolVersion(Map<String, dynamic> lolVersion) {
     _logger.i("Persisting LolVersion ...");
     try {
-      box.write(StorageKeys.lolVersion, jsonEncode(lolVersion));
+      box.write(StorageKeys.lolVersionKey, jsonEncode(lolVersion));
       _logger.i("Success to persist LolVersion ...");
     } catch (e) {
       _logger.i("Error to persist LolVersion ... $e");
@@ -93,8 +94,8 @@ class MasterProvider {
   Future<ChampionRoom> getChampionRoomOnLocal() async {
     _logger.i("Getting ChampionRoom on local ...");
     try {
-      String championRoomString = await box.read(StorageKeys.championRoom);
-      if (championRoomString != null || championRoomString.isNotEmpty) {
+      String championRoomString = await box.read(StorageKeys.championRoomKey);
+      if (championRoomString.isNotEmpty) {
         _logger.i("Success to get ChampionRoom on Local ...");
         return ChampionRoom.fromJson(jsonDecode(championRoomString));
       }
@@ -109,7 +110,7 @@ class MasterProvider {
   saveChampionRoom(Map<String, dynamic> championRoom) {
     _logger.i("Persisting ChampionRoom ...");
     try {
-      box.write(StorageKeys.championRoom, jsonEncode(championRoom));
+      box.write(StorageKeys.championRoomKey, jsonEncode(championRoom));
       _logger.i("Success to persist ChampionRoom ...");
     } catch (e) {
       _logger.i("Error to persist ChampionRoom ... $e");
@@ -139,8 +140,8 @@ class MasterProvider {
   Future<SpellRoom> getSpellRoomOnLocal() async {
     _logger.i("Getting SpellRoom on Local ...");
     try {
-      String spellRoomString = await box.read(StorageKeys.spellRoom);
-      if (spellRoomString != null || spellRoomString.isNotEmpty) {
+      String spellRoomString = await box.read(StorageKeys.spellRoomKey);
+      if (spellRoomString.isNotEmpty) {
         _logger.i("Success to get SpellRoom on Local ...");
         return SpellRoom.fromJson(jsonDecode(spellRoomString));
       }
@@ -155,7 +156,7 @@ class MasterProvider {
   saveSpellRoom(Map<String, dynamic> spellRoom) {
     _logger.i("Persisting SpellRoom ...");
     try {
-      box.write(StorageKeys.spellRoom, jsonEncode(spellRoom));
+      box.write(StorageKeys.spellRoomKey, jsonEncode(spellRoom));
       _logger.i("Success to persist SpellRoom ...");
     } catch (e) {
       _logger.i("Error to persist SpellRoom ... $e");
@@ -188,8 +189,8 @@ class MasterProvider {
   Future<MapRoom> getMapRoomOnLocal() async {
     _logger.i("Getting MapRoom on Local ...");
     try {
-      String mapRoomString = await box.read(StorageKeys.mapRoom);
-      if (mapRoomString != null || mapRoomString.isNotEmpty) {
+      String mapRoomString = await box.read(StorageKeys.mapRoomKey);
+      if (mapRoomString.isNotEmpty) {
         _logger.i("Success to get MapRoom on Local ...");
         return MapRoom.fromJson(jsonDecode(mapRoomString));
       }
@@ -204,7 +205,7 @@ class MasterProvider {
   saveMapRoom(Map<String, dynamic> mapRoom) {
     _logger.i("Persisting mapRoom ...");
     try {
-      box.write(StorageKeys.mapRoom, jsonEncode(mapRoom));
+      box.write(StorageKeys.mapRoomKey, jsonEncode(mapRoom));
       _logger.i("Success to persist MapRoom ...");
     } catch (e) {
       _logger.i("Error to persist MapRoom ... $e");
@@ -228,7 +229,7 @@ class MasterProvider {
     User user = User();
     try {
       String userString = await box.read(StorageKeys.userProfileKey);
-      if (userString != null || userString.isNotEmpty) {
+      if (userString.isNotEmpty) {
         return User.fromJson(jsonDecode(userString));
       }
       _logger.i("No userProfile persisted found ...");
@@ -239,14 +240,13 @@ class MasterProvider {
     }
   }
 
-  Future<bool> saveUserProfile(User user) async {
+  saveUserProfile(User user) async {
     _logger.i("Persisting UserProfile ...");
     try {
       await box.write(StorageKeys.userProfileKey, jsonEncode(user));
-      return true;
+      _logger.i("Success to persist UserProfile ...");
     } catch (e) {
       _logger.i("Error to persist UserProfile ... $e");
-      return false;
     }
   }
 
@@ -258,6 +258,7 @@ class MasterProvider {
     try {
       final response = await _dioClient.get(path);
       if (response.state == CustomState.SUCCESS) {
+        _logger.i("Success to Found User...");
         return User.fromJson(response.result.data);
       }
     } catch (e) {
@@ -274,6 +275,32 @@ class MasterProvider {
       box.remove(StorageKeys.userProfileKey);
     } catch (e) {
       _logger.i("Error to delete userProfile $e");
+    }
+  }
+
+  Future<StoredRegion> getLastStoredRegion() async {
+    _logger.i("Getting LastStoredRegion ...");
+    StoredRegion storedRegion = StoredRegion();
+    try{
+      String lastStoredRegionString = await box.read(StorageKeys.regionKey);
+      if(lastStoredRegionString.isNotEmpty){
+        storedRegion = StoredRegion.fromJson(jsonDecode(lastStoredRegionString));
+      }
+      _logger.i("Success to get LastStoredRegion ...");
+      return storedRegion;
+    }catch(e){
+      _logger.i("Error to get LastStoredRegion $e");
+      return storedRegion;
+    }
+  }
+
+  saveActualRegion(StoredRegion storedRegion) async {
+    _logger.i("Saving Actual Region ...");
+    try{
+      await box.write(StorageKeys.regionKey, jsonEncode(storedRegion));
+      _logger.i("Success to persist Actual Region ...");
+    }catch(e){
+      _logger.i("Error to save Actual Region $e");
     }
   }
 }

@@ -14,7 +14,7 @@ class ProfileResultGameDetailController {
   startProfileResultGame(MatchDetail matchDetail) async {
     this.matchDetail.value = matchDetail;
 
-    getParticipantById(_masterController.userProfile.value.name);
+    getParticipantById(_masterController.userForProfile.value.name);
   }
 
   getParticipantById(String summonerName) {

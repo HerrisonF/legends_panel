@@ -14,7 +14,7 @@ class ProfileController {
   final TextEditingController userNameInputController = TextEditingController();
   final MasterController _masterController = Get.find<MasterController>();
 
-  int amountMatches = 6;
+  int amountMatches = AMOUNT_MATCHES_TO_FIND;
   Rx<int> oldIndex = 0.obs;
   Rx<int> newIndex = 0.obs;
 
@@ -34,6 +34,10 @@ class ProfileController {
 
   List<Widget> pages = [];
 
+  static const SEARCH_USER_PROFILE_COMPONENT = 0;
+  static const FOUND_USER_COMPONENT = 1;
+  static const AMOUNT_MATCHES_TO_FIND = 6;
+
   buildPages() {
     pages = [
       SearchUserProfileComponent(),
@@ -41,8 +45,20 @@ class ProfileController {
     ];
   }
 
-  changeCurrentProfilePage(int index){
-    currentProfilePage.value = index;
+  String getLastStoredRegionForProfile(){
+    if(_masterController.storedRegion.value.lastStoredProfileRegion.isEmpty){
+      return 'NA1';
+    }
+    return _masterController.storedRegion.value.lastStoredProfileRegion;
+  }
+
+  saveActualRegion(String region){
+    _masterController.storedRegion.value.lastStoredProfileRegion = region;
+    _masterController.saveActualRegion();
+  }
+
+  changeCurrentProfilePageTo(int page){
+    currentProfilePage.value = page;
   }
 
   starUserLoading() {
@@ -67,15 +83,15 @@ class ProfileController {
 
   checkIsUserStored() async {
     if (_masterController.userProfileExist()) {
-      if (_masterController.userProfile.value.region != "") {
+      if (_masterController.userForProfile.value.region.isNotEmpty) {
         isUserFound(true);
-        final tempRegion = _masterController.userProfile.value.region;
+        final tempRegion = _masterController.userForProfile.value.region;
         starUserLoading();
         await getUserTierInformation(tempRegion);
         await getMasteryChampions(tempRegion);
         await getMatchListIds(tempRegion);
         await getMatches(tempRegion);
-        changeCurrentProfilePage(1);
+        changeCurrentProfilePageTo(FOUND_USER_COMPONENT);
         stopUserLoading();
       }
     }
@@ -83,28 +99,28 @@ class ProfileController {
 
   getUserTierInformation(String region) async {
     userTierList.value = await _profileRepository.getUserTier(
-        _masterController.userProfile.value.id, region);
+        _masterController.userForProfile.value.id, region);
   }
 
   getMasteryChampions(String region) async {
     championMasteryList.addAll(
       await _profileRepository.getChampionMastery(
-          _masterController.userProfile.value.id, region),
+          _masterController.userForProfile.value.id, region),
     );
     championMasteryList
         .sort((b, a) => a.championPoints.compareTo(b.championPoints));
   }
 
   getMatchListIds(String region) async {
-    this.newIndex.value += 6;
+    this.newIndex.value += AMOUNT_MATCHES_TO_FIND;
     List<String> tempMatchIdList = [];
 
     tempMatchIdList = await _profileRepository.getMatchListIds(
-        _masterController.userProfile.value.puuid,
+        _masterController.userForProfile.value.puuid,
         this.newIndex.value,
         this.amountMatches,
         region);
-    if (tempMatchIdList.length > 0) {
+    if (tempMatchIdList.isNotEmpty) {
       oldIndex.value = newIndex.value;
       this.matchIdList.addAll(tempMatchIdList);
     } else {
@@ -149,7 +165,7 @@ class ProfileController {
         .getMasteryImage(championMasteryList[index].championLevel.toString());
   }
 
-  getUserOnCloud(String region) async {
+  getUser(String region) async {
     starUserLoading();
     await _masterController.getUserProfileOnCloud(
         userNameInputController.text, region);
@@ -159,7 +175,7 @@ class ProfileController {
       await getMatchListIds(region);
       await getMatches(region);
       setUserRegion(region);
-      changeCurrentProfilePage(1);
+      changeCurrentProfilePageTo(FOUND_USER_COMPONENT);
       userNameInputController.clear();
       stopUserLoading();
     } else {
@@ -168,7 +184,7 @@ class ProfileController {
   }
 
   setUserRegion(String region){
-    _masterController.userProfile.value.region = region;
+    _masterController.userForProfile.value.region = region;
   }
 
   _showUserNotFoundMessage() {
@@ -182,7 +198,7 @@ class ProfileController {
   deletePersistedUser() {
     _masterController.deleteUserProfile();
     isShowingMessage(false);
-    amountMatches = 6;
+    amountMatches = AMOUNT_MATCHES_TO_FIND;
     oldIndex = 0.obs;
     newIndex = 0.obs;
 
@@ -195,7 +211,7 @@ class ProfileController {
   String getUserProfileImage() {
     return _profileRepository.getProfileImage(
       _masterController.lolVersion.value.actualVersion,
-      _masterController.userProfile.value.profileIconId.toString(),
+      _masterController.userForProfile.value.profileIconId.toString(),
     );
   }
 }

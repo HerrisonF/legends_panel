@@ -4,11 +4,9 @@ import 'package:progress_indicators/progress_indicators.dart';
 class DotsLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: JumpingDotsProgressIndicator(
-        fontSize: 30,
-        color: Theme.of(context).primaryColor,
-      ),
+    return JumpingDotsProgressIndicator(
+      fontSize: 22,
+      color: Colors.white,
     );
   }
 }

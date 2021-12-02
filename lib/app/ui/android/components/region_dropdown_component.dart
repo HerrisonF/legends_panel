@@ -3,8 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 class RegionDropDownComponent extends StatefulWidget {
   final Function(String region) onRegionChoose;
+  final String initialRegion;
 
-  RegionDropDownComponent({required this.onRegionChoose});
+  RegionDropDownComponent({required this.onRegionChoose, required this.initialRegion});
 
   @override
   State<RegionDropDownComponent> createState() =>
@@ -12,6 +13,7 @@ class RegionDropDownComponent extends StatefulWidget {
 }
 
 class _RegionDropDownComponentState extends State<RegionDropDownComponent> {
+
   regionChoose(String region) {
     widget.onRegionChoose(region);
   }
@@ -29,7 +31,14 @@ class _RegionDropDownComponentState extends State<RegionDropDownComponent> {
     'TR1',
     'RU'
   ];
-  String _selectedLocation = 'NA1';
+
+  String selectedLocation = 'NA1';
+
+  @override
+  void initState() {
+    selectedLocation = widget.initialRegion;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,13 +64,13 @@ class _RegionDropDownComponentState extends State<RegionDropDownComponent> {
         elevation: 8,
         underline: SizedBox.shrink(),
         dropdownColor: Theme.of(context).backgroundColor,
-        value: _selectedLocation,
+        value: selectedLocation,
         onChanged: (newValue) {
           setState(() {
             if (newValue.toString().isNotEmpty) {
-              _selectedLocation = newValue.toString();
+              selectedLocation = newValue.toString();
             }
-            regionChoose(_selectedLocation);
+            regionChoose(selectedLocation);
           });
         },
         items: _locations.map((location) {
