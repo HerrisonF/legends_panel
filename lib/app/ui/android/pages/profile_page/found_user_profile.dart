@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,7 +7,6 @@ import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
 import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
-import 'package:progress_indicators/progress_indicators.dart';
 
 import 'item_match_list_game_card.dart';
 import 'mastery_champions.dart';
@@ -66,16 +67,26 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
       ),
       child: Column(
         children: [
-          Container(
-            height: MediaQuery.of(context).size.height > 800 ? MediaQuery.of(context).size.height / 3.4 : MediaQuery.of(context).size.height / 3.2,
-            child: summonerPanel(context),
+          Stack(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height > 800
+                    ? MediaQuery.of(context).size.height / 3
+                    : MediaQuery.of(context).size.height / 2.8,
+                child: summonerPanel(context),
+              ),
+              Obx(() {
+                return _masterController.userForProfile.value.name != ""
+                    ? Positioned(
+                        left: 30,
+                        top: 50,
+                        child: _outButton(),
+                      )
+                    : SizedBox.shrink();
+              }),
+            ],
           ),
           MasteryChampions(),
-          Obx(() {
-            return _masterController.userForProfile.value.name != ""
-                ? _outButton()
-                : SizedBox.shrink();
-          }),
           Obx(() {
             return _profileController.matchList.length > 0
                 ? Expanded(
@@ -97,40 +108,27 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
     );
   }
 
-  Container _outButton() {
-    return Container(
-      margin: EdgeInsets.only(bottom: 15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(80),
-        color: Colors.black26,
+  _outButton() {
+    return IconButton(
+      icon: Icon(
+        Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
+        color: Colors.white,
+        size: MediaQuery.of(context).size.height >
+            MasterController.NEXUS_ONE_SCREEN_HEIGHT
+            ? 20
+            : 13,
       ),
-      height:
-          MediaQuery.of(context).size.height > MasterController.NEXUS_ONE_SCREEN_HEIGHT
-              ? MediaQuery.of(context).size.height / 18
-              : MediaQuery.of(context).size.height / 15,
-      width: MediaQuery.of(context).size.height > MasterController.NEXUS_ONE_SCREEN_HEIGHT
-          ? MediaQuery.of(context).size.height / 18
-          : MediaQuery.of(context).size.height / 15,
-      child: IconButton(
-        icon: Icon(
-          Icons.exit_to_app,
-          color: Colors.white,
-          size: MediaQuery.of(context).size.height >
-                  MasterController.NEXUS_ONE_SCREEN_HEIGHT
-              ? 20
-              : 13,
-        ),
-        onPressed: () {
-          goToProfile();
-        },
-      ),
+      onPressed: () {
+        goToProfile();
+      },
     );
   }
 
   goToProfile() {
     _profileController.deletePersistedUser();
     _profileController.isUserFound(false);
-    _profileController.changeCurrentProfilePageTo(ProfileController.SEARCH_USER_PROFILE_COMPONENT);
+    _profileController.changeCurrentProfilePageTo(
+        ProfileController.SEARCH_USER_PROFILE_COMPONENT);
   }
 
   int _hasMoreMatchesToLoad() {
@@ -148,10 +146,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
       return ItemMatchListGameCard(
           _profileController.matchList[myCurrentPosition]);
     } else {
-      return JumpingDotsProgressIndicator(
-        color: Colors.white,
-        fontSize: 22,
-      );
+      return DotsLoading();
     }
   }
 
@@ -213,26 +208,30 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                 _profileController.userTierList.length > 0
             ? _profileStatistics()
             : SizedBox.shrink(),
-        _profileController.userTierList.length > 0
-            ? _playerEloEmblem(context)
-            : SizedBox.shrink(),
+        _playerRankedEloEmblem(context),
       ],
     );
   }
 
-  Positioned _playerEloEmblem(BuildContext context) {
+  Positioned _playerRankedEloEmblem(BuildContext context) {
     return Positioned(
-      top: MediaQuery.of(context).size.height > 800  ? MediaQuery.of(context).size.height / 5.9 : MediaQuery.of(context).size.height / 5.2,
+      top: MediaQuery.of(context).size.height > 800
+          ? MediaQuery.of(context).size.height / 5
+          : MediaQuery.of(context).size.height / 4.5,
       left: 0,
       right: 0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            height: MediaQuery.of(context).size.height / 8.5,
-            child: Image.asset(
-                "images/emblem_${_profileController.userTierList.first.tier.toLowerCase()}.png"),
-          ),
+          Obx(() {
+            return Container(
+              height: MediaQuery.of(context).size.height / 8,
+              child: _profileController.userTierRankedSolo.value.tier.isNotEmpty
+                  ? Image.asset(
+                      "images/emblem_${_profileController.userTierRankedSolo.value.tier.toLowerCase()}.png")
+                  : SizedBox.shrink(),
+            );
+          }),
         ],
       ),
     );
@@ -241,7 +240,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
   Container _profileStatistics() {
     return Container(
       margin: EdgeInsets.only(
-          top: MediaQuery.of(context).size.height / 14,
+          top: MediaQuery.of(context).size.height / 12,
           left: MediaQuery.of(context).size.width / 10,
           right: MediaQuery.of(context).size.width / 9),
       child: Row(
@@ -265,7 +264,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                     style: GoogleFonts.montserrat(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: 11),
+                        fontSize: 12),
                   ),
                 );
               })
@@ -285,16 +284,16 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   style: GoogleFonts.montserrat(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      fontSize: 11),
+                      fontSize: 12),
                 ),
               ),
               Container(
                 child: Text(
-                  _profileController.userTierList.first.wins.toString(),
+                  _profileController.userTierRankedSolo.value.wins.toString(),
                   style: GoogleFonts.montserrat(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      fontSize: 11),
+                      fontSize: 12),
                 ),
               ),
               Container(
@@ -312,17 +311,17 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
-                    fontSize: 11,
+                    fontSize: 12,
                   ),
                 ),
               ),
               Container(
                 child: Text(
-                  _profileController.userTierList.first.losses.toString(),
+                  _profileController.userTierRankedSolo.value.losses.toString(),
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
-                    fontSize: 11,
+                    fontSize: 12,
                   ),
                 ),
               )
@@ -335,7 +334,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
 
   Positioned _profileName(BuildContext context) {
     return Positioned(
-      top: MediaQuery.of(context).size.height / 6.6,
+      top: MediaQuery.of(context).size.height / 6.3,
       left: 0,
       right: 0,
       child: Row(
@@ -383,8 +382,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            margin:
-                EdgeInsets.only(top: 10),
+            margin: EdgeInsets.only(top: 5),
             width: MediaQuery.of(context).size.height >
                     MasterController.NEXUS_ONE_SCREEN_HEIGHT
                 ? MediaQuery.of(context).size.width / 6

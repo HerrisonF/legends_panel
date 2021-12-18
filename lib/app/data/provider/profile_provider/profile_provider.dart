@@ -22,11 +22,11 @@ class ProfileProvider {
     }
   }
 
-  Future<RxList<UserTier>> getUserTier(String encryptedSummonerId, String region) async {
+  Future<RxList<UserTier>> getUserTier(String encryptedSummonerId, String keyRegion) async {
     final String path = "/lol/league/v4/entries/by-summoner/$encryptedSummonerId";
     _logger.i("Getting SummonerTier");
     try{
-      DioClient _dioClient = DioClient(url: RiotAndRawDragonUrls.riotBaseUrl(region));
+      DioClient _dioClient = DioClient(url: RiotAndRawDragonUrls.riotBaseUrl(keyRegion));
       final response = await _dioClient.get(path);
       RxList<UserTier> listTier  = RxList<UserTier>();
       if(response.state == CustomState.SUCCESS){
@@ -46,11 +46,11 @@ class ProfileProvider {
     }
   }
 
-  Future<RxList<ChampionMastery>> getChampionMastery(String summonerId, String region) async {
+  Future<RxList<ChampionMastery>> getChampionMastery(String summonerId, String keyRegion) async {
     final String path  = "/lol/champion-mastery/v4/champion-masteries/by-summoner/$summonerId";
     _logger.i("Getting Champion Mastery");
     try{
-      DioClient _dioClient = DioClient(url: RiotAndRawDragonUrls.riotBaseUrl(region));
+      DioClient _dioClient = DioClient(url: RiotAndRawDragonUrls.riotBaseUrl(keyRegion));
       final response = await _dioClient.get(path);
       RxList<ChampionMastery> championMasteryList = RxList<ChampionMastery>();
       if(response.state == CustomState.SUCCESS){
@@ -90,6 +90,10 @@ class ProfileProvider {
   }
 
   String getMasteryImage(String championLevel) {
+    if(championLevel == "3"){
+      final String path = "/latest/game/assets/ux/mastery/mastery_icon_default.png";
+      return RiotAndRawDragonUrls.rawDataDragonUrl + path;
+    }
     final String path = "/latest/game/assets/ux/mastery/mastery_icon_$championLevel.png";
     _logger.i("building Image Champion for mastery URL...");
     try{
@@ -100,7 +104,7 @@ class ProfileProvider {
     }
   }
 
-  Future<List<String>> getMatchListIds(String puuid, int start, int count, String region) async {
+  Future<List<String>> getMatchListIds(String puuid, int start, int count, String keyRegion) async {
     final String path = "/lol/match/v5/matches/by-puuid/$puuid/ids";
     _logger.i("Getting MatchList ...");
 
@@ -108,14 +112,14 @@ class ProfileProvider {
 
     late DioClient tempDio;
 
-    if(region == "KR" || region == "RU" || region == "JP1" || region == "TR1" || region == "OC1"){
+    if(keyRegion == "KR" || keyRegion == "RU" || keyRegion == "JP1" || keyRegion == "TR1" || keyRegion == "OC1"){
       tempDio = DioClient(url: RiotAndRawDragonUrls.riotAsiaUrl);
     }
-    if(region == "EUN1" || region == "EUW1" || region == "NA1"){
+    if(keyRegion == "EUN1" || keyRegion == "EUW1" || keyRegion == "NA1"){
       tempDio = DioClient(url: RiotAndRawDragonUrls.riotEuropeUrl);
     }
 
-    if(region == "LA1" || region == "LA2" || region == "BR1" || region.isEmpty){
+    if(keyRegion == "LA1" || keyRegion == "BR1" || keyRegion.isEmpty){
       tempDio = DioClient(url: RiotAndRawDragonUrls.riotAmericasUrl);
     }
 
@@ -138,19 +142,19 @@ class ProfileProvider {
     }
   }
 
-  Future<MatchDetail> getMatchById(String matchId, String region) async {
+  Future<MatchDetail> getMatchById(String matchId, String keyRegion) async {
     final String path = "/lol/match/v5/matches/$matchId";
     _logger.i("Getting Match by id ...");
     late DioClient tempDio;
 
-    if(region == "KR" || region == "RU" || region == "JP1" || region == "TR1" || region == "OC1"){
+    if(keyRegion == "KR" || keyRegion == "RU" || keyRegion == "JP1" || keyRegion == "TR1" || keyRegion == "OC1"){
       tempDio = DioClient(url: RiotAndRawDragonUrls.riotAsiaUrl);
     }
-    if(region == "EUN1" || region == "EUW1" || region == "NA1"){
+    if(keyRegion == "EUN1" || keyRegion == "EUW1" || keyRegion == "NA1"){
       tempDio = DioClient(url: RiotAndRawDragonUrls.riotEuropeUrl);
     }
 
-    if(region == "LA1" || region == "LA2" || region == "BR1" || region.isEmpty){
+    if(keyRegion == "LA1" || keyRegion == "BR1" || keyRegion.isEmpty){
       tempDio = DioClient(url: RiotAndRawDragonUrls.riotAmericasUrl);
     }
     try{

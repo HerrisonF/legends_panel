@@ -45,9 +45,8 @@ class ParticipantProvider {
   }
 
   String getChampionBadgeUrl(String championId, String version) {
-
+    _logger.i("building Image Champion URL... $championId # $version");
     final String path = "/cdn/$version/img/champion/$championId.png";
-    _logger.i("building Image Champion URL...");
     try{
       return RiotAndRawDragonUrls.riotDragonUrl + path;
     }catch(e){
@@ -104,6 +103,17 @@ class ParticipantProvider {
     }
     _logger.i("No current game found ...");
     return CurrentGameSpectator();
+  }
+
+  String getPerkUrl(String iconName){
+    final String path = "/cdn/img/$iconName";
+    _logger.i("building Image Perk Url ...");
+    try{
+      return RiotAndRawDragonUrls.riotDragonUrl + path;
+    }catch(e){
+      _logger.i("Error to build Perk Image URL ...");
+      return "";
+    }
   }
 
 }

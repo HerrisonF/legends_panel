@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/result_controllers/current_game_result_controller/current_game_result_controller.dart';
-import 'package:legends_panel/app/model/current_game_spectator/current_game_banned_champion.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
+import 'package:legends_panel/app/ui/android/components/timer_text.dart';
 import 'package:legends_panel/app/ui/android/pages/current_game_page/current_game_participant_card.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -72,55 +72,61 @@ class CurrentGameResultPage extends StatelessWidget {
 
   _mapName(BuildContext context) {
     return Obx(() {
-      return Container(
-        margin: EdgeInsets.only(
-            top: MediaQuery.of(context).size.height >
-                    MasterController.NEXUS_ONE_SCREEN_HEIGHT
-                ? 90
-                : 80),
-        child: Text(
-          _currentGameResultController.currentMapToShow.value.mapName.isEmpty
-              ? AppLocalizations.of(context)!.loadingMessage
-              : _currentGameResultController.currentMapToShow.value.mapName,
-          style: GoogleFonts.adamina(
-            fontSize: MediaQuery.of(context).size.height >
-                    MasterController.NEXUS_ONE_SCREEN_HEIGHT
-                ? 16
-                : 12,
-            color: Colors.white,
-            letterSpacing: 0.5,
+      return Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height >
+                        MasterController.NEXUS_ONE_SCREEN_HEIGHT
+                    ? 100
+                    : 80),
+            child: Text(
+              _currentGameResultController.currentMapToShow.value.map.isEmpty
+                  ? AppLocalizations.of(context)!.loadingMessage
+                  : _currentGameResultController.currentMapToShow.value.map,
+              style: GoogleFonts.aBeeZee(
+                  fontSize: MediaQuery.of(context).size.height >
+                          MasterController.NEXUS_ONE_SCREEN_HEIGHT
+                      ? 18
+                      : 12,
+                  color: Colors.white,
+                  letterSpacing: 0.2,
+                  fontWeight: FontWeight.w300),
+            ),
           ),
-        ),
+          Container(
+            child: Text(
+                _currentGameResultController.currentMapToShow.value.description,
+              style: GoogleFonts.aBeeZee(
+                  fontSize: MediaQuery.of(context).size.height >
+                      MasterController.NEXUS_ONE_SCREEN_HEIGHT
+                      ? 14
+                      : 8,
+                  color: Colors.white,
+                  letterSpacing: 0.2,
+                  fontWeight: FontWeight.w300),
+            ),
+          ),
+        ],
       );
     });
   }
 
   Container _gameClock(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(top: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            child: Image.asset(
-              imageIconClock,
-              height: MediaQuery.of(context).size.height >
-                      MasterController.NEXUS_ONE_SCREEN_HEIGHT
-                  ? 20
-                  : 16,
-            ),
-            margin: EdgeInsets.only(right: 10),
-          ),
-          Text(
-            "${_currentGameResultController.getCurrentGameMinutes()} Min",
-            style: GoogleFonts.aBeeZee(
-              fontSize: MediaQuery.of(context).size.height >
-                      MasterController.NEXUS_ONE_SCREEN_HEIGHT
-                  ? 16
-                  : 12,
+            child: Icon(
+              Icons.access_alarm_outlined,
+              size: 16,
               color: Colors.white,
-              letterSpacing: 0.5,
             ),
+            margin: EdgeInsets.only(right: 5),
           ),
+          TimerText(time: _currentGameResultController.getCurrentGameMinutes()),
         ],
       ),
     );
@@ -128,16 +134,17 @@ class CurrentGameResultPage extends StatelessWidget {
 
   Container _userName(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(top: 10),
       child: Text(
         _masterController.userForCurrentGame.value.name,
         style: GoogleFonts.aBeeZee(
-          fontSize: MediaQuery.of(context).size.height >
-                  MasterController.NEXUS_ONE_SCREEN_HEIGHT
-              ? 16
-              : 14,
-          color: Colors.white,
-          letterSpacing: 0.5,
-        ),
+            fontSize: MediaQuery.of(context).size.height >
+                    MasterController.NEXUS_ONE_SCREEN_HEIGHT
+                ? 16
+                : 14,
+            color: Colors.white,
+            letterSpacing: 0.2,
+            fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -181,41 +188,38 @@ class CurrentGameResultPage extends StatelessWidget {
   _detachTeams(BuildContext context) {
     return Column(
       children: [
-        Obx(() {
-          return _teamCard(_currentGameResultController.blueTeam,
-              _currentGameResultController.blueTeamBannedChamp, context);
-        }),
-        Obx(() {
-          return _teamCard(_currentGameResultController.redTeam,
-              _currentGameResultController.redTeamBannedChamp, context);
-        }),
+        _teamCard(_currentGameResultController.blueTeam, context),
+        _teamCard(_currentGameResultController.redTeam, context),
       ],
     );
   }
 
-  _teamCard(RxList<CurrentGameParticipant> participants,
-      RxList<CurrentGameBannedChampion> bannedChampions, context) {
+  _teamCard(RxList<CurrentGameParticipant> participants, context) {
     return Container(
-      height:  MediaQuery.of(context).size.height > 800 ? 355 : 210,
-      margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height > 800 ? 0
-      : 5, top: MediaQuery.of(context).size.height > 800 ? 0 : 10),
+      height: MediaQuery.of(context).size.height >
+              MasterController.NEXUS_ONE_SCREEN_HEIGHT
+          ? 355
+          : 290,
+      margin: EdgeInsets.only(
+        bottom: MediaQuery.of(context).size.height >
+                MasterController.NEXUS_ONE_SCREEN_HEIGHT
+            ? 0
+            : 5,
+        top: MediaQuery.of(context).size.height >
+                MasterController.NEXUS_ONE_SCREEN_HEIGHT
+            ? 0
+            : 10,
+      ),
       child: ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         itemCount: participants.length,
         itemBuilder: (_, index) {
           return CurrentGameParticipantCard(
             participant: participants[index],
-            bannedChampion: _existBannedChampions(bannedChampions)
-                ? bannedChampions[index]
-                : CurrentGameBannedChampion(),
             region: _currentGameResultController.region,
           );
         },
       ),
     );
   }
-
-  bool _existBannedChampions(
-          RxList<CurrentGameBannedChampion>? bannedChampions) =>
-      bannedChampions != null && bannedChampions.length > 0;
 }

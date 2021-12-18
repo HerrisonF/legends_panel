@@ -66,5 +66,13 @@
   "searching" : "Searching ",
   "@searching": {
     "description": "Searching "
+  },
+  "gameDefeat" : "Defeat",
+  "@gameDefeat": {
+    "description": "Defeat"
+  },
+  "gameVictory" : "Victory",
+  "@gameVictory": {
+    "description": "Victory"
   }
 }

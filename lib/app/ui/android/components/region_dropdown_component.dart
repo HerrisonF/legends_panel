@@ -5,7 +5,8 @@ class RegionDropDownComponent extends StatefulWidget {
   final Function(String region) onRegionChoose;
   final String initialRegion;
 
-  RegionDropDownComponent({required this.onRegionChoose, required this.initialRegion});
+  RegionDropDownComponent(
+      {required this.onRegionChoose, required this.initialRegion});
 
   @override
   State<RegionDropDownComponent> createState() =>
@@ -13,26 +14,24 @@ class RegionDropDownComponent extends StatefulWidget {
 }
 
 class _RegionDropDownComponentState extends State<RegionDropDownComponent> {
-
   regionChoose(String region) {
     widget.onRegionChoose(region);
   }
 
   final List<String> _locations = [
-    'BR1',
-    'EUN1',
-    'EUW1',
-    'JP1',
+    'BR',
+    'EUN',
+    'EUW',
+    'JP',
     'KR',
-    'LA1',
-    'LA2',
-    'NA1',
-    'OC1',
-    'TR1',
+    'LA',
+    'NA',
+    'OC',
+    'TR',
     'RU'
   ];
 
-  String selectedLocation = 'NA1';
+  String selectedLocation = 'NA';
 
   @override
   void initState() {
@@ -45,6 +44,7 @@ class _RegionDropDownComponentState extends State<RegionDropDownComponent> {
     return Container(
       height: 38,
       alignment: Alignment.center,
+      padding: EdgeInsets.only(left: 10),
       margin: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.height > 800
             ? MediaQuery.of(context).size.width / 3.6
@@ -55,7 +55,7 @@ class _RegionDropDownComponentState extends State<RegionDropDownComponent> {
         color: Theme.of(context).backgroundColor,
       ),
       child: DropdownButton(
-        menuMaxHeight: 200,
+        isExpanded: true,
         icon: Icon(
           Icons.arrow_drop_down,
           color: Colors.white,

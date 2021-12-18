@@ -5,8 +5,8 @@ class CurrentGameRepository {
 
   final CurrentGameProvider _currentGameProvider = CurrentGameProvider();
 
-  Future<CurrentGameSpectator> checkCurrentGameExists(String userId, String region){
-    return _currentGameProvider.checkCurrentGameExists(userId, region);
+  Future<CurrentGameSpectator> checkCurrentGameExists(String userId, String keyRegion){
+    return _currentGameProvider.checkCurrentGameExists(userId, keyRegion);
   }
 
 }

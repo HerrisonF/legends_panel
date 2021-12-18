@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:legends_panel/app/constants/string_constants.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
-import 'package:legends_panel/app/model/general/champion.dart';
 import 'package:legends_panel/app/model/general/champion_mastery.dart';
 import 'package:legends_panel/app/model/general/match_detail.dart';
 import 'package:legends_panel/app/model/general/user_tier.dart';
@@ -14,13 +14,14 @@ class ProfileController {
   final TextEditingController userNameInputController = TextEditingController();
   final MasterController _masterController = Get.find<MasterController>();
 
-  int amountMatches = AMOUNT_MATCHES_TO_FIND;
   Rx<int> oldIndex = 0.obs;
   Rx<int> newIndex = 0.obs;
 
   Rx<int> currentProfilePage = 0.obs;
 
   RxList<UserTier> userTierList = RxList<UserTier>();
+  Rx<UserTier> userTierRankedSolo = UserTier().obs;
+  Rx<UserTier> userTierRankedFlex = UserTier().obs;
   RxList<ChampionMastery> championMasteryList = RxList<ChampionMastery>();
   List<String> matchIdList = [];
   RxList<MatchDetail> matchList = RxList<MatchDetail>();
@@ -45,19 +46,19 @@ class ProfileController {
     ];
   }
 
-  String getLastStoredRegionForProfile(){
-    if(_masterController.storedRegion.value.lastStoredProfileRegion.isEmpty){
-      return 'NA1';
+  String getLastStoredRegionForProfile() {
+    if (_masterController.storedRegion.value.lastStoredProfileRegion.isEmpty) {
+      return 'NA';
     }
     return _masterController.storedRegion.value.lastStoredProfileRegion;
   }
 
-  saveActualRegion(String region){
+  saveActualRegion(String region) {
     _masterController.storedRegion.value.lastStoredProfileRegion = region;
-    _masterController.saveActualRegion();
+    _masterController.saveActualRegion(region);
   }
 
-  changeCurrentProfilePageTo(int page){
+  changeCurrentProfilePageTo(int page) {
     currentProfilePage.value = page;
   }
 
@@ -85,79 +86,87 @@ class ProfileController {
     if (_masterController.userProfileExist()) {
       if (_masterController.userForProfile.value.region.isNotEmpty) {
         isUserFound(true);
-        final tempRegion = _masterController.userForProfile.value.region;
+        final region = _masterController.userForProfile.value.region;
         starUserLoading();
-        await getUserTierInformation(tempRegion);
-        await getMasteryChampions(tempRegion);
-        await getMatchListIds(tempRegion);
-        await getMatches(tempRegion);
+        await getUserTierInformation(_masterController.storedRegion.value.getKeyFromRegion(region)!);
+        await getMasteryChampions(_masterController.storedRegion.value.getKeyFromRegion(region)!);
+        await getMatchListIds(_masterController.storedRegion.value.getKeyFromRegion(region)!);
+        await getMatches(_masterController.storedRegion.value.getKeyFromRegion(region)!);
         changeCurrentProfilePageTo(FOUND_USER_COMPONENT);
         stopUserLoading();
       }
     }
   }
 
-  getUserTierInformation(String region) async {
+  getUserTierInformation(String keyRegion) async {
     userTierList.value = await _profileRepository.getUserTier(
-        _masterController.userForProfile.value.id, region);
+        _masterController.userForProfile.value.id, keyRegion);
+    for (UserTier userTier in userTierList) {
+      if (userTier.queueType == StringConstants.rankedSolo) {
+        userTierRankedSolo.value = userTier;
+        userTierRankedSolo.refresh();
+      } else if (userTier.queueType == StringConstants.rankedFlex) {
+        userTierRankedFlex.value = userTier;
+        userTierRankedFlex.refresh();
+      }
+    }
   }
 
-  getMasteryChampions(String region) async {
+  getMasteryChampions(String keyRegion) async {
     championMasteryList.addAll(
       await _profileRepository.getChampionMastery(
-          _masterController.userForProfile.value.id, region),
+          _masterController.userForProfile.value.id, keyRegion),
     );
     championMasteryList
         .sort((b, a) => a.championPoints.compareTo(b.championPoints));
   }
 
-  getMatchListIds(String region) async {
+  getMatchListIds(String keyRegion) async {
     this.newIndex.value += AMOUNT_MATCHES_TO_FIND;
     List<String> tempMatchIdList = [];
 
     tempMatchIdList = await _profileRepository.getMatchListIds(
-        _masterController.userForProfile.value.puuid,
-        this.newIndex.value,
-        this.amountMatches,
-        region);
+      puuid: _masterController.userForProfile.value.puuid,
+      start: this.oldIndex.value,
+      count: AMOUNT_MATCHES_TO_FIND,
+      keyRegion: keyRegion,
+    );
     if (tempMatchIdList.isNotEmpty) {
-      oldIndex.value = newIndex.value;
-      this.matchIdList.addAll(tempMatchIdList);
+      oldIndex.value = oldIndex.value + AMOUNT_MATCHES_TO_FIND;
+      matchIdList.addAll(tempMatchIdList);
     } else {
       newIndex.value = oldIndex.value;
       lockNewLoadings.value = true;
     }
   }
 
-  getMatches(String region) async {
-    for (String matchId in matchIdList) {
+  getMatches(String keyRegion) async {
+    for (int i = matchList.length; i < matchIdList.length; i++) {
       MatchDetail matchDetail =
-          await _profileRepository.getMatchById(matchId, region);
+          await _profileRepository.getMatchById(matchIdList[i], keyRegion);
       matchList.add(matchDetail);
     }
   }
 
   loadMoreMatches(String region) async {
-    startLoadingNewMatches();
-    await getMatchListIds(region);
-    for (int i = matchList.length; i < matchIdList.length; i++) {
-      MatchDetail matchDetail =
-          await _profileRepository.getMatchById(matchIdList[i], region);
-      matchList.add(matchDetail);
+    if (!isLoadingNewMatches.value) {
+      startLoadingNewMatches();
+      await getMatchListIds(_masterController.storedRegion.value.getKeyFromRegion(region)!);
+      await getMatches(_masterController.storedRegion.value.getKeyFromRegion(region)!);
+      stopLoadingNewMatches();
     }
-    stopLoadingNewMatches();
   }
 
   String getChampionImage(int championId) {
-    Champion champion =
+    String returnedChampion =
         _masterController.getChampionById(championId.toString());
-    return _profileRepository.getChampionImage(champion.detail.id);
+    return _profileRepository.getChampionImage(returnedChampion);
   }
 
   String getCircularChampionImage(int championId) {
-    Champion champion =
+    String returnedChampion =
         _masterController.getChampionById(championId.toString());
-    return _profileRepository.getCircularChampionImage(champion.detail.id);
+    return _profileRepository.getCircularChampionImage(returnedChampion);
   }
 
   String getMasteryImage(int index) {
@@ -167,13 +176,14 @@ class ProfileController {
 
   getUser(String region) async {
     starUserLoading();
-    await _masterController.getUserProfileOnCloud(
-        userNameInputController.text, region);
+    await _masterController.getUserProfileOnCloud(userNameInputController.text,
+        _masterController.storedRegion.value.getKeyFromRegion(region)!);
+    _masterController.saveUserProfile(region);
     if (_masterController.userProfileExist()) {
-      await getUserTierInformation(region);
-      await getMasteryChampions(region);
-      await getMatchListIds(region);
-      await getMatches(region);
+      await getUserTierInformation(_masterController.storedRegion.value.getKeyFromRegion(region)!);
+      await getMasteryChampions(_masterController.storedRegion.value.getKeyFromRegion(region)!);
+      await getMatchListIds(_masterController.storedRegion.value.getKeyFromRegion(region)!);
+      await getMatches(_masterController.storedRegion.value.getKeyFromRegion(region)!);
       setUserRegion(region);
       changeCurrentProfilePageTo(FOUND_USER_COMPONENT);
       userNameInputController.clear();
@@ -183,7 +193,7 @@ class ProfileController {
     }
   }
 
-  setUserRegion(String region){
+  setUserRegion(String region) {
     _masterController.userForProfile.value.region = region;
   }
 
@@ -198,7 +208,6 @@ class ProfileController {
   deletePersistedUser() {
     _masterController.deleteUserProfile();
     isShowingMessage(false);
-    amountMatches = AMOUNT_MATCHES_TO_FIND;
     oldIndex = 0.obs;
     newIndex = 0.obs;
 

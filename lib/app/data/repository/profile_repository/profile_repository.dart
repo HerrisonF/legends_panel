@@ -12,12 +12,12 @@ class ProfileRepository {
     return _profileProvider.getProfileImage(version, profileIconId);
   }
 
-  Future<RxList<UserTier>> getUserTier(String encryptedSummonerId, String region) async {
-    return _profileProvider.getUserTier(encryptedSummonerId, region);
+  Future<RxList<UserTier>> getUserTier(String encryptedSummonerId, String keyRegion) async {
+    return _profileProvider.getUserTier(encryptedSummonerId, keyRegion);
   }
 
-  Future<RxList<ChampionMastery>> getChampionMastery(String summonerId, String region) async {
-    return _profileProvider.getChampionMastery(summonerId, region);
+  Future<RxList<ChampionMastery>> getChampionMastery(String summonerId, String keyRegion) async {
+    return _profileProvider.getChampionMastery(summonerId, keyRegion);
   }
 
   String getChampionImage(String championId){
@@ -31,12 +31,12 @@ class ProfileRepository {
     return _profileProvider.getMasteryImage(level);
   }
 
-  Future<List<String>> getMatchListIds(String puuid, int start, int count, String region) {
-    return _profileProvider.getMatchListIds(puuid, start, count, region);
+  Future<List<String>> getMatchListIds({required String puuid, required int start, required int count, required String keyRegion}) {
+    return _profileProvider.getMatchListIds(puuid, start, count, keyRegion);
   }
 
-  Future<MatchDetail> getMatchById(String matchId, String region){
-    return _profileProvider.getMatchById(matchId, region);
+  Future<MatchDetail> getMatchById(String matchId, String keyRegion){
+    return _profileProvider.getMatchById(matchId, keyRegion);
   }
 
 }

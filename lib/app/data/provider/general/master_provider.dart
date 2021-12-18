@@ -11,6 +11,7 @@ import 'package:legends_panel/app/model/general/champion_room.dart';
 import 'package:legends_panel/app/model/general/lol_version.dart';
 import 'package:legends_panel/app/model/general/map_mode.dart';
 import 'package:legends_panel/app/model/general/map_room.dart';
+import 'package:legends_panel/app/model/general/runesRoom.dart';
 import 'package:legends_panel/app/model/general/spell_room.dart';
 import 'package:legends_panel/app/model/general/stored_region.dart';
 import 'package:legends_panel/app/model/general/user.dart';
@@ -166,7 +167,7 @@ class MasterProvider {
   Future<MapRoom> getMapRoomOnWeb() async {
     DioClient _dioClient =
         DioClient(url: RiotAndRawDragonUrls.riotStaticDataUrl);
-    final String path = "/docs/lol/maps.json";
+    final String path = "/docs/lol/queues.json";
     _logger.i("Getting mapRoom ...");
     MapRoom mapRoom = MapRoom();
     try {
@@ -212,6 +213,55 @@ class MasterProvider {
     }
   }
 
+  Future<RunesRoom> getRunesRoomOnWeb(String version, String regionKey) async {
+    DioClient _dioClient =
+    DioClient(url: RiotAndRawDragonUrls.riotDragonUrl);
+    final String path = "/cdn/$version/data/$regionKey/runesReforged.json";
+    _logger.i("Getting runesRoom ...");
+    RunesRoom runesRoom = RunesRoom();
+    try {
+      final response = await _dioClient.get(path);
+      if (response.state == CustomState.SUCCESS) {
+        for (dynamic runesRoomTemp in response.result.data) {
+          runesRoom.perkStyle.add(PerkStyle.fromJson(runesRoomTemp));
+        }
+        _logger.i("Success to get runesRoom ...");
+        return runesRoom;
+      }
+      _logger.i("RunesRoom not found ...");
+      return runesRoom;
+    } catch (e) {
+      _logger.i("Error to get RunesRoom ...");
+      return runesRoom;
+    }
+  }
+
+  Future<RunesRoom> getRunesRoomOnLocal() async {
+    _logger.i("Getting RunesRoom on Local ...");
+    try {
+      String runesRoomString = await box.read(StorageKeys.runesRoomKey);
+      if (runesRoomString.isNotEmpty) {
+        _logger.i("Success to get RunesRoom on Local ...");
+        return RunesRoom.fromJson(jsonDecode(runesRoomString));
+      }
+    } catch (e) {
+      _logger.i("Error to get RunesRoom on local $e");
+      return RunesRoom();
+    }
+    _logger.i("runesRoom on local not found ...");
+    return RunesRoom();
+  }
+
+  saveRunesRoom(Map<String, dynamic> runesRoom) {
+    _logger.i("Persisting runesRoom ...");
+    try {
+      box.write(StorageKeys.runesRoomKey, jsonEncode(runesRoom));
+      _logger.i("Success to persist runesRoom ...");
+    } catch (e) {
+      _logger.i("Error to persist runesRoom ... $e");
+    }
+  }
+
   String getImageUrl(String championName, String version) {
     final String path =
         "/cdn/$version/img/champion/${championName.replaceAll(" ", "")}.png";
@@ -250,9 +300,9 @@ class MasterProvider {
     }
   }
 
-  Future<User> getUserOnCloud(String summonerName, String region) async {
+  Future<User> getUserOnCloud(String summonerName, String keyRegion) async {
     DioClient _dioClient =
-        DioClient(url: RiotAndRawDragonUrls.riotBaseUrl(region));
+        DioClient(url: RiotAndRawDragonUrls.riotBaseUrl(keyRegion));
     final String path = "/lol/summoner/v4/summoners/by-name/$summonerName";
     _logger.i("Finding User...");
     try {

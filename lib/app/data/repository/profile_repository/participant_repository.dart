@@ -34,4 +34,8 @@ class ParticipantRepository {
   Future<CurrentGameSpectator> getSpectator(String summonerId, String region){
     return _participantProvider.getSpectator(summonerId, region);
   }
+
+  String getPerkUrl(String iconName){
+   return _participantProvider.getPerkUrl(iconName);
+  }
 }

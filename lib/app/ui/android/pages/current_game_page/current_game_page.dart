@@ -104,7 +104,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
   Container _buttonForSearchSummoner() {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 30),
-      height: MediaQuery.of(context).size.height > 800 ? 50 : 40,
+      height: 50,
       child: Obx(() {
         return OutlinedButton(
           child: Row(

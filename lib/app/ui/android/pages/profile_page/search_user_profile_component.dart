@@ -30,7 +30,7 @@ class _SearchUserProfileComponentState
 
   getLastStoredRegionForProfile() {
     String receivedRegion = _profileController.getLastStoredRegionForProfile();
-    initialRegion = receivedRegion.isEmpty ? 'NA1' : receivedRegion;
+    initialRegion = receivedRegion.isEmpty ? 'NA' : receivedRegion;
   }
 
   @override
@@ -72,7 +72,7 @@ class _SearchUserProfileComponentState
   Container _buttonSearchSummoner() {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 30),
-      height: MediaQuery.of(context).size.height > 800 ? 50 : 40,
+      height: 50,
       child: Obx(() {
         return OutlinedButton(
           child: Row(

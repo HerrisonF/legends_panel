@@ -119,7 +119,7 @@ class AboutPage extends StatelessWidget {
                         color: Theme.of(context).backgroundColor,
                         borderRadius: BorderRadius.circular(8)
                       ),
-                      margin: EdgeInsets.only(top: 40),
+                      margin: EdgeInsets.only(top: 40, bottom: 100),
                       child: IconButton(
                         onPressed: () {
                           openGit(context);

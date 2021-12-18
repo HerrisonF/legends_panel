@@ -6,5 +6,6 @@ abstract class StorageKeys {
   static String championRoomKey = "championRoom";
   static String spellRoomKey = "spellRoom";
   static String mapRoomKey = "mapRoom";
+  static String runesRoomKey = "runesRoom";
   static String regionKey = "region";
 }

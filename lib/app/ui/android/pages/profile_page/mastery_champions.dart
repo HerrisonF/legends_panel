@@ -32,21 +32,27 @@ class MasteryChampions extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 23, vertical: 12),
-          width: MediaQuery.of(context).size.height > 800 ? 60 : 40,
-          height: MediaQuery.of(context).size.height > 800 ? 60 : 40,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(
-                _profileController.getCircularChampionImage(
-                    _profileController.championMasteryList[index].championId),
-              ),
-              fit: BoxFit.fill,
-            ),
-            borderRadius: BorderRadius.circular(100),
-          ),
-        ),
+        _profileController
+                .getCircularChampionImage(
+                    _profileController.championMasteryList[index].championId)
+                .isNotEmpty
+            ? Container(
+                margin: EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+                width: MediaQuery.of(context).size.height > 800 ? 60 : 40,
+                height: MediaQuery.of(context).size.height > 800 ? 60 : 40,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                      _profileController.getCircularChampionImage(
+                          _profileController
+                              .championMasteryList[index].championId),
+                    ),
+                    fit: BoxFit.fill,
+                  ),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+              )
+            : SizedBox.shrink(),
         Positioned(
           bottom: MediaQuery.of(context).size.height > 800 ? -3 : 3,
           child: Container(

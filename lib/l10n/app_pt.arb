@@ -15,5 +15,7 @@
   "development": "Gosta da aplicação e tem o Brave Browser ? Você pode me ajudar indo ao meu GIT e fazendo sua doação em BATs :)",
   "gitInstall": "Tivemos problemas para abrir o Git !",
   "userFound": "Te encontramos ! ",
-  "searching": "Procurando "
+  "searching": "Procurando ",
+  "gameDefeat" : "Derrota",
+  "gameVictory" : "Vitória"
 }

@@ -1,6 +1,7 @@
 import 'package:legends_panel/app/model/general/champion_room.dart';
 import 'package:legends_panel/app/model/general/lol_version.dart';
 import 'package:legends_panel/app/model/general/map_room.dart';
+import 'package:legends_panel/app/model/general/runesRoom.dart';
 import 'package:legends_panel/app/model/general/spell_room.dart';
 import 'package:legends_panel/app/model/general/stored_region.dart';
 import 'package:legends_panel/app/model/general/user.dart';
@@ -58,12 +59,24 @@ class MasterRepository {
     return _masterProvider.saveMapRoom(mapRoom);
   }
 
+  Future<RunesRoom> getRunesRoomOnWeb(String version, String languageKey){
+    return _masterProvider.getRunesRoomOnWeb(version, languageKey);
+  }
+
+  Future<RunesRoom> getRunesRoomOnLocal(){
+    return _masterProvider.getRunesRoomOnLocal();
+  }
+
+  saveRunesRoom(Map<String, dynamic> runesRoom){
+    return _masterProvider.saveRunesRoom(runesRoom);
+  }
+
   Future<User> readPersistedUserProfile(){
     return _masterProvider.readPersistedUserProfile();
   }
 
-  Future<User> getUserOnCloud(String userName, String region){
-    return _masterProvider.getUserOnCloud(userName, region);
+  Future<User> getUserOnCloud(String userName, String keyRegion){
+    return _masterProvider.getUserOnCloud(userName, keyRegion);
   }
 
   saveUserProfile(User user){

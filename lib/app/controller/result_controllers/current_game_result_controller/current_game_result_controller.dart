@@ -14,62 +14,51 @@ class CurrentGameResultController extends UtilController {
   Rx<MapMode> currentMapToShow = MapMode().obs;
   RxList<CurrentGameParticipant> blueTeam = RxList<CurrentGameParticipant>();
   RxList<CurrentGameParticipant> redTeam = RxList<CurrentGameParticipant>();
-  RxList<CurrentGameBannedChampion> blueTeamBannedChamp =
-      RxList<CurrentGameBannedChampion>();
-  RxList<CurrentGameBannedChampion> redTeamBannedChamp =
-      RxList<CurrentGameBannedChampion>();
+
+  static const BLUE_TEAM = 100;
 
   startController(CurrentGameSpectator currentGameSpectator, String region) {
-    this.region = region;
-    _clearOldSearch();
+    this.region = _masterController.storedRegion.value.getKeyFromRegion(region)!;
+    _clearOldCurrentGameSearch();
     setCurrentGameSpectator(currentGameSpectator);
     detachParticipantsIntoTeams();
-    getMapById(currentGameSpectator.mapId.toString());
+    getMapById(currentGameSpectator.gameQueueConfigId.toString());
   }
 
   setCurrentGameSpectator(CurrentGameSpectator spectator) {
     this.currentGameSpectator = spectator;
   }
 
-  _clearOldSearch() {
+  _clearOldCurrentGameSearch() {
     blueTeam.clear();
     redTeam.clear();
-    blueTeamBannedChamp.clear();
-    redTeamBannedChamp.clear();
   }
 
   detachParticipantsIntoTeams() {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < currentGameSpectator.currentGameParticipants.length; i++) {
       CurrentGameParticipant currentGameParticipant =
           currentGameSpectator.currentGameParticipants[i];
+      if(isPlayingMapWithBans()){
+        currentGameParticipant.currentGameBannedChampion = currentGameSpectator.bannedChampions[i];
+      }else{
+        currentGameParticipant.currentGameBannedChampion = CurrentGameBannedChampion();
+      }
 
-      if (currentGameParticipant.teamId == 100) {
+      if (currentGameParticipant.teamId == BLUE_TEAM) {
         blueTeam.add(currentGameParticipant);
-      } else {
+      }else {
         redTeam.add(currentGameParticipant);
       }
-
-      if (currentGameSpectator.bannedChampions.length > 0) {
-        CurrentGameBannedChampion currentGameBannedChampion =
-            currentGameSpectator.bannedChampions[i];
-        if (currentGameParticipant.teamId == 100) {
-          blueTeamBannedChamp.add(currentGameBannedChampion);
-        } else {
-          redTeamBannedChamp.add(currentGameBannedChampion);
-        }
-      }
     }
   }
 
-  String getCurrentGameMinutes() {
-    if (getConvertedTimeInMinutes(currentGameSpectator.gameLength) == "00") {
-      return "01";
-    } else {
-      return getConvertedTimeInMinutes(currentGameSpectator.gameLength);
-    }
+  bool isPlayingMapWithBans() => currentGameSpectator.bannedChampions.length > 0;
+
+  int getCurrentGameMinutes() {
+    return currentGameSpectator.gameLength;
   }
 
-  getMapById(String mapId) {
-    this.currentMapToShow.value = _masterController.getMapById(mapId);
+  getMapById(String queueId) {
+    this.currentMapToShow.value = _masterController.getMapById(queueId);
   }
 }

@@ -6,7 +6,7 @@ import 'package:legends_panel/app/model/general/match_detail.dart';
 class ProfileResultGameDetailController {
   final MasterController _masterController = Get.find<MasterController>();
   final CurrentGameParticipantController _currentGameParticipantController =
-      Get.put(CurrentGameParticipantController());
+  Get.put(CurrentGameParticipantController());
 
   Rx<MatchDetail> matchDetail = MatchDetail().obs;
   Rx<Participant> currentParticipant = Participant().obs;
@@ -14,22 +14,17 @@ class ProfileResultGameDetailController {
   startProfileResultGame(MatchDetail matchDetail) async {
     this.matchDetail.value = matchDetail;
 
-    getParticipantById(_masterController.userForProfile.value.name);
+    getParticipantById(_masterController.userForProfile.value.id);
   }
 
-  getParticipantById(String summonerName) {
+  getParticipantById(String summonerId) {
     if (matchDetail.value.matchInfo.participants.length > 0) {
-      for (Participant elementParticipant
-          in matchDetail.value.matchInfo.participants) {
-        if (elementParticipant.summonerName == summonerName) {
-          this.currentParticipant.value = elementParticipant;
-          break;
-        }
-      }
+      this.currentParticipant.value = matchDetail.value.matchInfo.participants.where((element) => element.summonerId == summonerId).first;
+      currentParticipant.refresh();
     }
   }
 
-  String getSpellImage(int spellId) {
+  getSpellImage(int spellId) {
     return _currentGameParticipantController.getSpellUrl(
       _getParticipantSpellId(spellId),
     );
@@ -54,7 +49,7 @@ class ProfileResultGameDetailController {
 
   String getChampionBadgeUrl() {
     return _currentGameParticipantController.getChampionBadgeUrl(
-      currentParticipant.value.championId.toString()
+        currentParticipant.value.championId.toString()
     );
   }
 }

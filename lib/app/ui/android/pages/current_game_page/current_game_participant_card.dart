@@ -4,17 +4,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/result_controllers/current_game_result_controller/current_game_participant_controller.dart';
-import 'package:legends_panel/app/model/current_game_spectator/current_game_banned_champion.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
-import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
 
 class CurrentGameParticipantCard extends StatefulWidget {
-  final CurrentGameParticipant? participant;
-  final CurrentGameBannedChampion? bannedChampion;
-  final String? region;
+  final CurrentGameParticipant participant;
+  final String region;
 
-  CurrentGameParticipantCard(
-      {required this.participant, this.bannedChampion, required this.region});
+  CurrentGameParticipantCard({required this.participant, required this.region});
 
   @override
   _CurrentGameParticipantCardState createState() =>
@@ -26,24 +22,30 @@ class _CurrentGameParticipantCardState
   final CurrentGameParticipantController _currentGameParticipantController =
       CurrentGameParticipantController();
 
+  static const BLUE_TEAM = 100;
+
   @override
   void initState() {
     super.initState();
     _currentGameParticipantController.getUserTier(
-        widget.participant!.summonerId, widget.region!);
+        widget.participant.summonerId, widget.region);
     _currentGameParticipantController.getSpectator(
-        widget.participant!.summonerId, widget.region!);
+        widget.participant.summonerId, widget.region);
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black26,
-      padding: EdgeInsets.symmetric(horizontal:5, vertical: MediaQuery.of(context).size.height > 800 ? 10 : 5),
+      color: widget.participant.teamId == BLUE_TEAM ? Colors.blue.withOpacity(0.1) : Colors.red.withOpacity(0.1),
+      padding: EdgeInsets.symmetric(
+        horizontal: 5,
+        vertical: MediaQuery.of(context).size.height > 800 ? 10 : 5,
+      ),
       child: Row(
         children: [
           _playerChampionBadge(),
           _playerSpells(),
+          _playerPerks(),
           _summonerName(),
           _userTierNameAndSymbol(),
           _playerWinRate(),
@@ -56,7 +58,7 @@ class _CurrentGameParticipantCardState
   _playerChampionBadge() {
     return Image.network(
       _currentGameParticipantController.getChampionBadgeUrl(
-        widget.participant!.championId.toString(),
+        widget.participant.championId.toString(),
       ),
       width: MediaQuery.of(context).size.width / 10,
     );
@@ -65,19 +67,45 @@ class _CurrentGameParticipantCardState
   Column _playerSpells() {
     return Column(
       children: [
+        _currentGameParticipantController.getSpellUrl(
+          widget.participant.spell1Id.toString(),
+        ).isNotEmpty ?
         Image.network(
           _currentGameParticipantController.getSpellUrl(
-            widget.participant!.spell1Id.toString(),
+            widget.participant.spell1Id.toString(),
           ),
-          width: MediaQuery.of(context).size.width / 21.5,
-        ),
+          width: MediaQuery.of(context).size.width / 21,
+        ) : SizedBox.shrink(),
+        _currentGameParticipantController.getSpellUrl(
+          widget.participant.spell2Id.toString(),
+        ).isNotEmpty ?
         Image.network(
           _currentGameParticipantController.getSpellUrl(
-            widget.participant!.spell2Id.toString(),
+            widget.participant.spell2Id.toString(),
           ),
-          width: MediaQuery.of(context).size.width / 21.5,
-        ),
+          width: MediaQuery.of(context).size.width / 21,
+        ) : SizedBox.shrink(),
       ],
+    );
+  }
+
+  _playerPerks(){
+    return Container(
+      margin: EdgeInsets.only(left: 5),
+      child: Column(
+        children: [
+          _currentGameParticipantController.getFirsPerkUrl(widget.participant.perks).isNotEmpty ?
+          Image.network(
+            _currentGameParticipantController.getFirsPerkUrl(widget.participant.perks),
+            width: MediaQuery.of(context).size.width / 22,
+          ) : SizedBox.shrink(),
+          _currentGameParticipantController.getPerkStyleUrl(widget.participant.perks).isNotEmpty ?
+          Image.network(
+            _currentGameParticipantController.getPerkStyleUrl(widget.participant.perks),
+            width: MediaQuery.of(context).size.width / 28,
+          ) : SizedBox.shrink(),
+        ],
+      ),
     );
   }
 
@@ -86,7 +114,7 @@ class _CurrentGameParticipantCardState
       margin: const EdgeInsets.only(left: 10),
       width: 70,
       child: Text(
-        widget.participant!.summonerName,
+        widget.participant.summonerName,
         style: GoogleFonts.montserrat(
           fontSize: MediaQuery.of(context).size.height >
                   MasterController.NEXUS_ONE_SCREEN_HEIGHT
@@ -94,30 +122,27 @@ class _CurrentGameParticipantCardState
               : 8,
           color: Colors.white,
         ),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }
 
   _bannedChampion() {
-    if(widget.bannedChampion != null){
-      return Container(
-        margin: const EdgeInsets.only(left: 10),
-        child: widget.bannedChampion!.championId > 0
-            ? Image.network(
-          _currentGameParticipantController.getChampionBadgeUrl(
-            widget.bannedChampion!.championId.toString(),
-          ),
-          width: MediaQuery.of(context).size.width / 14,
-        )
-            : Image.asset(
-          imageNoChampion,
-          width: MediaQuery.of(context).size.width / 14,
-        ),
-      );
-    }
-    return Image.asset(
-      imageNoChampion,
-      width: MediaQuery.of(context).size.width / 14,
+    return Container(
+      margin: const EdgeInsets.only(left: 10),
+      child: widget.participant.currentGameBannedChampion.championId > 0
+          ? Image.network(
+              _currentGameParticipantController.getChampionBadgeUrl(
+                widget.participant.currentGameBannedChampion.championId
+                    .toString(),
+              ),
+              width: MediaQuery.of(context).size.width / 14,
+            )
+          : Image.asset(
+              imageNoChampion,
+              width: MediaQuery.of(context).size.width / 14,
+            ),
     );
   }
 
@@ -127,7 +152,9 @@ class _CurrentGameParticipantCardState
               .soloUserTier.value.winRate.isNotEmpty
           ? Container(
               child: Text(
-                "WR " + _currentGameParticipantController.soloUserTier.value.winRate +
+                "WR " +
+                    _currentGameParticipantController
+                        .soloUserTier.value.winRate +
                     "%",
                 style: GoogleFonts.montserrat(
                   fontSize: 8,
@@ -135,13 +162,23 @@ class _CurrentGameParticipantCardState
                 ),
               ),
             )
-          : DotsLoading();
+          : Container(
+              margin: EdgeInsets.only(left: 10, right: 20),
+              child: Text(
+                " - ",
+                style: GoogleFonts.montserrat(
+                  fontSize: 8,
+                  color: Colors.white,
+                ),
+              ),
+            );
     });
   }
 
   Container _userTierNameAndSymbol() {
     return Container(
-      margin: EdgeInsets.only(right: 5, left: MediaQuery.of(context).size.height > 800 ? 10 : 0),
+      margin: EdgeInsets.only(
+          right: 5, left: MediaQuery.of(context).size.height > 800 ? 10 : 0),
       child: Row(
         children: [_userTierSymbol(), _userTierName()],
       ),
@@ -167,6 +204,7 @@ class _CurrentGameParticipantCardState
                       fontSize: 8,
                       color: Colors.white,
                     ),
+                    overflow: TextOverflow.ellipsis,
                   )
                 : Text(
                     "UNRANKED",
@@ -192,8 +230,8 @@ class _CurrentGameParticipantCardState
                     style: GoogleFonts.montserrat(
                       fontSize: MediaQuery.of(context).size.height >
                               MasterController.NEXUS_ONE_SCREEN_HEIGHT
-                          ? 12
-                          : 8,
+                          ? 11
+                          : 7,
                       color: Colors.white,
                     ),
                   )

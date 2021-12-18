@@ -26,23 +26,24 @@ class CurrentGameController extends GetxController {
     isLoadingUser(false);
   }
 
-  String getLastStoredRegionForCurrentGame(){
-    if(masterController.storedRegion.value.lastStoredCurrentGameRegion.isEmpty){
-      return 'NA1';
+  String getLastStoredRegionForCurrentGame() {
+    if (masterController
+        .storedRegion.value.lastStoredCurrentGameRegion.isEmpty) {
+      return 'NA';
     }
     return masterController.storedRegion.value.lastStoredCurrentGameRegion;
   }
 
-  saveActualRegion(String region){
-    masterController.storedRegion.value.lastStoredCurrentGameRegion = region;
-    masterController.saveActualRegion();
+  saveActualRegion(String region) {
+    masterController.saveActualRegion(region);
   }
 
   loadUserCurrentGame(String region) async {
     _startUserLoading();
-    await masterController.getCurrentUserOnCloud(userNameInputController.text, region);
+    await masterController.getCurrentUserOnCloud(userNameInputController.text,
+        masterController.storedRegion.value.getKeyFromRegion(region)!);
     if (userExist()) {
-      _checkUserIsPlayingOnRegion(region);
+      _getUserPlayingOnRegion(region);
     } else {
       _showMessageUserNotFound();
     }
@@ -50,11 +51,13 @@ class CurrentGameController extends GetxController {
 
   bool userExist() => masterController.userForCurrentGame.value.id.isNotEmpty;
 
-  _checkUserIsPlayingOnRegion(String region) async {
-    currentGameForASpectator = await _currentGameRepository
-        .checkCurrentGameExists(masterController.userForCurrentGame.value.id, region);
-    if (gameExist()) {
-      _pushToCurrentResultGame(region);
+  _getUserPlayingOnRegion(String region) async {
+    currentGameForASpectator =
+        await _currentGameRepository.checkCurrentGameExists(
+            masterController.userForCurrentGame.value.id,
+            masterController.storedRegion.value.getKeyFromRegion(region)!);
+    if (userIsPlaying()) {
+      _pushToCurrentResultGamePage(region);
       _stopUserLoading();
       userNameInputController.clear();
     } else {
@@ -62,12 +65,13 @@ class CurrentGameController extends GetxController {
     }
   }
 
-  bool gameExist() {
+  bool userIsPlaying() {
     return currentGameForASpectator.gameId > 0;
   }
 
-  _pushToCurrentResultGame(String region) {
-    _currentGameResultController.startController(currentGameForASpectator, region);
+  _pushToCurrentResultGamePage(String region) {
+    _currentGameResultController.startController(
+        currentGameForASpectator, region);
     Get.toNamed(Routes.PROFILE_SUB);
   }
 
