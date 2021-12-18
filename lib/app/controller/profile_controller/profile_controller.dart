@@ -55,7 +55,7 @@ class ProfileController {
 
   saveActualRegion(String region) {
     _masterController.storedRegion.value.lastStoredProfileRegion = region;
-    _masterController.saveActualRegion(region);
+    _masterController.saveActualRegion();
   }
 
   changeCurrentProfilePageTo(int page) {

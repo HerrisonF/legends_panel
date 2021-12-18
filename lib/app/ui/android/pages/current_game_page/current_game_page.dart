@@ -145,7 +145,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
     if (currentGameUserFormKey.currentState!.validate()) {
       UtilController.closeKeyBoard(context);
       _currentGameController
-          .loadUserCurrentGame(_currentGameController.getLastStoredRegionForCurrentGame());
+          .loadUserCurrentGame();
     }
   }
 }

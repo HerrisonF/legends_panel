@@ -38,7 +38,7 @@ class _CurrentGameParticipantCardState
     return Container(
       color: widget.participant.teamId == BLUE_TEAM ? Colors.blue.withOpacity(0.1) : Colors.red.withOpacity(0.1),
       padding: EdgeInsets.symmetric(
-        horizontal: 5,
+        horizontal: MediaQuery.of(context).size.height > 800 ? 5 : 3,
         vertical: MediaQuery.of(context).size.height > 800 ? 10 : 5,
       ),
       child: Row(
@@ -157,17 +157,17 @@ class _CurrentGameParticipantCardState
                         .soloUserTier.value.winRate +
                     "%",
                 style: GoogleFonts.montserrat(
-                  fontSize: 8,
+                  fontSize: MediaQuery.of(context).size.height > 800 ? 8 : 6,
                   color: Colors.white,
                 ),
               ),
             )
           : Container(
-              margin: EdgeInsets.only(left: 10, right: 20),
+              margin: EdgeInsets.only(left: MediaQuery.of(context).size.height > 800 ? 10 : 0, right: MediaQuery.of(context).size.height > 800 ? 20 : 0),
               child: Text(
                 " - ",
                 style: GoogleFonts.montserrat(
-                  fontSize: 8,
+                  fontSize: MediaQuery.of(context).size.height > 800 ? 8 : 6,
                   color: Colors.white,
                 ),
               ),
@@ -191,8 +191,8 @@ class _CurrentGameParticipantCardState
         Obx(() {
           return Container(
             alignment: Alignment.center,
-            margin: const EdgeInsets.only(left: 5),
-            width: 80,
+            margin: EdgeInsets.only(left: MediaQuery.of(context).size.height > 800 ? 5 : 0),
+            width: MediaQuery.of(context).size.height > 800 ? 80 : 60,
             child: _currentGameParticipantController
                     .soloUserTier.value.tier.isNotEmpty
                 ? Text(
@@ -201,7 +201,7 @@ class _CurrentGameParticipantCardState
                         _currentGameParticipantController
                             .soloUserTier.value.rank,
                     style: GoogleFonts.montserrat(
-                      fontSize: 8,
+                      fontSize: MediaQuery.of(context).size.height > 800 ? 8 : 6,
                       color: Colors.white,
                     ),
                     overflow: TextOverflow.ellipsis,
@@ -209,7 +209,7 @@ class _CurrentGameParticipantCardState
                 : Text(
                     "UNRANKED",
                     style: GoogleFonts.montserrat(
-                      fontSize: 8,
+                      fontSize: MediaQuery.of(context).size.height > 800 ? 8 : 6,
                       color: Colors.white,
                     ),
                   ),
@@ -231,7 +231,7 @@ class _CurrentGameParticipantCardState
                       fontSize: MediaQuery.of(context).size.height >
                               MasterController.NEXUS_ONE_SCREEN_HEIGHT
                           ? 11
-                          : 7,
+                          : 6,
                       color: Colors.white,
                     ),
                   )
@@ -244,7 +244,7 @@ class _CurrentGameParticipantCardState
 
   Container _userTierSymbol() {
     return Container(
-      margin: const EdgeInsets.only(right: 5),
+      margin: EdgeInsets.only(right: MediaQuery.of(context).size.height > 800 ? 5 : 0),
       child: Obx(() {
         return _currentGameParticipantController
                 .soloUserTier.value.tier.isNotEmpty

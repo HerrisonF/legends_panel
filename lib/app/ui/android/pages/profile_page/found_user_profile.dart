@@ -79,7 +79,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                 return _masterController.userForProfile.value.name != ""
                     ? Positioned(
                         left: 30,
-                        top: 50,
+                        top: MediaQuery.of(context).size.height > 800 ? 50 : 30,
                         child: _outButton(),
                       )
                     : SizedBox.shrink();
@@ -116,7 +116,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
         size: MediaQuery.of(context).size.height >
             MasterController.NEXUS_ONE_SCREEN_HEIGHT
             ? 20
-            : 13,
+            : 14,
       ),
       onPressed: () {
         goToProfile();
@@ -240,7 +240,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
   Container _profileStatistics() {
     return Container(
       margin: EdgeInsets.only(
-          top: MediaQuery.of(context).size.height / 12,
+          top: MediaQuery.of(context).size.height > 800 ? MediaQuery.of(context).size.height / 12 : MediaQuery.of(context).size.height / 10,
           left: MediaQuery.of(context).size.width / 10,
           right: MediaQuery.of(context).size.width / 9),
       child: Row(
@@ -264,7 +264,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                     style: GoogleFonts.montserrat(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: 12),
+                        fontSize: MediaQuery.of(context).size.height > 800 ? 12 : 10),
                   ),
                 );
               })
@@ -284,7 +284,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   style: GoogleFonts.montserrat(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      fontSize: 12),
+                      fontSize: MediaQuery.of(context).size.height > 800 ? 12 : 10),
                 ),
               ),
               Container(
@@ -293,7 +293,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   style: GoogleFonts.montserrat(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      fontSize: 12),
+                      fontSize: MediaQuery.of(context).size.height > 800 ? 12 : 10),
                 ),
               ),
               Container(
@@ -311,7 +311,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
-                    fontSize: 12,
+                    fontSize: MediaQuery.of(context).size.height > 800 ? 12 : 10,
                   ),
                 ),
               ),
@@ -321,7 +321,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
-                    fontSize: 12,
+                    fontSize: MediaQuery.of(context).size.height > 800 ? 12 : 10,
                   ),
                 ),
               )
@@ -348,7 +348,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                     child: Text(
                       _masterController.userForProfile.value.name,
                       style: GoogleFonts.montserrat(
-                        fontSize: 18,
+                        fontSize: MediaQuery.of(context).size.height > 800 ? 18 : 12,
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
                       ),
@@ -361,7 +361,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                     child: Text(
                       _masterController.userForProfile.value.name,
                       style: GoogleFonts.montserrat(
-                        fontSize: 18,
+                        fontSize: MediaQuery.of(context).size.height > 800 ? 18 : 12,
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
                       ),
@@ -382,7 +382,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 5),
+            margin: EdgeInsets.only(top: MediaQuery.of(context).size.height > 800 ? 5 : 15),
             width: MediaQuery.of(context).size.height >
                     MasterController.NEXUS_ONE_SCREEN_HEIGHT
                 ? MediaQuery.of(context).size.width / 6

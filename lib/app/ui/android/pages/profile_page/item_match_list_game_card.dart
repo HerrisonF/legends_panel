@@ -31,8 +31,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
-      padding: EdgeInsets.symmetric(horizontal: 5),
+      height: MediaQuery.of(context).size.height > 800 ? 70 : 50,
+      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
       margin: EdgeInsets.symmetric(vertical: 2),
       color: _profileResultGameDetailController.currentParticipant.value.win
           ? Colors.blue.withOpacity(0.2)
@@ -92,27 +92,27 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
     return Row(
       children: [
         Container(
-          margin: EdgeInsets.only(left: 81),
+          margin: EdgeInsets.only(left: MediaQuery.of(context).size.height > 800 ? 81 : 50),
           child: Text(
             _profileResultGameDetailController.currentParticipant.value.win ? "${AppLocalizations.of(context)!.gameVictory}" : "${AppLocalizations.of(context)!.gameDefeat}",
             style: GoogleFonts.montserrat(
               color: Colors.yellow,
               fontWeight: FontWeight.w400,
               fontSize:
-              MediaQuery.of(context).size.width > NEXUS_ONE_SCREEN ? 18 : 13,
+              MediaQuery.of(context).size.width > NEXUS_ONE_SCREEN ? 18 : 8,
             ),
             overflow: TextOverflow.ellipsis,
           ),
         ),
         Container(
-          margin: EdgeInsets.only(left: 50),
+          margin: EdgeInsets.only(left: MediaQuery.of(context).size.height > 800 ? 50 : 25),
           child: Text(
             "${_profileResultGameDetailController.currentParticipant.value.kills} / ${_profileResultGameDetailController.currentParticipant.value.deaths} / ${_profileResultGameDetailController.currentParticipant.value.assists}",
             style: GoogleFonts.montserrat(
               color: Colors.yellow,
               fontWeight: FontWeight.w400,
               fontSize:
-                  MediaQuery.of(context).size.width > NEXUS_ONE_SCREEN ? 17 : 12,
+                  MediaQuery.of(context).size.width > NEXUS_ONE_SCREEN ? 17 : 8,
             ),
             overflow: TextOverflow.ellipsis,
           ),
@@ -123,8 +123,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
 
   Container _userPosition() {
     return Container(
-      height: 30,
-      width: 30,
+      height: MediaQuery.of(context).size.height > 800 ? 30 : 20,
+      width: MediaQuery.of(context).size.height > 800 ? 30 : 20,
       margin: EdgeInsets.only(left: 10),
       child: _profileResultGameDetailController
                   .currentParticipant.value.teamPosition !=
@@ -145,8 +145,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
 
   _itemBase({required dynamic item, bool last = false}) {
     return Container(
-      height: 35,
-      width: 35,
+      height: MediaQuery.of(context).size.height > 800 ? 35 : 23,
+      width: MediaQuery.of(context).size.height > 800 ? 35 : 23,
       margin: EdgeInsets.only(left: last ? 8 : 0),
       child: Container(
         child: item > 0
@@ -166,8 +166,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
 
   _spellImage2(BuildContext context) {
     return Container(
-      height: 25,
-      width: 25,
+      height: MediaQuery.of(context).size.height > 800 ? 25 : 15,
+      width: MediaQuery.of(context).size.height > 800 ? 25 : 15,
       margin: EdgeInsets.only(right: 5),
       child: _profileResultGameDetailController
                   .currentParticipant.value.summoner2Id !=
@@ -185,8 +185,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
 
   _spellImage1(BuildContext context) {
     return Container(
-      height: 25,
-      width: 25,
+      height: MediaQuery.of(context).size.height > 800 ? 25 : 15,
+      width: MediaQuery.of(context).size.height > 800 ? 25 : 15,
       margin: EdgeInsets.only(right: 5),
       child: _profileResultGameDetailController
                   .currentParticipant.value.summoner1Id !=
@@ -208,8 +208,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                   .currentParticipant.value.championId !=
               ""
           ? Container(
-              height: 50,
-              width: 50,
+              height: MediaQuery.of(context).size.height > 800 ? 50 : 30,
+              width: MediaQuery.of(context).size.height > 800 ? 50 : 30,
               child: Image.network(
                 _profileResultGameDetailController.getChampionBadgeUrl(),
                 width: MediaQuery.of(context).size.width / 10,

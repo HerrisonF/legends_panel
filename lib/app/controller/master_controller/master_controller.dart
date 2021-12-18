@@ -46,9 +46,8 @@ class MasterController {
     storedRegion.refresh();
   }
 
-  saveActualRegion(String region) async {
+  saveActualRegion() async {
     await _masterRepository.saveActualRegion(storedRegion.value);
-    getLastStoredRegions();
   }
 
   readPersistedUser() async {

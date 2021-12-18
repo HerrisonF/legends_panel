@@ -35,15 +35,16 @@ class CurrentGameController extends GetxController {
   }
 
   saveActualRegion(String region) {
-    masterController.saveActualRegion(region);
+    masterController.storedRegion.value.lastStoredCurrentGameRegion = region;
+    masterController.saveActualRegion();
   }
 
-  loadUserCurrentGame(String region) async {
+  loadUserCurrentGame() async {
     _startUserLoading();
     await masterController.getCurrentUserOnCloud(userNameInputController.text,
-        masterController.storedRegion.value.getKeyFromRegion(region)!);
+        masterController.storedRegion.value.getKeyFromRegion(masterController.storedRegion.value.lastStoredCurrentGameRegion)!);
     if (userExist()) {
-      _getUserPlayingOnRegion(region);
+      _getUserPlayingOnRegion(masterController.storedRegion.value.lastStoredCurrentGameRegion);
     } else {
       _showMessageUserNotFound();
     }

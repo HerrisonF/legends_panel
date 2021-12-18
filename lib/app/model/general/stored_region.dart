@@ -30,6 +30,9 @@ class StoredRegion {
       'TR': 'TR1',
       'RU': 'RU'
     };
+    if(region.isEmpty){
+      return 'NA1';
+    }
     return _locationsKeys[region];
   }
 
