@@ -50,12 +50,11 @@ class CurrentGameResultPage extends StatelessWidget {
         ),
         SafeArea(
           child: Container(
-            margin: EdgeInsets.only(left: 20, top: 20),
+            margin: EdgeInsets.only(left: 15, top: 20),
             child: IconButton(
               icon: Icon(
                 Icons.arrow_back,
-                size: MediaQuery.of(context).size.height >
-                        MasterController.NEXUS_ONE_SCREEN_HEIGHT
+                size: _masterController.screenSizeIsBiggerThanNexusOne()
                     ? 22
                     : 16,
               ),
@@ -76,8 +75,7 @@ class CurrentGameResultPage extends StatelessWidget {
         children: [
           Container(
             margin: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height >
-                        MasterController.NEXUS_ONE_SCREEN_HEIGHT
+                top: _masterController.screenSizeIsBiggerThanNexusOne()
                     ? 100
                     : 80),
             child: Text(
@@ -85,8 +83,7 @@ class CurrentGameResultPage extends StatelessWidget {
                   ? AppLocalizations.of(context)!.loadingMessage
                   : _currentGameResultController.currentMapToShow.value.map,
               style: GoogleFonts.aBeeZee(
-                  fontSize: MediaQuery.of(context).size.height >
-                          MasterController.NEXUS_ONE_SCREEN_HEIGHT
+                  fontSize:_masterController.screenSizeIsBiggerThanNexusOne()
                       ? 18
                       : 12,
                   color: Colors.white,
@@ -98,8 +95,7 @@ class CurrentGameResultPage extends StatelessWidget {
             child: Text(
                 _currentGameResultController.currentMapToShow.value.description,
               style: GoogleFonts.aBeeZee(
-                  fontSize: MediaQuery.of(context).size.height >
-                      MasterController.NEXUS_ONE_SCREEN_HEIGHT
+                  fontSize: _masterController.screenSizeIsBiggerThanNexusOne()
                       ? 14
                       : 8,
                   color: Colors.white,
@@ -134,12 +130,11 @@ class CurrentGameResultPage extends StatelessWidget {
 
   Container _userName(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10),
+      margin: EdgeInsets.only(top: 10, bottom: 10),
       child: Text(
         _masterController.userForCurrentGame.value.name,
         style: GoogleFonts.aBeeZee(
-            fontSize: MediaQuery.of(context).size.height >
-                    MasterController.NEXUS_ONE_SCREEN_HEIGHT
+            fontSize: _masterController.screenSizeIsBiggerThanNexusOne()
                 ? 16
                 : 14,
             color: Colors.white,
@@ -196,17 +191,14 @@ class CurrentGameResultPage extends StatelessWidget {
 
   _teamCard(RxList<CurrentGameParticipant> participants, context) {
     return Container(
-      height: MediaQuery.of(context).size.height >
-              MasterController.NEXUS_ONE_SCREEN_HEIGHT
+      height: _masterController.screenSizeIsBiggerThanNexusOne()
           ? 355
           : 290,
       margin: EdgeInsets.only(
-        bottom: MediaQuery.of(context).size.height >
-                MasterController.NEXUS_ONE_SCREEN_HEIGHT
+        bottom: _masterController.screenSizeIsBiggerThanNexusOne()
             ? 0
             : 5,
-        top: MediaQuery.of(context).size.height >
-                MasterController.NEXUS_ONE_SCREEN_HEIGHT
+        top: _masterController.screenSizeIsBiggerThanNexusOne()
             ? 0
             : 10,
       ),

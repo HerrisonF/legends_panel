@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/current_game_controller/current_game_controller.dart';
+import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/util_controller/util_controller.dart';
 import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
 import 'package:legends_panel/app/ui/android/components/region_dropdown_component.dart';
@@ -19,6 +20,8 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
 
   final CurrentGameController _currentGameController =
       Get.put(CurrentGameController());
+
+  final MasterController _masterController = Get.find<MasterController>();
 
   String initialRegion = '';
 
@@ -81,7 +84,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
           decoration: InputDecoration(
             hintText: AppLocalizations.of(context)!.hintSummonerName,
             hintStyle: TextStyle(
-              fontSize: MediaQuery.of(context).size.height > 800 ? 16 : 12,
+              fontSize: _masterController.screenSizeIsBiggerThanNexusOne() ? 16 : 12,
             ),
             errorStyle: GoogleFonts.montserrat(
               fontWeight: FontWeight.w500,
@@ -114,7 +117,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                 _whichMessageShowToUser(),
                 style: GoogleFonts.montserrat(
                   color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.height > 800 ? 15 : 12,
+                  fontSize: _masterController.screenSizeIsBiggerThanNexusOne() ? 15 : 12,
                   fontWeight: FontWeight.w400,
                 ),
               ),

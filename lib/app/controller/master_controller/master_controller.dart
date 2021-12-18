@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_perk.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_summoner_spell.dart';
@@ -27,7 +28,7 @@ class MasterController {
   Rx<MapRoom> mapRoom = MapRoom().obs;
   RunesRoom runesRoom = RunesRoom();
 
-  static const int NEXUS_ONE_SCREEN_HEIGHT = 800;
+  static const int NEXUS_ONE_SCREEN_WIDTH = 480;
 
   start() async {
     await getLastStoredRegions();
@@ -39,6 +40,10 @@ class MasterController {
     await getRunesRoom();
     packageInfo = await PackageInfo.fromPlatform();
     Get.offAllNamed(Routes.MASTER);
+  }
+
+  screenSizeIsBiggerThanNexusOne(){
+    return WidgetsBinding.instance!.window.physicalSize.width > NEXUS_ONE_SCREEN_WIDTH;
   }
 
   getLastStoredRegions() async {

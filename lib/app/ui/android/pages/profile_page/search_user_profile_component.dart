@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
+import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
 import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
 import 'package:legends_panel/app/ui/android/components/region_dropdown_component.dart';
@@ -19,6 +22,7 @@ class _SearchUserProfileComponentState
     extends State<SearchUserProfileComponent> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final ProfileController _profileController = Get.find<ProfileController>();
+  final MasterController _masterController = Get.find<MasterController>();
 
   String initialRegion = '';
 
@@ -82,7 +86,7 @@ class _SearchUserProfileComponentState
                 whichMessageShowToUser(),
                 style: GoogleFonts.montserrat(
                   color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.height > 800 ? 15 : 12,
+                  fontSize: _masterController.screenSizeIsBiggerThanNexusOne() ? 15 : 12,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -121,7 +125,7 @@ class _SearchUserProfileComponentState
           decoration: InputDecoration(
             hintText: AppLocalizations.of(context)!.hintSummonerName,
             hintStyle: TextStyle(
-              fontSize: MediaQuery.of(context).size.height > 800 ? 16 : 12,
+              fontSize: _masterController.screenSizeIsBiggerThanNexusOne() ? 16 : 12,
             ),
             errorStyle: TextStyle(
               fontWeight: FontWeight.w500,

@@ -178,7 +178,7 @@ class _SplashScreenState extends State<SplashScreen>
                   offset: Offset(0, 2),
                 ),
               ],
-              fontSize: MediaQuery.of(context).size.height > NEXUS_ONE_SCREEN
+              fontSize: WidgetsBinding.instance!.window.physicalSize.width > NEXUS_ONE_SCREEN
                   ? 40
                   : 22,
               fontWeight: FontWeight.w700,

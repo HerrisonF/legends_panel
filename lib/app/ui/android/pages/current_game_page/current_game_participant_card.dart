@@ -21,6 +21,7 @@ class _CurrentGameParticipantCardState
     extends State<CurrentGameParticipantCard> {
   final CurrentGameParticipantController _currentGameParticipantController =
       CurrentGameParticipantController();
+  final MasterController _masterController = Get.find<MasterController>();
 
   static const BLUE_TEAM = 100;
 
@@ -38,8 +39,8 @@ class _CurrentGameParticipantCardState
     return Container(
       color: widget.participant.teamId == BLUE_TEAM ? Colors.blue.withOpacity(0.1) : Colors.red.withOpacity(0.1),
       padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.height > 800 ? 5 : 3,
-        vertical: MediaQuery.of(context).size.height > 800 ? 10 : 5,
+        horizontal: _masterController.screenSizeIsBiggerThanNexusOne() ? 5 : 3,
+        vertical: _masterController.screenSizeIsBiggerThanNexusOne() ? 10 : 5,
       ),
       child: Row(
         children: [
@@ -116,8 +117,7 @@ class _CurrentGameParticipantCardState
       child: Text(
         widget.participant.summonerName,
         style: GoogleFonts.montserrat(
-          fontSize: MediaQuery.of(context).size.height >
-                  MasterController.NEXUS_ONE_SCREEN_HEIGHT
+          fontSize: _masterController.screenSizeIsBiggerThanNexusOne()
               ? 12
               : 8,
           color: Colors.white,
@@ -157,17 +157,17 @@ class _CurrentGameParticipantCardState
                         .soloUserTier.value.winRate +
                     "%",
                 style: GoogleFonts.montserrat(
-                  fontSize: MediaQuery.of(context).size.height > 800 ? 8 : 6,
+                  fontSize: _masterController.screenSizeIsBiggerThanNexusOne() ? 8 : 6,
                   color: Colors.white,
                 ),
               ),
             )
           : Container(
-              margin: EdgeInsets.only(left: MediaQuery.of(context).size.height > 800 ? 10 : 0, right: MediaQuery.of(context).size.height > 800 ? 20 : 0),
+              margin: EdgeInsets.only(left: _masterController.screenSizeIsBiggerThanNexusOne() ? 10 : 0, right: MediaQuery.of(context).size.height > 800 ? 20 : 0),
               child: Text(
                 " - ",
                 style: GoogleFonts.montserrat(
-                  fontSize: MediaQuery.of(context).size.height > 800 ? 8 : 6,
+                  fontSize: _masterController.screenSizeIsBiggerThanNexusOne() ? 8 : 6,
                   color: Colors.white,
                 ),
               ),
@@ -178,7 +178,7 @@ class _CurrentGameParticipantCardState
   Container _userTierNameAndSymbol() {
     return Container(
       margin: EdgeInsets.only(
-          right: 5, left: MediaQuery.of(context).size.height > 800 ? 10 : 0),
+          right: 5, left: _masterController.screenSizeIsBiggerThanNexusOne() ? 10 : 0),
       child: Row(
         children: [_userTierSymbol(), _userTierName()],
       ),
@@ -191,8 +191,8 @@ class _CurrentGameParticipantCardState
         Obx(() {
           return Container(
             alignment: Alignment.center,
-            margin: EdgeInsets.only(left: MediaQuery.of(context).size.height > 800 ? 5 : 0),
-            width: MediaQuery.of(context).size.height > 800 ? 80 : 60,
+            margin: EdgeInsets.only(left: _masterController.screenSizeIsBiggerThanNexusOne() ? 5 : 0),
+            width: _masterController.screenSizeIsBiggerThanNexusOne() ? 80 : 60,
             child: _currentGameParticipantController
                     .soloUserTier.value.tier.isNotEmpty
                 ? Text(
@@ -201,7 +201,7 @@ class _CurrentGameParticipantCardState
                         _currentGameParticipantController
                             .soloUserTier.value.rank,
                     style: GoogleFonts.montserrat(
-                      fontSize: MediaQuery.of(context).size.height > 800 ? 8 : 6,
+                      fontSize: _masterController.screenSizeIsBiggerThanNexusOne() ? 8 : 6,
                       color: Colors.white,
                     ),
                     overflow: TextOverflow.ellipsis,
@@ -209,7 +209,7 @@ class _CurrentGameParticipantCardState
                 : Text(
                     "UNRANKED",
                     style: GoogleFonts.montserrat(
-                      fontSize: MediaQuery.of(context).size.height > 800 ? 8 : 6,
+                      fontSize: _masterController.screenSizeIsBiggerThanNexusOne() ? 8 : 6,
                       color: Colors.white,
                     ),
                   ),
@@ -228,9 +228,8 @@ class _CurrentGameParticipantCardState
                             .toString() +
                         "LP)",
                     style: GoogleFonts.montserrat(
-                      fontSize: MediaQuery.of(context).size.height >
-                              MasterController.NEXUS_ONE_SCREEN_HEIGHT
-                          ? 11
+                      fontSize: _masterController.screenSizeIsBiggerThanNexusOne()
+                          ? 8
                           : 6,
                       color: Colors.white,
                     ),
@@ -244,7 +243,7 @@ class _CurrentGameParticipantCardState
 
   Container _userTierSymbol() {
     return Container(
-      margin: EdgeInsets.only(right: MediaQuery.of(context).size.height > 800 ? 5 : 0),
+      margin: EdgeInsets.only(right: _masterController.screenSizeIsBiggerThanNexusOne() ? 5 : 0),
       child: Obx(() {
         return _currentGameParticipantController
                 .soloUserTier.value.tier.isNotEmpty
