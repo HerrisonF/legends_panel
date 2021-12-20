@@ -34,7 +34,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
   getLastStoredRegionForCurrentGame() {
     String receivedRegion =
         _currentGameController.getLastStoredRegionForCurrentGame();
-    initialRegion = receivedRegion.isEmpty ? 'NA1' : receivedRegion;
+    initialRegion = receivedRegion;
   }
 
   @override
@@ -84,7 +84,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
           decoration: InputDecoration(
             hintText: AppLocalizations.of(context)!.hintSummonerName,
             hintStyle: TextStyle(
-              fontSize: _masterController.screenSizeIsBiggerThanNexusOne() ? 16 : 12,
+              fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 16 : 12,
             ),
             errorStyle: GoogleFonts.montserrat(
               fontWeight: FontWeight.w500,
@@ -117,7 +117,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                 _whichMessageShowToUser(),
                 style: GoogleFonts.montserrat(
                   color: Colors.white,
-                  fontSize: _masterController.screenSizeIsBiggerThanNexusOne() ? 15 : 12,
+                  fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 15 : 12,
                   fontWeight: FontWeight.w400,
                 ),
               ),

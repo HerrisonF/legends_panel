@@ -40,8 +40,8 @@ class MasteryChampions extends StatelessWidget {
                 .isNotEmpty
             ? Container(
                 margin: EdgeInsets.symmetric(horizontal: 25, vertical: 12),
-                width: _masterController.screenSizeIsBiggerThanNexusOne() ? 55 : 40,
-                height: _masterController.screenSizeIsBiggerThanNexusOne() ? 55 : 40,
+                width: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 55 : 40,
+                height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 55 : 40,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(
@@ -56,9 +56,9 @@ class MasteryChampions extends StatelessWidget {
               )
             : SizedBox.shrink(),
         Positioned(
-          bottom: _masterController.screenSizeIsBiggerThanNexusOne() ? 0 : 4,
+          bottom: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 0 : 4,
           child: Container(
-            height: _masterController.screenSizeIsBiggerThanNexusOne() ? 25 : 20,
+            height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 25 : 20,
             child: Image.network(
               _profileController.getMasteryImage(index),
             ),

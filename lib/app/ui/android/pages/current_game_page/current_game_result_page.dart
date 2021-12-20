@@ -54,7 +54,7 @@ class CurrentGameResultPage extends StatelessWidget {
             child: IconButton(
               icon: Icon(
                 Icons.arrow_back,
-                size: _masterController.screenSizeIsBiggerThanNexusOne()
+                size: _masterController.screenWidthSizeIsBiggerThanNexusOne()
                     ? 22
                     : 16,
               ),
@@ -75,7 +75,7 @@ class CurrentGameResultPage extends StatelessWidget {
         children: [
           Container(
             margin: EdgeInsets.only(
-                top: _masterController.screenSizeIsBiggerThanNexusOne()
+                top: _masterController.screenWidthSizeIsBiggerThanNexusOne()
                     ? 100
                     : 80),
             child: Text(
@@ -83,7 +83,7 @@ class CurrentGameResultPage extends StatelessWidget {
                   ? AppLocalizations.of(context)!.loadingMessage
                   : _currentGameResultController.currentMapToShow.value.map,
               style: GoogleFonts.aBeeZee(
-                  fontSize:_masterController.screenSizeIsBiggerThanNexusOne()
+                  fontSize:_masterController.screenWidthSizeIsBiggerThanNexusOne()
                       ? 18
                       : 12,
                   color: Colors.white,
@@ -95,7 +95,7 @@ class CurrentGameResultPage extends StatelessWidget {
             child: Text(
                 _currentGameResultController.currentMapToShow.value.description,
               style: GoogleFonts.aBeeZee(
-                  fontSize: _masterController.screenSizeIsBiggerThanNexusOne()
+                  fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
                       ? 14
                       : 8,
                   color: Colors.white,
@@ -134,7 +134,7 @@ class CurrentGameResultPage extends StatelessWidget {
       child: Text(
         _masterController.userForCurrentGame.value.name,
         style: GoogleFonts.aBeeZee(
-            fontSize: _masterController.screenSizeIsBiggerThanNexusOne()
+            fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
                 ? 16
                 : 14,
             color: Colors.white,
@@ -191,14 +191,14 @@ class CurrentGameResultPage extends StatelessWidget {
 
   _teamCard(RxList<CurrentGameParticipant> participants, context) {
     return Container(
-      height: _masterController.screenSizeIsBiggerThanNexusOne()
+      height: _masterController.screenWidthSizeIsBiggerThanNexusOne()
           ? 355
           : 290,
       margin: EdgeInsets.only(
-        bottom: _masterController.screenSizeIsBiggerThanNexusOne()
+        bottom: _masterController.screenWidthSizeIsBiggerThanNexusOne()
             ? 0
             : 5,
-        top: _masterController.screenSizeIsBiggerThanNexusOne()
+        top: _masterController.screenWidthSizeIsBiggerThanNexusOne()
             ? 0
             : 10,
       ),

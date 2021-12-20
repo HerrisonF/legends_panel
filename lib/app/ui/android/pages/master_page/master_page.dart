@@ -31,7 +31,7 @@ class MasterPage extends StatelessWidget {
                 color: Colors.white,
                 padding: EdgeInsets.symmetric(
                   horizontal: 30,
-                  vertical: _masterController.screenSizeIsBiggerThanNexusOne() ? 11 : 3,
+                  vertical: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 11 : 3,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -59,7 +59,7 @@ class MasterPage extends StatelessWidget {
         color: _masterController.currentPageIndex.value == selectedIcon
             ? Color(0xFF4248A5)
             : Color(0xFF292E78).withOpacity(0.3),
-        size: _masterController.screenSizeIsBiggerThanNexusOne()
+        size: _masterController.screenWidthSizeIsBiggerThanNexusOne()
             ? 23
             : 16,
       ),

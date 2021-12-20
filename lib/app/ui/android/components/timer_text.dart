@@ -57,7 +57,7 @@ class _TimerTextState extends State<TimerText> {
     return Text(
       "${min<10? "0" : ""}$min : ${seconds<10? "0" : ""}$seconds",
       style: GoogleFonts.aBeeZee(
-        fontSize: _masterController.screenSizeIsBiggerThanNexusOne() ? 15 : 11,
+        fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 15 : 11,
         color: Colors.white,
         letterSpacing: 0.5,
       ),

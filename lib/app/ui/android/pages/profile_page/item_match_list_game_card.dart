@@ -31,7 +31,7 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: _masterController.screenSizeIsBiggerThanNexusOne() ? 75 : 50,
+      height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 75 : 50,
       padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
       margin: EdgeInsets.symmetric(vertical: 2),
       color: _profileResultGameDetailController.currentParticipant.value.win
@@ -92,14 +92,14 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
     return Row(
       children: [
         Container(
-          margin: EdgeInsets.only(left: _masterController.screenSizeIsBiggerThanNexusOne() ? 80 : 55),
+          margin: EdgeInsets.only(left: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 80 : 55),
           child: Text(
             _profileResultGameDetailController.currentParticipant.value.win ? "${AppLocalizations.of(context)!.gameVictory}" : "${AppLocalizations.of(context)!.gameDefeat}",
             style: GoogleFonts.montserrat(
               color: Colors.yellow,
               fontWeight: FontWeight.w400,
               fontSize:
-              _masterController.screenSizeIsBiggerThanNexusOne() ? 13 : 9,
+              _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 13 : 9,
             ),
             overflow: TextOverflow.ellipsis,
           ),
@@ -112,7 +112,7 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
               color: Colors.yellow,
               fontWeight: FontWeight.w400,
               fontSize:
-              _masterController.screenSizeIsBiggerThanNexusOne() ? 12 : 8,
+              _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 12 : 8,
             ),
             overflow: TextOverflow.ellipsis,
           ),
@@ -123,8 +123,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
 
   Container _userPosition() {
     return Container(
-      height: _masterController.screenSizeIsBiggerThanNexusOne() ? 25 : 20,
-      width: _masterController.screenSizeIsBiggerThanNexusOne() ? 25 : 20,
+      height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 25 : 20,
+      width: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 25 : 20,
       margin: EdgeInsets.only(left: 5),
       child: _profileResultGameDetailController
                   .currentParticipant.value.teamPosition !=
@@ -145,8 +145,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
 
   _itemBase({required dynamic item, bool last = false}) {
     return Container(
-      height: _masterController.screenSizeIsBiggerThanNexusOne() ? 33 : 25,
-      width: _masterController.screenSizeIsBiggerThanNexusOne() ? 33 : 25,
+      height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 33 : 25,
+      width: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 33 : 25,
       margin: EdgeInsets.only(left: last ? 2 : 0),
       child: Container(
         child: item > 0
@@ -166,8 +166,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
 
   _spellImage2(BuildContext context) {
     return Container(
-      height: _masterController.screenSizeIsBiggerThanNexusOne() ? 24 : 16,
-      width: _masterController.screenSizeIsBiggerThanNexusOne() ? 24 : 16,
+      height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 24 : 16,
+      width: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 24 : 16,
       margin: EdgeInsets.only(right: 5),
       child: _profileResultGameDetailController
                   .currentParticipant.value.summoner2Id !=
@@ -185,8 +185,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
 
   _spellImage1(BuildContext context) {
     return Container(
-      height: _masterController.screenSizeIsBiggerThanNexusOne() ? 24 : 16,
-      width: _masterController.screenSizeIsBiggerThanNexusOne() ? 24 : 16,
+      height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 24 : 16,
+      width: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 24 : 16,
       margin: EdgeInsets.only(right: 5),
       child: _profileResultGameDetailController
                   .currentParticipant.value.summoner1Id !=
@@ -208,8 +208,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                   .currentParticipant.value.championId !=
               ""
           ? Container(
-              height: _masterController.screenSizeIsBiggerThanNexusOne() ? 48 : 32,
-              width: _masterController.screenSizeIsBiggerThanNexusOne() ? 48 : 32,
+              height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 48 : 32,
+              width: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 48 : 32,
               child: Image.network(
                 _profileResultGameDetailController.getChampionBadgeUrl(),
                 width: MediaQuery.of(context).size.width / 10,

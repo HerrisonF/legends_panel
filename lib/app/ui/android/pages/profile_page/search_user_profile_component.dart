@@ -86,7 +86,7 @@ class _SearchUserProfileComponentState
                 whichMessageShowToUser(),
                 style: GoogleFonts.montserrat(
                   color: Colors.white,
-                  fontSize: _masterController.screenSizeIsBiggerThanNexusOne() ? 15 : 12,
+                  fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 15 : 12,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -125,7 +125,7 @@ class _SearchUserProfileComponentState
           decoration: InputDecoration(
             hintText: AppLocalizations.of(context)!.hintSummonerName,
             hintStyle: TextStyle(
-              fontSize: _masterController.screenSizeIsBiggerThanNexusOne() ? 16 : 12,
+              fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 16 : 12,
             ),
             errorStyle: TextStyle(
               fontWeight: FontWeight.w500,

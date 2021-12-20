@@ -42,7 +42,7 @@ class MasterController {
     Get.offAllNamed(Routes.MASTER);
   }
 
-  screenSizeIsBiggerThanNexusOne(){
+  screenWidthSizeIsBiggerThanNexusOne(){
     return WidgetsBinding.instance!.window.physicalSize.width > NEXUS_ONE_SCREEN_WIDTH;
   }
 
