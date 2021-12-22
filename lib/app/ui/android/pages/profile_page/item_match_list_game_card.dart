@@ -7,6 +7,8 @@ import 'package:legends_panel/app/controller/result_controllers/profile_result_c
 import 'package:legends_panel/app/model/general/match_detail.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'general_vision/general_vision_component.dart';
+
 class ItemMatchListGameCard extends StatefulWidget {
   final MatchDetail matchDetail;
 
@@ -30,61 +32,87 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 75 : 50,
-      padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-      margin: EdgeInsets.symmetric(vertical: 2),
-      color: _profileResultGameDetailController.currentParticipant.value.win
-          ? Colors.blue.withOpacity(0.2)
-          : Colors.red.withOpacity(0.2),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              _championBadge(context),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [_spellImage1(context), _spellImage2(context)],
-              ),
-              Row(
-                children: [
-                  _itemBase(
-                    item: _profileResultGameDetailController
-                        .currentParticipant.value.item0,
-                  ),
-                  _itemBase(
-                    item: _profileResultGameDetailController
-                        .currentParticipant.value.item1,
-                  ),
-                  _itemBase(
-                    item: _profileResultGameDetailController
-                        .currentParticipant.value.item2,
-                  ),
-                  _itemBase(
-                    item: _profileResultGameDetailController
-                        .currentParticipant.value.item3,
-                  ),
-                  _itemBase(
-                    item: _profileResultGameDetailController
-                        .currentParticipant.value.item4,
-                  ),
-                  _itemBase(
-                    item: _profileResultGameDetailController
-                        .currentParticipant.value.item5,
-                  ),
-                  _itemBase(
-                    item: _profileResultGameDetailController
-                        .currentParticipant.value.item6,
-                    last: true,
-                  ),
-                ],
-              ),
-              _userPosition(),
-            ],
-          ),
-          _userKDA(),
-        ],
+    return GestureDetector(
+      onTap: () {
+        _showModalGeneralVision();
+      },
+      child: Container(
+        height:
+            _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 75 : 50,
+        padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+        margin: EdgeInsets.symmetric(vertical: 2),
+        color: _profileResultGameDetailController.currentParticipant.value.win
+            ? Colors.blue.withOpacity(0.2)
+            : Colors.red.withOpacity(0.2),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                _championBadge(context),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [_spellImage1(context), _spellImage2(context)],
+                ),
+                Row(
+                  children: [
+                    _itemBase(
+                      item: _profileResultGameDetailController
+                          .currentParticipant.value.item0,
+                    ),
+                    _itemBase(
+                      item: _profileResultGameDetailController
+                          .currentParticipant.value.item1,
+                    ),
+                    _itemBase(
+                      item: _profileResultGameDetailController
+                          .currentParticipant.value.item2,
+                    ),
+                    _itemBase(
+                      item: _profileResultGameDetailController
+                          .currentParticipant.value.item3,
+                    ),
+                    _itemBase(
+                      item: _profileResultGameDetailController
+                          .currentParticipant.value.item4,
+                    ),
+                    _itemBase(
+                      item: _profileResultGameDetailController
+                          .currentParticipant.value.item5,
+                    ),
+                    _itemBase(
+                      item: _profileResultGameDetailController
+                          .currentParticipant.value.item6,
+                      last: true,
+                    ),
+                  ],
+                ),
+                _userPosition(),
+              ],
+            ),
+            _userKDA(),
+          ],
+        ),
       ),
+    );
+  }
+
+  _showModalGeneralVision() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: const Radius.circular(20),
+          topRight: const Radius.circular(20),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return GeneralVisionComponent(
+          matchDetail: widget.matchDetail,
+          participant:
+              _profileResultGameDetailController.currentParticipant.value,
+        );
+      },
     );
   }
 
@@ -92,14 +120,20 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
     return Row(
       children: [
         Container(
-          margin: EdgeInsets.only(left: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 80 : 55),
+          margin: EdgeInsets.only(
+              left: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                  ? 80
+                  : 55),
           child: Text(
-            _profileResultGameDetailController.currentParticipant.value.win ? "${AppLocalizations.of(context)!.gameVictory}" : "${AppLocalizations.of(context)!.gameDefeat}",
+            _profileResultGameDetailController.currentParticipant.value.win
+                ? "${AppLocalizations.of(context)!.gameVictory}"
+                : "${AppLocalizations.of(context)!.gameDefeat}",
             style: GoogleFonts.montserrat(
               color: Colors.yellow,
               fontWeight: FontWeight.w400,
-              fontSize:
-              _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 13 : 9,
+              fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                  ? 13
+                  : 9,
             ),
             overflow: TextOverflow.ellipsis,
           ),
@@ -111,8 +145,9 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
             style: GoogleFonts.montserrat(
               color: Colors.yellow,
               fontWeight: FontWeight.w400,
-              fontSize:
-              _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 12 : 8,
+              fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                  ? 12
+                  : 8,
             ),
             overflow: TextOverflow.ellipsis,
           ),
@@ -208,8 +243,12 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                   .currentParticipant.value.championId !=
               ""
           ? Container(
-              height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 48 : 32,
-              width: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 48 : 32,
+              height: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                  ? 48
+                  : 32,
+              width: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                  ? 48
+                  : 32,
               child: Image.network(
                 _profileResultGameDetailController.getChampionBadgeUrl(),
                 width: MediaQuery.of(context).size.width / 10,

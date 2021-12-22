@@ -17,5 +17,9 @@
   "userFound": "Te encontramos ! ",
   "searching": "Procurando ",
   "gameDefeat" : "Derrota",
-  "gameVictory" : "Vitória"
+  "gameDefeatedBlueTeam" : "Time azul derrotado",
+  "gameDefeatedRedTeam" : "Time vermelho derrotado",
+  "gameVictory" : "Vitória",
+  "gameVictoriousBlueTeam" : "Time azul vencedor",
+  "gameVictoriousRedTeam" : "Time vermelho vencedor"
 }
