@@ -81,7 +81,11 @@ class MatchInfo {
 class Team {
   List<Ban> bans = [];
   Objectives objectives = Objectives();
+  dynamic teamId = 0;
+  dynamic win = false;
   Team.fromJson(Map<String, dynamic> json) {
+    teamId = json['teamId'];
+    win = json['win'];
     if (json['bans'] != null) {
       json['bans'].forEach((ban) {
         bans.add(Ban.fromJson(ban));
@@ -104,8 +108,6 @@ class Objectives {
   Objective inhibitor = Objective();
   Objective riftHerald = Objective();
   Objective tower = Objective();
-  dynamic teamId = 0;
-  dynamic win = false;
 
   Objectives();
 
@@ -116,13 +118,12 @@ class Objectives {
     inhibitor = Objective.fromJson(json['inhibitor']);
     riftHerald = Objective.fromJson(json['riftHerald']);
     tower = Objective.fromJson(json['tower']);
-    teamId = json['teamId'];
-    win = json['win'];
+
   }
 
   @override
   String toString() {
-    return 'Objectives{baron: $baron, champion: $champion, dragon: $dragon, inhibitor: $inhibitor, riftHerald: $riftHerald, tower: $tower, teamId: $teamId, win: $win}';
+    return 'Objectives{baron: $baron, champion: $champion, dragon: $dragon, inhibitor: $inhibitor, riftHerald: $riftHerald, tower: $tower}';
   }
 
 
