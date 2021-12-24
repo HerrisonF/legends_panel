@@ -35,9 +35,6 @@ class MatchMetaData {
       }
     }
   }
-
-
-
 }
 
 class MatchInfo {
@@ -49,6 +46,10 @@ class MatchInfo {
   dynamic gameStartTimestamp = 0;
   dynamic mapId = 0;
   List<Participant> participants = [];
+  int computedMatchAssistBlueTeam = 0;
+  int computedMatchAssistRedTeam = 0;
+  int computedMatchDeathBlueTeam = 0;
+  int computedMatchDeathRedTeam = 0;
   dynamic platformId = "";
   dynamic queueId = 0;
   List<Team> teams = [];
@@ -66,6 +67,13 @@ class MatchInfo {
     if(json['participants'] != null){
       json['participants'].forEach((element){
         participants.add(Participant.fromJson(element));
+        if(Participant.fromJson(element).teamId == 100){
+          computedMatchAssistBlueTeam = computedMatchAssistBlueTeam + Participant.fromJson(element).assists;
+          computedMatchDeathRedTeam = computedMatchDeathRedTeam + Participant.fromJson(element).kills;
+        }else{
+          computedMatchAssistRedTeam = computedMatchAssistRedTeam + Participant.fromJson(element).assists;
+          computedMatchDeathBlueTeam = computedMatchDeathBlueTeam + Participant.fromJson(element).kills;
+        }
       });
     }
     platformId = json['platformId'];
@@ -166,7 +174,7 @@ class Ban {
 
 class Participant {
 
-  dynamic assists = 0;
+  int assists = 0;
   dynamic baronKills = 0;
   dynamic bountyLevel  = 0;
   dynamic champExperience = 0;
@@ -204,7 +212,7 @@ class Participant {
   dynamic item6 = 0;
   dynamic itemsPurchased = 0;
   dynamic killingSpress = 0;
-  dynamic kills = 0;
+  int kills = 0;
   dynamic lane = "";
   dynamic largestCriticalStrike = 0;
   dynamic largestKillingSpree = 0;

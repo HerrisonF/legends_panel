@@ -80,4 +80,12 @@ class GeneralVisionController {
     return _generalVisionRepository.getKillIcon();
   }
 
+  String getPerkStyleUrl(String perkStyle){
+    return _generalVisionRepository.getPerkStyleUrl(perkStyle);
+  }
+
+  String getPerkUrl(String perk){
+    return _generalVisionRepository.getPerkUrl(perk);
+  }
+
 }

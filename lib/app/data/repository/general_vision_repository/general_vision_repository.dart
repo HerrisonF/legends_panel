@@ -18,4 +18,12 @@ class GeneralVisionRepository{
   String getKillIcon(){
     return _generalVisionProvider.getKillIcon();
   }
+
+  String getPerkStyleUrl(String perkStyle){
+    return _generalVisionProvider.getPerkStyleUrl(perkStyle);
+  }
+
+  String getPerkUrl(String perk){
+    return _generalVisionProvider.getPerkUrl(perk);
+  }
 }

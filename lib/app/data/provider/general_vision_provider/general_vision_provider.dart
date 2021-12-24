@@ -49,4 +49,26 @@ class GeneralVisionProvider {
     }
   }
 
+  String getPerkStyleUrl(String perkStyle){
+    final String path = "/images/lol/perkStyle/$perkStyle.png";
+    _logger.i("building Image Perk Style Url ...");
+    try{
+      return RiotAndRawDragonUrls.opGGUrl + path;
+    }catch(e){
+      _logger.i("Error to build Perk Style Image URL ...");
+      return "";
+    }
+  }
+
+  String getPerkUrl(String perk){
+    final String path = "/images/lol/perk/$perk.png";
+    _logger.i("building Image Perk Url ...");
+    try{
+      return RiotAndRawDragonUrls.opGGUrl + path;
+    }catch(e){
+      _logger.i("Error to build Perk Image URL ...");
+      return "";
+    }
+  }
+
 }

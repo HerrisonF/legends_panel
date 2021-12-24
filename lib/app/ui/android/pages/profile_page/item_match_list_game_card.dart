@@ -111,6 +111,8 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
           matchDetail: widget.matchDetail,
           participant:
               _profileResultGameDetailController.currentParticipant.value,
+          primaryStylePerk: _profileResultGameDetailController.getSpellImage(1),
+          subStylePerk: _profileResultGameDetailController.getSpellImage(2),
         );
       },
     );
