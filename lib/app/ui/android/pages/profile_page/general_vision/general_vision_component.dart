@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/result_controllers/current_game_result_controller/current_game_participant_controller.dart';
@@ -9,12 +10,14 @@ import 'package:legends_panel/app/controller/result_controllers/profile_general_
 import 'package:legends_panel/app/controller/result_controllers/profile_result_controller/profile_result_game_detail_controller.dart';
 import 'package:legends_panel/app/model/general/match_detail.dart';
 import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GeneralVisionComponent extends StatefulWidget {
   final MatchDetail matchDetail;
   final String primaryStylePerk;
   final String subStylePerk;
   final Participant participant;
+  final formatter = NumberFormat.decimalPattern('hi');
 
   GeneralVisionComponent(
       {Key? key,
@@ -50,37 +53,67 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.9,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: const Radius.circular(20),
-          topRight: const Radius.circular(20),
+        height: MediaQuery.of(context).size.height * 0.9,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(20),
+            topRight: const Radius.circular(20),
+          ),
+          color: Colors.white,
         ),
-        color: _generalVisionController.participant.win
-            ? Colors.blue.withOpacity(0.5)
-            : Colors.red.withOpacity(0.5),
-      ),
-      child: _generalVisionController.isLoadingTeamInfo.value
-          ? DotsLoading()
-          : ListView(
-              children: [
-                _header(),
-                _gameInfo(),
-                _listTeams(),
-              ],
-            ),
-    );
+        child: _generalVisionController.isLoadingTeamInfo.value
+            ? DotsLoading()
+            : Column(
+                children: [
+                  _header(),
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        _gameInfo(),
+                        _listTeams(),
+                      ],
+                    ),
+                  ),
+                ],
+              ));
   }
 
   _header() {
-    return Container(
-      alignment: Alignment.center,
-      margin: EdgeInsets.only(top: 15),
-      child: Text(
-        _generalVisionController.getWinOrLoseHeaderText(context),
-        style: GoogleFonts.montserrat(
-            fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
-      ),
+    return Stack(
+      children: [
+        Container(
+          alignment: Alignment.center,
+          margin: EdgeInsets.only(top: 25),
+          child: Text(
+            _generalVisionController.getWinOrLoseHeaderText(context),
+            style: GoogleFonts.montserrat(
+                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ),
+        Positioned(
+          top: 15,
+          left: 18,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Container(
+              //padding: EdgeInsets.only(left: 15),
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(32),
+              ),
+              height: 20,
+              width: 20,
+              child: Icon(
+                Icons.clear,
+                color: Colors.black,
+                size: 10,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -106,9 +139,8 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
 
   _teamCard(Team team, RxList<Participant> participants) {
     return Container(
-      margin: EdgeInsets.only(top: 10),
-      color: Colors.green,
-      height: 370,
+      color: team.teamId == BLUE_TEAM ? Colors.blue[200] : Colors.red[200],
+      height: 520,
       child: Column(
         children: [
           _teamHeader(team),
@@ -133,7 +165,6 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.symmetric(vertical: 15),
-      color: Colors.cyan,
       child: Text(_generalVisionController.currentMapToShow.value.description),
     );
   }
@@ -142,7 +173,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
     return Column(
       children: [
         Container(
-          child: Text("Bans"),
+          child: Text(AppLocalizations.of(context)!.bans),
         ),
         Container(
           height: 50,
@@ -180,7 +211,10 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
 
   _teamHeader(Team team) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+      margin: EdgeInsets.symmetric(
+          horizontal:
+              _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 40 : 10,
+          vertical: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -190,6 +224,19 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
               team.objectives.dragon.kills.toString(), team.teamId),
           _iconTeamHeader(_generalVisionController.getTowerIcon(),
               team.objectives.tower.kills.toString(), team.teamId),
+          Row(
+            children: [
+              Container(
+                margin: EdgeInsets.only(right: 10),
+                height: 20,
+                child: Image.network(
+                  _generalVisionController.getHeraldIcon(),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Text(team.objectives.riftHerald.kills.toString()),
+            ],
+          ),
           _KDAText(team),
         ],
       ),
@@ -205,7 +252,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
           child: Image.network(
             icon,
             fit: BoxFit.cover,
-            color: teamId == BLUE_TEAM ? Colors.blue : Colors.red[300],
+            color: Colors.blueGrey[900],
           ),
         ),
         Text(value),
@@ -222,7 +269,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
           child: Image.network(
             _generalVisionController.getKillIcon(),
             fit: BoxFit.cover,
-            color: team.teamId == BLUE_TEAM ? Colors.blue : Colors.red[300],
+            color: Colors.blueGrey[900],
           ),
         ),
         team.teamId == BLUE_TEAM
@@ -251,8 +298,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
   _participantCardDetail({required Participant participant}) {
     return Container(
       padding: EdgeInsets.only(left: 10),
-      height: 50,
-      color: Colors.blue,
+      height: 80,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -260,7 +306,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
             children: [
               _userChampionDetail(participant),
               Container(
-                margin: EdgeInsets.only(top: 10, right: 5),
+                margin: EdgeInsets.only(top: 25, right: 5),
                 child: Column(
                   children: [
                     _spellIcon(participant.summoner1Id.toString()),
@@ -269,7 +315,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 10, right: 5),
+                margin: EdgeInsets.only(top: 25, right: 5),
                 child: Column(
                   children: [
                     _perkIcon(participant.perk.styles[0].selections[0].perk
@@ -282,14 +328,21 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  FittedBox(child: Text(participant.summonerName)),
+                  FittedBox(
+                    child: Text(
+                      participant.summonerName,
+                      style: TextStyle(
+                        fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 15 : 10,
+                      ),
+                    ),
+                  ),
                   _userKDA(participant),
                 ],
               ),
             ],
           ),
           Container(
-            margin: EdgeInsets.only(right: 10, top: 10),
+            margin: EdgeInsets.only(right: 8, top: 20),
             child: Column(
               children: [
                 Row(
@@ -304,16 +357,87 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
                     _itemBase(item: participant.item6, last: true),
                   ],
                 ),
-                Row(
-                  children: [
-                    Text(participant.totalMinionsKilled.toString()),
-                    Text("/"),
-                    Text(participant.goldEarned.toString() + "k"),
-                    Container(
-                      child: Text("Dmg " +
-                          participant.totalDamageDealtToChampions.toString()),
-                    ),
-                  ],
+                Container(
+                  margin: EdgeInsets.only(top: 5),
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(right: 10),
+                        child: Column(
+                          children: [
+                            Container(
+                              width: _masterController
+                                      .screenWidthSizeIsBiggerThanNexusOne()
+                                  ? 15
+                                  : 10,
+                              child: Image.network(
+                                  _generalVisionController.getMinionUrl()),
+                            ),
+                            Text(
+                              participant.totalMinionsKilled.toString(),
+                              style: TextStyle(
+                                  fontSize: _masterController
+                                          .screenWidthSizeIsBiggerThanNexusOne()
+                                      ? 13
+                                      : 9),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(right: 10),
+                        child: Column(
+                          children: [
+                            Container(
+                              width: _masterController
+                                      .screenWidthSizeIsBiggerThanNexusOne()
+                                  ? 15
+                                  : 10,
+                              child: Image.network(
+                                  _generalVisionController.getGoldIconUrl()),
+                            ),
+                            Text(
+                              widget.formatter.format(participant.goldEarned),
+                              style: TextStyle(
+                                  fontSize: _masterController
+                                          .screenWidthSizeIsBiggerThanNexusOne()
+                                      ? 13
+                                      : 9),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(
+                            right: 5,
+                            top: _masterController
+                                    .screenWidthSizeIsBiggerThanNexusOne()
+                                ? 5
+                                : 0),
+                        child: Column(
+                          children: [
+                            Image.network(
+                              _generalVisionController.getCriticIcon(),
+                              color: Colors.red,
+                              height: _masterController
+                                      .screenWidthSizeIsBiggerThanNexusOne()
+                                  ? 10
+                                  : 8,
+                            ),
+                            Text(
+                              widget.formatter.format(
+                                  participant.totalDamageDealtToChampions),
+                              style: TextStyle(
+                                  fontSize: _masterController
+                                          .screenWidthSizeIsBiggerThanNexusOne()
+                                      ? 13
+                                      : 9),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -325,8 +449,8 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
 
   _itemBase({required dynamic item, bool last = false}) {
     return Container(
-      height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 20 : 12,
-      width: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 20 : 12,
+      height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 20 : 18,
+      width: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 20 : 18,
       margin: EdgeInsets.only(left: last ? 2 : 0),
       child: Container(
         child: item > 0
@@ -367,6 +491,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
                     participant.championId.toString(),
                   ),
                   width: 30,
+                  height: 30,
                 ),
                 Positioned(
                   left: 19,

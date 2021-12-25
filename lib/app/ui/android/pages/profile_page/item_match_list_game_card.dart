@@ -100,6 +100,7 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
+      enableDrag: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: const Radius.circular(20),

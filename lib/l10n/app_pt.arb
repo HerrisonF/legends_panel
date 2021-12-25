@@ -21,5 +21,6 @@
   "gameDefeatedRedTeam" : "Time vermelho derrotado",
   "gameVictory" : "Vitória",
   "gameVictoriousBlueTeam" : "Time azul vencedor",
-  "gameVictoriousRedTeam" : "Time vermelho vencedor"
+  "gameVictoriousRedTeam" : "Time vermelho vencedor",
+  "bans" : "Bans"
 }

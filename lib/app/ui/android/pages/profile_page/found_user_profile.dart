@@ -409,10 +409,8 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                 top: _masterController.screenWidthSizeIsBiggerThanNexusOne()
                     ? 5
                     : 15),
-            width: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                ? MediaQuery.of(context).size.width / 6
-                : MediaQuery.of(context).size.width / 7,
-            height: MediaQuery.of(context).size.height / 13,
+            width: 50,
+            height: 50,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(_profileController.getUserProfileImage()),

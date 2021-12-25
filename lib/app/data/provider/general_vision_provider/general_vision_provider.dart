@@ -39,10 +39,10 @@ class GeneralVisionProvider {
   }
 
   String getKillIcon(){
-    final String path = "/images/site/summoner/icon-kda.png";
+    final String path = "/latest/game/assets/ux/traiticons/trait_icon_4_duelist.png";
     _logger.i("building Image Kill Url ...");
     try{
-      return RiotAndRawDragonUrls.opGGUrl + path;
+      return RiotAndRawDragonUrls.rawDataDragonUrl + path;
     }catch(e){
       _logger.i("Error to build Kill Image URL ...");
       return "";
@@ -67,6 +67,50 @@ class GeneralVisionProvider {
       return RiotAndRawDragonUrls.opGGUrl + path;
     }catch(e){
       _logger.i("Error to build Perk Image URL ...");
+      return "";
+    }
+  }
+
+  String getMinionUrl(){
+    final String path = "/latest/game/assets/ux/tft/stageicons/minionsupcoming.png";
+    _logger.i("building Image Minion Url ...");
+    try{
+      return RiotAndRawDragonUrls.rawDataDragonUrl + path;
+    }catch(e){
+      _logger.i("Error to build Perk Minion URL ...");
+      return "";
+    }
+  }
+
+  String getGoldIconUrl(){
+    final String path = "/latest/game/assets/ux/floatingtext/goldicon.png";
+    _logger.i("building Gold icon Url ...");
+    try{
+      return RiotAndRawDragonUrls.rawDataDragonUrl + path;
+    }catch(e){
+      _logger.i("Error to build Gold icon URL ...");
+      return "";
+    }
+  }
+
+  String getHeraldIcon(){
+    final String path = "/latest/game/assets/ux/tft/stageicons/heraldupcoming.png";
+    _logger.i("building Herald icon Url ...");
+    try{
+      return RiotAndRawDragonUrls.rawDataDragonUrl + path;
+    }catch(e){
+      _logger.i("Error to build Herald icon URL ...");
+      return "";
+    }
+  }
+
+  String getCriticIcon(){
+    final String path = "/latest/game/assets/ux/floatingtext/criticon.png";
+    _logger.i("building Critic icon Url ...");
+    try{
+      return RiotAndRawDragonUrls.rawDataDragonUrl + path;
+    }catch(e){
+      _logger.i("Error to build Critic icon URL ...");
       return "";
     }
   }

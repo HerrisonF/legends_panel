@@ -26,4 +26,20 @@ class GeneralVisionRepository{
   String getPerkUrl(String perk){
     return _generalVisionProvider.getPerkUrl(perk);
   }
+
+  String getMinionUrl(){
+    return _generalVisionProvider.getMinionUrl();
+  }
+
+  String getGoldIconUrl(){
+    return _generalVisionProvider.getGoldIconUrl();
+  }
+
+  String getHeraldIcon(){
+    return _generalVisionProvider.getHeraldIcon();
+  }
+
+  String getCriticIcon(){
+    return _generalVisionProvider.getCriticIcon();
+  }
 }

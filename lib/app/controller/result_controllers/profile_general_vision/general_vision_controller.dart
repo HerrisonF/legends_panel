@@ -88,4 +88,20 @@ class GeneralVisionController {
     return _generalVisionRepository.getPerkUrl(perk);
   }
 
+  String getMinionUrl(){
+    return _generalVisionRepository.getMinionUrl();
+  }
+
+  String getGoldIconUrl(){
+    return _generalVisionRepository.getGoldIconUrl();
+  }
+
+  String getHeraldIcon(){
+    return _generalVisionRepository.getHeraldIcon();
+  }
+
+  String getCriticIcon(){
+    return _generalVisionRepository.getCriticIcon();
+  }
+
 }

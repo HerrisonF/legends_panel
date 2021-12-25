@@ -90,5 +90,9 @@
   "gameVictoriousRedTeam" : "Victorious red team",
   "@gameVictoriousRedTeam": {
     "description": "victorious"
+  },
+  "bans" : "Bans",
+  "@bans": {
+    "description": "Bans"
   }
 }
