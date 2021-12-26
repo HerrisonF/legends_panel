@@ -43,7 +43,11 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
       children: [
         Container(decoration: _currentGameBackgroundImage()),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 50),
+          padding: EdgeInsets.symmetric(
+            horizontal: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                ? 40
+                : 25,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -84,7 +88,9 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
           decoration: InputDecoration(
             hintText: AppLocalizations.of(context)!.hintSummonerName,
             hintStyle: TextStyle(
-              fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 16 : 12,
+              fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                  ? 16
+                  : 12,
             ),
             errorStyle: GoogleFonts.montserrat(
               fontWeight: FontWeight.w500,
@@ -107,7 +113,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
   Container _buttonForSearchSummoner() {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 30),
-      height: 50,
+      height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 54 : 45,
       child: Obx(() {
         return OutlinedButton(
           child: Row(
@@ -117,7 +123,10 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                 _whichMessageShowToUser(),
                 style: GoogleFonts.montserrat(
                   color: Colors.white,
-                  fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 15 : 12,
+                  fontSize:
+                      _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                          ? 15
+                          : 12,
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -147,8 +156,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
   _validateAndSearchSummoner() {
     if (currentGameUserFormKey.currentState!.validate()) {
       UtilController.closeKeyBoard(context);
-      _currentGameController
-          .loadUserCurrentGame();
+      _currentGameController.loadUserCurrentGame();
     }
   }
 }

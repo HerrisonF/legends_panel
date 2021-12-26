@@ -28,10 +28,19 @@ class MasterPage extends StatelessWidget {
               right: 0,
               bottom: 0,
               child: Container(
-                color: Colors.white,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                  ),
+                ),
                 padding: EdgeInsets.symmetric(
                   horizontal: 30,
-                  vertical: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 11 : 3,
+                  vertical:
+                      _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                          ? 10
+                          : 0,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -59,9 +68,7 @@ class MasterPage extends StatelessWidget {
         color: _masterController.currentPageIndex.value == selectedIcon
             ? Color(0xFF4248A5)
             : Color(0xFF292E78).withOpacity(0.3),
-        size: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-            ? 23
-            : 16,
+        size: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 22 : 14,
       ),
     );
   }

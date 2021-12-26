@@ -42,15 +42,15 @@ class CurrentGameResultPage extends StatelessWidget {
           child: Column(
             children: [
               _mapName(context),
-              _gameClock(context),
-              _userName(context),
-              _detachTeams(context),
+              _gameClockAndTimerText(),
+              _userName(),
+              _detachTeams(),
             ],
           ),
         ),
         SafeArea(
           child: Container(
-            margin: EdgeInsets.only(left: 15, top: 20),
+            margin: EdgeInsets.only(left: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 15 : 10, top: 20),
             child: IconButton(
               icon: Icon(
                 Icons.arrow_back,
@@ -74,33 +74,34 @@ class CurrentGameResultPage extends StatelessWidget {
       return Column(
         children: [
           Container(
-            margin: EdgeInsets.only(
-                top: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                    ? 100
-                    : 80),
+            margin: EdgeInsets.only(top: 80),
             child: Text(
               _currentGameResultController.currentMapToShow.value.map.isEmpty
                   ? AppLocalizations.of(context)!.loadingMessage
                   : _currentGameResultController.currentMapToShow.value.map,
               style: GoogleFonts.aBeeZee(
-                  fontSize:_masterController.screenWidthSizeIsBiggerThanNexusOne()
-                      ? 18
-                      : 12,
-                  color: Colors.white,
-                  letterSpacing: 0.2,
-                  fontWeight: FontWeight.w300),
+                fontSize:
+                    _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                        ? 18
+                        : 12,
+                color: Colors.white,
+                letterSpacing: 0.2,
+                fontWeight: FontWeight.w300,
+              ),
             ),
           ),
           Container(
             child: Text(
-                _currentGameResultController.currentMapToShow.value.description,
+              _currentGameResultController.currentMapToShow.value.description,
               style: GoogleFonts.aBeeZee(
-                  fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                      ? 14
-                      : 8,
-                  color: Colors.white,
-                  letterSpacing: 0.2,
-                  fontWeight: FontWeight.w300),
+                fontSize:
+                    _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                        ? 14
+                        : 8,
+                color: Colors.white,
+                letterSpacing: 0.2,
+                fontWeight: FontWeight.w300,
+              ),
             ),
           ),
         ],
@@ -108,7 +109,7 @@ class CurrentGameResultPage extends StatelessWidget {
     });
   }
 
-  Container _gameClock(BuildContext context) {
+  Container _gameClockAndTimerText() {
     return Container(
       margin: EdgeInsets.only(top: 10),
       child: Row(
@@ -128,9 +129,9 @@ class CurrentGameResultPage extends StatelessWidget {
     );
   }
 
-  Container _userName(BuildContext context) {
+  Container _userName() {
     return Container(
-      margin: EdgeInsets.only(top: 10, bottom: 10),
+      margin: EdgeInsets.only(top: 10, bottom: 20),
       child: Text(
         _masterController.userForCurrentGame.value.name,
         style: GoogleFonts.aBeeZee(
@@ -180,29 +181,23 @@ class CurrentGameResultPage extends StatelessWidget {
     );
   }
 
-  _detachTeams(BuildContext context) {
+  _detachTeams() {
     return Column(
       children: [
-        _teamCard(_currentGameResultController.blueTeam, context),
-        _teamCard(_currentGameResultController.redTeam, context),
+        _teamCard(_currentGameResultController.blueTeam, 100),
+        _teamCard(_currentGameResultController.redTeam, 200),
       ],
     );
   }
 
-  _teamCard(RxList<CurrentGameParticipant> participants, context) {
+  _teamCard(RxList<CurrentGameParticipant> participants, int team) {
     return Container(
-      height: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-          ? 355
-          : 290,
       margin: EdgeInsets.only(
-        bottom: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-            ? 0
-            : 5,
-        top: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-            ? 0
-            : 10,
-      ),
+          top: team == 200 ? 20 : 0, bottom: team == 200 ? 20 : 0),
+      height:
+          _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 318 : 230,
       child: ListView.builder(
+        padding: EdgeInsets.zero,
         physics: NeverScrollableScrollPhysics(),
         itemCount: participants.length,
         itemBuilder: (_, index) {
