@@ -94,7 +94,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
             return _profileController.matchList.length > 0
                 ? Expanded(
                     child: Container(
-                      margin: EdgeInsets.only(bottom: 55),
+                      margin: EdgeInsets.only(bottom: 45),
                       child: ListView.builder(
                         itemCount: _hasMoreMatchesToLoad(),
                         controller: this._scrollController,

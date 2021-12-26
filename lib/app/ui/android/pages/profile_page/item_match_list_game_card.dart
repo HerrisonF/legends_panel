@@ -38,7 +38,7 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
       },
       child: Container(
         height:
-            _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 75 : 50,
+            _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 75 : 60,
         padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
         margin: EdgeInsets.symmetric(vertical: 2),
         color: _profileResultGameDetailController.currentParticipant.value.win
@@ -47,12 +47,9 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
         child: Column(
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _championBadge(context),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [_spellImage1(context), _spellImage2(context)],
-                ),
                 Row(
                   children: [
                     _itemBase(
@@ -120,42 +117,41 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
   }
 
   _userKDA() {
-    return Row(
-      children: [
-        Container(
-          margin: EdgeInsets.only(
-              left: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                  ? 80
-                  : 55),
-          child: Text(
-            _profileResultGameDetailController.currentParticipant.value.win
-                ? "${AppLocalizations.of(context)!.gameVictory}"
-                : "${AppLocalizations.of(context)!.gameDefeat}",
-            style: GoogleFonts.montserrat(
-              color: Colors.yellow,
-              fontWeight: FontWeight.w400,
-              fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                  ? 13
-                  : 9,
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            child: Text(
+              _profileResultGameDetailController.currentParticipant.value.win
+                  ? "${AppLocalizations.of(context)!.gameVictory}"
+                  : "${AppLocalizations.of(context)!.gameDefeat}",
+              style: GoogleFonts.montserrat(
+                color: Colors.yellow,
+                fontWeight: FontWeight.w400,
+                fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                    ? 13
+                    : 9,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
-            overflow: TextOverflow.ellipsis,
           ),
-        ),
-        Container(
-          margin: EdgeInsets.only(left: 50),
-          child: Text(
-            "${_profileResultGameDetailController.currentParticipant.value.kills} / ${_profileResultGameDetailController.currentParticipant.value.deaths} / ${_profileResultGameDetailController.currentParticipant.value.assists}",
-            style: GoogleFonts.montserrat(
-              color: Colors.yellow,
-              fontWeight: FontWeight.w400,
-              fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                  ? 12
-                  : 8,
+          Container(
+            margin: EdgeInsets.only(left: 15),
+            child: Text(
+              "${_profileResultGameDetailController.currentParticipant.value.kills} / ${_profileResultGameDetailController.currentParticipant.value.deaths} / ${_profileResultGameDetailController.currentParticipant.value.assists}",
+              style: GoogleFonts.montserrat(
+                color: Colors.yellow,
+                fontWeight: FontWeight.w400,
+                fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                    ? 12
+                    : 8,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
-            overflow: TextOverflow.ellipsis,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -163,7 +159,7 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
     return Container(
       height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 25 : 20,
       width: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 25 : 20,
-      margin: EdgeInsets.only(left: 5),
+      margin: EdgeInsets.only(left:  _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 5 : 0),
       child: _profileResultGameDetailController
                   .currentParticipant.value.teamPosition !=
               ""
@@ -185,7 +181,7 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
     return Container(
       height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 33 : 25,
       width: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 33 : 25,
-      margin: EdgeInsets.only(left: last ? 2 : 0),
+      margin: EdgeInsets.only(left: last ? 10 : 0),
       child: Container(
         child: item > 0
             ? Image.network(
@@ -242,25 +238,33 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
 
   Widget _championBadge(BuildContext context) {
     return Obx(() {
-      return _profileResultGameDetailController
-                  .currentParticipant.value.championId !=
-              ""
-          ? Container(
-              height: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                  ? 48
-                  : 32,
-              width: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                  ? 48
-                  : 32,
-              child: Image.network(
-                _profileResultGameDetailController.getChampionBadgeUrl(),
-                width: MediaQuery.of(context).size.width / 10,
-              ),
-            )
-          : Image.asset(
-              imageIconItemNone,
-              width: MediaQuery.of(context).size.width / 10,
-            );
+      return Row(
+        children: [
+          _profileResultGameDetailController
+                      .currentParticipant.value.championId !=
+                  ""
+              ? Container(
+                  height: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                      ? 48
+                      : 32,
+                  width: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                      ? 48
+                      : 32,
+                  child: Image.network(
+                    _profileResultGameDetailController.getChampionBadgeUrl(),
+                    width: MediaQuery.of(context).size.width / 10,
+                  ),
+                )
+              : Image.asset(
+                  imageIconItemNone,
+                  width: MediaQuery.of(context).size.width / 10,
+                ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [_spellImage1(context), _spellImage2(context)],
+          ),
+        ],
+      );
     });
   }
 }

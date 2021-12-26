@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -298,7 +299,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
   _participantCardDetail({required Participant participant}) {
     return Container(
       padding: EdgeInsets.only(left: 10),
-      height: 80,
+      height: 78,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -306,7 +307,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
             children: [
               _userChampionDetail(participant),
               Container(
-                margin: EdgeInsets.only(top: 25, right: 5),
+                margin: EdgeInsets.only(top: 24, right: 5),
                 child: Column(
                   children: [
                     _spellIcon(participant.summoner1Id.toString()),
@@ -315,7 +316,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 25, right: 5),
+                margin: EdgeInsets.only(top: 23, right: 5),
                 child: Column(
                   children: [
                     _perkIcon(participant.perk.styles[0].selections[0].perk
@@ -328,11 +329,14 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  FittedBox(
-                    child: Text(
-                      participant.summonerName,
-                      style: TextStyle(
-                        fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 15 : 10,
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 100,
+                    height: 20,
+                    child: FittedBox(
+                      child: Text(
+                        participant.summonerName,
+                        style: TextStyle(fontWeight: FontWeight.w300),
                       ),
                     ),
                   ),
@@ -342,7 +346,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
             ],
           ),
           Container(
-            margin: EdgeInsets.only(right: 8, top: 20),
+            margin: EdgeInsets.only(right: 8, top: 22),
             child: Column(
               children: [
                 Row(
@@ -368,7 +372,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
                             Container(
                               width: _masterController
                                       .screenWidthSizeIsBiggerThanNexusOne()
-                                  ? 15
+                                  ? 13
                                   : 10,
                               child: Image.network(
                                   _generalVisionController.getMinionUrl()),
@@ -391,7 +395,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
                             Container(
                               width: _masterController
                                       .screenWidthSizeIsBiggerThanNexusOne()
-                                  ? 15
+                                  ? 13
                                   : 10,
                               child: Image.network(
                                   _generalVisionController.getGoldIconUrl()),
@@ -408,21 +412,13 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(
-                            right: 5,
-                            top: _masterController
-                                    .screenWidthSizeIsBiggerThanNexusOne()
-                                ? 5
-                                : 0),
+                        margin: EdgeInsets.only(right: 5, top: 4),
                         child: Column(
                           children: [
                             Image.network(
                               _generalVisionController.getCriticIcon(),
                               color: Colors.red,
-                              height: _masterController
-                                      .screenWidthSizeIsBiggerThanNexusOne()
-                                  ? 10
-                                  : 8,
+                              height: 8,
                             ),
                             Text(
                               widget.formatter.format(
