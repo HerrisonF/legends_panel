@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
-import 'package:legends_panel/app/controller/result_controllers/current_game_result_controller/current_game_participant_controller.dart';
+import 'package:legends_panel/app/controller/current_game_controller/current_game_participant_controller.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
 
 class CurrentGameParticipantCard extends StatefulWidget {

@@ -58,7 +58,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                 initialRegion: initialRegion,
                 onRegionChoose: (region) {
                   setState(() {
-                    _currentGameController.saveActualRegion(region);
+                    _currentGameController.setAndSaveActualRegion(region);
                   });
                 },
               ),
@@ -156,7 +156,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
   _validateAndSearchSummoner() {
     if (currentGameUserFormKey.currentState!.validate()) {
       UtilController.closeKeyBoard(context);
-      _currentGameController.loadUserCurrentGame();
+      _currentGameController.processCurrentGame();
     }
   }
 }

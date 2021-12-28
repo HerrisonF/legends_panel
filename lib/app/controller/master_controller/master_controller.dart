@@ -17,15 +17,16 @@ import 'package:package_info_plus/package_info_plus.dart';
 class MasterController {
   final MasterRepository _masterRepository = MasterRepository();
 
-  Rx<User> userForCurrentGame = User().obs;
-  Rx<User> userForProfile = User().obs;
-  late PackageInfo packageInfo;
-  Rx<StoredRegion> storedRegion = StoredRegion().obs;
   RxInt currentPageIndex = 0.obs;
-  Rx<LolVersion> lolVersion = LolVersion().obs;
-  Rx<ChampionRoom> championRoom = ChampionRoom().obs;
-  Rx<SpellRoom> spellRoom = SpellRoom().obs;
-  Rx<MapRoom> mapRoom = MapRoom().obs;
+  late PackageInfo packageInfo;
+
+  User userForCurrentGame = User();
+  User userForProfile = User();
+  StoredRegion storedRegion = StoredRegion();
+  LolVersion lolVersion = LolVersion();
+  ChampionRoom championRoom = ChampionRoom();
+  SpellRoom spellRoom = SpellRoom();
+  MapRoom mapRoom = MapRoom();
   RunesRoom runesRoom = RunesRoom();
 
   static const int NEXUS_ONE_SCREEN_WIDTH = 480;
@@ -42,94 +43,88 @@ class MasterController {
     Get.offAllNamed(Routes.MASTER);
   }
 
-  screenWidthSizeIsBiggerThanNexusOne(){
-    return WidgetsBinding.instance!.window.physicalSize.width > NEXUS_ONE_SCREEN_WIDTH;
+  screenWidthSizeIsBiggerThanNexusOne() {
+    return WidgetsBinding.instance!.window.physicalSize.width >
+        NEXUS_ONE_SCREEN_WIDTH;
   }
 
   getLastStoredRegions() async {
-    storedRegion.value = await _masterRepository.getLastStoredRegion();
-    storedRegion.refresh();
+    storedRegion = await _masterRepository.getLastStoredRegion();
   }
 
   saveActualRegion() async {
-    await _masterRepository.saveActualRegion(storedRegion.value);
+    await _masterRepository.saveActualRegion(storedRegion);
   }
 
   readPersistedUser() async {
-    userForProfile.value = await _masterRepository.readPersistedUserProfile();
+    userForProfile = await _masterRepository.readPersistedUserProfile();
   }
 
   getLolVersion() async {
-    lolVersion.value = await _masterRepository.getLOLVersionOnLocal();
-    if (!isLolVersionStored() || lolVersion.value.needToLoadVersionFromWeb()) {
+    lolVersion = await _masterRepository.getLOLVersionOnLocal();
+    if (!isLolVersionStored() || lolVersion.needToLoadVersionFromWeb()) {
       await getLolVersionOnWeb();
     }
-    lolVersion.refresh();
   }
 
   bool isLolVersionStored() {
-    return lolVersion.value.actualVersion.isNotEmpty;
+    return lolVersion.actualVersion.isNotEmpty;
   }
 
   getLolVersionOnWeb() async {
-    lolVersion.value.versions
-        .addAll(await _masterRepository.getLOLVersionOnWeb());
-    lolVersion.value.actualVersion = lolVersion.value.versions.first;
-    _masterRepository.saveLolVersion(lolVersion.value.toJson());
+    lolVersion.versions.addAll(await _masterRepository.getLOLVersionOnWeb());
+    lolVersion.actualVersion = lolVersion.versions.first;
+    _masterRepository.saveLolVersion(lolVersion.toJson());
   }
 
   getChampionRoom() async {
-    championRoom.value = await _masterRepository.getChampionRoomOnLocal();
-    if (!isChampionRoomStored() ||
-        championRoom.value.needToLoadVersionFromWeb()) {
+    championRoom = await _masterRepository.getChampionRoomOnLocal();
+    if (!isChampionRoomStored() || championRoom.needToLoadVersionFromWeb()) {
       await getChampionRoomOnWeb();
     }
-    championRoom.refresh();
   }
 
   bool isChampionRoomStored() {
-    return championRoom.value.lastDate.isNotEmpty;
+    return championRoom.lastDate.isNotEmpty;
   }
 
   getChampionRoomOnWeb() async {
-    championRoom.value = await _masterRepository
-        .getChampionRoomOnWeb(lolVersion.value.actualVersion);
-    _masterRepository.saveChampionRoom(championRoom.value.toJson());
+    championRoom =
+        await _masterRepository.getChampionRoomOnWeb(lolVersion.actualVersion);
+    _masterRepository.saveChampionRoom(championRoom.toJson());
   }
 
   getSummonerSpellsRoom() async {
-    spellRoom.value = await _masterRepository.getSpellRoomOnLocal();
-    if (!isSpellRoomStored() || spellRoom.value.needToLoadVersionFromWeb()) {
+    spellRoom = await _masterRepository.getSpellRoomOnLocal();
+    if (!isSpellRoomStored() || spellRoom.needToLoadVersionFromWeb()) {
       await getSpellRoomOnWeb();
     }
-    spellRoom.refresh();
   }
 
   bool isSpellRoomStored() {
-    return spellRoom.value.lastDate.isNotEmpty;
+    return spellRoom.lastDate.isNotEmpty;
   }
 
   getSpellRoomOnWeb() async {
-    spellRoom.value = await _masterRepository
-        .getSpellRoomOnWeb(lolVersion.value.actualVersion);
-    _masterRepository.saveSpellRoom(spellRoom.value.toJson());
+    spellRoom =
+        await _masterRepository.getSpellRoomOnWeb(lolVersion.actualVersion);
+    _masterRepository.saveSpellRoom(spellRoom.toJson());
   }
 
   getMapRoom() async {
-    mapRoom.value = await _masterRepository.getMapRoomOnLocal();
-    if (!isMapRoomStored() || mapRoom.value.needToLoadVersionFromWeb()) {
+    mapRoom = await _masterRepository.getMapRoomOnLocal();
+    if (!isMapRoomStored() || mapRoom.needToLoadVersionFromWeb()) {
       await getMapRoomOnWeb();
     }
-    mapRoom.refresh();
   }
 
   isMapRoomStored() {
-    return mapRoom.value.lastDate.isNotEmpty;
+    return mapRoom.lastDate.isNotEmpty;
   }
 
   getMapRoomOnWeb() async {
-    mapRoom.value = await _masterRepository.getMapRoomOnWeb();
-    _masterRepository.saveMapRoom(mapRoom.value.toJson());
+    mapRoom = await _masterRepository.getMapRoomOnWeb();
+    _masterRepository.saveMapRoom(mapRoom.toJson());
   }
 
   getRunesRoom() async {
@@ -145,7 +140,7 @@ class MasterController {
 
   getRunesRoomOnWeb() async {
     runesRoom = await _masterRepository.getRunesRoomOnWeb(
-        lolVersion.value.actualVersion, storedRegion.value.getLocaleKey()!);
+        lolVersion.actualVersion, storedRegion.getLocaleKey()!);
     _masterRepository.saveRunesRoom(runesRoom.toJson());
   }
 
@@ -159,23 +154,24 @@ class MasterController {
     return perkStyle.icon;
   }
 
-  String getFirstPerkFromPerkStyle(CurrentGamePerk perk){
+  String getFirstPerkFromPerkStyle(CurrentGamePerk perk) {
     PerkStyle perkStyle = PerkStyle();
     var currentPerk = runesRoom.perkStyle.where(
-            (perkStyle) => perkStyle.id.toString() == perk.perkStyle.toString());
+        (perkStyle) => perkStyle.id.toString() == perk.perkStyle.toString());
     if (currentPerk.length > 0) {
       perkStyle = currentPerk.first;
     }
     Runes runes = Runes();
     var firstIcon;
-    for(Slots slot in perkStyle.slots){
-      firstIcon = slot.runes.where((rune)=> rune.id.toString() == perk.perkIds[0].toString());
-      if(firstIcon.length > 0){
+    for (Slots slot in perkStyle.slots) {
+      firstIcon = slot.runes
+          .where((rune) => rune.id.toString() == perk.perkIds[0].toString());
+      if (firstIcon.length > 0) {
         break;
       }
     }
 
-    if(firstIcon.length > 0){
+    if (firstIcon.length > 0) {
       runes = firstIcon.first;
     }
     return runes.icon;
@@ -187,7 +183,7 @@ class MasterController {
 
   getChampionById(String championId) {
     Champion champion = Champion();
-    var champs = championRoom.value.champions
+    var champs = championRoom.champions
         .where((champ) => champ.detail.key.toString() == championId);
     if (champs.length > 0) champion = champs.first;
     return champion.detail.id;
@@ -195,39 +191,41 @@ class MasterController {
 
   getSpellById(String spellId) {
     Spell spell = Spell();
-    var spells = spellRoom.value.summonerSpell.spells
+    var spells = spellRoom.summonerSpell.spells
         .where((spell) => spell.key.toString() == spellId);
     if (spells.length > 0) spell = spells.first;
     return spell;
   }
 
   getMapById(String queueId) {
-    return mapRoom.value.maps
-        .where((map) => map.queueId.toString() == queueId)
-        .first;
+    return mapRoom.maps.where((map) => map.queueId.toString() == queueId).first;
   }
 
   getCurrentUserOnCloud(String userName, String keyRegion) async {
-    userForCurrentGame.value =
+    userForCurrentGame =
         await _masterRepository.getUserOnCloud(userName, keyRegion);
   }
 
   getUserProfileOnCloud(String userName, String keyRegion) async {
-    userForProfile.value =
+    userForProfile =
         await _masterRepository.getUserOnCloud(userName, keyRegion);
   }
 
   saveUserProfile(String region) {
-    this.userForProfile.value.region = region;
-    _masterRepository.saveUserProfile(this.userForProfile.value);
+    this.userForProfile.region = region;
+    _masterRepository.saveUserProfile(this.userForProfile);
   }
 
   deleteUserProfile() {
     _masterRepository.deletePersistedUser();
-    userForProfile.value = User();
+    userForProfile = User();
+  }
+
+  resetCurrentGameUser() {
+    userForCurrentGame = User();
   }
 
   userProfileExist() {
-    return userForProfile.value.id.isNotEmpty;
+    return userForProfile.id.isNotEmpty;
   }
 }

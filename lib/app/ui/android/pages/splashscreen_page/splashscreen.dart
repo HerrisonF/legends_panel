@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen>
     super.dispose();
   }
 
-  static const int NEXUS_ONE_SCREEN = 800;
+  static const int NEXUS_ONE_SCREEN = 480;
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +179,7 @@ class _SplashScreenState extends State<SplashScreen>
                 ),
               ],
               fontSize: WidgetsBinding.instance!.window.physicalSize.width > NEXUS_ONE_SCREEN
-                  ? 40
+                  ? 38
                   : 22,
               fontWeight: FontWeight.w700,
             ),

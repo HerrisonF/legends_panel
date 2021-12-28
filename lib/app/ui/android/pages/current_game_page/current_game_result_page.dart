@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
-import 'package:legends_panel/app/controller/result_controllers/current_game_result_controller/current_game_result_controller.dart';
+import 'package:legends_panel/app/controller/current_game_controller/current_game_result_controller.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
 import 'package:legends_panel/app/ui/android/components/timer_text.dart';
 import 'package:legends_panel/app/ui/android/pages/current_game_page/current_game_participant_card.dart';
@@ -33,6 +33,7 @@ class CurrentGameResultPage extends StatelessWidget {
 
   _backToHome(context) {
     Navigator.pop(context);
+    _masterController.resetCurrentGameUser();
   }
 
   Widget _listUser(context) {
@@ -133,7 +134,7 @@ class CurrentGameResultPage extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(top: 10, bottom: 20),
       child: Text(
-        _masterController.userForCurrentGame.value.name,
+        _masterController.userForCurrentGame.name,
         style: GoogleFonts.aBeeZee(
             fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
                 ? 16

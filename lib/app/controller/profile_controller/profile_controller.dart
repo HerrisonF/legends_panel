@@ -47,14 +47,14 @@ class ProfileController {
   }
 
   String getLastStoredRegionForProfile() {
-    if (_masterController.storedRegion.value.lastStoredProfileRegion.isEmpty) {
+    if (_masterController.storedRegion.lastStoredProfileRegion.isEmpty) {
       return 'NA';
     }
-    return _masterController.storedRegion.value.lastStoredProfileRegion;
+    return _masterController.storedRegion.lastStoredProfileRegion;
   }
 
   saveActualRegion(String region) {
-    _masterController.storedRegion.value.lastStoredProfileRegion = region;
+    _masterController.storedRegion.lastStoredProfileRegion = region;
     _masterController.saveActualRegion();
   }
 
@@ -84,14 +84,14 @@ class ProfileController {
 
   checkIsUserStored() async {
     if (_masterController.userProfileExist()) {
-      if (_masterController.userForProfile.value.region.isNotEmpty) {
+      if (_masterController.userForProfile.region.isNotEmpty) {
         isUserFound(true);
-        final region = _masterController.userForProfile.value.region;
+        final region = _masterController.userForProfile.region;
         starUserLoading();
-        await getUserTierInformation(_masterController.storedRegion.value.getKeyFromRegion(region)!);
-        await getMasteryChampions(_masterController.storedRegion.value.getKeyFromRegion(region)!);
-        await getMatchListIds(_masterController.storedRegion.value.getKeyFromRegion(region)!);
-        await getMatches(_masterController.storedRegion.value.getKeyFromRegion(region)!);
+        await getUserTierInformation(_masterController.storedRegion.getKeyFromRegion(region)!);
+        await getMasteryChampions(_masterController.storedRegion.getKeyFromRegion(region)!);
+        await getMatchListIds(_masterController.storedRegion.getKeyFromRegion(region)!);
+        await getMatches(_masterController.storedRegion.getKeyFromRegion(region)!);
         changeCurrentProfilePageTo(FOUND_USER_COMPONENT);
         stopUserLoading();
       }
@@ -100,7 +100,7 @@ class ProfileController {
 
   getUserTierInformation(String keyRegion) async {
     userTierList.value = await _profileRepository.getUserTier(
-        _masterController.userForProfile.value.id, keyRegion);
+        _masterController.userForProfile.id, keyRegion);
     for (UserTier userTier in userTierList) {
       if (userTier.queueType == StringConstants.rankedSolo) {
         userTierRankedSolo.value = userTier;
@@ -115,7 +115,7 @@ class ProfileController {
   getMasteryChampions(String keyRegion) async {
     championMasteryList.addAll(
       await _profileRepository.getChampionMastery(
-          _masterController.userForProfile.value.id, keyRegion),
+          _masterController.userForProfile.id, keyRegion),
     );
     championMasteryList
         .sort((b, a) => a.championPoints.compareTo(b.championPoints));
@@ -126,7 +126,7 @@ class ProfileController {
     List<String> tempMatchIdList = [];
 
     tempMatchIdList = await _profileRepository.getMatchListIds(
-      puuid: _masterController.userForProfile.value.puuid,
+      puuid: _masterController.userForProfile.puuid,
       start: this.oldIndex.value,
       count: AMOUNT_MATCHES_TO_FIND,
       keyRegion: keyRegion,
@@ -151,8 +151,8 @@ class ProfileController {
   loadMoreMatches(String region) async {
     if (!isLoadingNewMatches.value) {
       startLoadingNewMatches();
-      await getMatchListIds(_masterController.storedRegion.value.getKeyFromRegion(region)!);
-      await getMatches(_masterController.storedRegion.value.getKeyFromRegion(region)!);
+      await getMatchListIds(_masterController.storedRegion.getKeyFromRegion(region)!);
+      await getMatches(_masterController.storedRegion.getKeyFromRegion(region)!);
       stopLoadingNewMatches();
     }
   }
@@ -177,13 +177,13 @@ class ProfileController {
   getUser(String region) async {
     starUserLoading();
     await _masterController.getUserProfileOnCloud(userNameInputController.text,
-        _masterController.storedRegion.value.getKeyFromRegion(region)!);
+        _masterController.storedRegion.getKeyFromRegion(region)!);
     _masterController.saveUserProfile(region);
     if (_masterController.userProfileExist()) {
-      await getUserTierInformation(_masterController.storedRegion.value.getKeyFromRegion(region)!);
-      await getMasteryChampions(_masterController.storedRegion.value.getKeyFromRegion(region)!);
-      await getMatchListIds(_masterController.storedRegion.value.getKeyFromRegion(region)!);
-      await getMatches(_masterController.storedRegion.value.getKeyFromRegion(region)!);
+      await getUserTierInformation(_masterController.storedRegion.getKeyFromRegion(region)!);
+      await getMasteryChampions(_masterController.storedRegion.getKeyFromRegion(region)!);
+      await getMatchListIds(_masterController.storedRegion.getKeyFromRegion(region)!);
+      await getMatches(_masterController.storedRegion.getKeyFromRegion(region)!);
       setUserRegion(region);
       changeCurrentProfilePageTo(FOUND_USER_COMPONENT);
       userNameInputController.clear();
@@ -194,7 +194,7 @@ class ProfileController {
   }
 
   setUserRegion(String region) {
-    _masterController.userForProfile.value.region = region;
+    _masterController.userForProfile.region = region;
   }
 
   _showUserNotFoundMessage() {
@@ -207,20 +207,20 @@ class ProfileController {
 
   deletePersistedUser() {
     _masterController.deleteUserProfile();
-    isShowingMessage(false);
+    this.isShowingMessage(false);
     oldIndex = 0.obs;
     newIndex = 0.obs;
 
-    userTierList = RxList<UserTier>();
-    championMasteryList = RxList<ChampionMastery>();
-    matchIdList = [];
-    matchList = RxList<MatchDetail>();
+    this.userTierList = RxList<UserTier>();
+    this.championMasteryList = RxList<ChampionMastery>();
+    this.matchIdList = [];
+    this.matchList = RxList<MatchDetail>();
   }
 
   String getUserProfileImage() {
     return _profileRepository.getProfileImage(
-      _masterController.lolVersion.value.actualVersion,
-      _masterController.userForProfile.value.profileIconId.toString(),
+      _masterController.lolVersion.actualVersion,
+      _masterController.userForProfile.profileIconId.toString(),
     );
   }
 }

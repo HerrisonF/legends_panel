@@ -18,7 +18,7 @@ class CurrentGameResultController extends UtilController {
   static const BLUE_TEAM = 100;
 
   startController(CurrentGameSpectator currentGameSpectator, String region) {
-    this.region = _masterController.storedRegion.value.getKeyFromRegion(region)!;
+    this.region = _masterController.storedRegion.getKeyFromRegion(region)!;
     _clearOldCurrentGameSearch();
     setCurrentGameSpectator(currentGameSpectator);
     detachParticipantsIntoTeams();
