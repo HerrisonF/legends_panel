@@ -1,5 +1,7 @@
 class CurrentGameCustomization {
+  /// Category identifier for Game Customization
   String category = "";
+  /// Game Customization content
   String content = "";
 
   CurrentGameCustomization();
