@@ -61,4 +61,9 @@ class CurrentGameResultController extends UtilController {
   getMapById(String queueId) {
     this.currentMapToShow.value = _masterController.getMapById(queueId);
   }
+
+  String getCurrentMapDescription(){
+    String replacedText = currentMapToShow.value.description.replaceAll("games", "");
+    return replacedText;
+  }
 }

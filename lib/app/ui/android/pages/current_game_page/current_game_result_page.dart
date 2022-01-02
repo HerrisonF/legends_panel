@@ -51,7 +51,11 @@ class CurrentGameResultPage extends StatelessWidget {
         ),
         SafeArea(
           child: Container(
-            margin: EdgeInsets.only(left: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 15 : 10, top: 20),
+            margin: EdgeInsets.only(
+                left: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                    ? 15
+                    : 10,
+                top: 20),
             child: IconButton(
               icon: Icon(
                 Icons.arrow_back,
@@ -93,7 +97,7 @@ class CurrentGameResultPage extends StatelessWidget {
           ),
           Container(
             child: Text(
-              _currentGameResultController.currentMapToShow.value.description,
+              _currentGameResultController.getCurrentMapDescription(),
               style: GoogleFonts.aBeeZee(
                 fontSize:
                     _masterController.screenWidthSizeIsBiggerThanNexusOne()
@@ -136,12 +140,12 @@ class CurrentGameResultPage extends StatelessWidget {
       child: Text(
         _masterController.userForCurrentGame.name,
         style: GoogleFonts.aBeeZee(
-            fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                ? 16
-                : 14,
-            color: Colors.white,
-            letterSpacing: 0.2,
-            fontWeight: FontWeight.bold),
+          fontSize:
+              _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 16 : 14,
+          color: Colors.white,
+          letterSpacing: 0.2,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -194,7 +198,9 @@ class CurrentGameResultPage extends StatelessWidget {
   _teamCard(RxList<CurrentGameParticipant> participants, int team) {
     return Container(
       margin: EdgeInsets.only(
-          top: team == 200 ? 20 : 0, bottom: team == 200 ? 20 : 0),
+        top: team == 200 ? 20 : 0,
+        bottom: team == 200 ? 20 : 0,
+      ),
       height:
           _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 318 : 230,
       child: ListView.builder(

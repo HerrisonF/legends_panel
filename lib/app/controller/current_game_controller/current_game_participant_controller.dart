@@ -70,7 +70,7 @@ class CurrentGameParticipantController extends MasterController {
   }
 
   String getPerkStyleUrl(CurrentGamePerk currentGamePerk){
-    String perkName = _masterController.getPerkStyle(currentGamePerk);
+    String perkName = _masterController.getPerkSubStyleIconName(currentGamePerk);
 
     return _participantRepository.getPerkUrl(perkName);
   }

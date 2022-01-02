@@ -151,12 +151,19 @@ class _CurrentGameParticipantCardState
         style: GoogleFonts.montserrat(
           fontSize:
               _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 12 : 8,
-          color: Colors.white,
+          color: _isToPaintUserName()
+              ? Colors.yellow
+              : Colors.white,
         ),
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),
     );
+  }
+
+  bool _isToPaintUserName() {
+    return _masterController.userForCurrentGame.name ==
+                widget.participant.summonerName;
   }
 
   _bannedChampion() {

@@ -144,7 +144,7 @@ class MasterController {
     _masterRepository.saveRunesRoom(runesRoom.toJson());
   }
 
-  String getPerkStyle(CurrentGamePerk perk) {
+  String getPerkSubStyleIconName(CurrentGamePerk perk) {
     PerkStyle perkStyle = PerkStyle();
     var currentPerk = runesRoom.perkStyle.where(
         (perkStyle) => perkStyle.id.toString() == perk.perkSubStyle.toString());
