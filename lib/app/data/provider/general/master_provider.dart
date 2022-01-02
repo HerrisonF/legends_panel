@@ -15,6 +15,7 @@ import 'package:legends_panel/app/model/general/runesRoom.dart';
 import 'package:legends_panel/app/model/general/spell_room.dart';
 import 'package:legends_panel/app/model/general/stored_region.dart';
 import 'package:legends_panel/app/model/general/user.dart';
+import 'package:legends_panel/app/model/general/user_favorite.dart';
 import 'package:logger/logger.dart';
 
 class MasterProvider {
@@ -287,6 +288,54 @@ class MasterProvider {
     } catch (e) {
       _logger.i("Error to Read persisted UserProfile ... $e");
       return user;
+    }
+  }
+
+  Future<UserFavorite> readFavoriteUsersStored() async {
+    _logger.i("Reading favorite users stored ...");
+    try {
+      String userFavoriteStore = await box.read(StorageKeys.userFavoriteKey);
+      if (userFavoriteStore.isNotEmpty) {
+        _logger.i("Success to get userFavorite on Local ...");
+        return UserFavorite.fromJson(jsonDecode(userFavoriteStore));
+      }
+      _logger.i("No userProfile persisted found ...");
+      return UserFavorite();
+    } catch (e) {
+      _logger.i("Error to Read persisted UserProfile ... $e");
+      return UserFavorite();
+    }
+  }
+
+
+  String getUserTierImage(String tier){
+    final String path = "/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-mini-regalia/${tier.toLowerCase()}.png";
+    _logger.i("building Image Tier Url ...");
+    try{
+      return RiotAndRawDragonUrls.rawDataDragonUrl + path;
+    }catch(e){
+      _logger.i("Error to build Tier Image URL ... $e");
+      return "";
+    }
+  }
+
+  saveFavoriteUsers(UserFavorite usersFavorite) async {
+    deleteFavoriteUsers();
+    _logger.i("Persisting FavoriteUser ...");
+    try {
+      await box.write(StorageKeys.userFavoriteKey, jsonEncode(usersFavorite));
+      _logger.i("Success to persist UserProfile ...");
+    } catch (e) {
+      _logger.i("Error to persist UserProfile ... $e");
+    }
+  }
+
+  deleteFavoriteUsers(){
+    try {
+      _logger.i("deleting favorite Users");
+      box.remove(StorageKeys.userFavoriteKey);
+    } catch (e) {
+      _logger.i("Error to delete userProfile $e");
     }
   }
 

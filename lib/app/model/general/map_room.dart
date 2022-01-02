@@ -9,7 +9,7 @@ class MapRoom {
 
   MapRoom.fromJson(Map<String, dynamic> json){
     lastDate = json['lastDate']??"";
-
+    maps = json['maps']??[];
   }
 
   Map<String, dynamic> toJson()=> {

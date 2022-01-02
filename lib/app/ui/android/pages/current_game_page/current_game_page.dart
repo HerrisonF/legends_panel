@@ -62,6 +62,11 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                   });
                 },
               ),
+              Container(
+                height: 50,
+                margin: EdgeInsets.only(top: 20),
+                child: _mostSearchedPlayers(),
+              ),
             ],
           ),
         ),
@@ -140,6 +145,63 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                 },
         );
       }),
+    );
+  }
+
+  _mostSearchedPlayers() {
+    return Obx(
+      () => _masterController.favoriteUsers.length > 0
+          ? Container(
+              child: ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: _masterController.favoriteUsers.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return _favoritePlayerCard(context, index);
+                },
+              ),
+            )
+          : SizedBox.shrink(),
+    );
+  }
+
+  Container _favoritePlayerCard(BuildContext context, int index) {
+    return Container(
+      width: 130,
+      margin: EdgeInsets.only(left: 20),
+      decoration: BoxDecoration(
+        color: Theme.of(context).backgroundColor,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          Text(
+            _masterController.favoriteUsers[index].name,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 10,
+            ),
+          ),
+          Container(
+            child: _masterController
+                    .favoriteUsers[index].userTier.isNotEmpty
+                ? Image.network(
+                    _masterController.getUserTierImage(
+                      _masterController
+                          .favoriteUsers[index].userTier,
+                    ),
+                    width: 18,
+                  )
+                : Container(
+                    margin: EdgeInsets.only(right: 10),
+                    child: Image.asset(
+                      imageUnranked,
+                      width: 17,
+                    ),
+                  ),
+          ),
+        ],
+      ),
     );
   }
 

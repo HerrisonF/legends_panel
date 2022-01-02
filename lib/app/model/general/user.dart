@@ -4,6 +4,7 @@ class User {
   String puuid = "";
   String name = "";
   String region = "";
+  String userTier = "";
   dynamic profileIconId = 0;
   dynamic revisionDate = 0;
   dynamic summonerLevel = 0;
@@ -19,6 +20,7 @@ class User {
     revisionDate = json['revisionDate'];
     summonerLevel = json['summonerLevel'];
     region = json['region']??"";
+    userTier = json['userTier']??"";
   }
 
   Map<String, dynamic> toJson() => {
@@ -30,6 +32,7 @@ class User {
     'revisionDate' : revisionDate,
     'summonerLevel' : summonerLevel,
     'region': region,
+    'userTier': userTier,
   };
 
   @override

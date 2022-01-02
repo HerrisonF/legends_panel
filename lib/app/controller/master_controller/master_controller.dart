@@ -22,6 +22,7 @@ class MasterController {
 
   User userForCurrentGame = User();
   User userForProfile = User();
+  RxList<User> favoriteUsers = RxList<User>();
   StoredRegion storedRegion = StoredRegion();
   LolVersion lolVersion = LolVersion();
   ChampionRoom championRoom = ChampionRoom();
@@ -39,6 +40,7 @@ class MasterController {
     await getSummonerSpellsRoom();
     await getMapRoom();
     await getRunesRoom();
+    await getFavoriteUsersStored();
     packageInfo = await PackageInfo.fromPlatform();
     Get.offAllNamed(Routes.MASTER);
   }
@@ -88,6 +90,36 @@ class MasterController {
     return championRoom.lastDate.isNotEmpty;
   }
 
+  addUserToFavoriteList(String userTier){
+    bool notFound = true;
+    if(userTier.isNotEmpty) {
+      userForCurrentGame.userTier = userTier;
+    }else{
+      userForCurrentGame.userTier = "";
+    }
+    if(favoriteUsers.length <= 0){
+      favoriteUsers.add(
+          userForCurrentGame);
+      saveFavoriteUsers();
+    }else {
+      for (User favoriteUser in favoriteUsers) {
+        if (favoriteUser.name.toLowerCase() == userForCurrentGame.name.toLowerCase()) {
+          notFound = false;
+          favoriteUsers.remove(favoriteUser);
+          favoriteUsers.add(userForCurrentGame);
+          saveFavoriteUsers();
+        }
+      }
+      if(notFound){
+        favoriteUsers.add(userForCurrentGame);
+        saveFavoriteUsers();
+      }
+    }
+  }
+
+  getUserTierImage(String tier){
+    return _masterRepository.getUserTierImage(tier);
+  }
   getChampionRoomOnWeb() async {
     championRoom =
         await _masterRepository.getChampionRoomOnWeb(lolVersion.actualVersion);
@@ -219,6 +251,14 @@ class MasterController {
   deleteUserProfile() {
     _masterRepository.deletePersistedUser();
     userForProfile = User();
+  }
+
+  getFavoriteUsersStored() async {
+    favoriteUsers.addAll(await _masterRepository.getFavoriteUsersStored());
+  }
+
+  saveFavoriteUsers(){
+    _masterRepository.saveFavoriteUsers(favoriteUsers);
   }
 
   resetCurrentGameUser() {

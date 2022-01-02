@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:legends_panel/app/constants/string_constants.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
+import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_perk.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_spectator.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_summoner_spell.dart';
@@ -14,17 +15,31 @@ class CurrentGameParticipantController extends MasterController {
   RxList<UserTier> userTierList = RxList<UserTier>();
   Rx<UserTier> soloUserTier = UserTier().obs;
   Rx<CurrentGameSpectator> currentGameSpectator = CurrentGameSpectator().obs;
+  CurrentGameParticipant currentGameParticipant = CurrentGameParticipant();
 
-  getUserTier(String id, String region) async {
-    userTierList.value = await _participantRepository.getUserTier(id, region);
+  getUserTier(CurrentGameParticipant participant, String region) async {
+    this.currentGameParticipant = participant;
+    userTierList.value = await _participantRepository.getUserTier(this.currentGameParticipant.summonerId, region);
     _getSoloRankedOnly(userTierList);
   }
 
   _getSoloRankedOnly(RxList<UserTier> userTierList) {
-    soloUserTier.value = userTierList
-        .where((tier) => tier.queueType == StringConstants.rankedSolo)
-        .first;
-    soloUserTier.value.winRate = getUserWinRate();
+    try{
+      soloUserTier.value = userTierList
+          .where((tier) => tier.queueType == StringConstants.rankedSolo)
+          .first;
+      soloUserTier.value.winRate = getUserWinRate();
+    }catch(e){
+      soloUserTier.value.winRate = 0.toString();
+    }
+    saveSearchedUserTier();
+  }
+
+  saveSearchedUserTier(){
+    if(_masterController.userForCurrentGame.name ==
+        this.currentGameParticipant.summonerName){
+      _masterController.addUserToFavoriteList(soloUserTier.value.tier);
+    }
   }
 
   String getUserTierImage(String tier) {

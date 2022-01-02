@@ -29,7 +29,7 @@ class _CurrentGameParticipantCardState
   void initState() {
     super.initState();
     _currentGameParticipantController.getUserTier(
-        widget.participant.summonerId, widget.region);
+        widget.participant, widget.region);
     _currentGameParticipantController.getSpectator(
         widget.participant.summonerId, widget.region);
   }
@@ -151,9 +151,7 @@ class _CurrentGameParticipantCardState
         style: GoogleFonts.montserrat(
           fontSize:
               _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 12 : 8,
-          color: _isToPaintUserName()
-              ? Colors.yellow
-              : Colors.white,
+          color: _isToPaintUserName() ? Colors.yellow : Colors.white,
         ),
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
@@ -163,7 +161,11 @@ class _CurrentGameParticipantCardState
 
   bool _isToPaintUserName() {
     return _masterController.userForCurrentGame.name ==
-                widget.participant.summonerName;
+        widget.participant.summonerName;
+  }
+
+  saveUserFavorite(String tier) {
+    _masterController.addUserToFavoriteList(tier);
   }
 
   _bannedChampion() {
@@ -302,9 +304,7 @@ class _CurrentGameParticipantCardState
         child:
             _currentGameParticipantController.soloUserTier.value.tier.isNotEmpty
                 ? Image.network(
-                    _currentGameParticipantController.getUserTierImage(
-                      _currentGameParticipantController.soloUserTier.value.tier,
-                    ),
+                    getUserTierImage(),
                     width: 18,
                   )
                 : Container(
@@ -316,5 +316,11 @@ class _CurrentGameParticipantCardState
                   ),
       );
     });
+  }
+
+  String getUserTierImage() {
+    return _currentGameParticipantController.getUserTierImage(
+      _currentGameParticipantController.soloUserTier.value.tier,
+    );
   }
 }
