@@ -6,6 +6,7 @@ import 'package:legends_panel/app/model/general/spell_room.dart';
 import 'package:legends_panel/app/model/general/stored_region.dart';
 import 'package:legends_panel/app/model/general/user.dart';
 import 'package:legends_panel/app/data/provider/general/master_provider.dart';
+import 'package:legends_panel/app/model/general/user_favorite.dart';
 
 class MasterRepository {
 
@@ -73,6 +74,21 @@ class MasterRepository {
 
   Future<User> readPersistedUserProfile(){
     return _masterProvider.readPersistedUserProfile();
+  }
+
+  Future<List<User>> getFavoriteUsersStored() async {
+    UserFavorite users = await _masterProvider.readFavoriteUsersStored();
+    return users.userFavorites;
+  }
+
+  getUserTierImage(String tier){
+    return _masterProvider.getUserTierImage(tier);
+  }
+
+  saveFavoriteUsers(List<User> users){
+    UserFavorite userFavorite = UserFavorite();
+    userFavorite.userFavorites = users;
+    return _masterProvider.saveFavoriteUsers(userFavorite);
   }
 
   Future<User> getUserOnCloud(String userName, String keyRegion){

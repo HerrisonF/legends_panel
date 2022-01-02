@@ -43,7 +43,11 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
       children: [
         Container(decoration: _currentGameBackgroundImage()),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 50),
+          padding: EdgeInsets.symmetric(
+            horizontal: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                ? 40
+                : 25,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -54,9 +58,14 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                 initialRegion: initialRegion,
                 onRegionChoose: (region) {
                   setState(() {
-                    _currentGameController.saveActualRegion(region);
+                    _currentGameController.setAndSaveActualRegion(region);
                   });
                 },
+              ),
+              Container(
+                height: 50,
+                margin: EdgeInsets.only(top: 20),
+                child: _mostSearchedPlayers(),
               ),
             ],
           ),
@@ -84,7 +93,9 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
           decoration: InputDecoration(
             hintText: AppLocalizations.of(context)!.hintSummonerName,
             hintStyle: TextStyle(
-              fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 16 : 12,
+              fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                  ? 16
+                  : 12,
             ),
             errorStyle: GoogleFonts.montserrat(
               fontWeight: FontWeight.w500,
@@ -107,7 +118,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
   Container _buttonForSearchSummoner() {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 30),
-      height: 50,
+      height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 54 : 45,
       child: Obx(() {
         return OutlinedButton(
           child: Row(
@@ -117,7 +128,10 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                 _whichMessageShowToUser(),
                 style: GoogleFonts.montserrat(
                   color: Colors.white,
-                  fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 15 : 12,
+                  fontSize:
+                      _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                          ? 15
+                          : 12,
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -134,6 +148,63 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
     );
   }
 
+  _mostSearchedPlayers() {
+    return Obx(
+      () => _masterController.favoriteUsers.length > 0
+          ? Container(
+              child: ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: _masterController.favoriteUsers.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return _favoritePlayerCard(context, index);
+                },
+              ),
+            )
+          : SizedBox.shrink(),
+    );
+  }
+
+  Container _favoritePlayerCard(BuildContext context, int index) {
+    return Container(
+      width: 130,
+      margin: EdgeInsets.only(left: 20),
+      decoration: BoxDecoration(
+        color: Theme.of(context).backgroundColor,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          Text(
+            _masterController.favoriteUsers[index].name,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 10,
+            ),
+          ),
+          Container(
+            child: _masterController
+                    .favoriteUsers[index].userTier.isNotEmpty
+                ? Image.network(
+                    _masterController.getUserTierImage(
+                      _masterController
+                          .favoriteUsers[index].userTier,
+                    ),
+                    width: 18,
+                  )
+                : Container(
+                    margin: EdgeInsets.only(right: 10),
+                    child: Image.asset(
+                      imageUnranked,
+                      width: 17,
+                    ),
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+
   String _whichMessageShowToUser() {
     return _currentGameController.isLoadingUser.value
         ? AppLocalizations.of(context)!.searching
@@ -147,8 +218,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
   _validateAndSearchSummoner() {
     if (currentGameUserFormKey.currentState!.validate()) {
       UtilController.closeKeyBoard(context);
-      _currentGameController
-          .loadUserCurrentGame();
+      _currentGameController.processCurrentGame();
     }
   }
 }

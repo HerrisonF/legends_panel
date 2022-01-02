@@ -2,15 +2,26 @@ import 'package:legends_panel/app/model/current_game_spectator/current_game_bann
 import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
 
 class CurrentGameSpectator {
+
+  /// The ID of the game
   int gameId = 0;
+  /// The game type
   String gameType = "";
+  /// The game start time represented in epoch milliseconds
   int gameStartTime = 0;
+  /// The ID of the map
   int mapId = 0;
+  /// The amount of time in seconds that has passed since the game started
   int gameLength = 0;
+  /// The ID of the platform on which the game is being played
   String platformId = "";
+  /// The game mode
   String gameMode = "";
+  /// Banned champion information
   List<CurrentGameBannedChampion> bannedChampions = [];
+  /// The queue type (queue types are documented on the Game Constants page)
   int gameQueueConfigId = 0;
+  /// The participant information
   List<CurrentGameParticipant> currentGameParticipants = [];
 
   CurrentGameSpectator();

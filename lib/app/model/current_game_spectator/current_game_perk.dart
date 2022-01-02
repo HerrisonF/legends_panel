@@ -1,6 +1,9 @@
 class CurrentGamePerk {
+  /// IDs of the perks/runes assigned.
   List<int> perkIds = [];
+  /// Primary runes path
   int perkStyle = 0;
+  /// Secondary runes path
   int perkSubStyle = 0;
 
   CurrentGamePerk();

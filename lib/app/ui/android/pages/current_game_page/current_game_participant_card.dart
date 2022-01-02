@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
-import 'package:legends_panel/app/controller/result_controllers/current_game_result_controller/current_game_participant_controller.dart';
+import 'package:legends_panel/app/controller/current_game_controller/current_game_participant_controller.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
 
 class CurrentGameParticipantCard extends StatefulWidget {
@@ -29,7 +29,7 @@ class _CurrentGameParticipantCardState
   void initState() {
     super.initState();
     _currentGameParticipantController.getUserTier(
-        widget.participant.summonerId, widget.region);
+        widget.participant, widget.region);
     _currentGameParticipantController.getSpectator(
         widget.participant.summonerId, widget.region);
   }
@@ -37,15 +37,18 @@ class _CurrentGameParticipantCardState
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: widget.participant.teamId == BLUE_TEAM ? Colors.blue.withOpacity(0.1) : Colors.red.withOpacity(0.1),
+      color: widget.participant.teamId == BLUE_TEAM
+          ? Colors.blue.withOpacity(0.12)
+          : Colors.red.withOpacity(0.12),
       padding: EdgeInsets.symmetric(
-        horizontal: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 5 : 3,
-        vertical: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 10 : 5,
+        horizontal: 3,
+        vertical:
+            _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 10 : 5,
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _playerChampionBadge(),
-          _playerSpells(),
           _playerPerks(),
           _summonerName(),
           _userTierNameAndSymbol(),
@@ -57,70 +60,98 @@ class _CurrentGameParticipantCardState
   }
 
   _playerChampionBadge() {
-    return Image.network(
-      _currentGameParticipantController.getChampionBadgeUrl(
-        widget.participant.championId.toString(),
-      ),
-      width: MediaQuery.of(context).size.width / 10,
+    return Row(
+      children: [
+        Image.network(
+          _currentGameParticipantController.getChampionBadgeUrl(
+            widget.participant.championId.toString(),
+          ),
+          width: 36,
+        ),
+        _playerSpells(),
+      ],
     );
   }
 
   Column _playerSpells() {
     return Column(
       children: [
-        _currentGameParticipantController.getSpellUrl(
-          widget.participant.spell1Id.toString(),
-        ).isNotEmpty ?
-        Image.network(
-          _currentGameParticipantController.getSpellUrl(
-            widget.participant.spell1Id.toString(),
-          ),
-          width: MediaQuery.of(context).size.width / 21,
-        ) : SizedBox.shrink(),
-        _currentGameParticipantController.getSpellUrl(
-          widget.participant.spell2Id.toString(),
-        ).isNotEmpty ?
-        Image.network(
-          _currentGameParticipantController.getSpellUrl(
-            widget.participant.spell2Id.toString(),
-          ),
-          width: MediaQuery.of(context).size.width / 21,
-        ) : SizedBox.shrink(),
+        Container(
+          width: 18,
+          height: 18,
+          child: _currentGameParticipantController
+                  .getSpellUrl(
+                    widget.participant.spell1Id.toString(),
+                  )
+                  .isNotEmpty
+              ? Image.network(
+                  _currentGameParticipantController.getSpellUrl(
+                    widget.participant.spell1Id.toString(),
+                  ),
+                )
+              : SizedBox.shrink(),
+        ),
+        Container(
+          width: 18,
+          height: 18,
+          child: _currentGameParticipantController
+                  .getSpellUrl(
+                    widget.participant.spell2Id.toString(),
+                  )
+                  .isNotEmpty
+              ? Image.network(
+                  _currentGameParticipantController.getSpellUrl(
+                    widget.participant.spell2Id.toString(),
+                  ),
+                )
+              : SizedBox.shrink(),
+        ),
       ],
     );
   }
 
-  _playerPerks(){
-    return Container(
-      margin: EdgeInsets.only(left: 5),
-      child: Column(
-        children: [
-          _currentGameParticipantController.getFirsPerkUrl(widget.participant.perks).isNotEmpty ?
-          Image.network(
-            _currentGameParticipantController.getFirsPerkUrl(widget.participant.perks),
-            width: MediaQuery.of(context).size.width / 22,
-          ) : SizedBox.shrink(),
-          _currentGameParticipantController.getPerkStyleUrl(widget.participant.perks).isNotEmpty ?
-          Image.network(
-            _currentGameParticipantController.getPerkStyleUrl(widget.participant.perks),
-            width: MediaQuery.of(context).size.width / 28,
-          ) : SizedBox.shrink(),
-        ],
-      ),
+  _playerPerks() {
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 2),
+          width: 18,
+          height: 18,
+          child: _currentGameParticipantController
+                  .getFirsPerkUrl(widget.participant.perks)
+                  .isNotEmpty
+              ? Image.network(
+                  _currentGameParticipantController
+                      .getFirsPerkUrl(widget.participant.perks),
+                )
+              : SizedBox.shrink(),
+        ),
+        Container(
+          width: 15,
+          height: 15,
+          child: _currentGameParticipantController
+                  .getPerkStyleUrl(widget.participant.perks)
+                  .isNotEmpty
+              ? Image.network(
+                  _currentGameParticipantController
+                      .getPerkStyleUrl(widget.participant.perks),
+                )
+              : SizedBox.shrink(),
+        ),
+      ],
     );
   }
 
   Container _summonerName() {
     return Container(
-      margin: const EdgeInsets.only(left: 10),
+      margin: const EdgeInsets.only(left: 5),
       width: 70,
       child: Text(
         widget.participant.summonerName,
         style: GoogleFonts.montserrat(
-          fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-              ? 12
-              : 8,
-          color: Colors.white,
+          fontSize:
+              _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 12 : 8,
+          color: _isToPaintUserName() ? Colors.yellow : Colors.white,
         ),
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
@@ -128,9 +159,18 @@ class _CurrentGameParticipantCardState
     );
   }
 
+  bool _isToPaintUserName() {
+    return _masterController.userForCurrentGame.name ==
+        widget.participant.summonerName;
+  }
+
+  saveUserFavorite(String tier) {
+    _masterController.addUserToFavoriteList(tier);
+  }
+
   _bannedChampion() {
     return Container(
-      margin: const EdgeInsets.only(left: 10),
+      margin: const EdgeInsets.only(left: 5),
       child: widget.participant.currentGameBannedChampion.championId > 0
           ? Image.network(
               _currentGameParticipantController.getChampionBadgeUrl(
@@ -157,17 +197,23 @@ class _CurrentGameParticipantCardState
                         .soloUserTier.value.winRate +
                     "%",
                 style: GoogleFonts.montserrat(
-                  fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 8 : 6,
+                  fontSize:
+                      _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                          ? 8
+                          : 6,
                   color: Colors.white,
                 ),
               ),
             )
           : Container(
-              margin: EdgeInsets.only(left: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 10 : 0, right: MediaQuery.of(context).size.height > 800 ? 20 : 0),
+              padding: EdgeInsets.only(right: 10),
               child: Text(
                 " - ",
                 style: GoogleFonts.montserrat(
-                  fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 8 : 6,
+                  fontSize:
+                      _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                          ? 8
+                          : 6,
                   color: Colors.white,
                 ),
               ),
@@ -175,13 +221,9 @@ class _CurrentGameParticipantCardState
     });
   }
 
-  Container _userTierNameAndSymbol() {
-    return Container(
-      margin: EdgeInsets.only(
-          right: 5, left: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 10 : 0),
-      child: Row(
-        children: [_userTierSymbol(), _userTierName()],
-      ),
+  _userTierNameAndSymbol() {
+    return Row(
+      children: [_userTierSymbol(), _userTierName()],
     );
   }
 
@@ -191,8 +233,13 @@ class _CurrentGameParticipantCardState
         Obx(() {
           return Container(
             alignment: Alignment.center,
-            margin: EdgeInsets.only(left: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 5 : 0),
-            width: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 80 : 60,
+            margin: EdgeInsets.only(
+                left: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                    ? 5
+                    : 0),
+            width: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                ? 80
+                : 60,
             child: _currentGameParticipantController
                     .soloUserTier.value.tier.isNotEmpty
                 ? Text(
@@ -201,16 +248,25 @@ class _CurrentGameParticipantCardState
                         _currentGameParticipantController
                             .soloUserTier.value.rank,
                     style: GoogleFonts.montserrat(
-                      fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 8 : 6,
+                      fontSize: _masterController
+                              .screenWidthSizeIsBiggerThanNexusOne()
+                          ? 8
+                          : 6,
                       color: Colors.white,
                     ),
                     overflow: TextOverflow.ellipsis,
                   )
-                : Text(
-                    "UNRANKED",
-                    style: GoogleFonts.montserrat(
-                      fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 8 : 6,
-                      color: Colors.white,
+                : Container(
+                    margin: EdgeInsets.only(right: 22),
+                    child: Text(
+                      "UNRANKED",
+                      style: GoogleFonts.montserrat(
+                        fontSize: _masterController
+                                .screenWidthSizeIsBiggerThanNexusOne()
+                            ? 8
+                            : 6,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
           );
@@ -228,7 +284,8 @@ class _CurrentGameParticipantCardState
                             .toString() +
                         "LP)",
                     style: GoogleFonts.montserrat(
-                      fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                      fontSize: _masterController
+                              .screenWidthSizeIsBiggerThanNexusOne()
                           ? 8
                           : 6,
                       color: Colors.white,
@@ -241,23 +298,29 @@ class _CurrentGameParticipantCardState
     );
   }
 
-  Container _userTierSymbol() {
-    return Container(
-      margin: EdgeInsets.only(right: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 5 : 0),
-      child: Obx(() {
-        return _currentGameParticipantController
-                .soloUserTier.value.tier.isNotEmpty
-            ? Image.network(
-                _currentGameParticipantController.getUserTierImage(
-                  _currentGameParticipantController.soloUserTier.value.tier,
-                ),
-                width: MediaQuery.of(context).size.width / 22,
-              )
-            : Image.asset(
-                imageUnranked,
-                width: MediaQuery.of(context).size.width / 22,
-              );
-      }),
+  _userTierSymbol() {
+    return Obx(() {
+      return Container(
+        child:
+            _currentGameParticipantController.soloUserTier.value.tier.isNotEmpty
+                ? Image.network(
+                    getUserTierImage(),
+                    width: 18,
+                  )
+                : Container(
+                    margin: EdgeInsets.only(right: 10),
+                    child: Image.asset(
+                      imageUnranked,
+                      width: 17,
+                    ),
+                  ),
+      );
+    });
+  }
+
+  String getUserTierImage() {
+    return _currentGameParticipantController.getUserTierImage(
+      _currentGameParticipantController.soloUserTier.value.tier,
     );
   }
 }

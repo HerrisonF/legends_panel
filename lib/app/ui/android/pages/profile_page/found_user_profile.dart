@@ -46,7 +46,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                 this._profileController.oldIndex)) {
           this
               ._profileController
-              .loadMoreMatches(_masterController.userForProfile.value.region);
+              .loadMoreMatches(_masterController.userForProfile.region);
         }
       },
     );
@@ -75,15 +75,13 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                     : MediaQuery.of(context).size.height / 2.8,
                 child: summonerPanel(context),
               ),
-              Obx(() {
-                return _masterController.userForProfile.value.name != ""
-                    ? Positioned(
-                        left: 25,
-                        top: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 20 : 25,
-                        child: _outButton(),
-                      )
-                    : SizedBox.shrink();
-              }),
+              Positioned(
+                left: 25,
+                top: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                    ? 20
+                    : 25,
+                child: _outButton(),
+              ),
             ],
           ),
           MasteryChampions(),
@@ -91,7 +89,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
             return _profileController.matchList.length > 0
                 ? Expanded(
                     child: Container(
-                      margin: EdgeInsets.only(bottom: 55),
+                      margin: EdgeInsets.only(bottom: 45),
                       child: ListView.builder(
                         itemCount: _hasMoreMatchesToLoad(),
                         controller: this._scrollController,
@@ -113,9 +111,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
       icon: Icon(
         Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
         color: Colors.white,
-        size: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-            ? 20
-            : 14,
+        size: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 20 : 14,
       ),
       onPressed: () {
         goToProfile();
@@ -200,10 +196,10 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
         _profileController.getUserProfileImage() != ""
             ? _profileImage()
             : SizedBox.shrink(),
-        _masterController.userForProfile.value.name != ""
+        _masterController.userForProfile.name != ""
             ? _profileName(context)
             : SizedBox.shrink(),
-        _masterController.userForProfile.value.summonerLevel != "" &&
+        _masterController.userForProfile.summonerLevel != "" &&
                 _profileController.userTierList.length > 0
             ? _profileStatistics()
             : SizedBox.shrink(),
@@ -239,7 +235,9 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
   Container _profileStatistics() {
     return Container(
       margin: EdgeInsets.only(
-          top: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? MediaQuery.of(context).size.height / 14 : MediaQuery.of(context).size.height / 12,
+          top: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+              ? MediaQuery.of(context).size.height / 14
+              : MediaQuery.of(context).size.height / 12,
           left: MediaQuery.of(context).size.width / 10,
           right: MediaQuery.of(context).size.width / 9),
       child: Row(
@@ -247,26 +245,27 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
         children: [
           Column(
             children: [
-              Obx(() {
-                return Container(
-                  margin: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height / 20),
-                  decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                        color: Colors.black,
-                        offset: Offset(1.0, 0.0),
-                        blurRadius: 25)
-                  ]),
-                  child: Text(
-                    AppLocalizations.of(context)!.level +
-                        " ${_masterController.userForProfile.value.summonerLevel}",
-                    style: GoogleFonts.montserrat(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 12 : 10),
-                  ),
-                );
-              })
+              Container(
+                margin: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / 20),
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
+                      color: Colors.black,
+                      offset: Offset(1.0, 0.0),
+                      blurRadius: 25)
+                ]),
+                child: Text(
+                  AppLocalizations.of(context)!.level +
+                      " ${_masterController.userForProfile.summonerLevel}",
+                  style: GoogleFonts.montserrat(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: _masterController
+                              .screenWidthSizeIsBiggerThanNexusOne()
+                          ? 12
+                          : 10),
+                ),
+              )
             ],
           ),
           Column(
@@ -283,7 +282,10 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   style: GoogleFonts.montserrat(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 12 : 10),
+                      fontSize: _masterController
+                              .screenWidthSizeIsBiggerThanNexusOne()
+                          ? 12
+                          : 10),
                 ),
               ),
               Container(
@@ -292,7 +294,10 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   style: GoogleFonts.montserrat(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 12 : 10),
+                      fontSize: _masterController
+                              .screenWidthSizeIsBiggerThanNexusOne()
+                          ? 12
+                          : 10),
                 ),
               ),
               Container(
@@ -310,7 +315,10 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
-                    fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 12 : 10,
+                    fontSize:
+                        _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                            ? 12
+                            : 10,
                   ),
                 ),
               ),
@@ -320,7 +328,10 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
-                    fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 12 : 10,
+                    fontSize:
+                        _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                            ? 12
+                            : 10,
                   ),
                 ),
               )
@@ -339,37 +350,41 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Obx(() {
-            return Stack(
-              children: [
-                Positioned(
-                  child: Container(
-                    child: Text(
-                      _masterController.userForProfile.value.name,
-                      style: GoogleFonts.montserrat(
-                        fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 18 : 12,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                      ),
+          Stack(
+            children: [
+              Positioned(
+                child: Container(
+                  child: Text(
+                    _masterController.userForProfile.name,
+                    style: GoogleFonts.montserrat(
+                      fontSize: _masterController
+                              .screenWidthSizeIsBiggerThanNexusOne()
+                          ? 18
+                          : 12,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
-                Positioned(
-                  left: 1,
-                  child: Container(
-                    child: Text(
-                      _masterController.userForProfile.value.name,
-                      style: GoogleFonts.montserrat(
-                        fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 18 : 12,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
+              ),
+              Positioned(
+                left: 1,
+                child: Container(
+                  child: Text(
+                    _masterController.userForProfile.name,
+                    style: GoogleFonts.montserrat(
+                      fontSize: _masterController
+                              .screenWidthSizeIsBiggerThanNexusOne()
+                          ? 18
+                          : 12,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                )
-              ],
-            );
-          })
+                ),
+              )
+            ],
+          )
         ],
       ),
     );
@@ -381,9 +396,12 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            margin: EdgeInsets.only(top: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 5 : 15),
-            width: MediaQuery.of(context).size.width / 7,
-            height: MediaQuery.of(context).size.height / 13,
+            margin: EdgeInsets.only(
+                top: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                    ? 5
+                    : 15),
+            width: 50,
+            height: 50,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(_profileController.getUserProfileImage()),

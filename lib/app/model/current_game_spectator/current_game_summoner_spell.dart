@@ -1,3 +1,4 @@
+/// That class doesn`t exist on riot apis. It was created do adapt spell informations.
 class SummonerSpell {
   String type = "";
   String version = "";

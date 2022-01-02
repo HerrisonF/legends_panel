@@ -71,8 +71,28 @@
   "@gameDefeat": {
     "description": "Defeat"
   },
+  "gameDefeatedBlueTeam" : "Blue team defeated",
+  "@gameDefeatedBlueTeam": {
+    "description": "Blue team defeated"
+  },
+  "gameDefeatedRedTeam" : "Red team defeated",
+  "@gameDefeatedRedTeam": {
+    "description": "Red team defeated"
+  },
   "gameVictory" : "Victory",
   "@gameVictory": {
     "description": "Victory"
+  },
+  "gameVictoriousBlueTeam" : "Victorious blue team",
+  "@gameVictoriousBlueTeam": {
+    "description": "victorious"
+  },
+  "gameVictoriousRedTeam" : "Victorious red team",
+  "@gameVictoriousRedTeam": {
+    "description": "victorious"
+  },
+  "bans" : "Bans",
+  "@bans": {
+    "description": "Bans"
   }
 }

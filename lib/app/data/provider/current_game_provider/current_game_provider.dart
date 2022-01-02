@@ -8,21 +8,21 @@ class CurrentGameProvider {
 
   Logger _logger = Logger();
 
-  Future<CurrentGameSpectator> checkCurrentGameExists(String encryptedSummonerId, String keyRegion) async {
+  Future<CurrentGameSpectator> getCurrentGameExists(String encryptedSummonerId, String keyRegion) async {
     final String path = "/lol/spectator/v4/active-games/by-summoner/$encryptedSummonerId";
-    _logger.i("Checking player is playing ...");
+    _logger.i("Getting currentGame ...");
     try{
       DioClient _dioClient = DioClient(url: RiotAndRawDragonUrls.riotBaseUrl(keyRegion));
       final response = await _dioClient.get(path);
       if(response.state == CustomState.SUCCESS){
-        _logger.i("Player is playing ...");
+        _logger.i("Current game exist ...");
         return CurrentGameSpectator.fromJson(response.result.data);
       }
     }catch(e){
-      _logger.i("Error to check wether player is playing $e");
+      _logger.i("Error to get Current game $e");
       return CurrentGameSpectator();
     }
-    _logger.i("Player is not playing ...");
+    _logger.i("Current game not exists ...");
     return CurrentGameSpectator();
   }
 }

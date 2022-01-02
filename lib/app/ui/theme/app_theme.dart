@@ -7,13 +7,11 @@ final ThemeData appThemeData = ThemeData(
   primaryColor: Colors.blue,
   backgroundColor: Color(0xFF4248A5),
   inputDecorationTheme: InputDecorationTheme(
-    labelStyle: GoogleFonts.montserrat(
-      color: Colors.white,
-    ),
+    labelStyle: GoogleFonts.montserrat(color: Colors.white),
     fillColor: Colors.white,
     filled: true,
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.0),
+      borderRadius: BorderRadius.circular(8.0),
     ),
   ),
   outlinedButtonTheme: OutlinedButtonThemeData(

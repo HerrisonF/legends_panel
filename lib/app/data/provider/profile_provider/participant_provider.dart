@@ -106,6 +106,7 @@ class ParticipantProvider {
   }
 
   String getPerkUrl(String iconName){
+    //perk-images/Styles/Precision/LethalTempo/LethalTempoTemp.png
     final String path = "/cdn/img/$iconName";
     _logger.i("building Image Perk Url ...");
     try{

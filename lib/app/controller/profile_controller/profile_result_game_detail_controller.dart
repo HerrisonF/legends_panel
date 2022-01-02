@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
-import 'package:legends_panel/app/controller/result_controllers/current_game_result_controller/current_game_participant_controller.dart';
+import 'package:legends_panel/app/controller/current_game_controller/current_game_participant_controller.dart';
 import 'package:legends_panel/app/model/general/match_detail.dart';
 
 class ProfileResultGameDetailController {
@@ -14,7 +14,7 @@ class ProfileResultGameDetailController {
   startProfileResultGame(MatchDetail matchDetail) async {
     this.matchDetail.value = matchDetail;
 
-    getParticipantById(_masterController.userForProfile.value.id);
+    getParticipantById(_masterController.userForProfile.id);
   }
 
   getParticipantById(String summonerId) {

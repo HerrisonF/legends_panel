@@ -3,15 +3,25 @@ import 'package:legends_panel/app/model/current_game_spectator/current_game_cust
 import 'package:legends_panel/app/model/current_game_spectator/current_game_perk.dart';
 
 class CurrentGameParticipant {
+  /// The ID of the champion played by this participant
   int championId = -1;
+  /// Perks/Runes Reforged Information
   CurrentGamePerk perks = CurrentGamePerk();
+  /// The ID of the profile icon used by this participant
   int profileIconId = -1;
+  /// Flag indicating whether or not this participant is a bot
   bool bot = false;
+  /// The team ID of this participant, indicating the participant's team
   int teamId = 0;
+  /// The summoner name of this participant
   String summonerName = "";
+  /// The encrypted summoner ID of this participant
   String summonerId = "";
+  /// The ID of the first summoner spell used by this participant
   int spell1Id = -1;
+  /// The ID of the second summoner spell used by this participant
   int spell2Id = -1;
+  /// List of Game Customizations
   List<CurrentGameCustomization> gameCustomization = [];
   CurrentGameBannedChampion currentGameBannedChampion =
       CurrentGameBannedChampion();
