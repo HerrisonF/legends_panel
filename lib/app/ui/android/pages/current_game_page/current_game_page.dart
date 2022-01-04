@@ -42,19 +42,36 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
     return Stack(
       children: [
         Container(decoration: _currentGameBackgroundImage()),
-        Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                ? 40
-                : 25,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _inputForSummonerName(),
-              _buttonForSearchSummoner(),
-              RegionDropDownComponent(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal:
+                    _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                        ? 40
+                        : 25,
+              ),
+              child: _inputForSummonerName(),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal:
+                    _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                        ? 40
+                        : 25,
+              ),
+              child: _buttonForSearchSummoner(),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal:
+                    _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                        ? 40
+                        : 25,
+              ),
+              child: RegionDropDownComponent(
                 initialRegion: initialRegion,
                 onRegionChoose: (region) {
                   setState(() {
@@ -62,13 +79,13 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                   });
                 },
               ),
-              Container(
-                height: 50,
-                margin: EdgeInsets.only(top: 20),
-                child: _mostSearchedPlayers(),
-              ),
-            ],
-          ),
+            ),
+            Container(
+              height: 50,
+              margin: EdgeInsets.only(top: 30),
+              child: _mostSearchedPlayers(),
+            ),
+          ],
         ),
       ],
     );
@@ -151,56 +168,66 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
   _mostSearchedPlayers() {
     return Obx(
       () => _masterController.favoriteUsers.length > 0
-          ? Container(
-              child: ListView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: _masterController.favoriteUsers.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return _favoritePlayerCard(context, index);
-                },
-              ),
+          ? ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: _masterController.favoriteUsers.length,
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return _favoritePlayerCard(context, index);
+              },
             )
           : SizedBox.shrink(),
     );
   }
 
-  Container _favoritePlayerCard(BuildContext context, int index) {
-    return Container(
-      width: 130,
-      margin: EdgeInsets.only(left: 20),
-      decoration: BoxDecoration(
-        color: Theme.of(context).backgroundColor,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          Text(
-            _masterController.favoriteUsers[index].name,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 10,
+  _favoritePlayerCard(BuildContext context, int index) {
+    return InkWell(
+      onTap: () {
+        _currentGameController.userNameInputController.text =
+            _masterController.favoriteUsers[index].name;
+      },
+      child: Container(
+        width: 150,
+        margin: EdgeInsets.only(left: index == 0 ? 0 : 10),
+        padding: EdgeInsets.only(left: 10),
+        decoration: BoxDecoration(
+          color: Theme.of(context).backgroundColor,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 90,
+              margin: EdgeInsets.only(right: 10),
+              child: Text(
+                _masterController.favoriteUsers[index].name,
+                maxLines: 2,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
-          ),
-          Container(
-            child: _masterController
-                    .favoriteUsers[index].userTier.isNotEmpty
-                ? Image.network(
-                    _masterController.getUserTierImage(
-                      _masterController
-                          .favoriteUsers[index].userTier,
-                    ),
-                    width: 18,
-                  )
-                : Container(
-                    margin: EdgeInsets.only(right: 10),
-                    child: Image.asset(
-                      imageUnranked,
+            Container(
+              child: _masterController.favoriteUsers[index].userTier.isNotEmpty
+                  ? Image.network(
+                      _masterController.getUserTierImage(
+                        _masterController.favoriteUsers[index].userTier,
+                      ),
                       width: 17,
+                    )
+                  : Container(
+                      margin: EdgeInsets.only(right: 5),
+                      child: Image.asset(
+                        imageUnranked,
+                        width: 17,
+                      ),
                     ),
-                  ),
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
