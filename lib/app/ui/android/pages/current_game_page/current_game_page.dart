@@ -39,55 +39,112 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Container(
+      color:  Theme.of(context).primaryColor,
+      child: Stack(
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 100),
+            decoration: _currentGameBackgroundImage(),
+          ),
+          Column(
+            children: [
+              Expanded(
+                flex: 3,
+                child: _screenInformation(),
+              ),
+              Expanded(
+                flex: 2,
+                child: _summonerSearch(),
+              ),
+              Expanded(
+                flex: 3,
+                child: Container(
+                  height: 80,
+                  margin: EdgeInsets.only(top: 30),
+                  child: _mostSearchedPlayers(),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  _summonerSearch() {
+    return Column(
       children: [
-        Container(decoration: _currentGameBackgroundImage()),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal:
-                    _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                        ? 40
-                        : 25,
-              ),
-              child: _inputForSummonerName(),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal:
-                    _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                        ? 40
-                        : 25,
-              ),
-              child: _buttonForSearchSummoner(),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal:
-                    _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                        ? 40
-                        : 25,
-              ),
-              child: RegionDropDownComponent(
-                initialRegion: initialRegion,
-                onRegionChoose: (region) {
-                  setState(() {
-                    _currentGameController.setAndSaveActualRegion(region);
-                  });
-                },
-              ),
-            ),
-            Container(
-              height: 50,
-              margin: EdgeInsets.only(top: 30),
-              child: _mostSearchedPlayers(),
-            ),
-          ],
+        Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                ? 40
+                : 25,
+          ),
+          child: _inputForSummonerName(),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                ? 40
+                : 25,
+          ),
+          child: _buttonForSearchSummoner(),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                ? 40
+                : 25,
+          ),
+          child: RegionDropDownComponent(
+            initialRegion: initialRegion,
+            onRegionChoose: (region) {
+              setState(() {
+                _currentGameController.setAndSaveActualRegion(region);
+              });
+            },
+          ),
         ),
       ],
+    );
+  }
+
+  _screenInformation() {
+    return Container(
+      margin: EdgeInsets.only(top: 80, left: 30, right: 30),
+      child: Stack(
+        children: [
+          Positioned(
+            left: 0,
+            right: 0,
+            top: -1,
+            child: Container(
+              margin: EdgeInsets.only(bottom: 30),
+              child: Text(
+                AppLocalizations.of(context)!.titleHomePage,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 36,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(bottom: 30),
+            child: Text(
+              AppLocalizations.of(context)!.titleHomePage,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 36,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -177,7 +234,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                 return _favoritePlayerCard(context, index);
               },
             )
-          : SizedBox.shrink(),
+          : _favoriteUserBoardInformation(),
     );
   }
 
@@ -188,7 +245,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
             _masterController.favoriteUsers[index].name;
       },
       child: Container(
-        width: 150,
+        width: 180,
         margin: EdgeInsets.only(left: index == 0 ? 0 : 10),
         padding: EdgeInsets.only(left: 10),
         decoration: BoxDecoration(
@@ -197,37 +254,81 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
         ),
         child: Row(
           children: [
-            Container(
-              width: 90,
-              margin: EdgeInsets.only(right: 10),
-              child: Text(
-                _masterController.favoriteUsers[index].name,
-                maxLines: 2,
-                style: TextStyle(
+            InkWell(
+              onTap: () {},
+              child: Row(
+                children: [
+                  Container(
+                    width: 80,
+                    margin: EdgeInsets.only(right: 10),
+                    child: Text(
+                      _masterController.favoriteUsers[index].name,
+                      maxLines: 2,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: _masterController
+                            .favoriteUsers[index].userTier.isNotEmpty
+                        ? Image.network(
+                            _masterController.getUserTierImage(
+                              _masterController.favoriteUsers[index].userTier,
+                            ),
+                            width: 17,
+                          )
+                        : Container(
+                            margin: EdgeInsets.only(right: 5),
+                            child: Image.asset(
+                              imageUnranked,
+                              width: 17,
+                            ),
+                          ),
+                  ),
+                ],
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                _masterController.removeFavoriteUser(index);
+              },
+              child: Container(
+                height: 50,
+                width: 43,
+                margin: EdgeInsets.only(left: 20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(8),
+                      bottomRight: Radius.circular(8)),
                   color: Colors.white,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w500,
+                ),
+                child: Icon(
+                  Icons.delete,
+                  size: 20,
+                  color: Colors.black,
                 ),
               ),
             ),
-            Container(
-              child: _masterController.favoriteUsers[index].userTier.isNotEmpty
-                  ? Image.network(
-                      _masterController.getUserTierImage(
-                        _masterController.favoriteUsers[index].userTier,
-                      ),
-                      width: 17,
-                    )
-                  : Container(
-                      margin: EdgeInsets.only(right: 5),
-                      child: Image.asset(
-                        imageUnranked,
-                        width: 17,
-                      ),
-                    ),
-            ),
           ],
         ),
+      ),
+    );
+  }
+
+  _favoriteUserBoardInformation() {
+    return Container(
+      child: Column(
+        children: [
+          Text(AppLocalizations.of(context)!.favoriteUsers),
+          Container(
+            //margin: EdgeInsets.symmetric(horizontal: 20),
+            height: 50,
+            color: Theme.of(context).backgroundColor.withOpacity(0.2),
+          ),
+        ],
       ),
     );
   }

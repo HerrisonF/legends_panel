@@ -90,36 +90,37 @@ class MasterController {
     return championRoom.lastDate.isNotEmpty;
   }
 
-  addUserToFavoriteList(String userTier){
+  addUserToFavoriteList(String userTier) {
     bool notFound = true;
-    if(userTier.isNotEmpty) {
+    if (userTier.isNotEmpty) {
       userForCurrentGame.userTier = userTier;
-    }else{
+    } else {
       userForCurrentGame.userTier = "";
     }
-    if(favoriteUsers.length <= 0){
-      favoriteUsers.add(
-          userForCurrentGame);
+    if (favoriteUsers.length <= 0) {
+      favoriteUsers.add(userForCurrentGame);
       saveFavoriteUsers();
-    }else {
+    } else {
       for (User favoriteUser in favoriteUsers) {
-        if (favoriteUser.name.toLowerCase() == userForCurrentGame.name.toLowerCase()) {
+        if (favoriteUser.name.toLowerCase() ==
+            userForCurrentGame.name.toLowerCase()) {
           notFound = false;
           favoriteUsers.remove(favoriteUser);
           favoriteUsers.add(userForCurrentGame);
           saveFavoriteUsers();
         }
       }
-      if(notFound){
+      if (notFound) {
         favoriteUsers.add(userForCurrentGame);
         saveFavoriteUsers();
       }
     }
   }
 
-  getUserTierImage(String tier){
+  getUserTierImage(String tier) {
     return _masterRepository.getUserTierImage(tier);
   }
+
   getChampionRoomOnWeb() async {
     championRoom =
         await _masterRepository.getChampionRoomOnWeb(lolVersion.actualVersion);
@@ -257,7 +258,12 @@ class MasterController {
     favoriteUsers.addAll(await _masterRepository.getFavoriteUsersStored());
   }
 
-  saveFavoriteUsers(){
+  saveFavoriteUsers() {
+    _masterRepository.saveFavoriteUsers(favoriteUsers);
+  }
+
+  removeFavoriteUser(int index) {
+    favoriteUsers.removeAt(index);
     _masterRepository.saveFavoriteUsers(favoriteUsers);
   }
 

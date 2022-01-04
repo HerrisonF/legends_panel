@@ -11,9 +11,9 @@
   "@appNameSubTitle": {
     "description": "Summoner"
   },
-  "titleHomePage" : "Current Game",
+  "titleHomePage" : "See a game in progress",
   "@titleHomePage": {
-    "description": "Current Game"
+    "description": "See a game in progress"
   },
   "hintSummonerName" : "Summoner's name",
   "@hintSummonerName": {
@@ -94,5 +94,9 @@
   "bans" : "Bans",
   "@bans": {
     "description": "Bans"
+  },
+  "favoriteUsers" : "Your favorite users will be here",
+  "@favoriteUsers": {
+    "description" : "Your favorite users will be here"
   }
 }

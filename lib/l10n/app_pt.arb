@@ -2,7 +2,7 @@
   "language": "Português",
   "appNameTitle": "Watch",
   "appNameSubTitle": "Summoner",
-  "titleHomePage": "Jogo Corrente",
+  "titleHomePage": "Assista a um jogo em andamento",
   "hintSummonerName": "Nome do Invocador",
   "inputValidatorHome": "Esse campo é obrigatório !",
   "buttonMessageSearch": "Procurar",
@@ -22,5 +22,6 @@
   "gameVictory" : "Vitória",
   "gameVictoriousBlueTeam" : "Time azul vencedor",
   "gameVictoriousRedTeam" : "Time vermelho vencedor",
-  "bans" : "Bans"
+  "bans" : "Bans",
+  "favoriteUsers": "Your favorite users will be here"
 }
