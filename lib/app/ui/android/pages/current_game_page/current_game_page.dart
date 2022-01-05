@@ -52,13 +52,13 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                   topSpace: 40,
                   bottomSpace:
                       _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                          ? 120
+                          ? 100
                           : 30),
               _summonerSearch(),
               Container(
                 alignment: Alignment.center,
                 height: 50,
-                margin: EdgeInsets.only(top: 65, bottom: 90),
+                margin: EdgeInsets.only(top: 35, bottom: 90),
                 child: _mostSearchedPlayers(),
               )
             ],
