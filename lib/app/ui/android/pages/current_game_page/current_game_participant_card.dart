@@ -164,10 +164,6 @@ class _CurrentGameParticipantCardState
         widget.participant.summonerName;
   }
 
-  saveUserFavorite(String tier) {
-    _masterController.addUserToFavoriteList(tier);
-  }
-
   _bannedChampion() {
     return Container(
       margin: const EdgeInsets.only(left: 5),

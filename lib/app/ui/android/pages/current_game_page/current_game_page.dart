@@ -188,10 +188,10 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
 
   _mostSearchedPlayers() {
     return Obx(
-      () => _masterController.favoriteUsers.length > 0
+      () => _masterController.favoriteUsersForCurrentGame.length > 0
           ? ListView.builder(
               padding: EdgeInsets.zero,
-              itemCount: _masterController.favoriteUsers.length,
+              itemCount: _masterController.favoriteUsersForCurrentGame.length,
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
               itemBuilder: (context, index) {
@@ -217,7 +217,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
           InkWell(
             onTap: () {
               _currentGameController.userNameInputController.text =
-                  _masterController.favoriteUsers[index].name;
+                  _masterController.favoriteUsersForCurrentGame[index].name;
             },
             child: Container(
               height: 60,
@@ -227,8 +227,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                   Container(
                     width: 70,
                     child: Text(
-                      "AUSH AUSH AUSHAUH ASAUHS AUSH AUSH",
-                      //_masterController.favoriteUsers[index].name,
+                      _masterController.favoriteUsersForCurrentGame[index].name,
                       maxLines: 2,
                       style: TextStyle(
                         color: Colors.white,
@@ -239,10 +238,10 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                   ),
                   Container(
                     child: _masterController
-                            .favoriteUsers[index].userTier.isNotEmpty
+                            .favoriteUsersForCurrentGame[index].userTier.isNotEmpty
                         ? Image.network(
                             _masterController.getUserTierImage(
-                              _masterController.favoriteUsers[index].userTier,
+                              _masterController.favoriteUsersForCurrentGame[index].userTier,
                             ),
                             width: 17,
                           )
@@ -260,7 +259,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
           ),
           InkWell(
             onTap: () {
-              _masterController.removeFavoriteUser(index);
+              _masterController.removeFavoriteUserForCurrentGame(index);
             },
             child: Container(
               height: 60,

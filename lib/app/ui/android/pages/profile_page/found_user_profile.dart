@@ -28,6 +28,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
 
   @override
   void initState() {
+    _masterController.addUserToFavoriteProfileList(_profileController.userTierRankedSolo.value.tier);
     this._scrollController.addListener(this._scrollListenerFunction);
     super.initState();
   }

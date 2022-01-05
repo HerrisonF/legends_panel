@@ -22,7 +22,8 @@ class MasterController {
 
   User userForCurrentGame = User();
   User userForProfile = User();
-  RxList<User> favoriteUsers = RxList<User>();
+  RxList<User> favoriteUsersForCurrentGame = RxList<User>();
+  RxList<User> favoriteUsersForProfile = RxList<User>();
   StoredRegion storedRegion = StoredRegion();
   LolVersion lolVersion = LolVersion();
   ChampionRoom championRoom = ChampionRoom();
@@ -40,7 +41,8 @@ class MasterController {
     await getSummonerSpellsRoom();
     await getMapRoom();
     await getRunesRoom();
-    await getFavoriteUsersStored();
+    await getFavoriteUsersStoredForCurrentGame();
+    await getFavoriteUsersStoredForProfile();
     packageInfo = await PackageInfo.fromPlatform();
     Get.offAllNamed(Routes.MASTER);
   }
@@ -90,29 +92,56 @@ class MasterController {
     return championRoom.lastDate.isNotEmpty;
   }
 
-  addUserToFavoriteList(String userTier) {
+  addUserToFavoriteCurrentGameList(String userTier) {
     bool notFound = true;
     if (userTier.isNotEmpty) {
       userForCurrentGame.userTier = userTier;
     } else {
       userForCurrentGame.userTier = "";
     }
-    if (favoriteUsers.length <= 0) {
-      favoriteUsers.add(userForCurrentGame);
-      saveFavoriteUsers();
+    if (favoriteUsersForCurrentGame.length <= 0) {
+      favoriteUsersForCurrentGame.add(userForCurrentGame);
+      saveFavoriteUsersForCurrentGame();
     } else {
-      for (User favoriteUser in favoriteUsers) {
+      for (User favoriteUser in favoriteUsersForCurrentGame) {
         if (favoriteUser.name.toLowerCase() ==
             userForCurrentGame.name.toLowerCase()) {
           notFound = false;
-          favoriteUsers.remove(favoriteUser);
-          favoriteUsers.add(userForCurrentGame);
-          saveFavoriteUsers();
+          favoriteUsersForCurrentGame.remove(favoriteUser);
+          favoriteUsersForCurrentGame.add(userForCurrentGame);
+          saveFavoriteUsersForCurrentGame();
         }
       }
       if (notFound) {
-        favoriteUsers.add(userForCurrentGame);
-        saveFavoriteUsers();
+        favoriteUsersForCurrentGame.add(userForCurrentGame);
+        saveFavoriteUsersForCurrentGame();
+      }
+    }
+  }
+
+  addUserToFavoriteProfileList(String userTier) {
+    bool notFound = true;
+    if (userTier.isNotEmpty) {
+      userForProfile.userTier = userTier;
+    } else {
+      userForProfile.userTier = "";
+    }
+    if (favoriteUsersForProfile.length <= 0) {
+      favoriteUsersForProfile.add(userForProfile);
+      saveFavoriteUsersForProfile();
+    } else {
+      for (User favoriteUser in favoriteUsersForProfile) {
+        if (favoriteUser.name.toLowerCase() ==
+            userForProfile.name.toLowerCase()) {
+          notFound = false;
+          favoriteUsersForProfile.remove(favoriteUser);
+          favoriteUsersForProfile.add(userForProfile);
+          saveFavoriteUsersForProfile();
+        }
+      }
+      if (notFound) {
+        favoriteUsersForProfile.add(userForProfile);
+        saveFavoriteUsersForProfile();
       }
     }
   }
@@ -254,17 +283,30 @@ class MasterController {
     userForProfile = User();
   }
 
-  getFavoriteUsersStored() async {
-    favoriteUsers.addAll(await _masterRepository.getFavoriteUsersStored());
+  getFavoriteUsersStoredForCurrentGame() async {
+    favoriteUsersForCurrentGame.addAll(await _masterRepository.getFavoriteUsersStoredForCurrentGame());
   }
 
-  saveFavoriteUsers() {
-    _masterRepository.saveFavoriteUsers(favoriteUsers);
+  getFavoriteUsersStoredForProfile() async {
+    favoriteUsersForProfile.addAll(await _masterRepository.getFavoriteUsersStoredForProfile());
   }
 
-  removeFavoriteUser(int index) {
-    favoriteUsers.removeAt(index);
-    _masterRepository.saveFavoriteUsers(favoriteUsers);
+  saveFavoriteUsersForCurrentGame() {
+    _masterRepository.saveFavoriteUsersForCurrentGame(favoriteUsersForCurrentGame);
+  }
+
+  saveFavoriteUsersForProfile() {
+    _masterRepository.saveFavoriteUsersForProfile(favoriteUsersForProfile);
+  }
+
+  removeFavoriteUserForCurrentGame(int index) {
+    favoriteUsersForCurrentGame.removeAt(index);
+    _masterRepository.saveFavoriteUsersForCurrentGame(favoriteUsersForCurrentGame);
+  }
+
+  removeFavoriteUserForProfile(int index) {
+    favoriteUsersForProfile.removeAt(index);
+    _masterRepository.saveFavoriteUsersForProfile(favoriteUsersForProfile);
   }
 
   resetCurrentGameUser() {

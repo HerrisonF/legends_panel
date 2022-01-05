@@ -76,8 +76,13 @@ class MasterRepository {
     return _masterProvider.readPersistedUserProfile();
   }
 
-  Future<List<User>> getFavoriteUsersStored() async {
-    UserFavorite users = await _masterProvider.readFavoriteUsersStored();
+  Future<List<User>> getFavoriteUsersStoredForCurrentGame() async {
+    UserFavorite users = await _masterProvider.readFavoriteUsersStoredForCurrentGame();
+    return users.userFavorites;
+  }
+
+  Future<List<User>> getFavoriteUsersStoredForProfile() async {
+    UserFavorite users = await _masterProvider.readFavoriteUsersStoredForProfile();
     return users.userFavorites;
   }
 
@@ -85,10 +90,16 @@ class MasterRepository {
     return _masterProvider.getUserTierImage(tier);
   }
 
-  saveFavoriteUsers(List<User> users){
+  saveFavoriteUsersForCurrentGame(List<User> users){
     UserFavorite userFavorite = UserFavorite();
     userFavorite.userFavorites = users;
-    return _masterProvider.saveFavoriteUsers(userFavorite);
+    return _masterProvider.saveFavoriteUsersForCurrentGame(userFavorite);
+  }
+
+  saveFavoriteUsersForProfile(List<User> users){
+    UserFavorite userFavorite = UserFavorite();
+    userFavorite.userFavorites = users;
+    return _masterProvider.saveFavoriteUsersForProfile(userFavorite);
   }
 
   Future<User> getUserOnCloud(String userName, String keyRegion){

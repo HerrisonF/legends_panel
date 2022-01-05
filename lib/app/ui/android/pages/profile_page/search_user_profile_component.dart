@@ -65,25 +65,162 @@ class _SearchUserProfileComponentState
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 50),
-            child: Column(
+            child: ListView(
               children: [
                 HeaderScreenInformation(
                   title: AppLocalizations.of(context)!.titleProfilePage,
                   topSpace: 40,
-                  bottomSpace: 110,
+                  bottomSpace: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 86 : 40,
                 ),
-                _inputSummonerName(),
-                _buttonSearchSummoner(),
-                RegionDropDownComponent(
-                  initialRegion: initialRegion,
-                  onRegionChoose: (region) {
-                    setState(() {
-                      _profileController.saveActualRegion(region);
-                    });
-                  },
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: _inputSummonerName(),
                 ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: _buttonSearchSummoner(),
+                ),
+                Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: RegionDropDownComponent(
+                      initialRegion: initialRegion,
+                      onRegionChoose: (region) {
+                        setState(() {
+                          _profileController.saveActualRegion(region);
+                        });
+                      },
+                    )),
+                Container(
+                  alignment: Alignment.center,
+                  height: 50,
+                  margin: EdgeInsets.only(top: _masterController.screenWidthSizeIsBiggerThanNexusOne()? 65 : 20, bottom: 90),
+                  child: _mostSearchedPlayers(),
+                )
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _mostSearchedPlayers() {
+    return Obx(
+      () => _masterController.favoriteUsersForProfile.length > 0
+          ? ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: _masterController.favoriteUsersForProfile.length,
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return _favoritePlayerCard(context, index);
+              },
+            )
+          : _favoriteUserBoardInformation(),
+    );
+  }
+
+  _favoritePlayerCard(BuildContext context, int index) {
+    return Container(
+      width: 150,
+      margin: EdgeInsets.only(left: 10, right: 10),
+      padding: EdgeInsets.only(left: 10),
+      decoration: BoxDecoration(
+        color: Theme.of(context).backgroundColor,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          InkWell(
+            onTap: () {
+              _profileController.userNameInputController.text =
+                  _masterController.favoriteUsersForProfile[index].name;
+            },
+            child: Container(
+              height: 60,
+              color: Theme.of(context).backgroundColor,
+              child: Row(
+                children: [
+                  Container(
+                    width: 70,
+                    child: Text(
+                      _masterController.favoriteUsersForProfile[index].name,
+                      maxLines: 2,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: _masterController
+                            .favoriteUsersForProfile[index].userTier.isNotEmpty
+                        ? Image.network(
+                            _masterController.getUserTierImage(
+                              _masterController
+                                  .favoriteUsersForProfile[index].userTier,
+                            ),
+                            width: 17,
+                          )
+                        : Container(
+                            margin: EdgeInsets.only(left: 5),
+                            child: Image.asset(
+                              imageUnranked,
+                              width: 17,
+                            ),
+                          ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              _masterController.removeFavoriteUserForProfile(index);
+            },
+            child: Container(
+              height: 60,
+              width: 43,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(8),
+                    bottomRight: Radius.circular(8)),
+                color: Colors.white,
+              ),
+              child: Container(
+                child: Icon(
+                  Icons.delete,
+                  size: 20,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _favoriteUserBoardInformation() {
+    return Container(
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            height: 50,
+            color: Theme.of(context).backgroundColor.withOpacity(0.2),
+          ),
+          Container(
+            margin: EdgeInsets.only(bottom: 5),
+            child: Text(
+              AppLocalizations.of(context)!.favoriteUsers,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+              ),
             ),
           ),
         ],
@@ -93,8 +230,8 @@ class _SearchUserProfileComponentState
 
   Container _buttonSearchSummoner() {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 30),
-      height: 50,
+      margin: EdgeInsets.symmetric(vertical: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 45 : 20),
+      height: 55,
       child: Obx(() {
         return OutlinedButton(
           child: Row(

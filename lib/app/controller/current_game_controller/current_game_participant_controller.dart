@@ -38,7 +38,7 @@ class CurrentGameParticipantController extends MasterController {
   saveSearchedUserTier(){
     if(_masterController.userForCurrentGame.name ==
         this.currentGameParticipant.summonerName){
-      _masterController.addUserToFavoriteList(soloUserTier.value.tier);
+      _masterController.addUserToFavoriteCurrentGameList(soloUserTier.value.tier);
     }
   }
 

@@ -291,18 +291,34 @@ class MasterProvider {
     }
   }
 
-  Future<UserFavorite> readFavoriteUsersStored() async {
-    _logger.i("Reading favorite users stored ...");
+  Future<UserFavorite> readFavoriteUsersStoredForCurrentGame() async {
+    _logger.i("Reading favorite users stored for current game ...");
     try {
-      String userFavoriteStore = await box.read(StorageKeys.userFavoriteKey);
+      String userFavoriteStore = await box.read(StorageKeys.userFavoriteForCurrentGameKey);
       if (userFavoriteStore.isNotEmpty) {
-        _logger.i("Success to get userFavorite on Local ...");
+        _logger.i("Success to get userFavorite on Local for current game ...");
         return UserFavorite.fromJson(jsonDecode(userFavoriteStore));
       }
-      _logger.i("No userProfile persisted found ...");
+      _logger.i("No userFavorite persisted found for current game ...");
       return UserFavorite();
     } catch (e) {
-      _logger.i("Error to Read persisted UserProfile ... $e");
+      _logger.i("Error to Read persisted favorite users for current game ... $e");
+      return UserFavorite();
+    }
+  }
+
+  Future<UserFavorite> readFavoriteUsersStoredForProfile() async {
+    _logger.i("Reading favorite users stored for profile ...");
+    try {
+      String userFavoriteStore = await box.read(StorageKeys.userFavoriteForProfileKey);
+      if (userFavoriteStore.isNotEmpty) {
+        _logger.i("Success to get userFavorite on Local for profile ...");
+        return UserFavorite.fromJson(jsonDecode(userFavoriteStore));
+      }
+      _logger.i("No userProfile persisted found for profile ...");
+      return UserFavorite();
+    } catch (e) {
+      _logger.i("Error to Read persisted favorite users for profile ... $e");
       return UserFavorite();
     }
   }
@@ -319,23 +335,43 @@ class MasterProvider {
     }
   }
 
-  saveFavoriteUsers(UserFavorite usersFavorite) async {
-    deleteFavoriteUsers();
-    _logger.i("Persisting FavoriteUser ...");
+  saveFavoriteUsersForCurrentGame(UserFavorite usersFavorite) async {
+    deleteFavoriteUsersForCurrentGame();
+    _logger.i("Persisting FavoriteUser for current game ...");
     try {
-      await box.write(StorageKeys.userFavoriteKey, jsonEncode(usersFavorite));
-      _logger.i("Success to persist UserProfile ...");
+      await box.write(StorageKeys.userFavoriteForCurrentGameKey, jsonEncode(usersFavorite));
+      _logger.i("Success to persist favorite user for current game ...");
     } catch (e) {
-      _logger.i("Error to persist UserProfile ... $e");
+      _logger.i("Error to persist favorite user for current game ... $e");
     }
   }
 
-  deleteFavoriteUsers(){
+  saveFavoriteUsersForProfile(UserFavorite usersFavorite) async {
+    deleteFavoriteUsersForCurrentGame();
+    _logger.i("Persisting FavoriteUser for profile ...");
     try {
-      _logger.i("deleting favorite Users");
-      box.remove(StorageKeys.userFavoriteKey);
+      await box.write(StorageKeys.userFavoriteForProfileKey, jsonEncode(usersFavorite));
+      _logger.i("Success to persist favorite user for profile ...");
     } catch (e) {
-      _logger.i("Error to delete userProfile $e");
+      _logger.i("Error to persist favorite user for profile ... $e");
+    }
+  }
+
+  deleteFavoriteUsersForCurrentGame(){
+    try {
+      _logger.i("deleting favorite users for current game");
+      box.remove(StorageKeys.userFavoriteForCurrentGameKey);
+    } catch (e) {
+      _logger.i("Error to delete favorite users for current game $e");
+    }
+  }
+
+  deleteFavoriteUsersForProfile(){
+    try {
+      _logger.i("deleting favorite users for profile");
+      box.remove(StorageKeys.userFavoriteForProfileKey);
+    } catch (e) {
+      _logger.i("Error to delete favorite users for profile $e");
     }
   }
 

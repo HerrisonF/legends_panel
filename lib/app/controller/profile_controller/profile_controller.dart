@@ -211,10 +211,10 @@ class ProfileController {
     oldIndex = 0.obs;
     newIndex = 0.obs;
 
-    this.userTierList = RxList<UserTier>();
-    this.championMasteryList = RxList<ChampionMastery>();
-    this.matchIdList = [];
-    this.matchList = RxList<MatchDetail>();
+    this.userTierList.clear();
+    this.championMasteryList.clear();
+    this.matchIdList.clear();
+    this.matchList.clear();
   }
 
   String getUserProfileImage() {

@@ -38,10 +38,15 @@ class StoredRegion {
 
   String? getLocaleKey(){
     String locale = Platform.localeName;
-    if(locale.isEmpty) {
-      return "en_US";
+    var _localeKeys = {
+      'en': 'en_US',
+      'pt_BR': 'pt_BR'
+    };
+    if(_localeKeys[locale] != null ){
+      return _localeKeys[locale];
+    }else{
+      return 'en_US';
     }
-    return locale;
   }
 
   @override
