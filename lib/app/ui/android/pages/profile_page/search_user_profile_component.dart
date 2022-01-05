@@ -7,6 +7,7 @@ import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
 import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
+import 'package:legends_panel/app/ui/android/components/header_screen_information.dart';
 import 'package:legends_panel/app/ui/android/components/region_dropdown_component.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -40,7 +41,6 @@ class _SearchUserProfileComponentState
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 50),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -50,23 +50,41 @@ class _SearchUserProfileComponentState
           begin: FractionalOffset.topCenter,
           end: FractionalOffset.bottomCenter,
         ),
-        image: DecorationImage(
-          image: AssetImage(imageBackgroundProfilePengu),
-          fit: BoxFit.cover,
-        ),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Stack(
         children: [
-          _inputSummonerName(),
-          _buttonSearchSummoner(),
-          RegionDropDownComponent(
-            initialRegion: initialRegion,
-            onRegionChoose: (region) {
-              setState(() {
-                _profileController.saveActualRegion(region);
-              });
-            },
+          Positioned(
+            right: 0,
+            bottom: 0,
+            left: 0,
+            child: Container(
+              child: Image.asset(
+                imageBackgroundProfilePengu,
+                fit: BoxFit.scaleDown,
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 50),
+            child: Column(
+              children: [
+                HeaderScreenInformation(
+                  title: AppLocalizations.of(context)!.titleProfilePage,
+                  topSpace: 40,
+                  bottomSpace: 110,
+                ),
+                _inputSummonerName(),
+                _buttonSearchSummoner(),
+                RegionDropDownComponent(
+                  initialRegion: initialRegion,
+                  onRegionChoose: (region) {
+                    setState(() {
+                      _profileController.saveActualRegion(region);
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -86,7 +104,10 @@ class _SearchUserProfileComponentState
                 whichMessageShowToUser(),
                 style: GoogleFonts.montserrat(
                   color: Colors.white,
-                  fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 15 : 12,
+                  fontSize:
+                      _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                          ? 15
+                          : 12,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -125,7 +146,9 @@ class _SearchUserProfileComponentState
           decoration: InputDecoration(
             hintText: AppLocalizations.of(context)!.hintSummonerName,
             hintStyle: TextStyle(
-              fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 16 : 12,
+              fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                  ? 16
+                  : 12,
             ),
             errorStyle: TextStyle(
               fontWeight: FontWeight.w500,

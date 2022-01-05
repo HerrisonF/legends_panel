@@ -11,9 +11,13 @@
   "@appNameSubTitle": {
     "description": "Summoner"
   },
-  "titleHomePage" : "See a game in progress",
-  "@titleHomePage": {
+  "titleCurrentGamePage" : "See a game in progress",
+  "@titleCurrentGamePage": {
     "description": "See a game in progress"
+  },
+  "titleProfilePage" : "Search for a profile",
+  "@titleProfilePage": {
+    "description": "Search for a profile"
   },
   "hintSummonerName" : "Summoner's name",
   "@hintSummonerName": {

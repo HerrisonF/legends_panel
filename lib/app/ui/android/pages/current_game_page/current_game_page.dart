@@ -7,6 +7,7 @@ import 'package:legends_panel/app/controller/current_game_controller/current_gam
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/util_controller/util_controller.dart';
 import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
+import 'package:legends_panel/app/ui/android/components/header_screen_information.dart';
 import 'package:legends_panel/app/ui/android/components/region_dropdown_component.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -43,21 +44,21 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
       color: Theme.of(context).primaryColor,
       child: Stack(
         children: [
-          Container(
-            padding: EdgeInsets.only(
-                top: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                    ? 100
-                    : 10),
-            decoration: _currentGameBackgroundImage(),
-          ),
+          Container(decoration: _currentGameBackgroundImage()),
           ListView(
             children: [
-              _screenInformation(),
+              HeaderScreenInformation(
+                  title: AppLocalizations.of(context)!.titleCurrentGamePage,
+                  topSpace: 40,
+                  bottomSpace:
+                      _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                          ? 120
+                          : 30),
               _summonerSearch(),
               Container(
                 alignment: Alignment.center,
-                height: 60,
-                margin: EdgeInsets.only(top: 30, bottom: 90),
+                height: 50,
+                margin: EdgeInsets.only(top: 65, bottom: 90),
                 child: _mostSearchedPlayers(),
               )
             ],
@@ -105,33 +106,16 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
     );
   }
 
-  _screenInformation() {
-    return Container(
-      margin: EdgeInsets.only(
-          top:
-              _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 20 : 40,
-          left: 30,
-          right: 30,
-          bottom: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 120 : 30),
-      child: Text(
-        AppLocalizations.of(context)!.titleHomePage,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 36,
-          fontWeight: FontWeight.w900,
-        ),
-      ),
-    );
-  }
-
   BoxDecoration _currentGameBackgroundImage() {
     return BoxDecoration(
       color: Theme.of(context).primaryColor,
       image: DecorationImage(
-        image: AssetImage(imageBackgroundCurrentGame),
-        fit: BoxFit.cover,
-      ),
+          image: AssetImage(imageBackgroundCurrentGame),
+          fit: BoxFit.cover,
+          //soflight
+          //plus
+          colorFilter: ColorFilter.mode(
+              Theme.of(context).primaryColor.withOpacity(0.8), BlendMode.plus)),
     );
   }
 
@@ -168,7 +152,10 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
 
   Container _buttonForSearchSummoner() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 30 : 15),
+      margin: EdgeInsets.symmetric(
+          vertical: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+              ? 45
+              : 15),
       height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 54 : 45,
       child: Obx(() {
         return OutlinedButton(
@@ -217,7 +204,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
 
   _favoritePlayerCard(BuildContext context, int index) {
     return Container(
-      width: 180,
+      width: 150,
       margin: EdgeInsets.only(left: 10, right: 10),
       padding: EdgeInsets.only(left: 10),
       decoration: BoxDecoration(
@@ -238,10 +225,10 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
               child: Row(
                 children: [
                   Container(
-                    width: 80,
-                    margin: EdgeInsets.only(right: 10),
+                    width: 70,
                     child: Text(
-                      _masterController.favoriteUsers[index].name,
+                      "AUSH AUSH AUSHAUH ASAUHS AUSH AUSH",
+                      //_masterController.favoriteUsers[index].name,
                       maxLines: 2,
                       style: TextStyle(
                         color: Colors.white,
@@ -260,7 +247,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                             width: 17,
                           )
                         : Container(
-                            margin: EdgeInsets.only(right: 5),
+                            margin: EdgeInsets.only(left: 5),
                             child: Image.asset(
                               imageUnranked,
                               width: 17,
