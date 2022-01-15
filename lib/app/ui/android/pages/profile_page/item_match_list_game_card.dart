@@ -34,6 +34,7 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+
         _showModalGeneralVision();
       },
       child: Container(

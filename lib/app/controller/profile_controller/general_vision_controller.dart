@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:legends_panel/app/controller/data_analysis_controller/data_analysis_controller.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/data/repository/general_vision_repository/general_vision_repository.dart';
 import 'package:legends_panel/app/model/general/map_mode.dart';
@@ -7,8 +8,8 @@ import 'package:legends_panel/app/model/general/match_detail.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GeneralVisionController {
-
-  final GeneralVisionRepository _generalVisionRepository = GeneralVisionRepository();
+  final GeneralVisionRepository _generalVisionRepository =
+      GeneralVisionRepository();
 
   late MatchDetail matchDetail;
   late Participant participant;
@@ -20,10 +21,12 @@ class GeneralVisionController {
   RxList<Participant> redTeam = RxList<Participant>();
 
   final MasterController _masterController = Get.find<MasterController>();
+  final DataAnalysisController dataAnalysisController =
+      DataAnalysisController();
 
   static const BLUE_TEAM = 100;
 
-  startInitialData(MatchDetail matchDetail, Participant participant){
+  startInitialData(MatchDetail matchDetail, Participant participant) {
     blueTeam.clear();
     redTeam.clear();
     getMapById(matchDetail.matchInfo.queueId.toString());
@@ -31,19 +34,23 @@ class GeneralVisionController {
     this.participant = participant;
     this.matchDetail = matchDetail;
     detachParticipantsIntoTeams();
+    dataAnalysisController.getGameTimeLine(
+      matchDetail.matchInfo.gameId.toString(),
+      _masterController.storedRegion.getKeyFromRegion(_masterController.storedRegion.lastStoredProfileRegion.toString())!,
+    );
   }
 
-  String getWinOrLoseHeaderText(BuildContext context){
-    if(participant.win){
-      if(participant.teamId == BLUE_TEAM){
+  String getWinOrLoseHeaderText(BuildContext context) {
+    if (participant.win) {
+      if (participant.teamId == BLUE_TEAM) {
         return "${AppLocalizations.of(context)!.gameVictoriousBlueTeam}";
-      }else{
+      } else {
         return "${AppLocalizations.of(context)!.gameVictoriousRedTeam}";
       }
-    }else{
-      if(participant.teamId == BLUE_TEAM){
+    } else {
+      if (participant.teamId == BLUE_TEAM) {
         return "${AppLocalizations.of(context)!.gameDefeatedBlueTeam}";
-      }else{
+      } else {
         return "${AppLocalizations.of(context)!.gameDefeatedRedTeam}";
       }
     }
@@ -57,51 +64,50 @@ class GeneralVisionController {
     for (int i = 0; i < matchDetail.matchInfo.participants.length; i++) {
       if (matchDetail.matchInfo.participants[i].teamId == BLUE_TEAM) {
         blueTeam.add(matchDetail.matchInfo.participants[i]);
-      }else {
+      } else {
         redTeam.add(matchDetail.matchInfo.participants[i]);
       }
     }
     isLoadingTeamInfo(false);
   }
 
-  String getBaronIcon(){
+  String getBaronIcon() {
     return _generalVisionRepository.getBaronIcon();
   }
 
-  String getDragonIcon(){
+  String getDragonIcon() {
     return _generalVisionRepository.getDragonIcon();
   }
 
-  String getTowerIcon(){
+  String getTowerIcon() {
     return _generalVisionRepository.getTowerIcon();
   }
 
-  String getKillIcon(){
+  String getKillIcon() {
     return _generalVisionRepository.getKillIcon();
   }
 
-  String getPerkStyleUrl(String perkStyle){
+  String getPerkStyleUrl(String perkStyle) {
     return _generalVisionRepository.getPerkStyleUrl(perkStyle);
   }
 
-  String getPerkUrl(String perk){
+  String getPerkUrl(String perk) {
     return _generalVisionRepository.getPerkUrl(perk);
   }
 
-  String getMinionUrl(){
+  String getMinionUrl() {
     return _generalVisionRepository.getMinionUrl();
   }
 
-  String getGoldIconUrl(){
+  String getGoldIconUrl() {
     return _generalVisionRepository.getGoldIconUrl();
   }
 
-  String getHeraldIcon(){
+  String getHeraldIcon() {
     return _generalVisionRepository.getHeraldIcon();
   }
 
-  String getCriticIcon(){
+  String getCriticIcon() {
     return _generalVisionRepository.getCriticIcon();
   }
-
 }
