@@ -4,11 +4,11 @@ class DataAnalysisModel {
 
   String collectionChampionId = "";
   Champion champion = Champion();
-  String positions = "";
+  List<String> positions = [];
   int totalGames = 0;
-  AmountStatistic amountVictory = AmountStatistic();
-  AmountStatistic amountLoss = AmountStatistic();
-
+  AmountStatistic amountWinLoseStatistic = AmountStatistic();
+  StatisticOnPosition statisticOnPosition = StatisticOnPosition();
+  StatisticRune statisticRune = StatisticRune();
 }
 
 class AmountStatistic{
@@ -20,7 +20,7 @@ class AmountStatistic{
   AmountStatistic();
 }
 
-class EstatisticOnPosition{
+class StatisticOnPosition{
   StatisticSkill statisticSkill = StatisticSkill();
   StatisticSpell statisticSpells = StatisticSpell();
   StatisticBuild statisticBuild = StatisticBuild();

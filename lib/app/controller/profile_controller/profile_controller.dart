@@ -112,6 +112,11 @@ class ProfileController {
     }
   }
 
+  bool isUserGreaterThanGold(){
+    String elo = userTierRankedSolo.value.tier.toLowerCase();
+    return elo != 'iron' &&  elo != 'bronze' && elo != 'gold' && elo != 'silver';
+  }
+
   getMasteryChampions(String keyRegion) async {
     championMasteryList.addAll(
       await _profileRepository.getChampionMastery(

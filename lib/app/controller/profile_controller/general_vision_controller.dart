@@ -37,6 +37,7 @@ class GeneralVisionController {
     dataAnalysisController.getGameTimeLine(
       matchDetail.matchInfo.gameId.toString(),
       _masterController.storedRegion.getKeyFromRegion(_masterController.storedRegion.lastStoredProfileRegion.toString())!,
+      participant,
     );
   }
 

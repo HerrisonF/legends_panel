@@ -110,7 +110,7 @@ class ParticipantFrame {
   dynamic jungleMinionsKilled = 0;
   dynamic level = 0;
   dynamic minionsKilled = 0;
-  dynamic participantId = 0;
+  dynamic participantId = "";
   Position position = Position();
   dynamic timeEnemySpentControlled = 0;
   dynamic totalGold = 0;
