@@ -76,10 +76,21 @@ class Frame {
   }
 }
 
+class TypeEventFixed {
+  static String get skillLevelUp => "SKILL_LEVEL_UP";
+  static String get itemPurchased => "ITEM_PURCHASED";
+}
+
 class GameEvent {
   dynamic realTimestamp = "";
   dynamic timeStamp = "";
   dynamic type = "";
+  dynamic skillSlot = 0;
+  dynamic levelUpType = "";
+  dynamic itemId = "";
+  dynamic creatorId = "";
+  dynamic wardType = "";
+  dynamic level = "";
 
   GameEvent();
 
@@ -87,7 +98,22 @@ class GameEvent {
     realTimestamp = json["realTimestamp"];
     timeStamp = json["timestamp"];
     type = json["type"];
+    skillSlot = json["skillSlot"] ?? "";
+    levelUpType = json['levelUpType'] ?? "";
+    itemId = json['itemId'] ?? "";
+    creatorId = json['creatorId'] ?? "";
+    wardType = json['wardType'] ?? "";
+    level = json['level'] ?? "";
   }
+
+  bool boughtItem(){
+    return type == TypeEventFixed.itemPurchased;
+  }
+
+  bool levelUp(){
+    return type == TypeEventFixed.skillLevelUp;
+  }
+
 }
 
 class ParticipantTimeLine {

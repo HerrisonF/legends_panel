@@ -1,193 +1,194 @@
-import 'package:legends_panel/app/model/general/champion.dart';
-
 class DataAnalysisModel {
 
   String collectionChampionId = "";
-  Champion champion = Champion();
+  String championId = "";
   List<String> positions = [];
-  int totalGames = 0;
   AmountStatistic amountWinLoseStatistic = AmountStatistic();
   StatisticOnPosition statisticOnPosition = StatisticOnPosition();
-  StatisticRune statisticRune = StatisticRune();
+
+  //StatisticRune statisticRune = StatisticRune();
+
+  Map<String, dynamic> toJson() =>
+      {
+        'champion': championId,
+        'positions': positions.toString(),
+        'amountWinLoseStatistic': amountWinLoseStatistic.toJson(),
+        'statisticOnPosition': statisticOnPosition.toJson(),
+      };
+
 }
 
-class AmountStatistic{
+class AmountStatistic {
   int total = 0;
   int amountWin = 0;
   int amountLoss = 0;
-  String againstChampId = "";
+
+  //String againstChampId = "";
 
   AmountStatistic();
-}
 
-class StatisticOnPosition{
-  StatisticSkill statisticSkill = StatisticSkill();
-  StatisticSpell statisticSpells = StatisticSpell();
-  StatisticBuild statisticBuild = StatisticBuild();
-  StatisticRune statisticRune = StatisticRune();
-}
-
-class StatisticRune {
-  RunesStyle option1 = RunesStyle();
-  RunesStyle option2 = RunesStyle();
-  double pickRateOption1 = 0;
-  double winRateOption1 = 0;
-  double pickRateOption2 = 0;
-  double winRateOption2 = 0;
-
-  setPickRate(RunesStyle runesStyle, bool win){
-    if(option1 == runesStyle){
-      pickRateOption1++;
-      if(win){
-        winRateOption1++;
-      }
+  setWinOrLose(bool win) {
+    if (win) {
+      this.amountWin++;
+    } else {
+      this.amountLoss++;
     }
-    if(option2 == runesStyle){
-      if(win){
-        winRateOption2++;
-      }
-    }
+    total ++;
   }
+
+  Map<String, dynamic> toJson() =>
+      {
+        'total': total,
+        'amountWin': amountWin,
+        'amountLoss': amountLoss,
+      };
 }
 
-class RunesStyle{
-  dynamic id = "";
-  String key = "";
-  String icon = "";
-  String name = "";
-  String shortDesc = "";
-  String longDesc = "";
+class StatisticOnPosition {
+  StatisticSkill statisticSkill = StatisticSkill();
 
-  RunesStyle();
+  //StatisticSpell statisticSpells = StatisticSpell();
+  StatisticBuild statisticBuild = StatisticBuild();
+
+  //StatisticRune statisticRune = StatisticRune();
+
+  Map<String, dynamic> toJson() =>
+      {
+        'statisticSkill': statisticSkill.toJson(),
+        'statisticBuild': statisticBuild.toJson(),
+      };
 }
+
+// class StatisticRune {
+//   RunesStyle option1 = RunesStyle();
+//   RunesStyle option2 = RunesStyle();
+//   double pickRateOption1 = 0;
+//   double winRateOption1 = 0;
+//   double pickRateOption2 = 0;
+//   double winRateOption2 = 0;
+//
+//   setPickRate(RunesStyle runesStyle, bool win){
+//     if(option1 == runesStyle){
+//       pickRateOption1++;
+//       if(win){
+//         winRateOption1++;
+//       }
+//     }
+//     if(option2 == runesStyle){
+//       if(win){
+//         winRateOption2++;
+//       }
+//     }
+//   }
+// }
+//
+// class RunesStyle{
+//   dynamic id = "";
+//   String key = "";
+//   String icon = "";
+//   String name = "";
+//   String shortDesc = "";
+//   String longDesc = "";
+//
+//   RunesStyle();
+// }
 
 class StatisticBuild {
- InitialItems initialItems = InitialItems();
- List<CoreItems> coreItems = [];
- List<Boots> boots = [];
+  //InitialItems initialItems = InitialItems();
+  CoreItems coreItems = CoreItems();
+
+  //Boots boots = Boots();
+
+  Map<String, dynamic> toJson() =>
+      {
+        'coreItems': coreItems.toJson(),
+      };
 }
 
-class InitialItems {
-  List<Item> option1 = [];
-  List<Item> option2 = [];
-  setInitialItemsPickRate(Item item, Item item2, bool win){
-    if(item.id == option1[0].id && item2.id == option1[1].id){
-      pickRateOption1++;
-      if(win){
-        winRateOption1++;
-      }
-    }
-    if(item.id == option2[0].id && item2.id == option2[1].id){
-      pickRateOption2++;
-      if(win){
-        winRateOption2++;
-      }
-    }
-  }
-  double pickRateOption1 = 0;
-  double winRateOption1 = 0;
-  double pickRateOption2 = 0;
-  double winRateOption2 = 0;
-}
+// class InitialItems {
+//   List<Item> items = [];
+// }
 
 class CoreItems {
-  List<Item> option1 = [];
-  List<Item> option2 = [];
-  double pickRateOption1 = 0;
-  double winRateOption1 = 0;
-  double pickRateOption2 = 0;
-  double winRateOption2 = 0;
+  List<Item> items = [];
 
-  setCoreItemsPickRate(Item item, Item item2, Item item3, bool win){
-    if(item.id == option1[0].id && item2.id == option1[1].id && item3.id == option1[3].id){
-      pickRateOption1++;
-      if(win){
-        winRateOption1++;
-      }
-    }
-    if(item.id == option1[0].id && item2.id == option1[1].id && item3.id == option1[3].id){
-      pickRateOption2++;
-      if(win){
-        winRateOption2++;
-      }
-    }
-  }
+  Map<String, dynamic> toJson() =>
+      {
+        'items': items.toString(),
+      };
 }
 
-class Boots {
-  Item option1 = Item();
-  Item option2 = Item();
-  double pickRateOption1 = 0;
-  double winRateOption1 = 0;
-  double pickRateOption2 = 0;
-  double winRateOption2 = 0;
+// class Boots {
+//   Item items = Item();
+// }
 
-  setBootsPikRate(Item item, bool win){
-    if(option1.id == item.id){
-      pickRateOption1++;
-      if(win){
-        winRateOption1++;
-      }
-    }
-    if(option2.id == item.id){
-      pickRateOption2++;
-      if(win){
-        winRateOption2++;
-      }
-    }
-  }
-}
-
-class Item{
+class Item {
   String id = "";
-  String name = "";
-  String description = "";
-  ItemImage image = ItemImage();
+
+  // String name = "";
+  // String description = "";
+  // ItemImage image = ItemImage();
+
+  Map<String, dynamic> toJson() =>
+      {
+        'id': id,
+      };
 }
 
-class ItemImage {
-  String full = "";
-  ItemImage();
-}
+// class ItemImage {
+//   String full = "";
+//   ItemImage();
+// }
 
-class StatisticSpell {
-  List<SpellOption> spellOptions = [];
-}
-
-class SpellOption {
-  String spellId1 = "";
-  String spellId2 = "";
-  double pickRate = 0;
-  double winRate = 0;
-
-  setPickRate(String spellId1, String spellId2){
-    if(this.spellId1 == spellId1 && this.spellId2 == spellId2){
-      pickRate ++;
-    }
-  }
-
-  setWinRate(bool win){
-    if(win){
-      winRate++;
-    }
-  }
-
-}
-
+// class StatisticSpell {
+//   List<SpellOption> spellOptions = [];
+// }
+//
+// class SpellOption {
+//   String spellId1 = "";
+//   String spellId2 = "";
+//   double pickRate = 0;
+//   double winRate = 0;
+//
+//   setPickRate(String spellId1, String spellId2){
+//     if(this.spellId1 == spellId1 && this.spellId2 == spellId2){
+//       pickRate ++;
+//     }
+//   }
+//
+//   setWinRate(bool win){
+//     if(win){
+//       winRate++;
+//     }
+//   }
+//
+// }
+//
 class StatisticSkill {
-  List<Skill> firstThreeSkills = [];
-  List<Skill> orderedSkillsLeveled = [];
+  //List<Skill> firstThreeSkills = [];
+  List<Skill> skillsOrder = [];
+
+  Map<String, dynamic> toJson() =>
+      {
+        'skillsOrder': skillsOrder.toString(),
+      };
 }
 
 class Skill {
-  String spellId = "";
-  String name = "";
-  String description = "";
-  SpellImage spellImage = SpellImage();
-}
+  String skillSlot = "";
 
-class SpellImage {
-  String full = "";
-
-  SpellImage();
+// String spellId = "";
+// String name = "";
+// String description = "";
+//SpellImage spellImage = SpellImage();
+  Map<String, dynamic> toJson() =>
+      {
+        'skillSlot': skillSlot,
+      };
 }
+//
+// class SpellImage {
+//   String full = "";
+//
+//   SpellImage();
+// }

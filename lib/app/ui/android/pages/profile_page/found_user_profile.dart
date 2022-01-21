@@ -35,6 +35,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
 
   @override
   void dispose() {
+    this._scrollController.removeListener(this._scrollListenerFunction);
     this._scrollController.dispose();
     super.dispose();
   }

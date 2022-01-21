@@ -38,6 +38,7 @@ class GeneralVisionController {
       matchDetail.matchInfo.gameId.toString(),
       _masterController.storedRegion.getKeyFromRegion(_masterController.storedRegion.lastStoredProfileRegion.toString())!,
       participant,
+      currentMapToShow.value,
     );
   }
 
