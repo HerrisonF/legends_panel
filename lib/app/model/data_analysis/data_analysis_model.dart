@@ -1,7 +1,6 @@
 class DataAnalysisModel {
 
   String collectionChampionId = "";
-  String championId = "";
   List<String> positions = [];
   AmountStatistic amountWinLoseStatistic = AmountStatistic();
   StatisticOnPosition statisticOnPosition = StatisticOnPosition();
@@ -10,8 +9,7 @@ class DataAnalysisModel {
 
   Map<String, dynamic> toJson() =>
       {
-        'champion': championId,
-        'positions': positions.toString(),
+        'positions': positions.map((e) => e.toString()).toList(),
         'amountWinLoseStatistic': amountWinLoseStatistic.toJson(),
         'statisticOnPosition': statisticOnPosition.toJson(),
       };
@@ -114,7 +112,7 @@ class CoreItems {
 
   Map<String, dynamic> toJson() =>
       {
-        'items': items.toString(),
+        'items': items.map((e) => e.toJson()).toList(),
       };
 }
 
@@ -170,7 +168,7 @@ class StatisticSkill {
 
   Map<String, dynamic> toJson() =>
       {
-        'skillsOrder': skillsOrder.toString(),
+        'skillsOrder': skillsOrder.map((e) => e.toJson()).toList(),
       };
 }
 

@@ -91,19 +91,22 @@ class GameEvent {
   dynamic creatorId = "";
   dynamic wardType = "";
   dynamic level = "";
+  dynamic participantId = "";
+
 
   GameEvent();
 
   GameEvent.fromJson(Map<String, dynamic> json){
-    realTimestamp = json["realTimestamp"];
-    timeStamp = json["timestamp"];
-    type = json["type"];
+    realTimestamp = json["realTimestamp"]?? "";
+    itemId = json["itemId"] ?? "";
+    participantId = json["participantId"] ?? "";
+    timeStamp = json["timestamp"] ?? "";
+    type = json["type"] ?? "";
     skillSlot = json["skillSlot"] ?? "";
-    levelUpType = json['levelUpType'] ?? "";
-    itemId = json['itemId'] ?? "";
-    creatorId = json['creatorId'] ?? "";
-    wardType = json['wardType'] ?? "";
-    level = json['level'] ?? "";
+    levelUpType = json["levelUpType"] ?? "";
+    creatorId = json["creatorId"] ?? "";
+    wardType = json["wardType"] ?? "";
+    level = json["level"] ?? "";
   }
 
   bool boughtItem(){
