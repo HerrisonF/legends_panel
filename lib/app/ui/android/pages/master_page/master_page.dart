@@ -3,6 +3,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/ui/android/pages/about_page/about_page.dart';
+import 'package:legends_panel/app/ui/android/pages/build_page/build_page.dart';
 import 'package:legends_panel/app/ui/android/pages/current_game_page/current_game_page.dart';
 import 'package:legends_panel/app/ui/android/pages/profile_page/profile_page.dart';
 
@@ -20,6 +21,7 @@ class MasterPage extends StatelessWidget {
               children: [
                 CurrentGamePage(),
                 ProfilePage(),
+                BuildPage(),
                 AboutPage(),
               ],
             ),
@@ -47,7 +49,8 @@ class MasterPage extends StatelessWidget {
                   children: [
                     customIconButton(context, 0, FeatherIcons.crosshair),
                     customIconButton(context, 1, FeatherIcons.user),
-                    customIconButton(context, 2, FeatherIcons.coffee),
+                    customIconButton(context, 2, FeatherIcons.box),
+                    customIconButton(context, 3, FeatherIcons.coffee),
                   ],
                 ),
               ),

@@ -72,8 +72,6 @@ class DataAnalysisController {
     //provavelmente terei que procurar pelo tempo da partida até localizar
     for (GameEvent gameEvent in participantAndEvents.gameEvent) {
       if (gameEvent.boughtItem()) {
-        //quando abro jogo, ja tenho os 3 primeiros itens do cara, s[ trazer da tela anterior.
-        //esse que estou usando agora é dificil de saber o item final.
         Item item = Item();
         item.id = gameEvent.itemId.toString();
         var itemTemp = dataAnalysisModel
