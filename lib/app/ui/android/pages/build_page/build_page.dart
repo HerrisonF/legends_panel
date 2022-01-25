@@ -4,6 +4,8 @@ import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/build_page_controller/build_page_controller.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 
+import 'champion_build_bottom_sheet.dart';
+
 class BuildPage extends StatefulWidget {
   const BuildPage({Key? key}) : super(key: key);
 
@@ -22,6 +24,12 @@ class _BuildPageState extends State<BuildPage> {
   void initState() {
     _buildPageController.init(_masterController.championRoom);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _buildPageController.searchEditingController.dispose();
+    super.dispose();
   }
 
   @override
@@ -76,8 +84,6 @@ class _BuildPageState extends State<BuildPage> {
           controller: _scrollController,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 4,
-            crossAxisSpacing: 25,
-            mainAxisSpacing: 25,
           ),
           itemCount: hasMoreLoadings(),
           itemBuilder: (_, index) {
@@ -98,7 +104,7 @@ class _BuildPageState extends State<BuildPage> {
   championImageOrLoading(int index) {
     return InkWell(
       onTap: (){
-        print("abrir tela de build ${_buildPageController.searchedChampion[index].detail.name}");
+        _openBottomSheet(_buildPageController.searchedChampion[index].detail.key);
       },
       child: Column(
         children: [
@@ -122,10 +128,19 @@ class _BuildPageState extends State<BuildPage> {
           Container(
             child: Text(
               _buildPageController.searchedChampion[index].detail.name,
+              style: TextStyle(
+                fontSize: 10
+              ),
             ),
           )
         ],
       ),
     );
+  }
+
+  _openBottomSheet(String championKey){
+    showModalBottomSheet(context: context, builder: (_){
+      return ChampionBuildBottomSheet(championId: championKey);
+    });
   }
 }

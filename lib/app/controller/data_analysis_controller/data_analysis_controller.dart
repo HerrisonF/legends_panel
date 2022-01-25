@@ -61,8 +61,8 @@ class DataAnalysisController {
   }
 
   Future<void> addChampion(CollectionReference champions) {
-    return champions
-        .add(dataAnalysisModel.toJson())
+    return champions.doc(dataAnalysisModel.collectionChampionId.toString()).set
+        (dataAnalysisModel.toJson())
         .then((value) => print("Champion Adicionado"))
         .catchError((error) => print("Failed to add champion: $error"));
   }

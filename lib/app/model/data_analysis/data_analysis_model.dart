@@ -5,7 +5,19 @@ class DataAnalysisModel {
   AmountStatistic amountWinLoseStatistic = AmountStatistic();
   StatisticOnPosition statisticOnPosition = StatisticOnPosition();
 
+  DataAnalysisModel();
+
   //StatisticRune statisticRune = StatisticRune();
+
+  DataAnalysisModel.fromJson(Map<String, dynamic> json){
+    if(json["positions"] != null){
+      json["positions"].forEach((element){
+        positions.add(element);
+      });
+    }
+    amountWinLoseStatistic = AmountStatistic.fromJson(json["amountWinLoseStatistic"]);
+    statisticOnPosition = StatisticOnPosition.fromJson(json["statisticOnPosition"]);
+  }
 
   Map<String, dynamic> toJson() =>
       {
@@ -34,6 +46,12 @@ class AmountStatistic {
     total ++;
   }
 
+  AmountStatistic.fromJson(Map<String, dynamic> json){
+    total = json["total"] ?? 0;
+    amountWin = json["amountWin"] ?? 0;
+    amountLoss = json["amountLoss"] ?? 0;
+  }
+
   Map<String, dynamic> toJson() =>
       {
         'total': total,
@@ -49,6 +67,13 @@ class StatisticOnPosition {
   StatisticBuild statisticBuild = StatisticBuild();
 
   //StatisticRune statisticRune = StatisticRune();
+
+  StatisticOnPosition();
+
+  StatisticOnPosition.fromJson(Map<String, dynamic> json){
+    statisticSkill = StatisticSkill.fromJson(json["statisticSkill"]);
+    statisticBuild = StatisticBuild.fromJson(json["statisticBuild"]);
+  }
 
   Map<String, dynamic> toJson() =>
       {
@@ -97,6 +122,12 @@ class StatisticBuild {
 
   //Boots boots = Boots();
 
+  StatisticBuild();
+
+  StatisticBuild.fromJson(Map<String, dynamic> json){
+    coreItems = CoreItems.fromJson(json["coreItems"]);
+  }
+
   Map<String, dynamic> toJson() =>
       {
         'coreItems': coreItems.toJson(),
@@ -110,6 +141,16 @@ class StatisticBuild {
 class CoreItems {
   List<Item> items = [];
 
+  CoreItems();
+
+  CoreItems.fromJson(Map<String, dynamic> json){
+    if(json["items"] != null){
+      json["items"].forEach((element){
+        items.add(Item.fromJson(element));
+      });
+    }
+  }
+
   Map<String, dynamic> toJson() =>
       {
         'items': items.map((e) => e.toJson()).toList(),
@@ -122,6 +163,12 @@ class CoreItems {
 
 class Item {
   String id = "";
+
+  Item();
+
+  Item.fromJson(Map<String, dynamic> json){
+    id = json["id"] ?? "";
+  }
 
   // String name = "";
   // String description = "";
@@ -166,6 +213,16 @@ class StatisticSkill {
   //List<Skill> firstThreeSkills = [];
   List<Skill> skillsOrder = [];
 
+  StatisticSkill();
+
+  StatisticSkill.fromJson(Map<String, dynamic> json){
+    if(json["skillsOrder"] != null){
+      json["skillsOrder"].forEach((element){
+        skillsOrder.add(Skill.fromJson(element));
+      });
+    }
+  }
+
   Map<String, dynamic> toJson() =>
       {
         'skillsOrder': skillsOrder.map((e) => e.toJson()).toList(),
@@ -175,10 +232,17 @@ class StatisticSkill {
 class Skill {
   String skillSlot = "";
 
+  Skill();
+
 // String spellId = "";
 // String name = "";
 // String description = "";
 //SpellImage spellImage = SpellImage();
+
+  Skill.fromJson(Map<String, dynamic> json){
+    skillSlot = json["skillSlot"] ?? "";
+  }
+
   Map<String, dynamic> toJson() =>
       {
         'skillSlot': skillSlot,
