@@ -164,13 +164,13 @@ class ProfileController {
 
   String getChampionImage(int championId) {
     String returnedChampion =
-        _masterController.getChampionById(championId.toString());
+        _masterController.getChampionById(championId.toString()).detail.id;
     return _profileRepository.getChampionImage(returnedChampion);
   }
 
   String getCircularChampionImage(int championId) {
     String returnedChampion =
-        _masterController.getChampionById(championId.toString());
+        _masterController.getChampionById(championId.toString()).detail.id.toString();
     return _profileRepository.getCircularChampionImage(returnedChampion);
   }
 

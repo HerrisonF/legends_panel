@@ -1,14 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/data/repository/build_page_repository/build_page_repository.dart';
 import 'package:legends_panel/app/model/general/champion.dart';
 import 'package:legends_panel/app/model/general/champion_room.dart';
+import 'package:legends_panel/app/model/general/champion_with_spell.dart';
 
 class BuildPageController {
   Rx<bool> isLoading = false.obs;
 
   final BuildPageRepository buildPageRepository = BuildPageRepository();
   final TextEditingController searchEditingController = TextEditingController();
+  final MasterController _masterController = Get.find<MasterController>();
 
   ChampionRoom championRoom = ChampionRoom();
   RxList<Champion> searchedChampion = RxList<Champion>();
@@ -27,7 +30,7 @@ class BuildPageController {
   }
 
   String getChampionImage(String championId) {
-    return buildPageRepository.getChampionImage(championId);
+    return buildPageRepository.getChampionImage(championId, _masterController.lolVersion.actualVersion);
   }
 
   showChampionEqualsFromSearch(String value) {

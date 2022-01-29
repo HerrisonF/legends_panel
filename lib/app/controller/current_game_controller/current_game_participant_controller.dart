@@ -55,7 +55,7 @@ class CurrentGameParticipantController extends MasterController {
 
   String getChampionBadgeUrl(String championId) {
     return _participantRepository.getChampionBadgeUrl(
-        _masterController.getChampionById(championId),
+        _masterController.getChampionById(championId).detail.id.toString(),
         _masterController.lolVersion.actualVersion);
   }
 

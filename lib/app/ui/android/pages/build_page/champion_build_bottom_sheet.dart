@@ -28,13 +28,173 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
       () {
         return _championBuildBottomSheetController.isLoading.value
             ? CircularProgressIndicator()
-            : Container(
-                child: Center(
-                  child: Text(
-                      "Chmapion Build ${_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticSkill.skillsOrder.map((e) => e.skillSlot.toString()).toList()}"),
-                ),
-              );
+            : _championStats();
       },
+    );
+  }
+
+  _championStats() {
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 20),
+          child: _championSkills(),
+        ),
+      ],
+    );
+  }
+
+  _championSkills() {
+    return Column(
+      children: [
+        _championSkillTitle(),
+        _championSkillOneToNine(),
+        _championSkillTenToEighteen(9),
+      ],
+    );
+  }
+
+  _championSkillTitle(){
+    return Container(
+      margin: EdgeInsets.only(bottom: 15),
+      child: Text("Ability order"),
+    );
+  }
+
+  _championSkillOneToNine() {
+    return Container(
+      height: 80,
+      child: ListView.builder(
+        itemCount: 9,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          return Container(
+            height: 25,
+            width: 28,
+            margin: EdgeInsets.only(
+              left: 14,
+              right: _championBuildBottomSheetController
+                          .dataAnalysisModel
+                          .statisticOnPosition
+                          .statisticSkill
+                          .skillsOrder
+                          .length ==
+                      index + 1
+                  ? 10
+                  : 0,
+            ),
+            child: Obx(() {
+              return !_championBuildBottomSheetController
+                      .isLoadingChampion.value
+                  ? Column(
+                      children: [
+                        Text(
+                          (index + 1).toString(),
+                        ),
+                        Container(
+                          //margin: EdgeInsets.only(top: 5),
+                          child: Text(
+                            _championBuildBottomSheetController.getSpellKey(
+                              _championBuildBottomSheetController
+                                  .dataAnalysisModel
+                                  .statisticOnPosition
+                                  .statisticSkill
+                                  .skillsOrder[index]
+                                  .skillSlot,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Image.network(
+                            _championBuildBottomSheetController
+                                .getChampionSpell(
+                              widget.championId,
+                              _championBuildBottomSheetController
+                                  .dataAnalysisModel
+                                  .statisticOnPosition
+                                  .statisticSkill
+                                  .skillsOrder[index]
+                                  .skillSlot,
+                            ),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ],
+                    )
+                  : CircularProgressIndicator();
+            }),
+          );
+        },
+      ),
+    );
+  }
+
+  _championSkillTenToEighteen(int continueIndex) {
+    return Container(
+      height: 80,
+      child: ListView.builder(
+        itemCount: 9,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          return Container(
+            height: 25,
+            width: 28,
+            margin: EdgeInsets.only(
+              left: 14,
+              right: _championBuildBottomSheetController
+                              .dataAnalysisModel
+                              .statisticOnPosition
+                              .statisticSkill
+                              .skillsOrder
+                              .length +
+                          continueIndex ==
+                      index + continueIndex + 1
+                  ? 10
+                  : 0,
+            ),
+            child: Obx(() {
+              return !_championBuildBottomSheetController
+                      .isLoadingChampion.value
+                  ? Column(
+                      children: [
+                        Text(
+                          (index + continueIndex + 1).toString(),
+                        ),
+                        Container(
+                          //margin: EdgeInsets.only(top: 5),
+                          child: Text(
+                            _championBuildBottomSheetController.getSpellKey(
+                              _championBuildBottomSheetController
+                                  .dataAnalysisModel
+                                  .statisticOnPosition
+                                  .statisticSkill
+                                  .skillsOrder[index + continueIndex]
+                                  .skillSlot,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Image.network(
+                            _championBuildBottomSheetController
+                                .getChampionSpell(
+                              widget.championId,
+                              _championBuildBottomSheetController
+                                  .dataAnalysisModel
+                                  .statisticOnPosition
+                                  .statisticSkill
+                                  .skillsOrder[index + continueIndex]
+                                  .skillSlot,
+                            ),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ],
+                    )
+                  : CircularProgressIndicator();
+            }),
+          );
+        },
+      ),
     );
   }
 }

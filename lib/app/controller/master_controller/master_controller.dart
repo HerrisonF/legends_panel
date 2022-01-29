@@ -243,12 +243,12 @@ class MasterController {
     currentPageIndex(newPageIndex);
   }
 
-  getChampionById(String championId) {
+  Champion getChampionById(String championId) {
     Champion champion = Champion();
     var champs = championRoom.champions
         .where((champ) => champ.detail.key.toString() == championId);
     if (champs.length > 0) champion = champs.first;
-    return champion.detail.id;
+    return champion;
   }
 
   getSpellById(String spellId) {
