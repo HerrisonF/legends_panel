@@ -50,7 +50,45 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
         _championSkillTitle(),
         _championSkillOneToNine(),
         _championSkillTenToEighteen(9),
+        _championPerksTitle(),
+        _championPerks(),
       ],
+    );
+  }
+
+  _championPerks(){
+    return Column(
+      children: [
+        Row(
+            children: [
+              _roundedContainer(""),
+            ],
+        ),
+        Row(
+          children: [
+            _roundedContainer(""),
+          ],
+        ),
+      ],
+    );
+  }
+
+  _roundedContainer(String image){
+    return Container(
+      height: 30,
+      width: 30,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(32),
+        color: Colors.green,
+      ),
+      child: Container(),
+    );
+  }
+
+  _championPerksTitle(){
+    return Container(
+      margin: EdgeInsets.only(bottom: 15),
+      child: Text("Perks"),
     );
   }
 
@@ -63,6 +101,7 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
 
   _championSkillOneToNine() {
     return Container(
+      width: MediaQuery.of(context).size.width,
       height: 80,
       child: ListView.builder(
         itemCount: 9,
@@ -73,15 +112,6 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
             width: 28,
             margin: EdgeInsets.only(
               left: 14,
-              right: _championBuildBottomSheetController
-                          .dataAnalysisModel
-                          .statisticOnPosition
-                          .statisticSkill
-                          .skillsOrder
-                          .length ==
-                      index + 1
-                  ? 10
-                  : 0,
             ),
             child: Obx(() {
               return !_championBuildBottomSheetController
@@ -141,16 +171,6 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
             width: 28,
             margin: EdgeInsets.only(
               left: 14,
-              right: _championBuildBottomSheetController
-                              .dataAnalysisModel
-                              .statisticOnPosition
-                              .statisticSkill
-                              .skillsOrder
-                              .length +
-                          continueIndex ==
-                      index + continueIndex + 1
-                  ? 10
-                  : 0,
             ),
             child: Obx(() {
               return !_championBuildBottomSheetController

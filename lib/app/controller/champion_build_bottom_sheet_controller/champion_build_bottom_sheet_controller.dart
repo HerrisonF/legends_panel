@@ -58,16 +58,7 @@ class ChampionBuildBottomSheetController {
   }
 
   String getChampionSpell(String championId, String spellSlot){
-    dynamic spellKey = getSpellKey(spellSlot);
-    var spellList = championWithSpell.championWithSpellDetail.spells.where((e) => e.id == _championSkillName(spellKey.toString()));
-    if(spellList.length > 0){
-      return _buildPageController.buildPageRepository.getChampionSpellImage(spellList.first.id, _masterController.lolVersion.actualVersion);
-    }
-    return "";
-  }
-
-  String _championSkillName(String spellKey){
-    return championWithSpell.championWithSpellDetail.id+spellKey;
+    return _buildPageController.buildPageRepository.getChampionSpellImage(championWithSpell.championWithSpellDetail.spells[int.parse(spellSlot)- 1].id, _masterController.lolVersion.actualVersion);
   }
 
   getSpellKey(String spellSlot){
@@ -89,7 +80,6 @@ class ChampionBuildBottomSheetController {
 
   transformJson(var value) async {
     stopLoading();
-    print("AQUI > ${value.id}");
     collectionChampionId = value.id.toString();
     dataAnalysisModel = DataAnalysisModel.fromJson(value.data());
     startLoadingChampion();

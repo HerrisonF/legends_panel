@@ -99,7 +99,7 @@ class StatisticRune {
   }
 
   Map<String, dynamic> toJson() => {
-    'runeStyle' : perk.toJson(),
+    'perk' : perk.toJson(),
     'pickRate' : pickRate,
     'winRate' : winRate,
   };
@@ -180,7 +180,7 @@ class StatisticSpell {
   StatisticSpell();
 
   StatisticSpell.fromJson(Map<String, dynamic> json){
-    spell = json['spell'];
+    spell = Spell.fromJson(json['spell']);
   }
 
   Map<String, dynamic> toJson() => {

@@ -31,11 +31,17 @@ class DataAnalysisController {
   ) async {
     this.participant = participant;
     this.mapMode = mapMode;
-    if (_profileController.isUserGreaterThanGold() && isOnSoloRanked()) {
+    if (_profileController.isUserGreaterThanGold() && isOnSoloRanked() && championIsGreaterThanEighteen()) {
       gameTimeLineModel =
           await dataAnalysisRepository.getGameTimeLine(matchId, keyRegion);
       buildModelForAnalytics(gameTimeLineModel);
     }
+  }
+
+  static const MAX_LEVEL_CHAMPION = 18;
+
+  bool championIsGreaterThanEighteen(){
+    return participant.champLevel == MAX_LEVEL_CHAMPION;
   }
 
   bool isOnSoloRanked() {
