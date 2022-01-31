@@ -52,39 +52,195 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
         _championSkillTenToEighteen(9),
         _championPerksTitle(),
         _championPerks(),
+        _championItemTitle(),
+        _championItems(),
+        _championSpellTitle(),
+        _championSpells(),
       ],
     );
   }
 
-  _championPerks(){
+  _championSpellTitle(){
+    return Container(
+      child: Text("Spell"),
+    );
+  }
+
+  _championSpells(){
+    return Row(
+      children: [
+        Container(
+          margin: EdgeInsets.only(left: 5),
+          child: Image.network(
+            _championBuildBottomSheetController.getSpellUrl(
+                _championBuildBottomSheetController.dataAnalysisModel
+                    .statisticOnPosition.statisticSpell.spell.spellId1
+                    .toString()),
+            fit: BoxFit.cover,
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(left: 5),
+          child: Image.network(
+            _championBuildBottomSheetController.getSpellUrl(
+                _championBuildBottomSheetController.dataAnalysisModel
+                    .statisticOnPosition.statisticSpell.spell.spellId2
+                    .toString()),
+            fit: BoxFit.cover,
+          ),
+        )
+      ],
+    );
+  }
+
+  _championItemTitle() {
+    return Container(
+      child: Text("Items"),
+    );
+  }
+
+  _championItems() {
+    return Container(
+      height: 50,
+      width: MediaQuery.of(context).size.width,
+      child: ListView.builder(
+        itemCount: _championBuildBottomSheetController.dataAnalysisModel
+            .statisticOnPosition.statisticBuild.coreItems.items.length,
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          return Container(
+            margin: EdgeInsets.only(left: 5),
+            child: Image.network(
+              _championBuildBottomSheetController.getItemUrl(
+                  _championBuildBottomSheetController
+                      .dataAnalysisModel
+                      .statisticOnPosition
+                      .statisticBuild
+                      .coreItems
+                      .items[index]
+                      .id
+                      .toString()),
+              fit: BoxFit.cover,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  _championPerks() {
     return Column(
       children: [
         //Container(child: Text("domination"),),
         Row(
-            children: [
-              _roundedStyleContainer(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.styles[0].style.toString()),
-              _roundedPerkContainer(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.styles[0].selections[0].perk.toString()),
-              _roundedPerkContainer(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.styles[0].selections[1].perk.toString()),
-              _roundedPerkContainer(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.styles[0].selections[2].perk.toString()),
-              _roundedPerkContainer(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.styles[0].selections[3].perk.toString()),
-            ],
+          children: [
+            _roundedStyleContainer(_championBuildBottomSheetController
+                .dataAnalysisModel
+                .statisticOnPosition
+                .statisticRune
+                .perk
+                .styles[0]
+                .style
+                .toString()),
+            _roundedPerkContainer(_championBuildBottomSheetController
+                .dataAnalysisModel
+                .statisticOnPosition
+                .statisticRune
+                .perk
+                .styles[0]
+                .selections[0]
+                .perk
+                .toString()),
+            _roundedPerkContainer(_championBuildBottomSheetController
+                .dataAnalysisModel
+                .statisticOnPosition
+                .statisticRune
+                .perk
+                .styles[0]
+                .selections[1]
+                .perk
+                .toString()),
+            _roundedPerkContainer(_championBuildBottomSheetController
+                .dataAnalysisModel
+                .statisticOnPosition
+                .statisticRune
+                .perk
+                .styles[0]
+                .selections[2]
+                .perk
+                .toString()),
+            _roundedPerkContainer(_championBuildBottomSheetController
+                .dataAnalysisModel
+                .statisticOnPosition
+                .statisticRune
+                .perk
+                .styles[0]
+                .selections[3]
+                .perk
+                .toString()),
+          ],
         ),
         //Container(child: Text("precision"),),
         Row(
           children: [
-            _roundedStyleContainer(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.styles[1].style.toString()),
-            _roundedPerkContainer(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.styles[1].selections[0].perk.toString()),
-            _roundedPerkContainer(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.styles[1].selections[1].perk.toString()),
-            _roundedPerkShard(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.statPerks.offense.toString()),
-            _roundedPerkShard(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.statPerks.flex.toString()),
-            _roundedPerkShard(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.statPerks.defense.toString()),
+            _roundedStyleContainer(_championBuildBottomSheetController
+                .dataAnalysisModel
+                .statisticOnPosition
+                .statisticRune
+                .perk
+                .styles[1]
+                .style
+                .toString()),
+            _roundedPerkContainer(_championBuildBottomSheetController
+                .dataAnalysisModel
+                .statisticOnPosition
+                .statisticRune
+                .perk
+                .styles[1]
+                .selections[0]
+                .perk
+                .toString()),
+            _roundedPerkContainer(_championBuildBottomSheetController
+                .dataAnalysisModel
+                .statisticOnPosition
+                .statisticRune
+                .perk
+                .styles[1]
+                .selections[1]
+                .perk
+                .toString()),
+            _roundedPerkShard(_championBuildBottomSheetController
+                .dataAnalysisModel
+                .statisticOnPosition
+                .statisticRune
+                .perk
+                .statPerks
+                .offense
+                .toString()),
+            _roundedPerkShard(_championBuildBottomSheetController
+                .dataAnalysisModel
+                .statisticOnPosition
+                .statisticRune
+                .perk
+                .statPerks
+                .flex
+                .toString()),
+            _roundedPerkShard(_championBuildBottomSheetController
+                .dataAnalysisModel
+                .statisticOnPosition
+                .statisticRune
+                .perk
+                .statPerks
+                .defense
+                .toString()),
           ],
         ),
       ],
     );
   }
 
-  _roundedStyleContainer(String image){
+  _roundedStyleContainer(String image) {
     return Container(
       height: 30,
       width: 30,
@@ -99,7 +255,7 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
     );
   }
 
-  _roundedPerkShard(String image){
+  _roundedPerkShard(String image) {
     return Container(
       height: 30,
       width: 30,
@@ -114,7 +270,7 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
     );
   }
 
-  _roundedPerkContainer(String image){
+  _roundedPerkContainer(String image) {
     return Container(
       height: 30,
       width: 30,
@@ -129,14 +285,14 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
     );
   }
 
-  _championPerksTitle(){
+  _championPerksTitle() {
     return Container(
       margin: EdgeInsets.only(bottom: 15),
       child: Text("Perks"),
     );
   }
 
-  _championSkillTitle(){
+  _championSkillTitle() {
     return Container(
       margin: EdgeInsets.only(bottom: 15),
       child: Text("Ability order"),

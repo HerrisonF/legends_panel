@@ -74,12 +74,26 @@ class ChampionBuildBottomSheetController {
     }
   }
 
+  String getSpellUrl(String spellId) {
+    var spell = _masterController.getSpellById(spellId);
+    if (spell.name.isNotEmpty) {
+      return _buildPageController.buildPageRepository.getSpellBadgeUrl(
+          spell.id, _masterController.lolVersion.actualVersion);
+    } else {
+      return "";
+    }
+  }
+
   String getPerkStyleUrl(String perkStyle){
     return _buildPageController.buildPageRepository.getPerkStyleUrl(perkStyle);
   }
 
   String getPerkShard(String perkShard){
     return _buildPageController.buildPageRepository.getPerkShard(perkShard);
+  }
+
+  String getItemUrl(String itemId){
+    return _buildPageController.buildPageRepository.getItemUrl(itemId, _masterController.lolVersion.actualVersion);
   }
 
   String getPerk(String perk){

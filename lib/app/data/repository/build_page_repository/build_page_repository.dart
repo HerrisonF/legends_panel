@@ -21,12 +21,20 @@ class BuildPageRepository {
     return buildPageProvider.getPerkStyleUrl(perkStyle);
   }
 
+  String getSpellBadgeUrl(String spellName, String version){
+    return buildPageProvider.getSpellBadgeUrl(spellName, version);
+  }
+
   String getPerkUrl(String perk){
     return buildPageProvider.getPerkUrl(perk);
   }
 
   String getPerkShard(String perkShard){
     return buildPageProvider.getPerkShardUrl(perkShard);
+  }
+
+  String getItemUrl(String itemId, String version){
+    return buildPageProvider.getItemUrl(itemId, version);
   }
 
 }

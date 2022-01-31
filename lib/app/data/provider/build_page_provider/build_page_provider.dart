@@ -41,6 +41,28 @@ class BuildPageProvider {
     }
   }
 
+  String getSpellBadgeUrl(String spellName, String version){
+    final String path = "/cdn/$version/img/spell/$spellName.png";
+    _logger.i("building Image Spell Url ...");
+    try{
+      return RiotAndRawDragonUrls.riotDragonUrl + path;
+    }catch(e){
+      _logger.i("Error to build Spell Image URL ... $e");
+      return "";
+    }
+  }
+
+  String getItemUrl(String itemId, String version) {
+    final String path = "/cdn/$version/img/item/$itemId.png";
+    _logger.i("building Image Item URL...");
+    try{
+      return RiotAndRawDragonUrls.riotDragonUrl + path;
+    }catch(e){
+      _logger.i("Error to build Image Item Url $e");
+      return "";
+    }
+  }
+
   String getPerkUrl(String perk){
     final String path = "/images/lol/perk/$perk.png";
     _logger.i("building Image Perk Url ...");
