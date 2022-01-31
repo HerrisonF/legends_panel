@@ -59,29 +59,73 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
   _championPerks(){
     return Column(
       children: [
+        //Container(child: Text("domination"),),
         Row(
             children: [
-              _roundedContainer(""),
+              _roundedStyleContainer(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.styles[0].style.toString()),
+              _roundedPerkContainer(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.styles[0].selections[0].perk.toString()),
+              _roundedPerkContainer(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.styles[0].selections[1].perk.toString()),
+              _roundedPerkContainer(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.styles[0].selections[2].perk.toString()),
+              _roundedPerkContainer(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.styles[0].selections[3].perk.toString()),
             ],
         ),
+        //Container(child: Text("precision"),),
         Row(
           children: [
-            _roundedContainer(""),
+            _roundedStyleContainer(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.styles[1].style.toString()),
+            _roundedPerkContainer(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.styles[1].selections[0].perk.toString()),
+            _roundedPerkContainer(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.styles[1].selections[1].perk.toString()),
+            _roundedPerkShard(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.statPerks.offense.toString()),
+            _roundedPerkShard(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.statPerks.flex.toString()),
+            _roundedPerkShard(_championBuildBottomSheetController.dataAnalysisModel.statisticOnPosition.statisticRune.perk.statPerks.defense.toString()),
           ],
         ),
       ],
     );
   }
 
-  _roundedContainer(String image){
+  _roundedStyleContainer(String image){
     return Container(
       height: 30,
       width: 30,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(32),
-        color: Colors.green,
+        image: DecorationImage(
+          image: NetworkImage(
+            _championBuildBottomSheetController.getPerkStyleUrl(image),
+          ),
+        ),
       ),
-      child: Container(),
+    );
+  }
+
+  _roundedPerkShard(String image){
+    return Container(
+      height: 30,
+      width: 30,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(32),
+        image: DecorationImage(
+          image: NetworkImage(
+            _championBuildBottomSheetController.getPerkShard(image),
+          ),
+        ),
+      ),
+    );
+  }
+
+  _roundedPerkContainer(String image){
+    return Container(
+      height: 30,
+      width: 30,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(32),
+        image: DecorationImage(
+          image: NetworkImage(
+            _championBuildBottomSheetController.getPerk(image),
+          ),
+        ),
+      ),
     );
   }
 

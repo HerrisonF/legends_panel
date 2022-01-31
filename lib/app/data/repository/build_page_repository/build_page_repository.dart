@@ -17,4 +17,16 @@ class BuildPageRepository {
     return await buildPageProvider.getChampionForSpell(championName, version);
   }
 
+  String getPerkStyleUrl(String perkStyle){
+    return buildPageProvider.getPerkStyleUrl(perkStyle);
+  }
+
+  String getPerkUrl(String perk){
+    return buildPageProvider.getPerkUrl(perk);
+  }
+
+  String getPerkShard(String perkShard){
+    return buildPageProvider.getPerkShardUrl(perkShard);
+  }
+
 }

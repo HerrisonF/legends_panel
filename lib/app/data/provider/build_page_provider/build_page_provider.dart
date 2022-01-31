@@ -30,6 +30,39 @@ class BuildPageProvider {
     }
   }
 
+  String getPerkStyleUrl(String perkStyle){
+    final String path = "/images/lol/perkStyle/$perkStyle.png";
+    _logger.i("building Image Perk Style Url ...");
+    try{
+      return RiotAndRawDragonUrls.opGGUrl + path;
+    }catch(e){
+      _logger.i("Error to build Perk Style Image URL ...");
+      return "";
+    }
+  }
+
+  String getPerkUrl(String perk){
+    final String path = "/images/lol/perk/$perk.png";
+    _logger.i("building Image Perk Url ...");
+    try{
+      return RiotAndRawDragonUrls.opGGUrl + path;
+    }catch(e){
+      _logger.i("Error to build Perk Image URL ...");
+      return "";
+    }
+  }
+
+  String getPerkShardUrl(String perk){
+    final String path = "/images/lol/perkShard/$perk.png";
+    _logger.i("building Image Perk shard Url ...");
+    try{
+      return RiotAndRawDragonUrls.opGGUrl + path;
+    }catch(e){
+      _logger.i("Error to build Perk shard Image URL ...");
+      return "";
+    }
+  }
+
   Future<ChampionWithSpell> getChampionForSpell(String championName, String version) async{
     final String path = "/cdn/$version/data/en_US/champion/$championName.json";
     _logger.i("Getting champion spell json ...");

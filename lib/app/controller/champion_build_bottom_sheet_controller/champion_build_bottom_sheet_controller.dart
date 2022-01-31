@@ -74,6 +74,18 @@ class ChampionBuildBottomSheetController {
     }
   }
 
+  String getPerkStyleUrl(String perkStyle){
+    return _buildPageController.buildPageRepository.getPerkStyleUrl(perkStyle);
+  }
+
+  String getPerkShard(String perkShard){
+    return _buildPageController.buildPageRepository.getPerkShard(perkShard);
+  }
+
+  String getPerk(String perk){
+    return _buildPageController.buildPageRepository.getPerkUrl(perk);
+  }
+
   Champion _getChampion(String championId){
     return _masterController.getChampionById(championId);
   }
