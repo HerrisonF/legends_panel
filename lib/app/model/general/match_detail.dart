@@ -410,6 +410,11 @@ class Perk {
       });
     }
   }
+
+  Map<String, dynamic> toJson() => {
+    'statPerks' : statPerks.toJson(),
+    'styles' : styles.map((e) => e.toJson()).toList(),
+  };
 }
 
 class StatPerks {
@@ -424,6 +429,12 @@ class StatPerks {
     flex = json['flex'];
     offense = json['offense'];
   }
+
+  Map<String, dynamic> toJson() =>{
+    'defense' : defense,
+    'flex' : flex,
+    'offense': offense,
+  };
 }
 
 class GameStyle {
@@ -442,6 +453,12 @@ class GameStyle {
       });
     }
   }
+
+  Map<String, dynamic> toJson() =>{
+    'description' : description,
+    'style' : style,
+    'selections' : selections.map((e) => e.toJson()).toList(),
+  };
 }
 
 class Selection {
@@ -459,4 +476,10 @@ class Selection {
     var3 = json['var3'];
   }
 
+  Map<String, dynamic> toJson() => {
+    'perk' : perk,
+    'var1' : var1,
+    'var2' : var2,
+    'var3' : var3,
+  };
 }

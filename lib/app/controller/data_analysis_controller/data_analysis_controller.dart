@@ -49,7 +49,18 @@ class DataAnalysisController {
     setWinOrLose();
     setChampionPosition();
     setChampionBuild();
+    setRunes();
+    setSpells();
     saveDataOnFirebase();
+  }
+
+  setRunes(){
+    dataAnalysisModel.statisticOnPosition.statisticRune.perk = participant.perk;
+  }
+
+  setSpells(){
+    dataAnalysisModel.statisticOnPosition.statisticSpell.spell.spellId1 = participant.summoner1Id.toString();
+    dataAnalysisModel.statisticOnPosition.statisticSpell.spell.spellId2 = participant.summoner2Id.toString();
   }
 
   saveDataOnFirebase() {

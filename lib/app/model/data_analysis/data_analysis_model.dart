@@ -1,3 +1,5 @@
+import 'package:legends_panel/app/model/general/match_detail.dart';
+
 class DataAnalysisModel {
 
   String collectionChampionId = "";
@@ -6,8 +8,6 @@ class DataAnalysisModel {
   StatisticOnPosition statisticOnPosition = StatisticOnPosition();
 
   DataAnalysisModel();
-
-  //StatisticRune statisticRune = StatisticRune();
 
   DataAnalysisModel.fromJson(Map<String, dynamic> json){
     if(json["positions"] != null){
@@ -63,58 +63,47 @@ class AmountStatistic {
 class StatisticOnPosition {
   StatisticSkill statisticSkill = StatisticSkill();
 
-  //StatisticSpell statisticSpells = StatisticSpell();
+  StatisticSpell statisticSpell = StatisticSpell();
   StatisticBuild statisticBuild = StatisticBuild();
-
-  //StatisticRune statisticRune = StatisticRune();
+  StatisticRune statisticRune = StatisticRune();
 
   StatisticOnPosition();
 
   StatisticOnPosition.fromJson(Map<String, dynamic> json){
     statisticSkill = StatisticSkill.fromJson(json["statisticSkill"]);
     statisticBuild = StatisticBuild.fromJson(json["statisticBuild"]);
+    statisticRune = StatisticRune.fromJson(json['statisticRune']);
+    statisticSpell = StatisticSpell.fromJson(json['statisticSpell']);
   }
 
   Map<String, dynamic> toJson() =>
       {
         'statisticSkill': statisticSkill.toJson(),
         'statisticBuild': statisticBuild.toJson(),
+        'statisticRune' : statisticRune.toJson(),
+        'statisticSpell' : statisticSpell.toJson(),
       };
 }
 
-// class StatisticRune {
-//   RunesStyle option1 = RunesStyle();
-//   RunesStyle option2 = RunesStyle();
-//   double pickRateOption1 = 0;
-//   double winRateOption1 = 0;
-//   double pickRateOption2 = 0;
-//   double winRateOption2 = 0;
-//
-//   setPickRate(RunesStyle runesStyle, bool win){
-//     if(option1 == runesStyle){
-//       pickRateOption1++;
-//       if(win){
-//         winRateOption1++;
-//       }
-//     }
-//     if(option2 == runesStyle){
-//       if(win){
-//         winRateOption2++;
-//       }
-//     }
-//   }
-// }
-//
-// class RunesStyle{
-//   dynamic id = "";
-//   String key = "";
-//   String icon = "";
-//   String name = "";
-//   String shortDesc = "";
-//   String longDesc = "";
-//
-//   RunesStyle();
-// }
+class StatisticRune {
+  Perk perk = Perk();
+  double pickRate = 0;
+  double winRate = 0;
+
+  StatisticRune();
+
+  StatisticRune.fromJson(Map<String, dynamic> json){
+    perk = Perk.fromJson(json['perk']);
+    pickRate = json['pickRate'] ?? 0;
+    winRate = json['winRate'] ?? 0;
+  }
+
+  Map<String, dynamic> toJson() => {
+    'runeStyle' : perk.toJson(),
+    'pickRate' : pickRate,
+    'winRate' : winRate,
+  };
+}
 
 class StatisticBuild {
   //InitialItems initialItems = InitialItems();
@@ -185,32 +174,41 @@ class Item {
 //   ItemImage();
 // }
 
-// class StatisticSpell {
-//   List<SpellOption> spellOptions = [];
-// }
-//
-// class SpellOption {
-//   String spellId1 = "";
-//   String spellId2 = "";
-//   double pickRate = 0;
-//   double winRate = 0;
-//
-//   setPickRate(String spellId1, String spellId2){
-//     if(this.spellId1 == spellId1 && this.spellId2 == spellId2){
-//       pickRate ++;
-//     }
-//   }
-//
-//   setWinRate(bool win){
-//     if(win){
-//       winRate++;
-//     }
-//   }
-//
-// }
-//
+class StatisticSpell {
+  Spell spell = Spell();
+
+  StatisticSpell();
+
+  StatisticSpell.fromJson(Map<String, dynamic> json){
+    spell = json['spell'];
+  }
+
+  Map<String, dynamic> toJson() => {
+    'spell' : spell.toJson(),
+  };
+}
+
+class Spell {
+  String spellId1 = "";
+  String spellId2 = "";
+  double pickRate = 0;
+  double winRate = 0;
+
+  Spell();
+
+  Spell.fromJson(Map<String, dynamic> json){
+    spellId1 = json['spellId1'] ?? "";
+    spellId2 = json['spellId2'] ?? "";
+  }
+
+  Map<String, dynamic> toJson() => {
+    'spellId1' : spellId1,
+    'spellId2' : spellId2,
+  };
+
+}
+
 class StatisticSkill {
-  //List<Skill> firstThreeSkills = [];
   List<Skill> skillsOrder = [];
 
   StatisticSkill();
@@ -233,11 +231,6 @@ class Skill {
   String skillSlot = "";
 
   Skill();
-
-// String spellId = "";
-// String name = "";
-// String description = "";
-//SpellImage spellImage = SpellImage();
 
   Skill.fromJson(Map<String, dynamic> json){
     skillSlot = json["skillSlot"] ?? "";
