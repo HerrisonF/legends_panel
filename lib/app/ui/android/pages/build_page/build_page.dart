@@ -103,8 +103,9 @@ class _BuildPageState extends State<BuildPage> {
 
   championImageOrLoading(int index) {
     return InkWell(
-      onTap: (){
-        _openBottomSheet(_buildPageController.searchedChampion[index].detail.key);
+      onTap: () {
+        _openBottomSheet(
+            _buildPageController.searchedChampion[index].detail.key);
       },
       child: Column(
         children: [
@@ -128,9 +129,7 @@ class _BuildPageState extends State<BuildPage> {
           Container(
             child: Text(
               _buildPageController.searchedChampion[index].detail.name,
-              style: TextStyle(
-                fontSize: 10
-              ),
+              style: TextStyle(fontSize: 10),
             ),
           )
         ],
@@ -138,9 +137,19 @@ class _BuildPageState extends State<BuildPage> {
     );
   }
 
-  _openBottomSheet(String championKey){
-    showModalBottomSheet(context: context, builder: (_){
-      return ChampionBuildBottomSheet(championId: championKey);
-    });
+  _openBottomSheet(String championKey) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: const Radius.circular(20),
+          topRight: const Radius.circular(20),
+        ),
+      ),
+      builder: (_) {
+        return ChampionBuildBottomSheet(championId: championKey);
+      },
+    );
   }
 }

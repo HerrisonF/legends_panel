@@ -1,228 +1,184 @@
 import 'package:legends_panel/app/model/general/match_detail.dart';
 
-class DataAnalysisModel {
+class ChampionStatistic {
+  String championId = "";
+  List<PositionData> positions = [];
 
-  String collectionChampionId = "";
-  List<String> positions = [];
-  AmountStatistic amountWinLoseStatistic = AmountStatistic();
-  StatisticOnPosition statisticOnPosition = StatisticOnPosition();
+  ChampionStatistic();
 
-  DataAnalysisModel();
-
-  DataAnalysisModel.fromJson(Map<String, dynamic> json){
-    if(json["positions"] != null){
-      json["positions"].forEach((element){
-        positions.add(element);
+  ChampionStatistic.fromJson(Map<String, dynamic> json) {
+    if (json["positions"] != null) {
+      json["positions"].forEach((element) {
+        positions.add(PositionData.fromJson(element));
       });
     }
-    amountWinLoseStatistic = AmountStatistic.fromJson(json["amountWinLoseStatistic"]);
-    statisticOnPosition = StatisticOnPosition.fromJson(json["statisticOnPosition"]);
-  }
-
-  Map<String, dynamic> toJson() =>
-      {
-        'positions': positions.map((e) => e.toString()).toList(),
-        'amountWinLoseStatistic': amountWinLoseStatistic.toJson(),
-        'statisticOnPosition': statisticOnPosition.toJson(),
-      };
-
-}
-
-class AmountStatistic {
-  int total = 0;
-  int amountWin = 0;
-  int amountLoss = 0;
-
-  //String againstChampId = "";
-
-  AmountStatistic();
-
-  setWinOrLose(bool win) {
-    if (win) {
-      this.amountWin++;
-    } else {
-      this.amountLoss++;
-    }
-    total ++;
-  }
-
-  AmountStatistic.fromJson(Map<String, dynamic> json){
-    total = json["total"] ?? 0;
-    amountWin = json["amountWin"] ?? 0;
-    amountLoss = json["amountLoss"] ?? 0;
-  }
-
-  Map<String, dynamic> toJson() =>
-      {
-        'total': total,
-        'amountWin': amountWin,
-        'amountLoss': amountLoss,
-      };
-}
-
-class StatisticOnPosition {
-  StatisticSkill statisticSkill = StatisticSkill();
-
-  StatisticSpell statisticSpell = StatisticSpell();
-  StatisticBuild statisticBuild = StatisticBuild();
-  StatisticRune statisticRune = StatisticRune();
-
-  StatisticOnPosition();
-
-  StatisticOnPosition.fromJson(Map<String, dynamic> json){
-    statisticSkill = StatisticSkill.fromJson(json["statisticSkill"]);
-    statisticBuild = StatisticBuild.fromJson(json["statisticBuild"]);
-    statisticRune = StatisticRune.fromJson(json['statisticRune']);
-    statisticSpell = StatisticSpell.fromJson(json['statisticSpell']);
-  }
-
-  Map<String, dynamic> toJson() =>
-      {
-        'statisticSkill': statisticSkill.toJson(),
-        'statisticBuild': statisticBuild.toJson(),
-        'statisticRune' : statisticRune.toJson(),
-        'statisticSpell' : statisticSpell.toJson(),
-      };
-}
-
-class StatisticRune {
-  Perk perk = Perk();
-  double pickRate = 0;
-  double winRate = 0;
-
-  StatisticRune();
-
-  StatisticRune.fromJson(Map<String, dynamic> json){
-    perk = Perk.fromJson(json['perk']);
-    pickRate = json['pickRate'] ?? 0;
-    winRate = json['winRate'] ?? 0;
+    championId = json['championId'] ?? "";
   }
 
   Map<String, dynamic> toJson() => {
-    'perk' : perk.toJson(),
-    'pickRate' : pickRate,
-    'winRate' : winRate,
-  };
-}
-
-class StatisticBuild {
-  //InitialItems initialItems = InitialItems();
-  CoreItems coreItems = CoreItems();
-
-  //Boots boots = Boots();
-
-  StatisticBuild();
-
-  StatisticBuild.fromJson(Map<String, dynamic> json){
-    coreItems = CoreItems.fromJson(json["coreItems"]);
-  }
-
-  Map<String, dynamic> toJson() =>
-      {
-        'coreItems': coreItems.toJson(),
+        'positions': positions.map((e) => e.toJson()).toList(),
+        'championId': championId,
       };
 }
 
-// class InitialItems {
-//   List<Item> items = [];
-// }
+class PositionData {
+  String name = "";
+  int amountPick = 0;
+  List<BuildOnPosition> builds = [];
 
-class CoreItems {
+  PositionData.fromJson(Map<String, dynamic> json) {
+    name = json['name'] ?? "";
+    amountPick = json['amountPick'] ?? 0;
+    if (json["builds"] != null) {
+      json["builds"].forEach((element) {
+        builds.add(BuildOnPosition.fromJson(element));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() => {
+        'builds': builds.map((e) => e.toJson()).toList(),
+        'name': name,
+        'amountPick': amountPick,
+      };
+
+  PositionData();
+}
+
+class BuildOnPosition {
+  String identify = "";
+  int amountPick = 0;
+  int amountWin = 0;
+  SelectedSkill selectedSkill = SelectedSkill();
+  SelectedSpell selectedSpell = SelectedSpell();
+  SelectedBuild selectedBuild = SelectedBuild();
+  SelectedRune selectedRune = SelectedRune();
+
+  BuildOnPosition();
+
+  BuildOnPosition.fromJson(Map<String, dynamic> json) {
+    selectedSkill = SelectedSkill.fromJson(json["selectedSkill"]);
+    selectedBuild = SelectedBuild.fromJson(json["selectedBuild"]);
+    selectedRune = SelectedRune.fromJson(json['selectedRune']);
+    selectedSpell = SelectedSpell.fromJson(json['selectedSpell']);
+    amountPick = json['amountPick'] ?? 0;
+    amountWin = json['amountWin'] ?? 0;
+  }
+
+  Map<String, dynamic> toJson() => {
+        'selectedSkill': selectedSkill.toJson(),
+        'selectedSpell': selectedSpell.toJson(),
+        'selectedBuild': selectedBuild.toJson(),
+        'selectedRune': selectedRune.toJson(),
+        'amountPick': amountPick,
+        'amountWin': amountWin,
+      };
+}
+
+class SelectedRune {
+  Perk perk = Perk();
+
+  SelectedRune();
+
+  SelectedRune.fromJson(Map<String, dynamic> json) {
+    perk = Perk.fromJson(json['perk']);
+  }
+
+  Map<String, dynamic> toJson() => {
+        'perk': perk.toJson(),
+      };
+}
+
+class SelectedBuild {
+  SelectedItems selectedItems = SelectedItems();
+  SelectedBuild();
+
+  SelectedBuild.fromJson(Map<String, dynamic> json) {
+    selectedItems = SelectedItems.fromJson(json["selectedItems"]);
+  }
+
+  Map<String, dynamic> toJson() => {
+        'selectedItems': selectedItems.toJson(),
+      };
+}
+
+class SelectedItems {
   List<Item> items = [];
 
-  CoreItems();
+  SelectedItems();
 
-  CoreItems.fromJson(Map<String, dynamic> json){
-    if(json["items"] != null){
-      json["items"].forEach((element){
+  SelectedItems.fromJson(Map<String, dynamic> json) {
+    if (json["items"] != null) {
+      json["items"].forEach((element) {
         items.add(Item.fromJson(element));
       });
     }
   }
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'items': items.map((e) => e.toJson()).toList(),
       };
 }
-
-// class Boots {
-//   Item items = Item();
-// }
 
 class Item {
   String id = "";
 
   Item();
 
-  Item.fromJson(Map<String, dynamic> json){
+  Item.fromJson(Map<String, dynamic> json) {
     id = json["id"] ?? "";
   }
 
-  // String name = "";
-  // String description = "";
-  // ItemImage image = ItemImage();
-
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'id': id,
       };
 }
 
-// class ItemImage {
-//   String full = "";
-//   ItemImage();
-// }
-
-class StatisticSpell {
+class SelectedSpell {
   Spell spell = Spell();
 
-  StatisticSpell();
+  SelectedSpell();
 
-  StatisticSpell.fromJson(Map<String, dynamic> json){
+  SelectedSpell.fromJson(Map<String, dynamic> json) {
     spell = Spell.fromJson(json['spell']);
   }
 
   Map<String, dynamic> toJson() => {
-    'spell' : spell.toJson(),
-  };
+        'spell': spell.toJson(),
+      };
 }
 
 class Spell {
   String spellId1 = "";
   String spellId2 = "";
-  double pickRate = 0;
-  double winRate = 0;
 
   Spell();
 
-  Spell.fromJson(Map<String, dynamic> json){
+  Spell.fromJson(Map<String, dynamic> json) {
     spellId1 = json['spellId1'] ?? "";
     spellId2 = json['spellId2'] ?? "";
   }
 
   Map<String, dynamic> toJson() => {
-    'spellId1' : spellId1,
-    'spellId2' : spellId2,
-  };
-
+        'spellId1': spellId1,
+        'spellId2': spellId2,
+      };
 }
 
-class StatisticSkill {
+class SelectedSkill {
   List<Skill> skillsOrder = [];
 
-  StatisticSkill();
+  SelectedSkill();
 
-  StatisticSkill.fromJson(Map<String, dynamic> json){
-    if(json["skillsOrder"] != null){
-      json["skillsOrder"].forEach((element){
+  SelectedSkill.fromJson(Map<String, dynamic> json) {
+    if (json["skillsOrder"] != null) {
+      json["skillsOrder"].forEach((element) {
         skillsOrder.add(Skill.fromJson(element));
       });
     }
   }
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'skillsOrder': skillsOrder.map((e) => e.toJson()).toList(),
       };
 }
@@ -232,18 +188,11 @@ class Skill {
 
   Skill();
 
-  Skill.fromJson(Map<String, dynamic> json){
+  Skill.fromJson(Map<String, dynamic> json) {
     skillSlot = json["skillSlot"] ?? "";
   }
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'skillSlot': skillSlot,
       };
 }
-//
-// class SpellImage {
-//   String full = "";
-//
-//   SpellImage();
-// }

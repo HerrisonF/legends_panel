@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
 import 'package:legends_panel/app/data/repository/data_analysis_repository/data_analysis_repository.dart';
 import 'package:legends_panel/app/model/data_analysis/data_analysis_model.dart';
@@ -14,14 +13,20 @@ class DataAnalysisController {
   Participant participant = Participant();
   DataAnalysisRepository dataAnalysisRepository = DataAnalysisRepository();
   GameTimeLineModel gameTimeLineModel = GameTimeLineModel();
-  DataAnalysisModel dataAnalysisModel = DataAnalysisModel();
+
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  ChampionStatistic championStatistic = ChampionStatistic();
+
+  BuildOnPosition buildOnPosition = BuildOnPosition();
+
   String participantIdOnTimeLine = "";
   MapMode mapMode = MapMode();
 
   ParticipantAndEvent participantAndEvents = ParticipantAndEvent();
 
   final ProfileController _profileController = Get.find<ProfileController>();
-  final MasterController _masterController = Get.find<MasterController>();
+  //final MasterController _masterController = Get.find<MasterController>();
 
   getGameTimeLine(
     String matchId,
@@ -31,17 +36,19 @@ class DataAnalysisController {
   ) async {
     this.participant = participant;
     this.mapMode = mapMode;
-    if (_profileController.isUserGreaterThanGold() && isOnSoloRanked() && championIsGreaterThanEighteen()) {
+    if (_profileController.isUserGreaterThanGold() &&
+        isOnSoloRanked() &&
+        championIsGreaterThanEighteen()) {
       gameTimeLineModel =
           await dataAnalysisRepository.getGameTimeLine(matchId, keyRegion);
       buildModelForAnalytics(gameTimeLineModel);
     }
   }
 
-  static const MAX_LEVEL_CHAMPION = 18;
+  static const MAX_LEVEL_CHAMPION = 17;
 
-  bool championIsGreaterThanEighteen(){
-    return participant.champLevel == MAX_LEVEL_CHAMPION;
+  bool championIsGreaterThanEighteen() {
+    return participant.champLevel >= MAX_LEVEL_CHAMPION;
   }
 
   bool isOnSoloRanked() {
@@ -49,39 +56,211 @@ class DataAnalysisController {
   }
 
   buildModelForAnalytics(GameTimeLineModel gameTimeLineModel) {
+    cleanCache();
     participantIdOnTimeLine = getParticipantIdOnTimeLineByPUUID(participant);
-    setGameFrames();
-    setChampion();
-    setWinOrLose();
-    setChampionPosition();
+    setGameFrames(); // procura os frames desse participante
     setChampionBuild();
     setRunes();
     setSpells();
-    saveDataOnFirebase();
+    lookOnCloudForChampion();
   }
 
-  setRunes(){
-    dataAnalysisModel.statisticOnPosition.statisticRune.perk = participant.perk;
+  cleanCache(){
+    championStatistic = ChampionStatistic();
+    buildOnPosition = BuildOnPosition();
+    String participantIdOnTimeLine = "";
   }
 
-  setSpells(){
-    dataAnalysisModel.statisticOnPosition.statisticSpell.spell.spellId1 = participant.summoner1Id.toString();
-    dataAnalysisModel.statisticOnPosition.statisticSpell.spell.spellId2 = participant.summoner2Id.toString();
-  }
-
-  saveDataOnFirebase() {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
+  lookOnCloudForChampion() {
     CollectionReference champions = firestore.collection('champions');
-    //agora preciso verificar na arvore o id do champion e verificar se o champion que está
-    //sendo buildado é o mesmo recuperado para poder concatenar valores ou criar um novo
-    addChampion(champions);
+    champions
+        .doc(participant.championId.toString())
+        .get()
+        .then((champValue) => checkPositionsToAddStatistic(champValue))
+        .catchError((error) => print("Failed to get champions: $error"));
   }
 
-  Future<void> addChampion(CollectionReference champions) {
-    return champions.doc(dataAnalysisModel.collectionChampionId.toString()).set
-        (dataAnalysisModel.toJson())
-        .then((value) => print("Champion Adicionado"))
-        .catchError((error) => print("Failed to add champion: $error"));
+  checkPositionsToAddStatistic(var champValue) {
+    if (champValue.data() != null) {
+      championStatistic = ChampionStatistic.fromJson(champValue.data());
+      bool hasPosition = false;
+      for (int i = 0; i < championStatistic.positions.length - 1; i++) {
+        if (championStatistic.positions[i].name.toLowerCase() ==
+            participant.individualPosition.toString().toLowerCase()) {
+          championStatistic.positions[i].amountPick++;
+          hasPosition = true;
+          _checkBuildIsIdentical(i);
+        }
+      }
+      if (!hasPosition) {
+        PositionData positionData = PositionData();
+        positionData.name =
+            participant.individualPosition.toString().toLowerCase();
+        positionData.amountPick = 1;
+        buildOnPosition.amountPick++;
+        if(participant.win){
+          buildOnPosition.amountWin++;
+        }
+        positionData.builds.add(buildOnPosition);
+        championStatistic.championId = participant.championId.toString();
+        championStatistic.positions.add(positionData);
+      }
+    } else {
+      PositionData positionData = PositionData();
+      positionData.name =
+          participant.individualPosition.toString().toLowerCase();
+      positionData.amountPick = 1;
+      buildOnPosition.amountPick++;
+      if(participant.win){
+        buildOnPosition.amountWin++;
+      }
+      positionData.builds.add(buildOnPosition);
+      championStatistic.championId = participant.championId.toString();
+      championStatistic.positions.add(positionData);
+    }
+    _saveBuild();
+  }
+
+  _saveBuild() {
+    CollectionReference champions = firestore.collection('champions');
+    champions
+        .doc(participant.championId.toString())
+        .set(championStatistic.toJson())
+        .then((value) => print("Champion salvo"))
+        .onError((error, stackTrace) => print("erro ao salvar champion"));
+  }
+
+  _checkBuildIsIdentical(int index) {
+    bool hasOneIdentical = false;
+    for (int i = 0; i < championStatistic.positions[index].builds.length - 1; i++) {
+      if (isDataIdentical(
+          buildOnPosition, championStatistic.positions[index].builds[i])) {
+        hasOneIdentical = true;
+        _incrementCountBuildValueAndSave(index, i);
+      }
+    }
+    if (!hasOneIdentical) {
+      championStatistic.positions[index].builds.add(buildOnPosition);
+    }
+  }
+
+  _incrementCountBuildValueAndSave(int index, index2) {
+    championStatistic.positions[index].builds[index2].amountPick++;
+    if(participant.win){
+      championStatistic.positions[index].builds[index2].amountWin++;
+    }
+  }
+
+  setRunes() {
+    buildOnPosition.selectedRune.perk = participant.perk;
+  }
+
+  setSpells() {
+    buildOnPosition.selectedSpell.spell.spellId1 =
+        participant.summoner1Id.toString();
+    buildOnPosition.selectedSpell.spell.spellId2 =
+        participant.summoner2Id.toString();
+  }
+
+  bool isDataIdentical(
+      BuildOnPosition localChampion, BuildOnPosition cloudChampion) {
+    bool isIdentical = true;
+    if (localChampion.selectedSpell.spell.spellId1 !=
+        cloudChampion.selectedSpell.spell.spellId1) {
+      print(
+          "A spellId1 difere ${localChampion.selectedSpell.spell.spellId1} - ${cloudChampion.selectedSpell.spell.spellId1}");
+      isIdentical = false;
+    }
+
+    if (localChampion.selectedSpell.spell.spellId2 !=
+        cloudChampion.selectedSpell.spell.spellId2) {
+      print(
+          "A spellId2 difere ${localChampion.selectedSpell.spell.spellId2} - ${cloudChampion.selectedSpell.spell.spellId2}");
+      isIdentical = false;
+    }
+
+    if (localChampion.selectedRune.perk.statPerks.defense !=
+        cloudChampion.selectedRune.perk.statPerks.defense) {
+      print(
+          "A perk de defense difere ${localChampion.selectedRune.perk.statPerks.defense} - ${cloudChampion.selectedRune.perk.statPerks.defense}");
+      isIdentical = false;
+    }
+    if (localChampion.selectedRune.perk.statPerks.flex !=
+        cloudChampion.selectedRune.perk.statPerks.flex) {
+      print(
+          "A perk de flex difere ${localChampion.selectedRune.perk.statPerks.flex} - ${cloudChampion.selectedRune.perk.statPerks.flex}");
+      isIdentical = false;
+    }
+
+    if (localChampion.selectedRune.perk.statPerks.offense !=
+        localChampion.selectedRune.perk.statPerks.offense) {
+      print(
+          "A perk de offense difere ${localChampion.selectedRune.perk.statPerks.offense} - ${localChampion.selectedRune.perk.statPerks.offense}");
+      isIdentical = false;
+    }
+
+    for (int i = 0; i < localChampion.selectedRune.perk.styles.length; i++) {
+      if (localChampion.selectedRune.perk.styles[i].style !=
+          cloudChampion.selectedRune.perk.styles[i].style) {
+        print(
+            "Style difere ${localChampion.selectedRune.perk.styles[i].style}  - ${cloudChampion.selectedRune.perk.styles[i].style}");
+        isIdentical = false;
+      }
+      for (int i = 0;
+          i < localChampion.selectedRune.perk.styles[i].selections.length - 1;
+          i++) {
+        if (localChampion.selectedRune.perk.styles[i].selections[i].perk !=
+            cloudChampion.selectedRune.perk.styles[i].selections[i].perk) {
+          print(
+              "Selections perk difere ${localChampion.selectedRune.perk.styles[i].selections[i].perk}  - ${cloudChampion.selectedRune.perk.styles[i].selections[i].perk} ");
+          isIdentical = false;
+        }
+        if (localChampion.selectedRune.perk.styles[i].selections[i].var1 !=
+            cloudChampion.selectedRune.perk.styles[i].selections[i].var1) {
+          print(
+              "Selections var1 difere ${localChampion.selectedRune.perk.styles[i].selections[i].var1}  - ${cloudChampion.selectedRune.perk.styles[i].selections[i].var1}");
+          isIdentical = false;
+        }
+        if (localChampion.selectedRune.perk.styles[i].selections[i].var2 !=
+            cloudChampion.selectedRune.perk.styles[i].selections[i].var2) {
+          print(
+              "Selections var2 difere ${localChampion.selectedRune.perk.styles[i].selections[i].var2}  - ${cloudChampion.selectedRune.perk.styles[i].selections[i].var2} ");
+          isIdentical = false;
+        }
+        if (localChampion.selectedRune.perk.styles[i].selections[i].var3 !=
+            cloudChampion.selectedRune.perk.styles[i].selections[i].var3) {
+          print(
+              "Selections var3 difere ${localChampion.selectedRune.perk.styles[i].selections[i].var3}  - ${cloudChampion.selectedRune.perk.styles[i].selections[i].var3} ");
+          isIdentical = false;
+        }
+      }
+    }
+
+    // obs: as skills podem diferenciar conforme o jogo, mas nem sempre a build.
+    // isso é importante para verificar que talvez os dados tenham q ser mais
+    // independentes um do outro
+
+    for (int i = 0; i < localChampion.selectedSkill.skillsOrder.length; i++) {
+      if (localChampion.selectedSkill.skillsOrder[i].skillSlot !=
+          cloudChampion.selectedSkill.skillsOrder[i].skillSlot) {
+        print(
+            "A skill $i difere ${localChampion.selectedSkill.skillsOrder[i].skillSlot}  - ${cloudChampion.selectedSkill.skillsOrder[i].skillSlot}");
+        isIdentical = false;
+      }
+    }
+
+    for (int i = 0;
+        i < localChampion.selectedBuild.selectedItems.items.length;
+        i++) {
+      if (localChampion.selectedBuild.selectedItems.items[i].id !=
+          cloudChampion.selectedBuild.selectedItems.items[i].id) {
+        print(
+            "O item $i difere ${localChampion.selectedBuild.selectedItems.items[i].id}  - ${cloudChampion.selectedBuild.selectedItems.items[i].id}");
+        isIdentical = false;
+      }
+    }
+
+    return isIdentical;
   }
 
   setChampionBuild() {
@@ -91,34 +270,18 @@ class DataAnalysisController {
       if (gameEvent.boughtItem()) {
         Item item = Item();
         item.id = gameEvent.itemId.toString();
-        var itemTemp = dataAnalysisModel
-            .statisticOnPosition.statisticBuild.coreItems.items
+        var itemTemp = buildOnPosition.selectedBuild.selectedItems.items
             .where((element) => element.id.toString() == item.id.toString());
         if (itemTemp.length > 0) {
         } else {
-          dataAnalysisModel.statisticOnPosition.statisticBuild.coreItems.items
-              .add(item);
+          buildOnPosition.selectedBuild.selectedItems.items.add(item);
         }
       }
       if (gameEvent.levelUp()) {
         Skill skill = Skill();
         skill.skillSlot = gameEvent.skillSlot.toString();
-        dataAnalysisModel.statisticOnPosition.statisticSkill.skillsOrder
-            .add(skill);
+        buildOnPosition.selectedSkill.skillsOrder.add(skill);
       }
-    }
-  }
-
-  setWinOrLose() {
-    dataAnalysisModel.amountWinLoseStatistic.setWinOrLose(participant.win);
-  }
-
-  setChampionPosition() {
-    var positions = dataAnalysisModel.positions.where((element) =>
-        element.toLowerCase() == participant.individualPosition.toString().toLowerCase());
-    if (positions.length > 0) {
-    } else {
-      dataAnalysisModel.positions.add(participant.individualPosition);
     }
   }
 
@@ -127,6 +290,7 @@ class DataAnalysisController {
       var participant = frame.participantFrames.where((element) =>
           element.participantId.toString() ==
           participantIdOnTimeLine.toString());
+
       var event = frame.events.where((element) =>
           element.participantId.toString() ==
           participantIdOnTimeLine.toString());
@@ -138,10 +302,6 @@ class DataAnalysisController {
         participantAndEvents.gameEvent.addAll(event);
       }
     }
-  }
-
-  setChampion() {
-    dataAnalysisModel.collectionChampionId = participant.championId.toString();
   }
 
   String getParticipantIdOnTimeLineByPUUID(Participant participant) {

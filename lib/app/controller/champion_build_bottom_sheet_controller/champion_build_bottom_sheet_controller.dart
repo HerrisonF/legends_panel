@@ -12,7 +12,7 @@ class ChampionBuildBottomSheetController {
 
   String collectionChampionId = "";
 
-  DataAnalysisModel dataAnalysisModel = DataAnalysisModel();
+  ChampionStatistic championStatistic = ChampionStatistic();
 
   ChampionWithSpell championWithSpell = ChampionWithSpell();
 
@@ -107,7 +107,12 @@ class ChampionBuildBottomSheetController {
   transformJson(var value) async {
     stopLoading();
     collectionChampionId = value.id.toString();
-    dataAnalysisModel = DataAnalysisModel.fromJson(value.data());
+    championStatistic = ChampionStatistic.fromJson(value.data());
+    championStatistic.positions.sort((a, b) => a.amountPick.compareTo(b.amountPick));
+    championStatistic.positions[0].builds.sort((a, b) => a.amountPick.compareTo(b.amountPick));
+    if(championStatistic.positions.length > 1) {
+      championStatistic.positions[1].builds.sort((a, b) => a.amountPick.compareTo(b.amountPick));
+    }
     startLoadingChampion();
     await getChampionForSpell(collectionChampionId);
   }
