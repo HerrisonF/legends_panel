@@ -3,104 +3,128 @@
   "@language": {
     "description": "The current Language"
   },
-  "appNameTitle" : "Watch",
+  "appNameTitle": "Watch",
   "@appNameTitle": {
     "description": "Watch"
   },
-  "appNameSubTitle" : "Summoner",
+  "appNameSubTitle": "Summoner",
   "@appNameSubTitle": {
     "description": "Summoner"
   },
-  "titleCurrentGamePage" : "See a game in progress",
+  "titleCurrentGamePage": "See a game in progress",
   "@titleCurrentGamePage": {
     "description": "See a game in progress"
   },
-  "titleProfilePage" : "Search for a profile",
+  "titleProfilePage": "Search for a profile",
   "@titleProfilePage": {
     "description": "Search for a profile"
   },
-  "hintSummonerName" : "Summoner's name",
+  "hintSummonerName": "Summoner's name",
   "@hintSummonerName": {
     "description": "Summoner's name"
   },
-  "inputValidatorHome" : "This Field is Mandatory !",
+  "inputValidatorHome": "This Field is Mandatory !",
   "@inputValidatorHome": {
     "description": "This Field is Mandatory !"
   },
-  "buttonMessageSearch" : "Search",
+  "buttonMessageSearch": "Search",
   "@buttonMessageSearch": {
     "description": "Search"
   },
-  "buttonMessageUserNotFound" : "User not found !",
+  "buttonMessageUserNotFound": "User not found !",
   "@buttonMessageUserNotFound": {
     "description": "User not found !"
   },
-  "buttonMessageGameNotFound" : "That summoner isn't playing !",
+  "buttonMessageGameNotFound": "That summoner isn't playing !",
   "@buttonMessageGameNotFound": {
     "description": "That summoner isn't playing !"
   },
-  "loadingMessage" : "Looking for the player",
+  "loadingMessage": "Looking for the player",
   "@loadingMessage": {
     "description": "Looking for the player"
   },
-  "level" : "Level",
+  "level": "Level",
   "@level": {
     "description": "Level"
   },
-  "victory" : "Wins",
+  "victory": "Wins",
   "@victory": {
     "description": "Wins"
   },
-  "lose" : "Losses",
+  "lose": "Losses",
   "@lose": {
     "description": "Losses"
   },
-  "development" : "Do you like the application and have Brave Browser ? You can help me going to GIT and donating BATs :)",
+  "development": "Do you like the application and have Brave Browser ? You can help me going to GIT and donating BATs :)",
   "@development": {
     "description": "An experimental app beeing developed by"
   },
-  "gitInstall" : "We got problems to open Git !",
+  "gitInstall": "We got problems to open Git !",
   "@gitInstall": {
     "description": "We got problems to open Git !"
   },
-  "userFound" : "We found you ! ",
+  "userFound": "We found you ! ",
   "@userFound": {
     "description": "We found you ! "
   },
-  "searching" : "Searching ",
+  "searching": "Searching ",
   "@searching": {
     "description": "Searching "
   },
-  "gameDefeat" : "Defeat",
+  "gameDefeat": "Defeat",
   "@gameDefeat": {
     "description": "Defeat"
   },
-  "gameDefeatedBlueTeam" : "Blue team defeated",
+  "gameDefeatedBlueTeam": "Blue team defeated",
   "@gameDefeatedBlueTeam": {
     "description": "Blue team defeated"
   },
-  "gameDefeatedRedTeam" : "Red team defeated",
+  "gameDefeatedRedTeam": "Red team defeated",
   "@gameDefeatedRedTeam": {
     "description": "Red team defeated"
   },
-  "gameVictory" : "Victory",
+  "gameVictory": "Victory",
   "@gameVictory": {
     "description": "Victory"
   },
-  "gameVictoriousBlueTeam" : "Victorious blue team",
+  "gameVictoriousBlueTeam": "Victorious blue team",
   "@gameVictoriousBlueTeam": {
     "description": "victorious"
   },
-  "gameVictoriousRedTeam" : "Victorious red team",
+  "gameVictoriousRedTeam": "Victorious red team",
   "@gameVictoriousRedTeam": {
     "description": "victorious"
   },
-  "bans" : "Bans",
+  "bans": "Bans",
   "@bans": {
     "description": "Bans"
   },
-  "favoriteUsers" : "Your favorite users will be here",
+  "favoriteUsers": "Your favorite users will be here",
   "@favoriteUsers": {
-    "description" : "Your favorite users will be here"
+    "description": "Your favorite users will be here"
+  },
+  "buildPageTitle": "Look for builds clicking on champions",
+  "@buildPageTitle": {
+    "description": "Look for builds clicking on champions"
+  },
+  "championName": "Champion's name",
+  "@championName": {
+    "description": "champion's name"
+  },
+  "noBuildChampion": "No data for this champion yet",
+  "@noBuildChampion": {
+    "description": "No data for this champion yet"
+  },
+  "spell": "Spell",
+  "@spell": {
+    "descriptions" : "Spell"
+  },
+  "perk": "Runes",
+  "@perk" : {
+    "description" : "Spell"
+  },
+  "abilityOrder": "Ability order",
+  "@abilityOrder" : {
+    "description" : "Ability order"
   }
 }

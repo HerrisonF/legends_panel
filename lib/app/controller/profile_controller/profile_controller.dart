@@ -171,7 +171,7 @@ class ProfileController {
   String getCircularChampionImage(int championId) {
     String returnedChampion =
         _masterController.getChampionById(championId.toString()).detail.id.toString();
-    return _profileRepository.getCircularChampionImage(returnedChampion);
+    return _profileRepository.getCircularChampionImage(returnedChampion, _masterController.lolVersion.actualVersion);
   }
 
   String getMasteryImage(int index) {

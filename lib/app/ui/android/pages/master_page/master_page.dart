@@ -64,7 +64,7 @@ class MasterPage extends StatelessWidget {
   customIconButton(BuildContext context, int selectedIcon, IconData icon) {
     return IconButton(
       onPressed: () {
-        _masterController.changeCurrentPageIndex(selectedIcon);
+        _masterController.changeCurrentPageIndex(selectedIcon, context);
       },
       icon: Icon(
         icon,

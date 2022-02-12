@@ -34,6 +34,7 @@ class DataAnalysisController {
     Participant participant,
     MapMode mapMode,
   ) async {
+    clean();
     this.participant = participant;
     this.mapMode = mapMode;
     if (_profileController.isUserGreaterThanGold() &&
@@ -43,6 +44,16 @@ class DataAnalysisController {
           await dataAnalysisRepository.getGameTimeLine(matchId, keyRegion);
       buildModelForAnalytics(gameTimeLineModel);
     }
+  }
+
+  clean(){
+    participant = Participant();
+    gameTimeLineModel = GameTimeLineModel();
+    championStatistic = ChampionStatistic();
+    buildOnPosition = BuildOnPosition();
+    participantIdOnTimeLine = "";
+    mapMode = MapMode();
+    participantAndEvents = ParticipantAndEvent();
   }
 
   static const MAX_LEVEL_CHAMPION = 17;

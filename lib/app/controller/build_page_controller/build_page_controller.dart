@@ -4,7 +4,6 @@ import 'package:legends_panel/app/controller/master_controller/master_controller
 import 'package:legends_panel/app/data/repository/build_page_repository/build_page_repository.dart';
 import 'package:legends_panel/app/model/general/champion.dart';
 import 'package:legends_panel/app/model/general/champion_room.dart';
-import 'package:legends_panel/app/model/general/champion_with_spell.dart';
 
 class BuildPageController {
   Rx<bool> isLoading = false.obs;
@@ -27,6 +26,11 @@ class BuildPageController {
 
   stopLoading() {
     isLoading(false);
+  }
+
+  cleanSearch(){
+    this.searchedChampion.addAll(championRoom.champions);
+    searchEditingController.clear();
   }
 
   String getChampionImage(String championId) {

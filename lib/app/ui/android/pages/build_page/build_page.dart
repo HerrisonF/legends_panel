@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/build_page_controller/build_page_controller.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'champion_build_bottom_sheet.dart';
 
@@ -52,7 +53,7 @@ class _BuildPageState extends State<BuildPage> {
         Container(
           margin: EdgeInsets.only(top: 30),
           child: Text(
-            "Look for builds clicking on champions",
+            AppLocalizations.of(context)!.buildPageTitle,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
@@ -68,7 +69,7 @@ class _BuildPageState extends State<BuildPage> {
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
       child: TextFormField(
         controller: _buildPageController.searchEditingController,
-        decoration: InputDecoration(hintText: "Nome do champion"),
+        decoration: InputDecoration(hintText: AppLocalizations.of(context)!.championName),
         onChanged: (value) {
           _buildPageController.showChampionEqualsFromSearch(value);
         },
@@ -104,6 +105,7 @@ class _BuildPageState extends State<BuildPage> {
   championImageOrLoading(int index) {
     return InkWell(
       onTap: () {
+        _buildPageController.cleanSearch();
         _openBottomSheet(
             _buildPageController.searchedChampion[index].detail.key);
       },

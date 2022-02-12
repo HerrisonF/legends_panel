@@ -23,8 +23,8 @@ class ProfileRepository {
   String getChampionImage(String championId){
     return _profileProvider.getChampionImage(championId);
   }
-  String getCircularChampionImage(String championId){
-    return _profileProvider.getCircularChampionImage(championId);
+  String getCircularChampionImage(String championId, String version){
+    return _profileProvider.getCircularChampionImage(championId, version);
   }
 
   String getMasteryImage(String level){

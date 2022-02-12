@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:legends_panel/app/controller/build_page_controller/build_page_controller.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_perk.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_summoner_spell.dart';
 import 'package:legends_panel/app/model/general/champion.dart';
@@ -239,7 +240,8 @@ class MasterController {
     return runes.icon;
   }
 
-  changeCurrentPageIndex(int newPageIndex) {
+  changeCurrentPageIndex(int newPageIndex, BuildContext context) {
+    FocusScope.of(context).unfocus();
     currentPageIndex(newPageIndex);
   }
 

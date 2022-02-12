@@ -78,8 +78,8 @@ class ProfileProvider {
     }
   }
 
-  String getCircularChampionImage(String championId) {
-    final String path = "/cdn/11.22.1/img/champion/$championId.png";
+  String getCircularChampionImage(String championId, String version) {
+    final String path = "/cdn/$version/img/champion/$championId.png";
     _logger.i("building Image Champion for mastery URL...");
     try{
       return RiotAndRawDragonUrls.riotDragonUrl + path;

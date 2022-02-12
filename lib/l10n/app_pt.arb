@@ -24,5 +24,11 @@
   "gameVictoriousBlueTeam" : "Time azul vencedor",
   "gameVictoriousRedTeam" : "Time vermelho vencedor",
   "bans" : "Bans",
-  "favoriteUsers": "Seus jogadores favoritos estarão aqui"
+  "favoriteUsers": "Seus jogadores favoritos estarão aqui",
+  "buildPageTitle" : "Procure builds clicando no champion",
+  "championName" : "Nome do champion",
+  "noBuildChampion" : "Ainda sem dados para esse champion",
+  "spell" : "Feitiços",
+  "perk" : "Runas",
+  "abilityOrder" : "Ordem de habilidades"
 }

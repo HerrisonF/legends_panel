@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:legends_panel/app/controller/champion_build_bottom_sheet_controller/champion_build_bottom_sheet_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChampionBuildBottomSheet extends StatefulWidget {
   final String championId;
@@ -27,8 +28,19 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
     return Obx(
       () {
         return _championBuildBottomSheetController.isLoading.value
-            ? CircularProgressIndicator()
-            : _championStats();
+            ? Container(
+                height: 50,
+                margin: EdgeInsets.symmetric(horizontal: 170, vertical: 10),
+                child: CircularProgressIndicator(),
+              )
+            : _championBuildBottomSheetController
+                        .championStatistic.positions.length >
+                    0
+                ? _championStats()
+                : Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    child: Text(AppLocalizations.of(context)!.noBuildChampion),
+                  );
       },
     );
   }
@@ -37,18 +49,28 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
     return Container(
       height: MediaQuery.of(context).size.height * 0.9,
       child: ListView(
-       scrollDirection: Axis.horizontal,
-        physics: _championBuildBottomSheetController.championStatistic.positions.length == 1 ? NeverScrollableScrollPhysics() : AlwaysScrollableScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        physics:
+            // _championBuildBottomSheetController
+            //             .championStatistic.positions.length ==
+            //         1
+            //     ?
+            NeverScrollableScrollPhysics(),
+        //: AlwaysScrollableScrollPhysics(),
         itemExtent: MediaQuery.of(context).size.width,
         children: [
           Container(
             margin: EdgeInsets.only(top: 20),
             child: _championSkills(0),
           ),
-          _championBuildBottomSheetController.championStatistic.positions.length > 1 ? Container(
-            margin: EdgeInsets.only(top: 20),
-            child: _championSkills(1),
-          ) : SizedBox.shrink(),
+          // _championBuildBottomSheetController
+          //             .championStatistic.positions.length >
+          //         1
+          //     ? Container(
+          //         margin: EdgeInsets.only(top: 20),
+          //         child: _championSkills(1),
+          //       )
+          //     : SizedBox.shrink(),
         ],
       ),
     );
@@ -72,40 +94,69 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
     );
   }
 
-  _BETA(){
+  _BETA() {
     return Container(
-      child: Text("BETA"),
+      child: Text(
+        "BETA",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 
-  _positionTitle(int positionIndex){
+  _positionTitle(int positionIndex) {
     return Container(
-      child: Text(_championBuildBottomSheetController.championStatistic.positions[positionIndex].name),
+      margin: EdgeInsets.symmetric(vertical: 15),
+      child: Text(
+        _championBuildBottomSheetController
+            .championStatistic.positions[positionIndex].name.capitalizeFirst!,
+        style: TextStyle(
+          fontSize: 15,
+        ),
+      ),
     );
   }
 
-  _championSpellTitle(){
+  _championSpellTitle() {
     return Container(
-      child: Text("Spell"),
+      margin: EdgeInsets.symmetric(vertical: 20),
+      child: Text(AppLocalizations.of(context)!.spell),
     );
   }
 
-  _championSpells(int positionIndex){
+  _championSpells(int positionIndex) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
+          height: 40,
           margin: EdgeInsets.only(left: 5),
           child: Image.network(
             _championBuildBottomSheetController.getSpellUrl(
-                _championBuildBottomSheetController.championStatistic.positions[positionIndex].builds[positionIndex].selectedSpell.spell.spellId1.toString()),
+                _championBuildBottomSheetController
+                    .championStatistic
+                    .positions[positionIndex]
+                    .builds[0]
+                    .selectedSpell
+                    .spell
+                    .spellId1
+                    .toString()),
             fit: BoxFit.cover,
           ),
         ),
         Container(
+          height: 40,
           margin: EdgeInsets.only(left: 5),
           child: Image.network(
             _championBuildBottomSheetController.getSpellUrl(
-                _championBuildBottomSheetController.championStatistic.positions[positionIndex].builds[positionIndex].selectedSpell.spell.spellId2
+                _championBuildBottomSheetController
+                    .championStatistic
+                    .positions[positionIndex]
+                    .builds[0]
+                    .selectedSpell
+                    .spell
+                    .spellId2
                     .toString()),
             fit: BoxFit.cover,
           ),
@@ -116,16 +167,24 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
 
   _championItemTitle() {
     return Container(
-      child: Text("Items"),
+      margin: EdgeInsets.symmetric(vertical: 20),
+      child: Text("Build"),
     );
   }
 
   _championItems(int positionIndex) {
     return Container(
-      height: 50,
+      height: 45,
       width: MediaQuery.of(context).size.width,
       child: ListView.builder(
-        itemCount: _championBuildBottomSheetController.championStatistic.positions[positionIndex].builds[positionIndex].selectedBuild.selectedItems.items.length,
+        itemCount: _championBuildBottomSheetController
+            .championStatistic
+            .positions[positionIndex]
+            .builds[0]
+            .selectedBuild
+            .selectedItems
+            .items
+            .length,
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
@@ -134,8 +193,10 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
             child: Image.network(
               _championBuildBottomSheetController.getItemUrl(
                   _championBuildBottomSheetController
-                      .championStatistic.positions[positionIndex]
-                      .builds[positionIndex].selectedBuild
+                      .championStatistic
+                      .positions[positionIndex]
+                      .builds[0]
+                      .selectedBuild
                       .selectedItems
                       .items[index]
                       .id
@@ -149,95 +210,133 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
   }
 
   _championPerks(int positionIndex) {
-    return Column(
-      children: [
-        //Container(child: Text("domination"),),
-        Row(
-          children: [
-            _roundedStyleContainer(_championBuildBottomSheetController
-                .championStatistic.positions[positionIndex].builds[positionIndex].selectedRune
-                .perk
-                .styles[0]
-                .style
-                .toString()),
-            _roundedPerkContainer(_championBuildBottomSheetController
-                .championStatistic.positions[positionIndex].builds[positionIndex].selectedRune
-                .perk
-                .styles[0]
-                .selections[0]
-                .perk
-                .toString()),
-            _roundedPerkContainer(_championBuildBottomSheetController
-                .championStatistic.positions[positionIndex].builds[positionIndex].selectedRune
-                .perk
-                .styles[0]
-                .selections[1]
-                .perk
-                .toString()),
-            _roundedPerkContainer(_championBuildBottomSheetController
-                .championStatistic.positions[positionIndex].builds[positionIndex].selectedRune
-                .perk
-                .styles[0]
-                .selections[2]
-                .perk
-                .toString()),
-            _roundedPerkContainer(_championBuildBottomSheetController
-                .championStatistic.positions[positionIndex].builds[positionIndex].selectedRune
-                .perk
-                .styles[0]
-                .selections[3]
-                .perk
-                .toString()),
-          ],
-        ),
-        //Container(child: Text("precision"),),
-        Row(
-          children: [
-            _roundedStyleContainer(_championBuildBottomSheetController
-                .championStatistic.positions[positionIndex].builds[positionIndex].selectedRune
-                .perk
-                .styles[1]
-                .style
-                .toString()),
-            _roundedPerkContainer(_championBuildBottomSheetController
-                .championStatistic.positions[positionIndex].builds[positionIndex].selectedRune.perk
-                .styles[1]
-                .selections[0]
-                .perk
-                .toString()),
-            _roundedPerkContainer(_championBuildBottomSheetController
-                .championStatistic.positions[positionIndex].builds[positionIndex].selectedRune
-                .perk
-                .styles[1]
-                .selections[1]
-                .perk
-                .toString()),
-            _roundedPerkShard(_championBuildBottomSheetController
-                .championStatistic.positions[positionIndex].builds[positionIndex].selectedRune
-                .perk
-                .statPerks
-                .offense
-                .toString()),
-            _roundedPerkShard(_championBuildBottomSheetController
-                .championStatistic.positions[positionIndex].builds[positionIndex].selectedRune
-                .perk
-                .statPerks
-                .flex
-                .toString()),
-            _roundedPerkShard(_championBuildBottomSheetController
-                .championStatistic.positions[positionIndex].builds[positionIndex].selectedRune
-                .perk
-                .statPerks
-                .defense
-                .toString()),
-          ],
-        ),
-      ],
+    return Container(
+      margin: EdgeInsets.only(left: 10),
+      child: Column(
+        children: [
+          //Container(child: Text("domination"),),
+          Row(
+            children: [
+              _roundedStyleContainer(_championBuildBottomSheetController
+                  .championStatistic
+                  .positions[positionIndex]
+                  .builds[0]
+                  .selectedRune
+                  .perk
+                  .styles[0]
+                  .style
+                  .toString()),
+              _roundedPerkContainer(_championBuildBottomSheetController
+                  .championStatistic
+                  .positions[positionIndex]
+                  .builds[0]
+                  .selectedRune
+                  .perk
+                  .styles[0]
+                  .selections[0]
+                  .perk
+                  .toString()),
+              _roundedPerkContainer(_championBuildBottomSheetController
+                  .championStatistic
+                  .positions[positionIndex]
+                  .builds[0]
+                  .selectedRune
+                  .perk
+                  .styles[0]
+                  .selections[1]
+                  .perk
+                  .toString()),
+              _roundedPerkContainer(_championBuildBottomSheetController
+                  .championStatistic
+                  .positions[positionIndex]
+                  .builds[0]
+                  .selectedRune
+                  .perk
+                  .styles[0]
+                  .selections[2]
+                  .perk
+                  .toString()),
+              _roundedPerkContainer(_championBuildBottomSheetController
+                  .championStatistic
+                  .positions[positionIndex]
+                  .builds[0]
+                  .selectedRune
+                  .perk
+                  .styles[0]
+                  .selections[3]
+                  .perk
+                  .toString()),
+            ],
+          ),
+          //Container(child: Text("precision"),),
+          Row(
+            children: [
+              _roundedStyleContainer(_championBuildBottomSheetController
+                  .championStatistic
+                  .positions[positionIndex]
+                  .builds[0]
+                  .selectedRune
+                  .perk
+                  .styles[1]
+                  .style
+                  .toString()),
+              _roundedPerkContainer(_championBuildBottomSheetController
+                  .championStatistic
+                  .positions[positionIndex]
+                  .builds[0]
+                  .selectedRune
+                  .perk
+                  .styles[1]
+                  .selections[0]
+                  .perk
+                  .toString()),
+              _roundedPerkContainer(_championBuildBottomSheetController
+                  .championStatistic
+                  .positions[positionIndex]
+                  .builds[0]
+                  .selectedRune
+                  .perk
+                  .styles[1]
+                  .selections[1]
+                  .perk
+                  .toString()),
+              _roundedPerkShard(_championBuildBottomSheetController
+                  .championStatistic
+                  .positions[positionIndex]
+                  .builds[0]
+                  .selectedRune
+                  .perk
+                  .statPerks
+                  .offense
+                  .toString()),
+              _roundedPerkShard(_championBuildBottomSheetController
+                  .championStatistic
+                  .positions[positionIndex]
+                  .builds[0]
+                  .selectedRune
+                  .perk
+                  .statPerks
+                  .flex
+                  .toString()),
+              _roundedPerkShard(_championBuildBottomSheetController
+                  .championStatistic
+                  .positions[positionIndex]
+                  .builds[0]
+                  .selectedRune
+                  .perk
+                  .statPerks
+                  .defense
+                  .toString()),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
   _roundedStyleContainer(String image) {
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       height: 30,
       width: 30,
       decoration: BoxDecoration(
@@ -253,6 +352,7 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
 
   _roundedPerkShard(String image) {
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       height: 30,
       width: 30,
       decoration: BoxDecoration(
@@ -268,6 +368,7 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
 
   _roundedPerkContainer(String image) {
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       height: 30,
       width: 30,
       decoration: BoxDecoration(
@@ -283,15 +384,17 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
 
   _championPerksTitle() {
     return Container(
-      margin: EdgeInsets.only(bottom: 15),
-      child: Text("Perks"),
+      margin: EdgeInsets.symmetric(vertical: 20),
+      child: Text(AppLocalizations.of(context)!.perk),
     );
   }
 
   _championSkillTitle() {
     return Container(
-      margin: EdgeInsets.only(bottom: 15),
-      child: Text("Ability order"),
+      margin: EdgeInsets.symmetric(vertical: 20),
+      child: Text(
+        AppLocalizations.of(context)!.abilityOrder,
+      ),
     );
   }
 
@@ -322,8 +425,11 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
                           child: Text(
                             _championBuildBottomSheetController.getSpellKey(
                               _championBuildBottomSheetController
-                                  .championStatistic.positions[positionIndex].builds[positionIndex].selectedSkill.
-                                  skillsOrder[index]
+                                  .championStatistic
+                                  .positions[positionIndex]
+                                  .builds[0]
+                                  .selectedSkill
+                                  .skillsOrder[index]
                                   .skillSlot,
                             ),
                           ),
@@ -334,8 +440,11 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
                                 .getChampionSpell(
                               widget.championId,
                               _championBuildBottomSheetController
-                                  .championStatistic.positions[positionIndex].builds[positionIndex].selectedSkill.
-                                  skillsOrder[index]
+                                  .championStatistic
+                                  .positions[positionIndex]
+                                  .builds[0]
+                                  .selectedSkill
+                                  .skillsOrder[index]
                                   .skillSlot,
                             ),
                             fit: BoxFit.cover,
@@ -355,7 +464,16 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
     return Container(
       height: 80,
       child: ListView.builder(
-        itemCount: 9,
+        itemCount: _championBuildBottomSheetController
+                    .championStatistic
+                    .positions[positionIndex]
+                    .builds[0]
+                    .selectedSkill
+                    .skillsOrder
+                    .length >
+                18
+            ? 9
+            : 8,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return Container(
@@ -377,7 +495,10 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
                           child: Text(
                             _championBuildBottomSheetController.getSpellKey(
                               _championBuildBottomSheetController
-                                  .championStatistic.positions[positionIndex].builds[positionIndex].selectedSkill
+                                  .championStatistic
+                                  .positions[positionIndex]
+                                  .builds[0]
+                                  .selectedSkill
                                   .skillsOrder[index + continueIndex]
                                   .skillSlot,
                             ),
@@ -389,7 +510,10 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
                                 .getChampionSpell(
                               widget.championId,
                               _championBuildBottomSheetController
-                                  .championStatistic.positions[positionIndex].builds[positionIndex].selectedSkill
+                                  .championStatistic
+                                  .positions[positionIndex]
+                                  .builds[0]
+                                  .selectedSkill
                                   .skillsOrder[index + continueIndex]
                                   .skillSlot,
                             ),
