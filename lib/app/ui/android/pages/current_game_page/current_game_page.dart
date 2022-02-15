@@ -93,14 +93,17 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                 ? 40
                 : 25,
           ),
-          child: RegionDropDownComponent(
-            initialRegion: initialRegion,
-            onRegionChoose: (region) {
-              setState(() {
-                _currentGameController.setAndSaveActualRegion(region);
-              });
-            },
-          ),
+          child: Obx((){
+            return RegionDropDownComponent(
+              initialRegion: initialRegion,
+              onRegionChoose: (region) {
+                setState(() {
+                  _currentGameController.setAndSaveActualRegion(region);
+                });
+              },
+              isLoading: _currentGameController.isLoadingUser.value,
+            );
+          }),
         ),
       ],
     );
@@ -112,8 +115,6 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
       image: DecorationImage(
           image: AssetImage(imageBackgroundCurrentGame),
           fit: BoxFit.cover,
-          //soflight
-          //plus
           colorFilter: ColorFilter.mode(
               Theme.of(context).primaryColor.withOpacity(0.8), BlendMode.plus)),
     );
@@ -211,76 +212,78 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
         color: Theme.of(context).backgroundColor,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          InkWell(
-            onTap: () {
-              _currentGameController.userNameInputController.text =
-                  _masterController.favoriteUsersForCurrentGame[index].name;
-            },
-            child: Container(
-              height: 60,
-              color: Theme.of(context).backgroundColor,
-              child: Row(
-                children: [
-                  Container(
-                    width: 70,
-                    child: Text(
-                      _masterController.favoriteUsersForCurrentGame[index].name,
-                      maxLines: 2,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
+      child: Obx((){
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            InkWell(
+              onTap: _currentGameController.isLoadingUser.value ? null : () {
+                _currentGameController.userNameInputController.text =
+                    _masterController.favoriteUsersForCurrentGame[index].name;
+              },
+              child: Container(
+                height: 60,
+                color: Theme.of(context).backgroundColor,
+                child: Row(
+                  children: [
+                    Container(
+                      width: 70,
+                      child: Text(
+                        _masterController.favoriteUsersForCurrentGame[index].name,
+                        maxLines: 2,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    child: _masterController
-                            .favoriteUsersForCurrentGame[index].userTier.isNotEmpty
-                        ? Image.network(
-                            _masterController.getUserTierImage(
-                              _masterController.favoriteUsersForCurrentGame[index].userTier,
-                            ),
-                            width: 17,
-                          )
-                        : Container(
-                            margin: EdgeInsets.only(left: 5),
-                            child: Image.asset(
-                              imageUnranked,
-                              width: 17,
-                            ),
-                          ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              _masterController.removeFavoriteUserForCurrentGame(index);
-            },
-            child: Container(
-              height: 60,
-              width: 43,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(8),
-                    bottomRight: Radius.circular(8)),
-                color: Colors.white,
-              ),
-              child: Container(
-                child: Icon(
-                  Icons.delete,
-                  size: 20,
-                  color: Colors.black,
+                    Container(
+                      child: _masterController
+                          .favoriteUsersForCurrentGame[index].userTier.isNotEmpty
+                          ? Image.network(
+                        _masterController.getUserTierImage(
+                          _masterController.favoriteUsersForCurrentGame[index].userTier,
+                        ),
+                        width: 17,
+                      )
+                          : Container(
+                        margin: EdgeInsets.only(left: 5),
+                        child: Image.asset(
+                          imageUnranked,
+                          width: 17,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ),
-        ],
-      ),
+            InkWell(
+              onTap: () {
+                _masterController.removeFavoriteUserForCurrentGame(index);
+              },
+              child: Container(
+                height: 60,
+                width: 43,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(8),
+                      bottomRight: Radius.circular(8)),
+                  color: Colors.white,
+                ),
+                child: Container(
+                  child: Icon(
+                    Icons.delete,
+                    size: 20,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      }),
     );
   }
 

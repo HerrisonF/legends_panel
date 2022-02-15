@@ -29,8 +29,9 @@ class BuildPageController {
   }
 
   cleanSearch(){
-    this.searchedChampion.addAll(championRoom.champions);
     searchEditingController.clear();
+    this.searchedChampion.clear();
+    this.searchedChampion.addAll(championRoom.champions);
   }
 
   String getChampionImage(String championId) {

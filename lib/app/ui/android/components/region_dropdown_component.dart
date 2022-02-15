@@ -5,10 +5,11 @@ import 'package:legends_panel/app/controller/master_controller/master_controller
 
 class RegionDropDownComponent extends StatefulWidget {
   final Function(String region) onRegionChoose;
+  final bool isLoading;
   final String initialRegion;
 
   RegionDropDownComponent(
-      {required this.onRegionChoose, required this.initialRegion});
+      {required this.onRegionChoose, required this.initialRegion, this.isLoading = false});
 
   @override
   State<RegionDropDownComponent> createState() =>
@@ -20,7 +21,9 @@ class _RegionDropDownComponentState extends State<RegionDropDownComponent> {
   MasterController _masterController = Get.find<MasterController>();
 
   regionChoose(String region) {
-    widget.onRegionChoose(region);
+    if(!widget.isLoading) {
+      widget.onRegionChoose(region);
+    }
   }
 
   final List<String> _locations = [
@@ -70,7 +73,7 @@ class _RegionDropDownComponentState extends State<RegionDropDownComponent> {
         underline: SizedBox.shrink(),
         dropdownColor: Theme.of(context).backgroundColor,
         value: selectedLocation,
-        onChanged: (newValue) {
+        onChanged: widget.isLoading ? null : (newValue) {
           setState(() {
             if (newValue.toString().isNotEmpty) {
               selectedLocation = newValue.toString();

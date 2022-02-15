@@ -37,7 +37,7 @@ class ProfileController {
 
   static const SEARCH_USER_PROFILE_COMPONENT = 0;
   static const FOUND_USER_COMPONENT = 1;
-  static const AMOUNT_MATCHES_TO_FIND = 6;
+  static const AMOUNT_MATCHES_TO_FIND = 10;
 
   buildPages() {
     pages = [

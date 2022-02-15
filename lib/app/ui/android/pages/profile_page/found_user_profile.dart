@@ -28,7 +28,8 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
 
   @override
   void initState() {
-    _masterController.addUserToFavoriteProfileList(_profileController.userTierRankedSolo.value.tier);
+    _masterController.addUserToFavoriteProfileList(
+        _profileController.userTierRankedSolo.value.tier);
     this._scrollController.addListener(this._scrollListenerFunction);
     super.initState();
   }
@@ -55,7 +56,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
   }
 
   bool isUserScrollingDown() {
-    return (this._scrollController.offset * 2) >=
+    return (this._scrollController.offset * 1.3) >=
             this._scrollController.position.maxScrollExtent &&
         !this._scrollController.position.outOfRange;
   }
@@ -143,7 +144,11 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
       return ItemMatchListGameCard(
           _profileController.matchList[myCurrentPosition]);
     } else {
-      return DotsLoading();
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+        margin: EdgeInsets.only(bottom: 30),
+        child: DotsLoading(),
+      );
     }
   }
 

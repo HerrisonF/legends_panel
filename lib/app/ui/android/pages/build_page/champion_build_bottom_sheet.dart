@@ -83,7 +83,19 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
         _positionTitle(positionIndex),
         _championSkillTitle(),
         _championSkillOneToNine(positionIndex),
-        _championSkillTenToEighteen(9, positionIndex),
+        _championSkillTenToEighteen(
+          _championBuildBottomSheetController
+                      .championStatistic
+                      .positions[positionIndex]
+                      .builds[0]
+                      .selectedSkill
+                      .skillsOrder
+                      .length >
+                  18
+              ? 9
+              : 8,
+          positionIndex,
+        ),
         _championPerksTitle(),
         _championPerks(positionIndex),
         _championItemTitle(),
@@ -464,16 +476,7 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
     return Container(
       height: 80,
       child: ListView.builder(
-        itemCount: _championBuildBottomSheetController
-                    .championStatistic
-                    .positions[positionIndex]
-                    .builds[0]
-                    .selectedSkill
-                    .skillsOrder
-                    .length >
-                18
-            ? 9
-            : 8,
+        itemCount: continueIndex,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return Container(
