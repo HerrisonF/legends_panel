@@ -42,17 +42,13 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
   }
 
   _scrollListenerFunction() {
-    Future.delayed(Duration(milliseconds: 200)).then(
-      (_) {
-        if (isUserScrollingDown() &&
-            (this._profileController.newIndex ==
-                this._profileController.oldIndex)) {
-          this
-              ._profileController
-              .loadMoreMatches(_masterController.userForProfile.region);
-        }
-      },
-    );
+    if (isUserScrollingDown() &&
+        (this._profileController.newIndex ==
+            this._profileController.oldIndex)) {
+      this
+          ._profileController
+          .loadMoreMatches(_masterController.userForProfile.region);
+    }
   }
 
   bool isUserScrollingDown() {
@@ -109,6 +105,19 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
     );
   }
 
+  Widget _isLoadingGameCard(int myCurrentPosition) {
+    if (myCurrentPosition < this._profileController.matchList.length) {
+      return ItemMatchListGameCard(
+          _profileController.matchList[myCurrentPosition]);
+    } else {
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+        margin: EdgeInsets.only(bottom: 30),
+        child: DotsLoading(),
+      );
+    }
+  }
+
   _outButton() {
     return IconButton(
       icon: Icon(
@@ -137,19 +146,6 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
       return _profileController.matchList.length + 1;
     }
     return _profileController.matchList.length;
-  }
-
-  Widget _isLoadingGameCard(int myCurrentPosition) {
-    if (myCurrentPosition < this._profileController.matchList.length) {
-      return ItemMatchListGameCard(
-          _profileController.matchList[myCurrentPosition]);
-    } else {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-        margin: EdgeInsets.only(bottom: 30),
-        child: DotsLoading(),
-      );
-    }
   }
 
   Widget summonerPanel(BuildContext context) {

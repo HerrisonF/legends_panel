@@ -32,66 +32,73 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-
-        _showModalGeneralVision();
-      },
-      child: Container(
-        height:
-            _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 75 : 60,
-        padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-        margin: EdgeInsets.symmetric(vertical: 2),
-        color: _profileResultGameDetailController.currentParticipant.value.win
-            ? Colors.blue.withOpacity(0.2)
-            : Colors.red.withOpacity(0.2),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _championBadge(context),
-                Row(
-                  children: [
-                    _itemBase(
-                      item: _profileResultGameDetailController
-                          .currentParticipant.value.item0,
-                    ),
-                    _itemBase(
-                      item: _profileResultGameDetailController
-                          .currentParticipant.value.item1,
-                    ),
-                    _itemBase(
-                      item: _profileResultGameDetailController
-                          .currentParticipant.value.item2,
-                    ),
-                    _itemBase(
-                      item: _profileResultGameDetailController
-                          .currentParticipant.value.item3,
-                    ),
-                    _itemBase(
-                      item: _profileResultGameDetailController
-                          .currentParticipant.value.item4,
-                    ),
-                    _itemBase(
-                      item: _profileResultGameDetailController
-                          .currentParticipant.value.item5,
-                    ),
-                    _itemBase(
-                      item: _profileResultGameDetailController
-                          .currentParticipant.value.item6,
-                      last: true,
-                    ),
-                  ],
-                ),
-                _userPosition(),
-              ],
+    //esse IF era para tirar o erro de aparecer um card em nenhuma info
+    return _profileResultGameDetailController
+            .currentParticipant.value.championName
+            .toString()
+            .isEmpty
+        ? SizedBox.shrink()
+        : GestureDetector(
+            onTap: () {
+              _showModalGeneralVision();
+            },
+            child: Container(
+              height: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                  ? 75
+                  : 60,
+              padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+              margin: EdgeInsets.symmetric(vertical: 2),
+              color: _profileResultGameDetailController
+                      .currentParticipant.value.win
+                  ? Colors.blue.withOpacity(0.2)
+                  : Colors.red.withOpacity(0.2),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _championBadge(context),
+                      Row(
+                        children: [
+                          _itemBase(
+                            item: _profileResultGameDetailController
+                                .currentParticipant.value.item0,
+                          ),
+                          _itemBase(
+                            item: _profileResultGameDetailController
+                                .currentParticipant.value.item1,
+                          ),
+                          _itemBase(
+                            item: _profileResultGameDetailController
+                                .currentParticipant.value.item2,
+                          ),
+                          _itemBase(
+                            item: _profileResultGameDetailController
+                                .currentParticipant.value.item3,
+                          ),
+                          _itemBase(
+                            item: _profileResultGameDetailController
+                                .currentParticipant.value.item4,
+                          ),
+                          _itemBase(
+                            item: _profileResultGameDetailController
+                                .currentParticipant.value.item5,
+                          ),
+                          _itemBase(
+                            item: _profileResultGameDetailController
+                                .currentParticipant.value.item6,
+                            last: true,
+                          ),
+                        ],
+                      ),
+                      _userPosition(),
+                    ],
+                  ),
+                  _userKDA(),
+                ],
+              ),
             ),
-            _userKDA(),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   _showModalGeneralVision() {
@@ -130,9 +137,10 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
               style: GoogleFonts.montserrat(
                 color: Colors.yellow,
                 fontWeight: FontWeight.w400,
-                fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                    ? 13
-                    : 9,
+                fontSize:
+                    _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                        ? 13
+                        : 9,
               ),
               overflow: TextOverflow.ellipsis,
             ),
@@ -144,9 +152,10 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
               style: GoogleFonts.montserrat(
                 color: Colors.yellow,
                 fontWeight: FontWeight.w400,
-                fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                    ? 12
-                    : 8,
+                fontSize:
+                    _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                        ? 12
+                        : 8,
               ),
               overflow: TextOverflow.ellipsis,
             ),
@@ -160,7 +169,9 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
     return Container(
       height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 25 : 20,
       width: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 25 : 20,
-      margin: EdgeInsets.only(left:  _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 5 : 0),
+      margin: EdgeInsets.only(
+          left:
+              _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 5 : 0),
       child: _profileResultGameDetailController
                   .currentParticipant.value.teamPosition !=
               ""
@@ -245,9 +256,10 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
                       .currentParticipant.value.championId !=
                   ""
               ? Container(
-                  height: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                      ? 48
-                      : 32,
+                  height:
+                      _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                          ? 48
+                          : 32,
                   width: _masterController.screenWidthSizeIsBiggerThanNexusOne()
                       ? 48
                       : 32,

@@ -50,27 +50,21 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
       height: MediaQuery.of(context).size.height * 0.9,
       child: ListView(
         scrollDirection: Axis.horizontal,
-        physics:
-            // _championBuildBottomSheetController
-            //             .championStatistic.positions.length ==
-            //         1
-            //     ?
-            NeverScrollableScrollPhysics(),
-        //: AlwaysScrollableScrollPhysics(),
+        physics: _championBuildBottomSheetController.mostPositions.length == 1
+            ? NeverScrollableScrollPhysics()
+            : AlwaysScrollableScrollPhysics(),
         itemExtent: MediaQuery.of(context).size.width,
         children: [
           Container(
             margin: EdgeInsets.only(top: 20),
             child: _championSkills(0),
           ),
-          // _championBuildBottomSheetController
-          //             .championStatistic.positions.length >
-          //         1
-          //     ? Container(
-          //         margin: EdgeInsets.only(top: 20),
-          //         child: _championSkills(1),
-          //       )
-          //     : SizedBox.shrink(),
+          _championBuildBottomSheetController.mostPositions.length > 1
+              ? Container(
+                  margin: EdgeInsets.only(top: 20),
+                  child: _championSkills(1),
+                )
+              : SizedBox.shrink(),
         ],
       ),
     );
@@ -82,20 +76,7 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
         _BETA(),
         _positionTitle(positionIndex),
         _championSkillTitle(),
-        _championSkillOneToNine(positionIndex),
-        _championSkillTenToEighteen(
-          _championBuildBottomSheetController
-                      .championStatistic
-                      .positions[positionIndex]
-                      .builds[0]
-                      .selectedSkill
-                      .skillsOrder
-                      .length >
-                  18
-              ? 9
-              : 8,
-          positionIndex,
-        ),
+        _championSkill(positionIndex),
         _championPerksTitle(),
         _championPerks(positionIndex),
         _championItemTitle(),
@@ -122,10 +103,8 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
       margin: EdgeInsets.symmetric(vertical: 15),
       child: Text(
         _championBuildBottomSheetController
-            .championStatistic.positions[positionIndex].name.capitalizeFirst!,
-        style: TextStyle(
-          fontSize: 15,
-        ),
+            .championStatistic.positions[positionIndex].role.capitalizeFirst!,
+        style: TextStyle(fontSize: 15),
       ),
     );
   }
@@ -187,36 +166,43 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
   _championItems(int positionIndex) {
     return Container(
       height: 45,
+      margin: EdgeInsets.only(bottom: 60),
       width: MediaQuery.of(context).size.width,
-      child: ListView.builder(
-        itemCount: _championBuildBottomSheetController
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      child: Wrap(
+        spacing: 5,
+        runSpacing: 16,
+        children: _championBuildBottomSheetController
             .championStatistic
             .positions[positionIndex]
             .builds[0]
             .selectedBuild
             .selectedItems
-            .items
-            .length,
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return Container(
-            margin: EdgeInsets.only(left: 5),
-            child: Image.network(
-              _championBuildBottomSheetController.getItemUrl(
-                  _championBuildBottomSheetController
-                      .championStatistic
-                      .positions[positionIndex]
-                      .builds[0]
-                      .selectedBuild
-                      .selectedItems
-                      .items[index]
-                      .id
-                      .toString()),
-              fit: BoxFit.cover,
-            ),
-          );
-        },
+            .items.map((e) {
+              int index = _championBuildBottomSheetController
+                  .championStatistic
+                  .positions[positionIndex]
+                  .builds[0]
+                  .selectedBuild
+                  .selectedItems
+                  .items.indexOf(e);
+              return Container(
+                height: 35,
+                child: Image.network(
+                  _championBuildBottomSheetController.getItemUrl(
+                      _championBuildBottomSheetController
+                          .championStatistic
+                          .positions[positionIndex]
+                          .builds[0]
+                          .selectedBuild
+                          .selectedItems
+                          .items[index]
+                          .id
+                          .toString()),
+                  fit: BoxFit.cover,
+                ),
+              );
+        }).toList(),
       ),
     );
   }
@@ -226,7 +212,6 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
       margin: EdgeInsets.only(left: 10),
       child: Column(
         children: [
-          //Container(child: Text("domination"),),
           Row(
             children: [
               _roundedStyleContainer(_championBuildBottomSheetController
@@ -280,7 +265,6 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
                   .toString()),
             ],
           ),
-          //Container(child: Text("precision"),),
           Row(
             children: [
               _roundedStyleContainer(_championBuildBottomSheetController
@@ -410,125 +394,70 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
     );
   }
 
-  _championSkillOneToNine(int positionIndex) {
+  _championSkill(int positionIndex) {
     return Container(
+      margin: EdgeInsets.only(left: 15, bottom: 60),
       width: MediaQuery.of(context).size.width,
       height: 80,
-      child: ListView.builder(
-        itemCount: 9,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return Container(
-            height: 25,
-            width: 28,
-            margin: EdgeInsets.only(
-              left: 14,
-            ),
-            child: Obx(() {
-              return !_championBuildBottomSheetController
-                      .isLoadingChampion.value
-                  ? Column(
-                      children: [
-                        Text(
-                          (index + 1).toString(),
-                        ),
-                        Container(
-                          //margin: EdgeInsets.only(top: 5),
-                          child: Text(
-                            _championBuildBottomSheetController.getSpellKey(
-                              _championBuildBottomSheetController
-                                  .championStatistic
-                                  .positions[positionIndex]
-                                  .builds[0]
-                                  .selectedSkill
-                                  .skillsOrder[index]
-                                  .skillSlot,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          child: Image.network(
+      child: Wrap(
+        spacing: 5,
+        runSpacing: 16,
+        children: _championBuildBottomSheetController.championStatistic
+            .positions[positionIndex].builds[0].selectedSkill.skillsOrder
+            .map((e) {
+          return Obx(() {
+            int index = _championBuildBottomSheetController.championStatistic
+                .positions[positionIndex].builds[0].selectedSkill.skillsOrder
+                .indexOf(e);
+            return !_championBuildBottomSheetController.isLoadingChampion.value
+                ? Column(
+                    children: [
+                      Text(
+                        (_championBuildBottomSheetController
+                                    .championStatistic
+                                    .positions[positionIndex]
+                                    .builds[0]
+                                    .selectedSkill
+                                    .skillsOrder
+                                    .indexOf(e) +
+                                1)
+                            .toString(),
+                      ),
+                      Container(
+                        //margin: EdgeInsets.only(top: 5),
+                        child: Text(
+                          _championBuildBottomSheetController.getSpellKey(
                             _championBuildBottomSheetController
-                                .getChampionSpell(
-                              widget.championId,
-                              _championBuildBottomSheetController
-                                  .championStatistic
-                                  .positions[positionIndex]
-                                  .builds[0]
-                                  .selectedSkill
-                                  .skillsOrder[index]
-                                  .skillSlot,
-                            ),
-                            fit: BoxFit.cover,
+                                .championStatistic
+                                .positions[positionIndex]
+                                .builds[0]
+                                .selectedSkill
+                                .skillsOrder[index]
+                                .skillSlot,
                           ),
                         ),
-                      ],
-                    )
-                  : CircularProgressIndicator();
-            }),
-          );
-        },
-      ),
-    );
-  }
-
-  _championSkillTenToEighteen(int continueIndex, int positionIndex) {
-    return Container(
-      height: 80,
-      child: ListView.builder(
-        itemCount: continueIndex,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return Container(
-            height: 25,
-            width: 28,
-            margin: EdgeInsets.only(
-              left: 14,
-            ),
-            child: Obx(() {
-              return !_championBuildBottomSheetController
-                      .isLoadingChampion.value
-                  ? Column(
-                      children: [
-                        Text(
-                          (index + continueIndex + 1).toString(),
-                        ),
-                        Container(
-                          //margin: EdgeInsets.only(top: 5),
-                          child: Text(
-                            _championBuildBottomSheetController.getSpellKey(
-                              _championBuildBottomSheetController
-                                  .championStatistic
-                                  .positions[positionIndex]
-                                  .builds[0]
-                                  .selectedSkill
-                                  .skillsOrder[index + continueIndex]
-                                  .skillSlot,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          child: Image.network(
+                      ),
+                      Container(
+                        height: 35,
+                        child: Image.network(
+                          _championBuildBottomSheetController.getChampionSpell(
+                            widget.championId,
                             _championBuildBottomSheetController
-                                .getChampionSpell(
-                              widget.championId,
-                              _championBuildBottomSheetController
-                                  .championStatistic
-                                  .positions[positionIndex]
-                                  .builds[0]
-                                  .selectedSkill
-                                  .skillsOrder[index + continueIndex]
-                                  .skillSlot,
-                            ),
-                            fit: BoxFit.cover,
+                                .championStatistic
+                                .positions[positionIndex]
+                                .builds[0]
+                                .selectedSkill
+                                .skillsOrder[index]
+                                .skillSlot,
                           ),
+                          fit: BoxFit.cover,
                         ),
-                      ],
-                    )
-                  : CircularProgressIndicator();
-            }),
-          );
-        },
+                      ),
+                    ],
+                  )
+                : CircularProgressIndicator();
+          });
+        }).toList(),
       ),
     );
   }

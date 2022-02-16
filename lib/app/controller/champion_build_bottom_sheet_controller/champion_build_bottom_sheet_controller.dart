@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:legends_panel/app/controller/build_page_controller/build_page_controller.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/model/data_analysis/data_analysis_model.dart';
+import 'package:legends_panel/app/model/data_analysis/game_time_line_model.dart';
 import 'package:legends_panel/app/model/general/champion.dart';
 import 'package:legends_panel/app/model/general/champion_with_spell.dart';
 
@@ -18,6 +19,8 @@ class ChampionBuildBottomSheetController {
   Champion champion = Champion();
 
   Rx<bool> isLoadingChampion = false.obs;
+
+  List<PositionData> mostPositions = [];
 
   startLoadingChampion() {
     isLoadingChampion(true);
@@ -124,19 +127,37 @@ class ChampionBuildBottomSheetController {
   }
 
   transformJson(var value) async {
+    mostPositions.clear();
     stopLoading();
     collectionChampionId = value.id.toString();
     championStatistic = ChampionStatistic.fromJson(value.data());
-    //teria que verificar se as posicoes n se repetem
-    championStatistic.positions
-        .sort((a, b) => a.amountPick.compareTo(b.amountPick));
-    championStatistic.positions[0].builds
-        .sort((a, b) => a.amountPick.compareTo(b.amountPick));
-    if (championStatistic.positions.length > 1) {
-      championStatistic.positions[1].builds
-          .sort((a, b) => a.amountPick.compareTo(b.amountPick));
-    }
+    _orderMostPlayedPositions();
+    _orderMostUsedBuilds();
+    setMostPlayedPosition();
     startLoadingChampion();
     await getChampionForSpell(collectionChampionId);
+  }
+
+  void _orderMostPlayedPositions() {
+    championStatistic.positions
+        .sort((a, b) => a.amountPick.compareTo(b.amountPick));
+  }
+
+  void _orderMostUsedBuilds(){
+    championStatistic.positions[0].builds
+        .sort((a, b) => a.amountPick.compareTo(b.amountPick));
+
+    if (championStatistic.positions.length > 1) {
+      for(PositionData pos in championStatistic.positions){
+        if(pos.role != championStatistic.positions[0].role){
+          mostPositions.add(pos);
+          break;
+        }
+      }
+    }
+  }
+
+  setMostPlayedPosition(){
+    mostPositions.add(championStatistic.positions[0]);
   }
 }

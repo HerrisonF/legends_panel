@@ -19,8 +19,11 @@ class ProfileResultGameDetailController {
 
   getParticipantById(String summonerId) {
     if (matchDetail.value.matchInfo.participants.length > 0) {
-      this.currentParticipant.value = matchDetail.value.matchInfo.participants.where((element) => element.summonerId == summonerId).first;
-      currentParticipant.refresh();
+      var list = matchDetail.value.matchInfo.participants.where((element) => element.summonerId == summonerId);
+      if(list.length > 0){
+        this.currentParticipant.value = list.first;
+        currentParticipant.refresh();
+      }
     }
   }
 

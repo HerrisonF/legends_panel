@@ -112,9 +112,9 @@ class ProfileController {
     }
   }
 
-  bool isUserGreaterThanGold(){
+  bool isUserGreaterThanPlatinum(){
     String elo = userTierRankedSolo.value.tier.toLowerCase();
-    return elo != 'iron' &&  elo != 'bronze' && elo != 'gold' && elo != 'silver';
+    return elo != 'iron' &&  elo != 'bronze' && elo != 'gold' && elo != 'silver' && elo != 'platinum';
   }
 
   getMasteryChampions(String keyRegion) async {
@@ -213,9 +213,9 @@ class ProfileController {
   deletePersistedUser() {
     _masterController.deleteUserProfile();
     this.isShowingMessage(false);
-    oldIndex = 0.obs;
-    newIndex = 0.obs;
-
+    oldIndex.value = 0;
+    newIndex.value = 0;
+    userTierRankedSolo.value = UserTier();
     this.userTierList.clear();
     this.championMasteryList.clear();
     this.matchIdList.clear();

@@ -26,7 +26,6 @@ class DataAnalysisController {
   ParticipantAndEvent participantAndEvents = ParticipantAndEvent();
 
   final ProfileController _profileController = Get.find<ProfileController>();
-  //final MasterController _masterController = Get.find<MasterController>();
 
   getGameTimeLine(
     String matchId,
@@ -37,12 +36,13 @@ class DataAnalysisController {
     clean();
     this.participant = participant;
     this.mapMode = mapMode;
-    if (_profileController.isUserGreaterThanGold() &&
-        isOnSoloRanked() &&
-        championIsGreaterThanEighteen()) {
-      gameTimeLineModel =
-          await dataAnalysisRepository.getGameTimeLine(matchId, keyRegion);
-      buildModelForAnalytics(gameTimeLineModel);
+    if (_profileController.isUserGreaterThanPlatinum() &&
+        isOnSoloRanked()) {
+      if(championIsGreaterThanEighteen()){
+        gameTimeLineModel =
+        await dataAnalysisRepository.getGameTimeLine(matchId, keyRegion);
+        buildModelForAnalytics(gameTimeLineModel);
+      }
     }
   }
 
@@ -56,10 +56,18 @@ class DataAnalysisController {
     participantAndEvents = ParticipantAndEvent();
   }
 
-  static const MAX_LEVEL_CHAMPION = 17;
+  static const MAX_LEVEL_CHAMPION = 16;
+  static const MAX_LEVEL_CHAMPION_FOR_SUP = 13;
 
   bool championIsGreaterThanEighteen() {
-    return participant.champLevel >= MAX_LEVEL_CHAMPION;
+    if(participant.role != null && participant.role.toString().isNotEmpty && participant.role.toString().toLowerCase() != "none"){
+      if(participant.role.toString().toLowerCase() == 'support'){
+        return participant.champLevel >= MAX_LEVEL_CHAMPION_FOR_SUP;
+      }
+      return participant.champLevel >= MAX_LEVEL_CHAMPION;
+    }else{
+      return false;
+    }
   }
 
   bool isOnSoloRanked() {
@@ -79,7 +87,6 @@ class DataAnalysisController {
   cleanCache(){
     championStatistic = ChampionStatistic();
     buildOnPosition = BuildOnPosition();
-    String participantIdOnTimeLine = "";
   }
 
   lookOnCloudForChampion() {
@@ -96,8 +103,8 @@ class DataAnalysisController {
       championStatistic = ChampionStatistic.fromJson(champValue.data());
       bool hasPosition = false;
       for (int i = 0; i < championStatistic.positions.length - 1; i++) {
-        if (championStatistic.positions[i].name.toLowerCase() ==
-            participant.individualPosition.toString().toLowerCase()) {
+        if (championStatistic.positions[i].role.toLowerCase() ==
+            participant.role.toString().toLowerCase()) {
           championStatistic.positions[i].amountPick++;
           hasPosition = true;
           _checkBuildIsIdentical(i);
@@ -105,8 +112,8 @@ class DataAnalysisController {
       }
       if (!hasPosition) {
         PositionData positionData = PositionData();
-        positionData.name =
-            participant.individualPosition.toString().toLowerCase();
+        positionData.role =
+            participant.role.toString().toLowerCase();
         positionData.amountPick = 1;
         buildOnPosition.amountPick++;
         if(participant.win){
@@ -118,8 +125,8 @@ class DataAnalysisController {
       }
     } else {
       PositionData positionData = PositionData();
-      positionData.name =
-          participant.individualPosition.toString().toLowerCase();
+      positionData.role =
+          participant.role.toString().toLowerCase();
       positionData.amountPick = 1;
       buildOnPosition.amountPick++;
       if(participant.win){

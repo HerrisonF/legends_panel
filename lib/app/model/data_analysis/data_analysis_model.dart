@@ -22,12 +22,12 @@ class ChampionStatistic {
 }
 
 class PositionData {
-  String name = "";
+  String role = "";
   int amountPick = 0;
   List<BuildOnPosition> builds = [];
 
   PositionData.fromJson(Map<String, dynamic> json) {
-    name = json['name'] ?? "";
+    role = json['role'] ?? "";
     amountPick = json['amountPick'] ?? 0;
     if (json["builds"] != null) {
       json["builds"].forEach((element) {
@@ -38,7 +38,7 @@ class PositionData {
 
   Map<String, dynamic> toJson() => {
         'builds': builds.map((e) => e.toJson()).toList(),
-        'name': name,
+        'role': role,
         'amountPick': amountPick,
       };
 
