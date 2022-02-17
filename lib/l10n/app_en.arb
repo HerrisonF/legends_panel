@@ -126,5 +126,9 @@
   "abilityOrder": "Ability order",
   "@abilityOrder" : {
     "description" : "Ability order"
+  },
+  "buildSuggestion" : "Build Suggestion",
+  "@buildSuggestion" : {
+    "description" : "Build Suggestion"
   }
 }

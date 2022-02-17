@@ -30,5 +30,6 @@
   "noBuildChampion" : "Ainda sem dados para esse champion",
   "spell" : "Feitiços",
   "perk" : "Runas",
-  "abilityOrder" : "Ordem de habilidades"
+  "abilityOrder" : "Ordem de habilidades",
+  "buildSuggestion" : "Sugestão de build"
 }

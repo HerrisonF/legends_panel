@@ -107,7 +107,7 @@ class _BuildPageState extends State<BuildPage> {
       onTap: () {
         _buildPageController.cleanSearch();
         _openBottomSheet(
-            _buildPageController.searchedChampion[index].detail.key);
+            _buildPageController.searchedChampion[index].detail.key, _buildPageController.searchedChampion[index].detail.name);
       },
       child: Column(
         children: [
@@ -139,7 +139,7 @@ class _BuildPageState extends State<BuildPage> {
     );
   }
 
-  _openBottomSheet(String championKey) {
+  _openBottomSheet(String championKey, String championName) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -150,7 +150,7 @@ class _BuildPageState extends State<BuildPage> {
         ),
       ),
       builder: (_) {
-        return ChampionBuildBottomSheet(championId: championKey);
+        return ChampionBuildBottomSheet(championId: championKey, championName: championName,);
       },
     );
   }
