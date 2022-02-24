@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:legends_panel/app/constants/assets.dart';
@@ -17,34 +19,66 @@ class ChampionBuildBottomSheet extends StatefulWidget {
       _ChampionBuildBottomSheetState();
 }
 
-class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
+class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet>
+    with SingleTickerProviderStateMixin {
   final ChampionBuildBottomSheetController _championBuildBottomSheetController =
       Get.put(ChampionBuildBottomSheetController());
+
+  late Timer _timer;
+  int _start = 1;
 
   @override
   void initState() {
     _championBuildBottomSheetController.init(widget.championId);
     super.initState();
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+          (Timer timer) {
+        if (_start == 0) {
+          setState(() {
+            _visible = !_visible;
+          });
+        } else {
+          setState(() {
+            _start--;
+          });
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Obx(
       () {
-        return _championBuildBottomSheetController.isLoading.value
-            ? Container(
-                height: 50,
-                margin: EdgeInsets.symmetric(horizontal: 170, vertical: 10),
-                child: CircularProgressIndicator(),
-              )
-            : _championBuildBottomSheetController
-                        .championStatistic.positions.length >
-                    0
-                ? _championStats()
-                : Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                    child: Text(AppLocalizations.of(context)!.noBuildChampion),
-                  );
+        return Stack(
+          children: [
+            _championBuildBottomSheetController.isLoading.value
+                ? Container(
+                    height: 50,
+                    margin: EdgeInsets.symmetric(horizontal: 170, vertical: 10),
+                    child: CircularProgressIndicator(),
+                  )
+                : _championBuildBottomSheetController
+                            .championStatistic.positions.length >
+                        0
+                    ? _championStats()
+                    : Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                        child:
+                            Text(AppLocalizations.of(context)!.noBuildChampion),
+                      ),
+            _animatedIndicator(),
+          ],
+        );
       },
     );
   }
@@ -97,6 +131,37 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
     );
   }
 
+  _animatedIndicator() {
+    return _championBuildBottomSheetController.mostPositions.length > 1
+        ? _animatedArrow()
+        : SizedBox.shrink();
+  }
+
+  bool _visible = true;
+
+  _animatedArrow() {
+    return Positioned(
+      top: MediaQuery.of(context).size.height / 4.5,
+      right: 0,
+      child: AnimatedOpacity(
+        duration: Duration(seconds: 1),
+        opacity: _visible ? 1.0 : 0.0,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8), bottomRight: Radius.circular(8), bottomLeft: Radius.circular(8)),
+            color: Colors.blue[100],
+          ),
+          height: MediaQuery.of(context).size.height / 2,
+          child: Icon(
+            Icons.arrow_forward_ios,
+            color: Colors.black,
+            size: 5,
+          ),
+        ),
+      ),
+    );
+  }
+
   _imageDivider() {
     return Container(
       height: 20,
@@ -120,9 +185,12 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.symmetric(vertical: 20),
-      child: Text(AppLocalizations.of(context)!.spell, style: TextStyle(
-        fontWeight: FontWeight.w500,
-      ),),
+      child: Text(
+        AppLocalizations.of(context)!.spell,
+        style: TextStyle(
+          fontWeight: FontWeight.w500,
+        ),
+      ),
     );
   }
 
@@ -136,10 +204,9 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
             height: 40,
             decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.indigo,
-                  width: 1,
-                )
-            ),
+              color: Colors.indigo,
+              width: 1,
+            )),
             margin: EdgeInsets.only(left: 5),
             child: Image.network(
               _championBuildBottomSheetController.getSpellUrl(
@@ -159,10 +226,9 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
             margin: EdgeInsets.only(left: 5),
             decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.indigo,
-                  width: 1,
-                )
-            ),
+              color: Colors.indigo,
+              width: 1,
+            )),
             child: Image.network(
               _championBuildBottomSheetController.getSpellUrl(
                   _championBuildBottomSheetController
@@ -185,9 +251,12 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.symmetric(vertical: 20),
-      child: Text(AppLocalizations.of(context)!.buildSuggestion, style: TextStyle(
-        fontWeight: FontWeight.w500,
-      ),),
+      child: Text(
+        AppLocalizations.of(context)!.buildSuggestion,
+        style: TextStyle(
+          fontWeight: FontWeight.w500,
+        ),
+      ),
     );
   }
 
@@ -221,11 +290,10 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
               return Container(
                 height: 35,
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.lightBlueAccent,
-                    width: 1,
-                  )
-                ),
+                    border: Border.all(
+                  color: Colors.lightBlueAccent,
+                  width: 1,
+                )),
                 child: Image.network(
                   _championBuildBottomSheetController.getItemUrl(
                       _championBuildBottomSheetController
@@ -406,7 +474,7 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
         ),
         borderRadius: BorderRadius.circular(32),
         image: DecorationImage(
-           fit: BoxFit.scaleDown,
+          fit: BoxFit.scaleDown,
           image: NetworkImage(
             _championBuildBottomSheetController.getPerkShard(image),
           ),
@@ -476,10 +544,15 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
                 .positions[positionIndex].builds[0].selectedSkill.skillsOrder
                 .map((e) {
               return Obx(() {
-                int index = _championBuildBottomSheetController.championStatistic
-                    .positions[positionIndex].builds[0].selectedSkill.skillsOrder
+                int index = _championBuildBottomSheetController
+                    .championStatistic
+                    .positions[positionIndex]
+                    .builds[0]
+                    .selectedSkill
+                    .skillsOrder
                     .indexOf(e);
-                return !_championBuildBottomSheetController.isLoadingChampion.value
+                return !_championBuildBottomSheetController
+                        .isLoadingChampion.value
                     ? Column(
                         children: [
                           Text(
@@ -522,7 +595,8 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet> {
                               width: 2,
                             )),
                             child: Image.network(
-                              _championBuildBottomSheetController.getChampionSpell(
+                              _championBuildBottomSheetController
+                                  .getChampionSpell(
                                 widget.championId,
                                 _championBuildBottomSheetController
                                     .championStatistic
