@@ -66,10 +66,11 @@ class MasterController {
   }
 
   getLolVersion() async {
-    lolVersion = await _masterRepository.getLOLVersionOnLocal();
-    if (!isLolVersionStored() || lolVersion.needToLoadVersionFromWeb()) {
+    //lolVersion = await _masterRepository.getLOLVersionOnLocal();
+    //if (!isLolVersionStored() || lolVersion.needToLoadVersionFromWeb()) {
       await getLolVersionOnWeb();
-    }
+    //}
+    await getLolVersionOnWeb();
   }
 
   bool isLolVersionStored() {
@@ -83,10 +84,10 @@ class MasterController {
   }
 
   getChampionRoom() async {
-    championRoom = await _masterRepository.getChampionRoomOnLocal();
-    if (!isChampionRoomStored() || championRoom.needToLoadVersionFromWeb()) {
+    //championRoom = await _masterRepository.getChampionRoomOnLocal();
+    //if (!isChampionRoomStored() || championRoom.needToLoadVersionFromWeb()) {
       await getChampionRoomOnWeb();
-    }
+    //}
   }
 
   bool isChampionRoomStored() {
