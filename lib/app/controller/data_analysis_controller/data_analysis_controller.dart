@@ -60,8 +60,8 @@ class DataAnalysisController {
   static const MAX_LEVEL_CHAMPION_FOR_SUP = 13;
 
   bool championIsGreaterThanEighteen() {
-    if(participant.role != null && participant.role.toString().isNotEmpty && participant.role.toString().toLowerCase() != "none"){
-      if(participant.role.toString().toLowerCase() == 'support'){
+    if(participant.teamPosition != null && participant.teamPosition.toString().isNotEmpty && participant.teamPosition.toString().toLowerCase() != "none"){
+      if(participant.teamPosition.toString().toLowerCase() == 'utility'){
         return participant.champLevel >= MAX_LEVEL_CHAMPION_FOR_SUP;
       }
       return participant.champLevel >= MAX_LEVEL_CHAMPION;

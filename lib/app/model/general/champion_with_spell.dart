@@ -205,7 +205,9 @@ class Spell {
     name = json['name'] ?? "";
     description = json['description'] ?? "";
     tooltip = json['tooltip'] ?? "";
-    levelTip = LevelTip.fromJson(json['leveltip']);
+    if(json['leveltip'] != null){
+      levelTip = LevelTip.fromJson(json['leveltip']);
+    }
     maxrank = json['maxrank'] ?? "";
     if (json['cooldown'] != null) {
       json['cooldown'].forEach((e) {

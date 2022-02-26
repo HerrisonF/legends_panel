@@ -69,7 +69,8 @@ class _BuildPageState extends State<BuildPage> {
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
       child: TextFormField(
         controller: _buildPageController.searchEditingController,
-        decoration: InputDecoration(hintText: AppLocalizations.of(context)!.championName),
+        decoration: InputDecoration(
+            hintText: AppLocalizations.of(context)!.championName),
         onChanged: (value) {
           _buildPageController.showChampionEqualsFromSearch(value);
         },
@@ -105,9 +106,12 @@ class _BuildPageState extends State<BuildPage> {
   championImageOrLoading(int index) {
     return InkWell(
       onTap: () {
-        _buildPageController.cleanSearch();
         _openBottomSheet(
-            _buildPageController.searchedChampion[index].detail.key, _buildPageController.searchedChampion[index].detail.name);
+          _buildPageController.searchedChampion[index].detail.key,
+          _buildPageController.searchedChampion[index].detail.name,
+        );
+        _buildPageController.cleanSearch();
+        FocusScope.of(context).unfocus();
       },
       child: Column(
         children: [
@@ -150,7 +154,10 @@ class _BuildPageState extends State<BuildPage> {
         ),
       ),
       builder: (_) {
-        return ChampionBuildBottomSheet(championId: championKey, championName: championName,);
+        return ChampionBuildBottomSheet(
+          championId: championKey,
+          championName: championName,
+        );
       },
     );
   }

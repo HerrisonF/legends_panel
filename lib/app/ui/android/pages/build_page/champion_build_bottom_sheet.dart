@@ -34,7 +34,7 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet>
     const oneSec = const Duration(seconds: 1);
     _timer = new Timer.periodic(
       oneSec,
-          (Timer timer) {
+      (Timer timer) {
         if (_start == 0) {
           setState(() {
             _visible = !_visible;
@@ -58,27 +58,20 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet>
   Widget build(BuildContext context) {
     return Obx(
       () {
-        return Stack(
-          children: [
-            _championBuildBottomSheetController.isLoading.value
-                ? Container(
-                    height: 50,
-                    margin: EdgeInsets.symmetric(horizontal: 170, vertical: 10),
-                    child: CircularProgressIndicator(),
-                  )
-                : _championBuildBottomSheetController
-                            .championStatistic.positions.length >
-                        0
-                    ? _championStats()
-                    : Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                        child:
-                            Text(AppLocalizations.of(context)!.noBuildChampion),
-                      ),
-            _animatedIndicator(),
-          ],
-        );
+        return _championBuildBottomSheetController.isLoading.value
+            ? Container(
+                height: 50,
+                margin: EdgeInsets.symmetric(horizontal: 170, vertical: 10),
+                child: CircularProgressIndicator(),
+              )
+            : _championBuildBottomSheetController
+                        .championStatistic.positions.length >
+                    0
+                ? _championStats()
+                : Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    child: Text(AppLocalizations.of(context)!.noBuildChampion),
+                  );
       },
     );
   }
@@ -116,23 +109,29 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet>
   }
 
   _championSkills(int positionIndex) {
-    return ListView(
+    return Stack(
       children: [
-        _positionTitle(positionIndex),
-        _championSkillTitle(),
-        _championSkill(positionIndex),
-        _championPerksTitle(),
-        _championPerks(positionIndex),
-        _championItemTitle(),
-        _championItems(positionIndex),
-        _championSpellTitle(),
-        _championSpells(positionIndex),
+        _animatedIndicator(positionIndex),
+        ListView(
+          children: [
+            _positionTitle(positionIndex),
+            _championSkillTitle(),
+            _championSkill(positionIndex),
+            _championPerksTitle(),
+            _championPerks(positionIndex),
+            _championItemTitle(),
+            _championItems(positionIndex),
+            _championSpellTitle(),
+            _championSpells(positionIndex),
+          ],
+        ),
       ],
     );
   }
 
-  _animatedIndicator() {
-    return _championBuildBottomSheetController.mostPositions.length > 1
+  _animatedIndicator(int positionIndex) {
+    return _championBuildBottomSheetController.mostPositions.length > 1 &&
+            positionIndex == 0
         ? _animatedArrow()
         : SizedBox.shrink();
   }
@@ -141,17 +140,22 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet>
 
   _animatedArrow() {
     return Positioned(
-      top: MediaQuery.of(context).size.height / 4.5,
+      top: 0,
       right: 0,
+      bottom: 0,
       child: AnimatedOpacity(
         duration: Duration(seconds: 1),
         opacity: _visible ? 1.0 : 0.0,
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8), bottomRight: Radius.circular(8), bottomLeft: Radius.circular(8)),
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(8),
+              topLeft: Radius.circular(8),
+              bottomRight: Radius.circular(8),
+              bottomLeft: Radius.circular(8),
+            ),
             color: Colors.blue[100],
           ),
-          height: MediaQuery.of(context).size.height / 2,
           child: Icon(
             Icons.arrow_forward_ios,
             color: Colors.black,
@@ -540,8 +544,12 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet>
           child: Wrap(
             spacing: 5,
             runSpacing: 16,
-            children: _championBuildBottomSheetController.championStatistic
-                .positions[positionIndex].builds[0].selectedSkill.skillsOrder
+            children: _championBuildBottomSheetController
+                .championStatistic
+                .positions[positionIndex]
+                .builds[0]
+                .selectedSkill
+                .skillsOrder
                 .map((e) {
               return Obx(() {
                 int index = _championBuildBottomSheetController
@@ -573,7 +581,8 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet>
                           Container(
                             margin: EdgeInsets.symmetric(vertical: 5),
                             child: Text(
-                              _championBuildBottomSheetController.getSpellKey(
+                              _championBuildBottomSheetController
+                                  .getSpellKey(
                                 _championBuildBottomSheetController
                                     .championStatistic
                                     .positions[positionIndex]
@@ -598,13 +607,15 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet>
                               _championBuildBottomSheetController
                                   .getChampionSpell(
                                 widget.championId,
-                                _championBuildBottomSheetController
-                                    .championStatistic
-                                    .positions[positionIndex]
-                                    .builds[0]
-                                    .selectedSkill
-                                    .skillsOrder[index]
-                                    .skillSlot,
+                                int.parse(
+                                  _championBuildBottomSheetController
+                                      .championStatistic
+                                      .positions[positionIndex]
+                                      .builds[0]
+                                      .selectedSkill
+                                      .skillsOrder[index]
+                                      .skillSlot,
+                                ),
                               ),
                               fit: BoxFit.cover,
                             ),

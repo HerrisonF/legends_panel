@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:legends_panel/app/controller/build_page_controller/build_page_controller.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/model/data_analysis/data_analysis_model.dart';
-import 'package:legends_panel/app/model/data_analysis/game_time_line_model.dart';
 import 'package:legends_panel/app/model/general/champion.dart';
 import 'package:legends_panel/app/model/general/champion_with_spell.dart';
 
@@ -59,7 +58,7 @@ class ChampionBuildBottomSheetController {
     );
   }
 
-  clean(){
+  clean() {
     collectionChampionId = "";
     championStatistic = ChampionStatistic();
     champion = Champion();
@@ -69,17 +68,19 @@ class ChampionBuildBottomSheetController {
   getChampionForSpell(String championId) async {
     champion = _getChampion(championId);
 
-    championWithSpell = await _buildPageController.buildPageRepository
-        .getChampionForSpell(
-            champion.detail.id, _masterController.lolVersion.actualVersion);
+    championWithSpell =
+        await _buildPageController.buildPageRepository.getChampionForSpell(
+      champion.detail.id,
+      _masterController.lolVersion.actualVersion,
+    );
     stopLoadingChampion();
   }
 
-  String getChampionSpell(String championId, String spellSlot) {
+  String getChampionSpell(String championId, int index) {
     return _buildPageController.buildPageRepository.getChampionSpellImage(
-        championWithSpell
-            .championWithSpellDetail.spells[int.parse(spellSlot) - 1].id,
-        _masterController.lolVersion.actualVersion);
+      championWithSpell.championWithSpellDetail.spells[index - 1].id,
+      _masterController.lolVersion.actualVersion,
+    );
   }
 
   getSpellKey(String spellSlot) {
@@ -143,13 +144,13 @@ class ChampionBuildBottomSheetController {
         .sort((a, b) => a.amountPick.compareTo(b.amountPick));
   }
 
-  void _orderMostUsedBuilds(){
+  void _orderMostUsedBuilds() {
     championStatistic.positions[0].builds
         .sort((a, b) => a.amountPick.compareTo(b.amountPick));
 
     if (championStatistic.positions.length > 1) {
-      for(PositionData pos in championStatistic.positions){
-        if(pos.role != championStatistic.positions[0].role){
+      for (PositionData pos in championStatistic.positions) {
+        if (pos.role != championStatistic.positions[0].role) {
           mostPositions.add(pos);
           break;
         }
@@ -157,7 +158,7 @@ class ChampionBuildBottomSheetController {
     }
   }
 
-  setMostPlayedPosition(){
+  setMostPlayedPosition() {
     mostPositions.add(championStatistic.positions[0]);
   }
 }
