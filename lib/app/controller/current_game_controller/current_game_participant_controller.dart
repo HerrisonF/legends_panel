@@ -56,14 +56,14 @@ class CurrentGameParticipantController extends MasterController {
   String getChampionBadgeUrl(String championId) {
     return _participantRepository.getChampionBadgeUrl(
         _masterController.getChampionById(championId).detail.id.toString(),
-        _masterController.lolVersion.actualVersion);
+        _masterController.lolVersionController.cachedLolVersion.getLatestVersion());
   }
 
   String getSpellUrl(String spellId) {
     Spell spell = _masterController.getSpellById(spellId);
     if (spell.name.isNotEmpty) {
       return _participantRepository.getSpellBadgeUrl(
-          spell.id, _masterController.lolVersion.actualVersion);
+          spell.id, _masterController.lolVersionController.cachedLolVersion.getLatestVersion());
     } else {
       return "";
     }
@@ -71,12 +71,12 @@ class CurrentGameParticipantController extends MasterController {
 
   String getItemUrl(String itemId) {
     return _participantRepository.getItemUrl(
-        itemId, _masterController.lolVersion.actualVersion);
+        itemId, _masterController.lolVersionController.cachedLolVersion.getLatestVersion());
   }
 
   String getPositionUrl(String position) {
     return _participantRepository.getPosition(
-        position, _masterController.lolVersion.actualVersion);
+        position, _masterController.lolVersionController.cachedLolVersion.getLatestVersion());
   }
 
   getSpectator(String summonerId, String region) async {

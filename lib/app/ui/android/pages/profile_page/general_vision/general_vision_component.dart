@@ -92,9 +92,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
           ),
         ),
         Positioned(
-          top: 15,
-          left: 18,
-          child: GestureDetector(
+          child: InkWell(
             onTap: () {
               Navigator.of(context).pop();
             },
@@ -104,12 +102,13 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
                 color: Colors.grey,
                 borderRadius: BorderRadius.circular(32),
               ),
-              height: 20,
-              width: 20,
+              height: 30,
+              width: 30,
+              margin: EdgeInsets.only(left: 15, top: 20),
               child: Icon(
                 Icons.clear,
                 color: Colors.black,
-                size: 10,
+                size: 15,
               ),
             ),
           ),

@@ -38,7 +38,7 @@ class DataAnalysisController {
     this.mapMode = mapMode;
     if (_profileController.isUserGreaterThanPlatinum() &&
         isOnSoloRanked()) {
-      if(championIsGreaterThanEighteen()){
+      if(championIsGreaterThanSixteen()){
         gameTimeLineModel =
         await dataAnalysisRepository.getGameTimeLine(matchId, keyRegion);
         buildModelForAnalytics(gameTimeLineModel);
@@ -59,7 +59,7 @@ class DataAnalysisController {
   static const MAX_LEVEL_CHAMPION = 16;
   static const MAX_LEVEL_CHAMPION_FOR_SUP = 13;
 
-  bool championIsGreaterThanEighteen() {
+  bool championIsGreaterThanSixteen() {
     if(participant.teamPosition != null && participant.teamPosition.toString().isNotEmpty && participant.teamPosition.toString().toLowerCase() != "none"){
       if(participant.teamPosition.toString().toLowerCase() == 'utility'){
         return participant.champLevel >= MAX_LEVEL_CHAMPION_FOR_SUP;

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:legends_panel/app/controller/build_page_controller/build_page_controller.dart';
+import 'package:get_it/get_it.dart';
+import 'package:legends_panel/app/layers/presentation/controller/lol_version_controller.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_perk.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_summoner_spell.dart';
 import 'package:legends_panel/app/model/general/champion.dart';
 import 'package:legends_panel/app/model/general/champion_room.dart';
 import 'package:legends_panel/app/model/general/runesRoom.dart';
-import 'package:legends_panel/app/model/general/lol_version.dart';
 import 'package:legends_panel/app/model/general/map_room.dart';
 import 'package:legends_panel/app/model/general/spell_room.dart';
 import 'package:legends_panel/app/model/general/stored_region.dart';
@@ -18,6 +18,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 class MasterController {
   final MasterRepository _masterRepository = MasterRepository();
 
+  LolVersionController lolVersionController = GetIt.I.get<LolVersionController>();
+
   RxInt currentPageIndex = 0.obs;
   late PackageInfo packageInfo;
 
@@ -26,7 +28,6 @@ class MasterController {
   RxList<User> favoriteUsersForCurrentGame = RxList<User>();
   RxList<User> favoriteUsersForProfile = RxList<User>();
   StoredRegion storedRegion = StoredRegion();
-  LolVersion lolVersion = LolVersion();
   ChampionRoom championRoom = ChampionRoom();
   SpellRoom spellRoom = SpellRoom();
   MapRoom mapRoom = MapRoom();
@@ -66,21 +67,13 @@ class MasterController {
   }
 
   getLolVersion() async {
-    //lolVersion = await _masterRepository.getLOLVersionOnLocal();
-    //if (!isLolVersionStored() || lolVersion.needToLoadVersionFromWeb()) {
-      await getLolVersionOnWeb();
-    //}
-    await getLolVersionOnWeb();
-  }
-
-  bool isLolVersionStored() {
-    return lolVersion.actualVersion.isNotEmpty;
+    await lolVersionController.start();
   }
 
   getLolVersionOnWeb() async {
-    lolVersion.versions.addAll(await _masterRepository.getLOLVersionOnWeb());
-    lolVersion.actualVersion = lolVersion.versions.first;
-    _masterRepository.saveLolVersion(lolVersion.toJson());
+    // lolVersion.versions.addAll(await _masterRepository.getLOLVersionOnWeb());
+    // lolVersion.actualVersion = lolVersion.versions.first;
+    // _masterRepository.saveLolVersion(lolVersion.toJson());
   }
 
   getChampionRoom() async {
@@ -154,7 +147,7 @@ class MasterController {
 
   getChampionRoomOnWeb() async {
     championRoom =
-        await _masterRepository.getChampionRoomOnWeb(lolVersion.actualVersion);
+        await _masterRepository.getChampionRoomOnWeb(lolVersionController.cachedLolVersion.getLatestVersion());
     _masterRepository.saveChampionRoom(championRoom.toJson());
   }
 
@@ -171,7 +164,7 @@ class MasterController {
 
   getSpellRoomOnWeb() async {
     spellRoom =
-        await _masterRepository.getSpellRoomOnWeb(lolVersion.actualVersion);
+        await _masterRepository.getSpellRoomOnWeb(lolVersionController.cachedLolVersion.getLatestVersion());
     _masterRepository.saveSpellRoom(spellRoom.toJson());
   }
 
@@ -204,7 +197,7 @@ class MasterController {
 
   getRunesRoomOnWeb() async {
     runesRoom = await _masterRepository.getRunesRoomOnWeb(
-        lolVersion.actualVersion, storedRegion.getLocaleKey()!);
+        lolVersionController.cachedLolVersion.getLatestVersion(), storedRegion.getLocaleKey()!);
     _masterRepository.saveRunesRoom(runesRoom.toJson());
   }
 

@@ -61,7 +61,7 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet>
         return _championBuildBottomSheetController.isLoading.value
             ? Container(
                 height: 50,
-                margin: EdgeInsets.symmetric(horizontal: 170, vertical: 10),
+                margin: EdgeInsets.symmetric(horizontal: 170, vertical: 20),
                 child: CircularProgressIndicator(),
               )
             : _championBuildBottomSheetController
@@ -125,7 +125,32 @@ class _ChampionBuildBottomSheetState extends State<ChampionBuildBottomSheet>
             _championSpells(positionIndex),
           ],
         ),
+        _header(),
       ],
+    );
+  }
+
+  _header() {
+    return Positioned(
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).pop();
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(32),
+          ),
+          height: 30,
+          width: 30,
+          margin: EdgeInsets.only(left: 15),
+          child: Icon(
+            Icons.clear,
+            color: Colors.black,
+            size: 15,
+          ),
+        ),
+      ),
     );
   }
 

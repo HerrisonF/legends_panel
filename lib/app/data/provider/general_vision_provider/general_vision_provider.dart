@@ -39,7 +39,7 @@ class GeneralVisionProvider {
   }
 
   String getKillIcon(){
-    final String path = "/latest/game/assets/ux/traiticons/trait_icon_4_duelist.png";
+    final String path = "/latest/game/assets/ux/traiticons/trait_icon_blademaster.png";
     _logger.i("building Image Kill Url ...");
     try{
       return RiotAndRawDragonUrls.rawDataDragonUrl + path;

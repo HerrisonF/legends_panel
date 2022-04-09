@@ -71,7 +71,7 @@ class ChampionBuildBottomSheetController {
     championWithSpell =
         await _buildPageController.buildPageRepository.getChampionForSpell(
       champion.detail.id,
-      _masterController.lolVersion.actualVersion,
+      _masterController.lolVersionController.cachedLolVersion.getLatestVersion(),
     );
     stopLoadingChampion();
   }
@@ -79,7 +79,7 @@ class ChampionBuildBottomSheetController {
   String getChampionSpell(String championId, int index) {
     return _buildPageController.buildPageRepository.getChampionSpellImage(
       championWithSpell.championWithSpellDetail.spells[index - 1].id,
-      _masterController.lolVersion.actualVersion,
+      _masterController.lolVersionController.cachedLolVersion.getLatestVersion(),
     );
   }
 
@@ -100,7 +100,7 @@ class ChampionBuildBottomSheetController {
     var spell = _masterController.getSpellById(spellId);
     if (spell.name.isNotEmpty) {
       return _buildPageController.buildPageRepository.getSpellBadgeUrl(
-          spell.id, _masterController.lolVersion.actualVersion);
+          spell.id, _masterController.lolVersionController.cachedLolVersion.getLatestVersion());
     } else {
       return "";
     }
@@ -116,7 +116,7 @@ class ChampionBuildBottomSheetController {
 
   String getItemUrl(String itemId) {
     return _buildPageController.buildPageRepository
-        .getItemUrl(itemId, _masterController.lolVersion.actualVersion);
+        .getItemUrl(itemId, _masterController.lolVersionController.cachedLolVersion.getLatestVersion());
   }
 
   String getPerk(String perk) {

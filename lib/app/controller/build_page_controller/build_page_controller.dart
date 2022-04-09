@@ -28,14 +28,18 @@ class BuildPageController {
     isLoading(false);
   }
 
-  cleanSearch(){
+  cleanSearch() {
     searchEditingController.clear();
     this.searchedChampion.clear();
     this.searchedChampion.addAll(championRoom.champions);
   }
 
   String getChampionImage(String championId) {
-    return buildPageRepository.getChampionImage(championId, _masterController.lolVersion.actualVersion);
+    return buildPageRepository.getChampionImage(
+      championId,
+      _masterController.lolVersionController.cachedLolVersion
+          .getLatestVersion(),
+    );
   }
 
   showChampionEqualsFromSearch(String value) {

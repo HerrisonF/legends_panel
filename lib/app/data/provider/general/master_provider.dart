@@ -8,7 +8,6 @@ import 'package:legends_panel/app/data/http/config/riot_and_raw_dragon_urls.dart
 import 'package:legends_panel/app/model/current_game_spectator/current_game_summoner_spell.dart';
 import 'package:legends_panel/app/model/general/champion.dart';
 import 'package:legends_panel/app/model/general/champion_room.dart';
-import 'package:legends_panel/app/model/general/lol_version.dart';
 import 'package:legends_panel/app/model/general/map_mode.dart';
 import 'package:legends_panel/app/model/general/map_room.dart';
 import 'package:legends_panel/app/model/general/runesRoom.dart';
@@ -42,32 +41,6 @@ class MasterProvider {
     }
     _logger.i("Lol version not found on Web ...");
     return [];
-  }
-
-  Future<LolVersion> getLOLVersionOnLocal() async {
-    _logger.i("Getting lol Version on local ...");
-    try {
-      String lolVersionString = await box.read(StorageKeys.lolVersionKey);
-      if (lolVersionString.isNotEmpty) {
-        _logger.i("Success to get lol Version on Local ...");
-        return LolVersion.fromJson(jsonDecode(lolVersionString));
-      }
-    } catch (e) {
-      _logger.i("Error to get lol version on local $e");
-      return LolVersion();
-    }
-    _logger.i("Lol version not found on local ...");
-    return LolVersion();
-  }
-
-  saveLolVersion(Map<String, dynamic> lolVersion) {
-    _logger.i("Persisting LolVersion ...");
-    try {
-      box.write(StorageKeys.lolVersionKey, jsonEncode(lolVersion));
-      _logger.i("Success to persist LolVersion ...");
-    } catch (e) {
-      _logger.i("Error to persist LolVersion ... $e");
-    }
   }
 
   Future<ChampionRoom> getChampionRoomOnWeb(String version) async {
@@ -325,10 +298,9 @@ class MasterProvider {
 
 
   String getUserTierImage(String tier){
-    final String path = "/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-mini-regalia/${tier.toLowerCase()}.png";
     _logger.i("building Image Tier Url ...");
     try{
-      return RiotAndRawDragonUrls.rawDataDragonUrl + path;
+      return "images/ranked_mini_emblems/${tier.toLowerCase()}.png";
     }catch(e){
       _logger.i("Error to build Tier Image URL ... $e");
       return "";

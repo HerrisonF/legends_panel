@@ -34,10 +34,9 @@ class ParticipantProvider {
   }
 
   String getUserTierImage(String tier){
-    final String path = "/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-mini-regalia/${tier.toLowerCase()}.png";
     _logger.i("building Image Tier Url ...");
     try{
-      return RiotAndRawDragonUrls.rawDataDragonUrl + path;
+      return "images/ranked_mini_emblems/${tier.toLowerCase()}.png";
     }catch(e){
       _logger.i("Error to build Tier Image URL ... $e");
       return "";

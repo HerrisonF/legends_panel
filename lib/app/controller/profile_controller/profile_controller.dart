@@ -171,7 +171,7 @@ class ProfileController {
   String getCircularChampionImage(int championId) {
     String returnedChampion =
         _masterController.getChampionById(championId.toString()).detail.id.toString();
-    return _profileRepository.getCircularChampionImage(returnedChampion, _masterController.lolVersion.actualVersion);
+    return _profileRepository.getCircularChampionImage(returnedChampion, _masterController.lolVersionController.cachedLolVersion.getLatestVersion());
   }
 
   String getMasteryImage(int index) {
@@ -224,7 +224,7 @@ class ProfileController {
 
   String getUserProfileImage() {
     return _profileRepository.getProfileImage(
-      _masterController.lolVersion.actualVersion,
+      _masterController.lolVersionController.cachedLolVersion.getLatestVersion(),
       _masterController.userForProfile.profileIconId.toString(),
     );
   }

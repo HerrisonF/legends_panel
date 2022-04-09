@@ -1,15 +1,16 @@
 class LolVersionEntity {
-
   List<String> versions;
 
-  LolVersionEntity({
-    required this.versions,
-  });
+  LolVersionEntity({required this.versions});
 
-  getLatestVersion(){
-    if(versions.isNotEmpty){
-      versions.first;
+  String getLatestVersion() {
+    if (hasVersions()) {
+      return versions.first;
     }
+    return 'Version not found';
   }
 
+  bool hasVersions() {
+    return versions.isNotEmpty;
+  }
 }

@@ -1,5 +1,6 @@
-import 'package:legends_panel/app/domain/entities/lol_version_entity.dart';
+import 'package:dartz/dartz.dart';
+import 'package:legends_panel/app/layers/data/dtos/lol_version_dto.dart';
 
 abstract class SaveLolVersionRepository {
-  Future<bool> call(LolVersionEntity lolVersionEntity);
+  Future<Either<Exception, bool>> call(LolVersionDto lolVersionDto);
 }

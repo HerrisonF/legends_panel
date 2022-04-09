@@ -241,7 +241,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                     Container(
                       child: _masterController
                           .favoriteUsersForCurrentGame[index].userTier.isNotEmpty
-                          ? Image.network(
+                          ? Image.asset(
                         _masterController.getUserTierImage(
                           _masterController.favoriteUsersForCurrentGame[index].userTier,
                         ),

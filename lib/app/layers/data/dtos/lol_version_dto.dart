@@ -13,10 +13,10 @@ class LolVersionDto extends LolVersionEntity{
     'versions' : versions.map((e) => e).toList(),
   };
 
-  LolVersionDto fromMap(Map map) {
+  static LolVersionDto fromMap(List<dynamic> map) {
     List<String> versions = [];
-    map.forEach((key, value) {
-      versions.add(value);
+    map.forEach((value) {
+      versions.add(value.toString());
     });
    return LolVersionDto(versions: versions);
   }

@@ -299,7 +299,7 @@ class _CurrentGameParticipantCardState
       return Container(
         child:
             _currentGameParticipantController.soloUserTier.value.tier.isNotEmpty
-                ? Image.network(
+                ? Image.asset(
                     getUserTierImage(),
                     width: 18,
                   )

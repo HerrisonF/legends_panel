@@ -17,6 +17,9 @@ dependencies:
   intl: ^0.17.0
 
   get:
+  get_it:
+  dartz: ^0.10.1
+  shared_preferences: ^2.0.13
   google_fonts: ^2.1.0
   cupertino_icons: ^1.0.2
   get_storage: ^2.0.3
@@ -52,3 +55,4 @@ flutter:
      - images/launcher_icon_android/
      - images/launcher_icon_ios/
      - images/home_background/
+     - images/ranked_mini_emblems/

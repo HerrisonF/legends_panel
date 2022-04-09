@@ -1,5 +1,4 @@
 import 'package:legends_panel/app/model/general/champion_room.dart';
-import 'package:legends_panel/app/model/general/lol_version.dart';
 import 'package:legends_panel/app/model/general/map_room.dart';
 import 'package:legends_panel/app/model/general/runesRoom.dart';
 import 'package:legends_panel/app/model/general/spell_room.dart';
@@ -14,14 +13,6 @@ class MasterRepository {
 
   Future<List<String>> getLOLVersionOnWeb() async {
     return _masterProvider.getLOLVersionOnWeb();
-  }
-
-  Future<LolVersion> getLOLVersionOnLocal() async {
-    return _masterProvider.getLOLVersionOnLocal();
-  }
-
-  saveLolVersion(Map<String, dynamic> lolVersion){
-    _masterProvider.saveLolVersion(lolVersion);
   }
 
   Future<ChampionRoom> getChampionRoomOnWeb(String version) async {

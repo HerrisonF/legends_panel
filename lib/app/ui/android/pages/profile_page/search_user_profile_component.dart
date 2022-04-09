@@ -172,7 +172,7 @@ class _SearchUserProfileComponentState
                     Container(
                       child: _masterController.favoriteUsersForProfile[index]
                               .userTier.isNotEmpty
-                          ? Image.network(
+                          ? Image.asset(
                               _masterController.getUserTierImage(
                                 _masterController
                                     .favoriteUsersForProfile[index].userTier,
