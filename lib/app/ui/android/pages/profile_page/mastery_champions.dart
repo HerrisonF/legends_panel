@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
+import 'package:legends_panel/app/core/utils/screen_utils.dart';
 import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
 
 class MasteryChampions extends StatelessWidget {
   final ProfileController _profileController = Get.find<ProfileController>();
-  final MasterController _masterController = Get.find<MasterController>();
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +39,8 @@ class MasteryChampions extends StatelessWidget {
                 .isNotEmpty
             ? Container(
                 margin: EdgeInsets.symmetric(horizontal: 25, vertical: 12),
-                width: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 55 : 40,
-                height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 55 : 40,
+                width: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 55 : 40,
+                height: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 55 : 40,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(
@@ -56,9 +55,9 @@ class MasteryChampions extends StatelessWidget {
               )
             : SizedBox.shrink(),
         Positioned(
-          bottom: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 0 : 4,
+          bottom: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 0 : 4,
           child: Container(
-            height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 25 : 20,
+            height: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 25 : 20,
             child: Image.network(
               _profileController.getMasteryImage(index),
             ),

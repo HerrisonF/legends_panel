@@ -7,6 +7,6 @@ class SplashscreenController extends UtilController {
       Get.put(MasterController(), permanent: true);
 
   start() async {
-    _masterController.start();
+    _masterController.initialize();
   }
 }

@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/constants/string_constants.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
-import 'package:legends_panel/app/layers/presentation/controller/lol_version_controller.dart';
+import 'package:legends_panel/app/layers/presentation/controllers/lol_version_controller.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_perk.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_spectator.dart';

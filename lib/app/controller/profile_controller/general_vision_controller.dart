@@ -1,21 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/controller/data_analysis_controller/data_analysis_controller.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/data/repository/general_vision_repository/general_vision_repository.dart';
-import 'package:legends_panel/app/model/general/map_mode.dart';
 import 'package:legends_panel/app/model/general/match_detail.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../layers/presentation/controllers/queues_controller.dart';
 
 class GeneralVisionController {
   final GeneralVisionRepository _generalVisionRepository =
       GeneralVisionRepository();
+  final QueuesController _queuesController = GetIt.I.get<QueuesController>();
 
   late MatchDetail matchDetail;
   late Participant participant;
 
   Rx<bool> isLoadingTeamInfo = false.obs;
-  Rx<MapMode> currentMapToShow = MapMode().obs;
 
   RxList<Participant> blueTeam = RxList<Participant>();
   RxList<Participant> redTeam = RxList<Participant>();
@@ -29,7 +31,7 @@ class GeneralVisionController {
   startInitialData(MatchDetail matchDetail, Participant participant) {
     blueTeam.clear();
     redTeam.clear();
-    getMapById(matchDetail.matchInfo.queueId.toString());
+    _queuesController.getCurrentMapById(matchDetail.matchInfo.queueId);
     isLoadingTeamInfo(true);
     this.participant = participant;
     this.matchDetail = matchDetail;
@@ -38,7 +40,7 @@ class GeneralVisionController {
       matchDetail.matchInfo.gameId.toString(),
       _masterController.storedRegion.getKeyFromRegion(_masterController.storedRegion.lastStoredProfileRegion.toString())!,
       participant,
-      currentMapToShow.value,
+      _queuesController.currentMapToShow.value,
     );
   }
 
@@ -59,7 +61,7 @@ class GeneralVisionController {
   }
 
   getMapById(String queueId) {
-    this.currentMapToShow.value = _masterController.getMapById(queueId);
+
   }
 
   detachParticipantsIntoTeams() {

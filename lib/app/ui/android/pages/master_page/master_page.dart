@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
+import 'package:legends_panel/app/core/utils/screen_utils.dart';
 import 'package:legends_panel/app/ui/android/pages/about_page/about_page.dart';
 import 'package:legends_panel/app/ui/android/pages/build_page/build_page.dart';
 import 'package:legends_panel/app/ui/android/pages/current_game_page/current_game_page.dart';
@@ -39,10 +40,9 @@ class MasterPage extends StatelessWidget {
                 ),
                 padding: EdgeInsets.symmetric(
                   horizontal: 30,
-                  vertical:
-                      _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                          ? 10
-                          : 0,
+                  vertical: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                      ? 10
+                      : 0,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,7 +71,7 @@ class MasterPage extends StatelessWidget {
         color: _masterController.currentPageIndex.value == selectedIcon
             ? Color(0xFF4248A5)
             : Color(0xFF292E78).withOpacity(0.3),
-        size: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 22 : 14,
+        size: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 22 : 14,
       ),
     );
   }

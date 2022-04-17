@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/current_game_controller/current_game_result_controller.dart';
+import 'package:legends_panel/app/core/utils/screen_utils.dart';
+import 'package:legends_panel/app/layers/presentation/controllers/queues_controller.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
 import 'package:legends_panel/app/ui/android/components/timer_text.dart';
 import 'package:legends_panel/app/ui/android/pages/current_game_page/current_game_participant_card.dart';
@@ -12,6 +15,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class CurrentGameResultPage extends StatelessWidget {
   final CurrentGameResultController _currentGameResultController =
       Get.find<CurrentGameResultController>();
+  final QueuesController _queuesController = GetIt.I.get<QueuesController>();
 
   final MasterController _masterController = Get.find<MasterController>();
 
@@ -52,16 +56,14 @@ class CurrentGameResultPage extends StatelessWidget {
         SafeArea(
           child: Container(
             margin: EdgeInsets.only(
-                left: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                    ? 15
-                    : 10,
+                left:
+                    ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 15 : 10,
                 top: 20),
             child: IconButton(
               icon: Icon(
                 Icons.arrow_back,
-                size: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                    ? 22
-                    : 16,
+                size:
+                    ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 22 : 16,
               ),
               onPressed: () {
                 Navigator.pop(context);
@@ -81,14 +83,12 @@ class CurrentGameResultPage extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(top: 80),
             child: Text(
-              _currentGameResultController.currentMapToShow.value.map.isEmpty
+              _queuesController.currentMapToShow.value.map.isEmpty
                   ? AppLocalizations.of(context)!.loadingMessage
-                  : _currentGameResultController.currentMapToShow.value.map,
+                  : _queuesController.currentMapToShow.value.map,
               style: GoogleFonts.aBeeZee(
                 fontSize:
-                    _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                        ? 18
-                        : 12,
+                    ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 18 : 12,
                 color: Colors.white,
                 letterSpacing: 0.2,
                 fontWeight: FontWeight.w300,
@@ -100,9 +100,7 @@ class CurrentGameResultPage extends StatelessWidget {
               _currentGameResultController.getCurrentMapDescription(),
               style: GoogleFonts.aBeeZee(
                 fontSize:
-                    _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                        ? 14
-                        : 8,
+                    ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 14 : 8,
                 color: Colors.white,
                 letterSpacing: 0.2,
                 fontWeight: FontWeight.w300,
@@ -140,8 +138,7 @@ class CurrentGameResultPage extends StatelessWidget {
       child: Text(
         _masterController.userForCurrentGame.name,
         style: GoogleFonts.aBeeZee(
-          fontSize:
-              _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 16 : 14,
+          fontSize: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 16 : 14,
           color: Colors.white,
           letterSpacing: 0.2,
           fontWeight: FontWeight.bold,
@@ -201,8 +198,7 @@ class CurrentGameResultPage extends StatelessWidget {
         top: team == 200 ? 20 : 0,
         bottom: team == 200 ? 20 : 0,
       ),
-      height:
-          _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 318 : 230,
+      height: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 318 : 230,
       child: ListView.builder(
         padding: EdgeInsets.zero,
         physics: NeverScrollableScrollPhysics(),

@@ -5,7 +5,7 @@ import 'package:legends_panel/app/data/repository/build_page_repository/build_pa
 import 'package:legends_panel/app/model/general/champion.dart';
 import 'package:legends_panel/app/model/general/champion_room.dart';
 
-import '../../layers/presentation/controller/lol_version_controller.dart';
+import '../../layers/presentation/controllers/lol_version_controller.dart';
 
 class BuildPageController {
   Rx<bool> isLoading = false.obs;

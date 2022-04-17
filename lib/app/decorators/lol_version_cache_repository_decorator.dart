@@ -4,8 +4,8 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:legends_panel/app/decorators/lol_version_repository_decorator.dart';
-import 'package:legends_panel/app/layers/data/dtos/lol_version_dto.dart';
-import 'package:legends_panel/app/layers/domain/repositories/get_lol_version_repository.dart';
+import 'package:legends_panel/app/layers/data/dtos/lol_version/lol_version_dto.dart';
+import 'package:legends_panel/app/layers/domain/repositories/lol_version/get_lol_version_repository.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

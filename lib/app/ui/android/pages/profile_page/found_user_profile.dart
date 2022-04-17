@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
+import 'package:legends_panel/app/core/utils/screen_utils.dart';
 import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
 
 import 'item_match_list_game_card.dart';
@@ -69,16 +70,15 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
           Stack(
             children: [
               Container(
-                height: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                height: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
                     ? MediaQuery.of(context).size.height / 3
                     : MediaQuery.of(context).size.height / 2.8,
                 child: summonerPanel(context),
               ),
               Positioned(
                 left: 25,
-                top: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                    ? 20
-                    : 25,
+                top:
+                    ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 20 : 25,
                 child: _outButton(),
               ),
             ],
@@ -123,7 +123,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
       icon: Icon(
         Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
         color: Colors.white,
-        size: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 20 : 14,
+        size: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 20 : 14,
       ),
       onPressed: () {
         goToProfile();
@@ -213,7 +213,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
 
   Positioned _playerRankedEloEmblem(BuildContext context) {
     return Positioned(
-      top: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+      top: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
           ? MediaQuery.of(context).size.height / 5
           : MediaQuery.of(context).size.height / 4.5,
       left: 0,
@@ -238,7 +238,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
   Container _profileStatistics() {
     return Container(
       margin: EdgeInsets.only(
-          top: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+          top: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
               ? MediaQuery.of(context).size.height / 14
               : MediaQuery.of(context).size.height / 12,
           left: MediaQuery.of(context).size.width / 10,
@@ -263,10 +263,10 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   style: GoogleFonts.montserrat(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      fontSize: _masterController
-                              .screenWidthSizeIsBiggerThanNexusOne()
-                          ? 12
-                          : 10),
+                      fontSize:
+                          ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                              ? 12
+                              : 10),
                 ),
               )
             ],
@@ -285,10 +285,10 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   style: GoogleFonts.montserrat(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      fontSize: _masterController
-                              .screenWidthSizeIsBiggerThanNexusOne()
-                          ? 12
-                          : 10),
+                      fontSize:
+                          ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                              ? 12
+                              : 10),
                 ),
               ),
               Container(
@@ -297,10 +297,10 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   style: GoogleFonts.montserrat(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      fontSize: _masterController
-                              .screenWidthSizeIsBiggerThanNexusOne()
-                          ? 12
-                          : 10),
+                      fontSize:
+                          ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                              ? 12
+                              : 10),
                 ),
               ),
               Container(
@@ -318,10 +318,9 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
-                    fontSize:
-                        _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                            ? 12
-                            : 10,
+                    fontSize: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                        ? 12
+                        : 10,
                   ),
                 ),
               ),
@@ -331,10 +330,9 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
-                    fontSize:
-                        _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                            ? 12
-                            : 10,
+                    fontSize: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                        ? 12
+                        : 10,
                   ),
                 ),
               )
@@ -360,10 +358,10 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   child: Text(
                     _masterController.userForProfile.name,
                     style: GoogleFonts.montserrat(
-                      fontSize: _masterController
-                              .screenWidthSizeIsBiggerThanNexusOne()
-                          ? 18
-                          : 12,
+                      fontSize:
+                          ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                              ? 18
+                              : 12,
                       color: Colors.black,
                       fontWeight: FontWeight.w500,
                     ),
@@ -376,10 +374,10 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                   child: Text(
                     _masterController.userForProfile.name,
                     style: GoogleFonts.montserrat(
-                      fontSize: _masterController
-                              .screenWidthSizeIsBiggerThanNexusOne()
-                          ? 18
-                          : 12,
+                      fontSize:
+                          ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                              ? 18
+                              : 12,
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
@@ -400,9 +398,8 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
         children: [
           Container(
             margin: EdgeInsets.only(
-                top: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                    ? 5
-                    : 15),
+              top: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 5 : 15,
+            ),
             width: 50,
             height: 50,
             decoration: BoxDecoration(

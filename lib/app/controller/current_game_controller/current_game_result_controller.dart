@@ -1,17 +1,19 @@
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/util_controller/util_controller.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_banned_champion.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_spectator.dart';
-import 'package:legends_panel/app/model/general/map_mode.dart';
+
+import '../../layers/presentation/controllers/queues_controller.dart';
 
 class CurrentGameResultController extends UtilController {
   final MasterController _masterController = Get.find<MasterController>();
+  final QueuesController _queuesController = GetIt.I.get<QueuesController>();
   String region = "";
 
   CurrentGameSpectator currentGameSpectator = CurrentGameSpectator();
-  Rx<MapMode> currentMapToShow = MapMode().obs;
   RxList<CurrentGameParticipant> blueTeam = RxList<CurrentGameParticipant>();
   RxList<CurrentGameParticipant> redTeam = RxList<CurrentGameParticipant>();
 
@@ -22,7 +24,7 @@ class CurrentGameResultController extends UtilController {
     _clearOldCurrentGameSearch();
     setCurrentGameSpectator(currentGameSpectator);
     detachParticipantsIntoTeams();
-    getMapById(currentGameSpectator.gameQueueConfigId.toString());
+    _queuesController.getCurrentMapById(currentGameSpectator.gameQueueConfigId);
   }
 
   setCurrentGameSpectator(CurrentGameSpectator spectator) {
@@ -58,12 +60,7 @@ class CurrentGameResultController extends UtilController {
     return currentGameSpectator.gameLength;
   }
 
-  getMapById(String queueId) {
-    this.currentMapToShow.value = _masterController.getMapById(queueId);
-  }
-
   String getCurrentMapDescription(){
-    String replacedText = currentMapToShow.value.description.replaceAll("games", "");
-    return replacedText;
+    return _queuesController.getQueueDescriptionWithoutGamesString();
   }
 }

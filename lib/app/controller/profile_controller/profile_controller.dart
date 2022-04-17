@@ -10,7 +10,7 @@ import 'package:legends_panel/app/data/repository/profile_repository/profile_rep
 import 'package:legends_panel/app/ui/android/pages/profile_page/found_user_profile.dart';
 import 'package:legends_panel/app/ui/android/pages/profile_page/search_user_profile_component.dart';
 
-import '../../layers/presentation/controller/lol_version_controller.dart';
+import '../../layers/presentation/controllers/lol_version_controller.dart';
 
 class ProfileController {
   final ProfileRepository _profileRepository = ProfileRepository();

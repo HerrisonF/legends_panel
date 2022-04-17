@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/current_game_controller/current_game_participant_controller.dart';
+import 'package:legends_panel/app/core/utils/screen_utils.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
 
 class CurrentGameParticipantCard extends StatefulWidget {
@@ -42,8 +43,7 @@ class _CurrentGameParticipantCardState
           : Colors.red.withOpacity(0.12),
       padding: EdgeInsets.symmetric(
         horizontal: 3,
-        vertical:
-            _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 10 : 5,
+        vertical: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 10 : 5,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -149,8 +149,7 @@ class _CurrentGameParticipantCardState
       child: Text(
         widget.participant.summonerName,
         style: GoogleFonts.montserrat(
-          fontSize:
-              _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 12 : 8,
+          fontSize: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 12 : 8,
           color: _isToPaintUserName() ? Colors.yellow : Colors.white,
         ),
         maxLines: 2,
@@ -194,9 +193,7 @@ class _CurrentGameParticipantCardState
                     "%",
                 style: GoogleFonts.montserrat(
                   fontSize:
-                      _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                          ? 8
-                          : 6,
+                      ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 8 : 6,
                   color: Colors.white,
                 ),
               ),
@@ -207,9 +204,7 @@ class _CurrentGameParticipantCardState
                 " - ",
                 style: GoogleFonts.montserrat(
                   fontSize:
-                      _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                          ? 8
-                          : 6,
+                      ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 8 : 6,
                   color: Colors.white,
                 ),
               ),
@@ -230,12 +225,9 @@ class _CurrentGameParticipantCardState
           return Container(
             alignment: Alignment.center,
             margin: EdgeInsets.only(
-                left: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                    ? 5
-                    : 0),
-            width: _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                ? 80
-                : 60,
+                left:
+                    ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 5 : 0),
+            width: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 80 : 60,
             child: _currentGameParticipantController
                     .soloUserTier.value.tier.isNotEmpty
                 ? Text(
@@ -244,10 +236,10 @@ class _CurrentGameParticipantCardState
                         _currentGameParticipantController
                             .soloUserTier.value.rank,
                     style: GoogleFonts.montserrat(
-                      fontSize: _masterController
-                              .screenWidthSizeIsBiggerThanNexusOne()
-                          ? 8
-                          : 6,
+                      fontSize:
+                          ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                              ? 8
+                              : 6,
                       color: Colors.white,
                     ),
                     overflow: TextOverflow.ellipsis,
@@ -257,10 +249,10 @@ class _CurrentGameParticipantCardState
                     child: Text(
                       "UNRANKED",
                       style: GoogleFonts.montserrat(
-                        fontSize: _masterController
-                                .screenWidthSizeIsBiggerThanNexusOne()
-                            ? 8
-                            : 6,
+                        fontSize:
+                            ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                                ? 8
+                                : 6,
                         color: Colors.white,
                       ),
                     ),
@@ -280,10 +272,10 @@ class _CurrentGameParticipantCardState
                             .toString() +
                         "LP)",
                     style: GoogleFonts.montserrat(
-                      fontSize: _masterController
-                              .screenWidthSizeIsBiggerThanNexusOne()
-                          ? 8
-                          : 6,
+                      fontSize:
+                          ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                              ? 8
+                              : 6,
                       color: Colors.white,
                     ),
                   )

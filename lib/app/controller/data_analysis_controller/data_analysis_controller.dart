@@ -1,10 +1,11 @@
 import 'package:get/get.dart';
+
 import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
 import 'package:legends_panel/app/data/repository/data_analysis_repository/data_analysis_repository.dart';
+import 'package:legends_panel/app/layers/domain/entities/queue/queue_entity.dart';
 import 'package:legends_panel/app/model/data_analysis/data_analysis_model.dart';
 import 'package:legends_panel/app/model/data_analysis/game_time_line_model.dart';
 import 'package:legends_panel/app/model/data_analysis/participant_and_event.dart';
-import 'package:legends_panel/app/model/general/map_mode.dart';
 import 'package:legends_panel/app/model/general/match_detail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -13,6 +14,7 @@ class DataAnalysisController {
   Participant participant = Participant();
   DataAnalysisRepository dataAnalysisRepository = DataAnalysisRepository();
   GameTimeLineModel gameTimeLineModel = GameTimeLineModel();
+  // final QueuesController _queuesController = GetIt.I.get<QueuesController>();
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -21,7 +23,7 @@ class DataAnalysisController {
   BuildOnPosition buildOnPosition = BuildOnPosition();
 
   String participantIdOnTimeLine = "";
-  MapMode mapMode = MapMode();
+  late QueueEntity queueEntity;
 
   ParticipantAndEvent participantAndEvents = ParticipantAndEvent();
 
@@ -31,11 +33,11 @@ class DataAnalysisController {
     String matchId,
     String keyRegion,
     Participant participant,
-    MapMode mapMode,
+    QueueEntity queueEntity,
   ) async {
     clean();
     this.participant = participant;
-    this.mapMode = mapMode;
+    this.queueEntity = queueEntity;
     if (_profileController.isUserGreaterThanPlatinum() &&
         isOnSoloRanked()) {
       if(championIsGreaterThanSixteen()){
@@ -52,7 +54,6 @@ class DataAnalysisController {
     championStatistic = ChampionStatistic();
     buildOnPosition = BuildOnPosition();
     participantIdOnTimeLine = "";
-    mapMode = MapMode();
     participantAndEvents = ParticipantAndEvent();
   }
 
@@ -71,7 +72,7 @@ class DataAnalysisController {
   }
 
   bool isOnSoloRanked() {
-    return mapMode.description.toLowerCase().contains('ranked solo');
+    return queueEntity.description.toLowerCase().contains('ranked solo');
   }
 
   buildModelForAnalytics(GameTimeLineModel gameTimeLineModel) {

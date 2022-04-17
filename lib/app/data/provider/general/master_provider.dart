@@ -8,8 +8,6 @@ import 'package:legends_panel/app/data/http/config/riot_and_raw_dragon_urls.dart
 import 'package:legends_panel/app/model/current_game_spectator/current_game_summoner_spell.dart';
 import 'package:legends_panel/app/model/general/champion.dart';
 import 'package:legends_panel/app/model/general/champion_room.dart';
-import 'package:legends_panel/app/model/general/map_mode.dart';
-import 'package:legends_panel/app/model/general/map_room.dart';
 import 'package:legends_panel/app/model/general/runesRoom.dart';
 import 'package:legends_panel/app/model/general/spell_room.dart';
 import 'package:legends_panel/app/model/general/stored_region.dart';
@@ -67,7 +65,7 @@ class MasterProvider {
   }
 
   Future<ChampionRoom> getChampionRoomOnLocal() async {
-    _logger.i("Getting ChampionRoom on local ...");
+    _logger.i("Getting ChampionRoom on local_imp ...");
     try {
       String championRoomString = await box.read(StorageKeys.championRoomKey);
       if (championRoomString.isNotEmpty) {
@@ -75,10 +73,10 @@ class MasterProvider {
         return ChampionRoom.fromJson(jsonDecode(championRoomString));
       }
     } catch (e) {
-      _logger.i("Error to get ChampionRoom on local $e");
+      _logger.i("Error to get ChampionRoom on local_imp $e");
       return ChampionRoom();
     }
-    _logger.i("ChampionRoom not found on local ...");
+    _logger.i("ChampionRoom not found on local_imp ...");
     return ChampionRoom();
   }
 
@@ -121,10 +119,10 @@ class MasterProvider {
         return SpellRoom.fromJson(jsonDecode(spellRoomString));
       }
     } catch (e) {
-      _logger.i("Error to get SpellRoom on local $e");
+      _logger.i("Error to get SpellRoom on local_imp $e");
       return SpellRoom();
     }
-    _logger.i("SpellRoom on local not found ...");
+    _logger.i("SpellRoom on local_imp not found ...");
     return SpellRoom();
   }
 
@@ -136,45 +134,6 @@ class MasterProvider {
     } catch (e) {
       _logger.i("Error to persist SpellRoom ... $e");
     }
-  }
-
-  Future<MapRoom> getMapRoomOnWeb() async {
-    DioClient _dioClient =
-        DioClient(url: RiotAndRawDragonUrls.riotStaticDataUrl);
-    final String path = "/docs/lol/queues.json";
-    _logger.i("Getting mapRoom ...");
-    MapRoom mapRoom = MapRoom();
-    try {
-      final response = await _dioClient.get(path);
-      if (response.state == CustomState.SUCCESS) {
-        for (dynamic mapMode in response.result.data) {
-          mapRoom.maps.add(MapMode.fromJson(mapMode));
-        }
-        _logger.i("Success to get mapRoom ...");
-        return mapRoom;
-      }
-      _logger.i("MapRoom not found ...");
-      return mapRoom;
-    } catch (e) {
-      _logger.i("Error to get MapRoom ...");
-      return mapRoom;
-    }
-  }
-
-  Future<MapRoom> getMapRoomOnLocal() async {
-    _logger.i("Getting MapRoom on Local ...");
-    try {
-      String mapRoomString = await box.read(StorageKeys.mapRoomKey);
-      if (mapRoomString.isNotEmpty) {
-        _logger.i("Success to get MapRoom on Local ...");
-        return MapRoom.fromJson(jsonDecode(mapRoomString));
-      }
-    } catch (e) {
-      _logger.i("Error to get mapRoom on local $e");
-      return MapRoom();
-    }
-    _logger.i("mapRoom on local not found ...");
-    return MapRoom();
   }
 
   saveMapRoom(Map<String, dynamic> mapRoom) {
@@ -219,10 +178,10 @@ class MasterProvider {
         return RunesRoom.fromJson(jsonDecode(runesRoomString));
       }
     } catch (e) {
-      _logger.i("Error to get RunesRoom on local $e");
+      _logger.i("Error to get RunesRoom on local_imp $e");
       return RunesRoom();
     }
-    _logger.i("runesRoom on local not found ...");
+    _logger.i("runesRoom on local_imp not found ...");
     return RunesRoom();
   }
 

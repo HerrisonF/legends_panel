@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,6 +5,7 @@ import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/current_game_controller/current_game_controller.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/util_controller/util_controller.dart';
+import 'package:legends_panel/app/core/utils/screen_utils.dart';
 import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
 import 'package:legends_panel/app/ui/android/components/header_screen_information.dart';
 import 'package:legends_panel/app/ui/android/components/region_dropdown_component.dart';
@@ -50,10 +50,9 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
               HeaderScreenInformation(
                   title: AppLocalizations.of(context)!.titleCurrentGamePage,
                   topSpace: 40,
-                  bottomSpace:
-                      _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                          ? 100
-                          : 30),
+                  bottomSpace: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                      ? 100
+                      : 30),
               _summonerSearch(),
               Container(
                 alignment: Alignment.center,
@@ -73,7 +72,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
       children: [
         Container(
           padding: EdgeInsets.symmetric(
-            horizontal: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+            horizontal: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
                 ? 40
                 : 25,
           ),
@@ -81,7 +80,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
         ),
         Container(
           padding: EdgeInsets.symmetric(
-            horizontal: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+            horizontal: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
                 ? 40
                 : 25,
           ),
@@ -89,11 +88,11 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
         ),
         Container(
           padding: EdgeInsets.symmetric(
-            horizontal: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+            horizontal: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
                 ? 40
                 : 25,
           ),
-          child: Obx((){
+          child: Obx(() {
             return RegionDropDownComponent(
               initialRegion: initialRegion,
               onRegionChoose: (region) {
@@ -129,7 +128,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
           decoration: InputDecoration(
             hintText: AppLocalizations.of(context)!.hintSummonerName,
             hintStyle: TextStyle(
-              fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+              fontSize: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
                   ? 16
                   : 12,
             ),
@@ -154,10 +153,10 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
   Container _buttonForSearchSummoner() {
     return Container(
       margin: EdgeInsets.symmetric(
-          vertical: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+          vertical: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
               ? 45
               : 15),
-      height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 54 : 45,
+      height: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 54 : 45,
       child: Obx(() {
         return OutlinedButton(
           child: Row(
@@ -168,7 +167,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                 style: GoogleFonts.montserrat(
                   color: Colors.white,
                   fontSize:
-                      _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                  ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
                           ? 15
                           : 12,
                   fontWeight: FontWeight.w400,
@@ -212,15 +211,18 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
         color: Theme.of(context).backgroundColor,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Obx((){
+      child: Obx(() {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             InkWell(
-              onTap: _currentGameController.isLoadingUser.value ? null : () {
-                _currentGameController.userNameInputController.text =
-                    _masterController.favoriteUsersForCurrentGame[index].name;
-              },
+              onTap: _currentGameController.isLoadingUser.value
+                  ? null
+                  : () {
+                      _currentGameController.userNameInputController.text =
+                          _masterController
+                              .favoriteUsersForCurrentGame[index].name;
+                    },
               child: Container(
                 height: 60,
                 color: Theme.of(context).backgroundColor,
@@ -229,7 +231,8 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                     Container(
                       width: 70,
                       child: Text(
-                        _masterController.favoriteUsersForCurrentGame[index].name,
+                        _masterController
+                            .favoriteUsersForCurrentGame[index].name,
                         maxLines: 2,
                         style: TextStyle(
                           color: Colors.white,
@@ -240,20 +243,24 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                     ),
                     Container(
                       child: _masterController
-                          .favoriteUsersForCurrentGame[index].userTier.isNotEmpty
+                              .favoriteUsersForCurrentGame[index]
+                              .userTier
+                              .isNotEmpty
                           ? Image.asset(
-                        _masterController.getUserTierImage(
-                          _masterController.favoriteUsersForCurrentGame[index].userTier,
-                        ),
-                        width: 17,
-                      )
+                              _masterController.getUserTierImage(
+                                _masterController
+                                    .favoriteUsersForCurrentGame[index]
+                                    .userTier,
+                              ),
+                              width: 17,
+                            )
                           : Container(
-                        margin: EdgeInsets.only(left: 5),
-                        child: Image.asset(
-                          imageUnranked,
-                          width: 17,
-                        ),
-                      ),
+                              margin: EdgeInsets.only(left: 5),
+                              child: Image.asset(
+                                imageUnranked,
+                                width: 17,
+                              ),
+                            ),
                     ),
                   ],
                 ),

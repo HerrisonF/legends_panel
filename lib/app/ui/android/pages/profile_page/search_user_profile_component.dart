@@ -1,11 +1,10 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
+import 'package:legends_panel/app/core/utils/screen_utils.dart';
 import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
 import 'package:legends_panel/app/ui/android/components/header_screen_information.dart';
 import 'package:legends_panel/app/ui/android/components/region_dropdown_component.dart';
@@ -70,10 +69,9 @@ class _SearchUserProfileComponentState
                 HeaderScreenInformation(
                   title: AppLocalizations.of(context)!.titleProfilePage,
                   topSpace: 40,
-                  bottomSpace:
-                      _masterController.screenWidthSizeIsBiggerThanNexusOne()
-                          ? 86
-                          : 40,
+                  bottomSpace: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                      ? 86
+                      : 40,
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -101,7 +99,7 @@ class _SearchUserProfileComponentState
                   alignment: Alignment.center,
                   height: 50,
                   margin: EdgeInsets.only(
-                      top: _masterController
+                      top: ScreenUtils
                               .screenWidthSizeIsBiggerThanNexusOne()
                           ? 65
                           : 20,
@@ -247,7 +245,7 @@ class _SearchUserProfileComponentState
   Container _buttonSearchSummoner() {
     return Container(
       margin: EdgeInsets.symmetric(
-          vertical: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+          vertical: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
               ? 45
               : 20),
       height: 55,
@@ -261,7 +259,7 @@ class _SearchUserProfileComponentState
                 style: GoogleFonts.montserrat(
                   color: Colors.white,
                   fontSize:
-                      _masterController.screenWidthSizeIsBiggerThanNexusOne()
+                  ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
                           ? 15
                           : 12,
                   fontWeight: FontWeight.w500,
@@ -302,7 +300,7 @@ class _SearchUserProfileComponentState
           decoration: InputDecoration(
             hintText: AppLocalizations.of(context)!.hintSummonerName,
             hintStyle: TextStyle(
-              fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+              fontSize: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
                   ? 16
                   : 12,
             ),

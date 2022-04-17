@@ -1,17 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:legends_panel/app/constants/assets.dart';
-import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/current_game_controller/current_game_participant_controller.dart';
 import 'package:legends_panel/app/controller/profile_controller/general_vision_controller.dart';
 import 'package:legends_panel/app/controller/profile_controller/profile_result_game_detail_controller.dart';
+import 'package:legends_panel/app/core/utils/screen_utils.dart';
 import 'package:legends_panel/app/model/general/match_detail.dart';
 import 'package:legends_panel/app/ui/android/components/dots_loading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../../../../layers/presentation/controllers/queues_controller.dart';
 
 class GeneralVisionComponent extends StatefulWidget {
   final MatchDetail matchDetail;
@@ -39,10 +40,9 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
       CurrentGameParticipantController();
   final ProfileResultGameDetailController _profileResultGameDetailController =
       ProfileResultGameDetailController();
+  final QueuesController _queuesController = GetIt.I.get<QueuesController>();
 
   static const BLUE_TEAM = 100;
-
-  final MasterController _masterController = Get.find<MasterController>();
 
   @override
   void initState() {
@@ -165,7 +165,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.symmetric(vertical: 15),
-      child: Text(_generalVisionController.currentMapToShow.value.description),
+      child: Text(_queuesController.currentMapToShow.value.description),
     );
   }
 
@@ -213,7 +213,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
     return Container(
       margin: EdgeInsets.symmetric(
           horizontal:
-              _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 40 : 10,
+              ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 40 : 10,
           vertical: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -237,7 +237,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
               Text(team.objectives.riftHerald.kills.toString()),
             ],
           ),
-          _KDAText(team),
+          _kdaText(team),
         ],
       ),
     );
@@ -260,7 +260,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
     );
   }
 
-  _KDAText(Team team) {
+  _kdaText(Team team) {
     return Row(
       children: [
         Container(
@@ -369,7 +369,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
                         child: Column(
                           children: [
                             Container(
-                              width: _masterController
+                              width: ScreenUtils
                                       .screenWidthSizeIsBiggerThanNexusOne()
                                   ? 13
                                   : 10,
@@ -379,7 +379,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
                             Text(
                               participant.totalMinionsKilled.toString(),
                               style: TextStyle(
-                                  fontSize: _masterController
+                                  fontSize: ScreenUtils
                                           .screenWidthSizeIsBiggerThanNexusOne()
                                       ? 13
                                       : 9),
@@ -392,7 +392,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
                         child: Column(
                           children: [
                             Container(
-                              width: _masterController
+                              width: ScreenUtils
                                       .screenWidthSizeIsBiggerThanNexusOne()
                                   ? 13
                                   : 10,
@@ -402,7 +402,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
                             Text(
                               widget.formatter.format(participant.goldEarned),
                               style: TextStyle(
-                                  fontSize: _masterController
+                                  fontSize: ScreenUtils
                                           .screenWidthSizeIsBiggerThanNexusOne()
                                       ? 13
                                       : 9),
@@ -423,7 +423,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
                               widget.formatter.format(
                                   participant.totalDamageDealtToChampions),
                               style: TextStyle(
-                                  fontSize: _masterController
+                                  fontSize: ScreenUtils
                                           .screenWidthSizeIsBiggerThanNexusOne()
                                       ? 13
                                       : 9),
@@ -444,8 +444,8 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
 
   _itemBase({required dynamic item, bool last = false}) {
     return Container(
-      height: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 20 : 18,
-      width: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 20 : 18,
+      height: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 20 : 18,
+      width: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 20 : 18,
       margin: EdgeInsets.only(left: last ? 2 : 0),
       child: Container(
         child: item > 0

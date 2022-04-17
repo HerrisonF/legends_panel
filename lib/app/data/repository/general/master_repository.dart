@@ -1,5 +1,4 @@
 import 'package:legends_panel/app/model/general/champion_room.dart';
-import 'package:legends_panel/app/model/general/map_room.dart';
 import 'package:legends_panel/app/model/general/runesRoom.dart';
 import 'package:legends_panel/app/model/general/spell_room.dart';
 import 'package:legends_panel/app/model/general/stored_region.dart';
@@ -37,14 +36,6 @@ class MasterRepository {
 
   saveSpellRoom(Map<String, dynamic> spellRoom) {
     return _masterProvider.saveSpellRoom(spellRoom);
-  }
-
-  Future<MapRoom> getMapRoomOnWeb() async {
-    return _masterProvider.getMapRoomOnWeb();
-  }
-
-  Future<MapRoom> getMapRoomOnLocal() {
-    return _masterProvider.getMapRoomOnLocal();
   }
 
   saveMapRoom(Map<String, dynamic> mapRoom) {

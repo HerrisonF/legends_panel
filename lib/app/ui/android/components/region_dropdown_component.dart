@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
+import 'package:legends_panel/app/core/utils/screen_utils.dart';
 
 class RegionDropDownComponent extends StatefulWidget {
   final Function(String region) onRegionChoose;
@@ -17,8 +16,6 @@ class RegionDropDownComponent extends StatefulWidget {
 }
 
 class _RegionDropDownComponentState extends State<RegionDropDownComponent> {
-
-  MasterController _masterController = Get.find<MasterController>();
 
   regionChoose(String region) {
     if(!widget.isLoading) {
@@ -54,7 +51,7 @@ class _RegionDropDownComponentState extends State<RegionDropDownComponent> {
       alignment: Alignment.center,
       padding: EdgeInsets.only(left: 10),
       margin: EdgeInsets.symmetric(
-        horizontal: _masterController.screenWidthSizeIsBiggerThanNexusOne()
+        horizontal: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
             ? MediaQuery.of(context).size.width / 3.6
             : MediaQuery.of(context).size.width / 4,
       ),
@@ -67,7 +64,7 @@ class _RegionDropDownComponentState extends State<RegionDropDownComponent> {
         icon: Icon(
           Icons.arrow_drop_down,
           color: Colors.white,
-          size: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 25 : 20,
+          size: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 25 : 20,
         ),
         elevation: 8,
         underline: SizedBox.shrink(),
@@ -88,7 +85,7 @@ class _RegionDropDownComponentState extends State<RegionDropDownComponent> {
               style: GoogleFonts.montserrat(
                   color: Colors.white,
                   fontWeight: FontWeight.w300,
-                  fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 14 : 12),
+                  fontSize: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 14 : 12),
             ),
             value: location,
           );

@@ -7,7 +7,7 @@ import 'package:legends_panel/app/model/data_analysis/data_analysis_model.dart';
 import 'package:legends_panel/app/model/general/champion.dart';
 import 'package:legends_panel/app/model/general/champion_with_spell.dart';
 
-import '../../layers/presentation/controller/lol_version_controller.dart';
+import '../../layers/presentation/controllers/lol_version_controller.dart';
 
 class ChampionBuildBottomSheetController {
   final BuildPageController _buildPageController =

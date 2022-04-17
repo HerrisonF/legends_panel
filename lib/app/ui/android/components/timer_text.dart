@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
+import 'package:legends_panel/app/core/utils/screen_utils.dart';
 
 class TimerText extends StatefulWidget {
   final int time;
@@ -15,8 +14,6 @@ class TimerText extends StatefulWidget {
 }
 
 class _TimerTextState extends State<TimerText> {
-
-  final MasterController _masterController = Get.find<MasterController>();
 
   late Timer _timer;
   int seconds = 0;
@@ -57,7 +54,7 @@ class _TimerTextState extends State<TimerText> {
     return Text(
       "${min<10? "0" : ""}$min : ${seconds<10? "0" : ""}$seconds",
       style: GoogleFonts.aBeeZee(
-        fontSize: _masterController.screenWidthSizeIsBiggerThanNexusOne() ? 15 : 11,
+        fontSize: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 15 : 11,
         color: Colors.white,
         letterSpacing: 0.5,
       ),

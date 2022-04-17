@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/core/utils/package_info_utils.dart';
-import 'package:legends_panel/app/layers/presentation/controller/lol_version_controller.dart';
+import 'package:legends_panel/app/layers/presentation/controllers/lol_version_controller.dart';
+import 'package:legends_panel/app/layers/presentation/controllers/queues_controller.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_perk.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_summoner_spell.dart';
 import 'package:legends_panel/app/model/general/champion.dart';
 import 'package:legends_panel/app/model/general/champion_room.dart';
 import 'package:legends_panel/app/model/general/runesRoom.dart';
-import 'package:legends_panel/app/model/general/map_room.dart';
 import 'package:legends_panel/app/model/general/spell_room.dart';
 import 'package:legends_panel/app/model/general/stored_region.dart';
 import 'package:legends_panel/app/model/general/user.dart';
@@ -17,9 +17,10 @@ import 'package:legends_panel/app/routes/app_routes.dart';
 
 class MasterController {
   final MasterRepository _masterRepository = MasterRepository();
-
-  LolVersionController _lolVersionController = GetIt.I.get<LolVersionController>();
-  PackageInfoUtils _packageInfoUtils = GetIt.I.get<PackageInfoUtils>();
+  final LolVersionController _lolVersionController =
+      GetIt.I.get<LolVersionController>();
+  final QueuesController _queuesController = GetIt.I.get<QueuesController>();
+  final PackageInfoUtils _packageInfoUtils = GetIt.I.get<PackageInfoUtils>();
 
   RxInt currentPageIndex = 0.obs;
 
@@ -30,28 +31,20 @@ class MasterController {
   StoredRegion storedRegion = StoredRegion();
   ChampionRoom championRoom = ChampionRoom();
   SpellRoom spellRoom = SpellRoom();
-  MapRoom mapRoom = MapRoom();
   RunesRoom runesRoom = RunesRoom();
 
-  static const int NEXUS_ONE_SCREEN_WIDTH = 480;
-
-  start() async {
+  initialize() async {
     await _packageInfoUtils.initialize();
-    await _lolVersionController.start();
+    await _lolVersionController.initialize();
+    await _queuesController.initialize();
     await getLastStoredRegions();
     await readPersistedUser();
     await getChampionRoom();
     await getSummonerSpellsRoom();
-    await getMapRoom();
     await getRunesRoom();
     await getFavoriteUsersStoredForCurrentGame();
     await getFavoriteUsersStoredForProfile();
     Get.offAllNamed(Routes.MASTER);
-  }
-
-  screenWidthSizeIsBiggerThanNexusOne() {
-    return WidgetsBinding.instance!.window.physicalSize.width >
-        NEXUS_ONE_SCREEN_WIDTH;
   }
 
   getLastStoredRegions() async {
@@ -66,17 +59,8 @@ class MasterController {
     userForProfile = await _masterRepository.readPersistedUserProfile();
   }
 
-  getLolVersionOnWeb() async {
-    // lolVersion.versions.addAll(await _masterRepository.getLOLVersionOnWeb());
-    // lolVersion.actualVersion = lolVersion.versions.first;
-    // _masterRepository.saveLolVersion(lolVersion.toJson());
-  }
-
   getChampionRoom() async {
-    //championRoom = await _masterRepository.getChampionRoomOnLocal();
-    //if (!isChampionRoomStored() || championRoom.needToLoadVersionFromWeb()) {
-      await getChampionRoomOnWeb();
-    //}
+    await getChampionRoomOnWeb();
   }
 
   bool isChampionRoomStored() {
@@ -142,8 +126,8 @@ class MasterController {
   }
 
   getChampionRoomOnWeb() async {
-    championRoom =
-        await _masterRepository.getChampionRoomOnWeb(_lolVersionController.cachedLolVersion.getLatestVersion());
+    championRoom = await _masterRepository.getChampionRoomOnWeb(
+        _lolVersionController.cachedLolVersion.getLatestVersion());
     _masterRepository.saveChampionRoom(championRoom.toJson());
   }
 
@@ -159,25 +143,9 @@ class MasterController {
   }
 
   getSpellRoomOnWeb() async {
-    spellRoom =
-        await _masterRepository.getSpellRoomOnWeb(_lolVersionController.cachedLolVersion.getLatestVersion());
+    spellRoom = await _masterRepository.getSpellRoomOnWeb(
+        _lolVersionController.cachedLolVersion.getLatestVersion());
     _masterRepository.saveSpellRoom(spellRoom.toJson());
-  }
-
-  getMapRoom() async {
-    mapRoom = await _masterRepository.getMapRoomOnLocal();
-    if (!isMapRoomStored() || mapRoom.needToLoadVersionFromWeb()) {
-      await getMapRoomOnWeb();
-    }
-  }
-
-  isMapRoomStored() {
-    return mapRoom.lastDate.isNotEmpty;
-  }
-
-  getMapRoomOnWeb() async {
-    mapRoom = await _masterRepository.getMapRoomOnWeb();
-    _masterRepository.saveMapRoom(mapRoom.toJson());
   }
 
   getRunesRoom() async {
@@ -193,7 +161,8 @@ class MasterController {
 
   getRunesRoomOnWeb() async {
     runesRoom = await _masterRepository.getRunesRoomOnWeb(
-        _lolVersionController.cachedLolVersion.getLatestVersion(), storedRegion.getLocaleKey()!);
+        _lolVersionController.cachedLolVersion.getLatestVersion(),
+        storedRegion.getLocaleKey()!);
     _masterRepository.saveRunesRoom(runesRoom.toJson());
   }
 
@@ -251,10 +220,6 @@ class MasterController {
     return spell;
   }
 
-  getMapById(String queueId) {
-    return mapRoom.maps.where((map) => map.queueId.toString() == queueId).first;
-  }
-
   getCurrentUserOnCloud(String userName, String keyRegion) async {
     userForCurrentGame =
         await _masterRepository.getUserOnCloud(userName, keyRegion);
@@ -276,15 +241,18 @@ class MasterController {
   }
 
   getFavoriteUsersStoredForCurrentGame() async {
-    favoriteUsersForCurrentGame.addAll(await _masterRepository.getFavoriteUsersStoredForCurrentGame());
+    favoriteUsersForCurrentGame
+        .addAll(await _masterRepository.getFavoriteUsersStoredForCurrentGame());
   }
 
   getFavoriteUsersStoredForProfile() async {
-    favoriteUsersForProfile.addAll(await _masterRepository.getFavoriteUsersStoredForProfile());
+    favoriteUsersForProfile
+        .addAll(await _masterRepository.getFavoriteUsersStoredForProfile());
   }
 
   saveFavoriteUsersForCurrentGame() {
-    _masterRepository.saveFavoriteUsersForCurrentGame(favoriteUsersForCurrentGame);
+    _masterRepository
+        .saveFavoriteUsersForCurrentGame(favoriteUsersForCurrentGame);
   }
 
   saveFavoriteUsersForProfile() {
@@ -293,7 +261,8 @@ class MasterController {
 
   removeFavoriteUserForCurrentGame(int index) {
     favoriteUsersForCurrentGame.removeAt(index);
-    _masterRepository.saveFavoriteUsersForCurrentGame(favoriteUsersForCurrentGame);
+    _masterRepository
+        .saveFavoriteUsersForCurrentGame(favoriteUsersForCurrentGame);
   }
 
   removeFavoriteUserForProfile(int index) {
