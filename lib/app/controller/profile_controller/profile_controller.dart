@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/constants/string_constants.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/model/general/champion_mastery.dart';
@@ -9,10 +10,14 @@ import 'package:legends_panel/app/data/repository/profile_repository/profile_rep
 import 'package:legends_panel/app/ui/android/pages/profile_page/found_user_profile.dart';
 import 'package:legends_panel/app/ui/android/pages/profile_page/search_user_profile_component.dart';
 
+import '../../layers/presentation/controller/lol_version_controller.dart';
+
 class ProfileController {
   final ProfileRepository _profileRepository = ProfileRepository();
   final TextEditingController userNameInputController = TextEditingController();
   final MasterController _masterController = Get.find<MasterController>();
+  final LolVersionController _lolVersionController =
+      GetIt.I.get<LolVersionController>();
 
   Rx<int> oldIndex = 0.obs;
   Rx<int> newIndex = 0.obs;
@@ -88,10 +93,14 @@ class ProfileController {
         isUserFound(true);
         final region = _masterController.userForProfile.region;
         starUserLoading();
-        await getUserTierInformation(_masterController.storedRegion.getKeyFromRegion(region)!);
-        await getMasteryChampions(_masterController.storedRegion.getKeyFromRegion(region)!);
-        await getMatchListIds(_masterController.storedRegion.getKeyFromRegion(region)!);
-        await getMatches(_masterController.storedRegion.getKeyFromRegion(region)!);
+        await getUserTierInformation(
+            _masterController.storedRegion.getKeyFromRegion(region)!);
+        await getMasteryChampions(
+            _masterController.storedRegion.getKeyFromRegion(region)!);
+        await getMatchListIds(
+            _masterController.storedRegion.getKeyFromRegion(region)!);
+        await getMatches(
+            _masterController.storedRegion.getKeyFromRegion(region)!);
         changeCurrentProfilePageTo(FOUND_USER_COMPONENT);
         stopUserLoading();
       }
@@ -112,9 +121,13 @@ class ProfileController {
     }
   }
 
-  bool isUserGreaterThanPlatinum(){
+  bool isUserGreaterThanPlatinum() {
     String elo = userTierRankedSolo.value.tier.toLowerCase();
-    return elo != 'iron' &&  elo != 'bronze' && elo != 'gold' && elo != 'silver' && elo != 'platinum';
+    return elo != 'iron' &&
+        elo != 'bronze' &&
+        elo != 'gold' &&
+        elo != 'silver' &&
+        elo != 'platinum';
   }
 
   getMasteryChampions(String keyRegion) async {
@@ -156,8 +169,10 @@ class ProfileController {
   loadMoreMatches(String region) async {
     if (!isLoadingNewMatches.value) {
       startLoadingNewMatches();
-      await getMatchListIds(_masterController.storedRegion.getKeyFromRegion(region)!);
-      await getMatches(_masterController.storedRegion.getKeyFromRegion(region)!);
+      await getMatchListIds(
+          _masterController.storedRegion.getKeyFromRegion(region)!);
+      await getMatches(
+          _masterController.storedRegion.getKeyFromRegion(region)!);
       stopLoadingNewMatches();
     }
   }
@@ -169,9 +184,13 @@ class ProfileController {
   }
 
   String getCircularChampionImage(int championId) {
-    String returnedChampion =
-        _masterController.getChampionById(championId.toString()).detail.id.toString();
-    return _profileRepository.getCircularChampionImage(returnedChampion, _masterController.lolVersionController.cachedLolVersion.getLatestVersion());
+    String returnedChampion = _masterController
+        .getChampionById(championId.toString())
+        .detail
+        .id
+        .toString();
+    return _profileRepository.getCircularChampionImage(returnedChampion,
+        _lolVersionController.cachedLolVersion.getLatestVersion());
   }
 
   String getMasteryImage(int index) {
@@ -185,10 +204,14 @@ class ProfileController {
         _masterController.storedRegion.getKeyFromRegion(region)!);
     _masterController.saveUserProfile(region);
     if (_masterController.userProfileExist()) {
-      await getUserTierInformation(_masterController.storedRegion.getKeyFromRegion(region)!);
-      await getMasteryChampions(_masterController.storedRegion.getKeyFromRegion(region)!);
-      await getMatchListIds(_masterController.storedRegion.getKeyFromRegion(region)!);
-      await getMatches(_masterController.storedRegion.getKeyFromRegion(region)!);
+      await getUserTierInformation(
+          _masterController.storedRegion.getKeyFromRegion(region)!);
+      await getMasteryChampions(
+          _masterController.storedRegion.getKeyFromRegion(region)!);
+      await getMatchListIds(
+          _masterController.storedRegion.getKeyFromRegion(region)!);
+      await getMatches(
+          _masterController.storedRegion.getKeyFromRegion(region)!);
       setUserRegion(region);
       changeCurrentProfilePageTo(FOUND_USER_COMPONENT);
       userNameInputController.clear();
@@ -224,7 +247,7 @@ class ProfileController {
 
   String getUserProfileImage() {
     return _profileRepository.getProfileImage(
-      _masterController.lolVersionController.cachedLolVersion.getLatestVersion(),
+      _lolVersionController.cachedLolVersion.getLatestVersion(),
       _masterController.userForProfile.profileIconId.toString(),
     );
   }

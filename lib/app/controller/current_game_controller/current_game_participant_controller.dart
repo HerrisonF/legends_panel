@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/constants/string_constants.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
+import 'package:legends_panel/app/layers/presentation/controller/lol_version_controller.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_perk.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_spectator.dart';
@@ -11,6 +13,8 @@ import 'package:legends_panel/app/data/repository/profile_repository/participant
 class CurrentGameParticipantController extends MasterController {
   final ParticipantRepository _participantRepository = ParticipantRepository();
   final MasterController _masterController = Get.find<MasterController>();
+  final LolVersionController _lolVersionController =
+      GetIt.I.get<LolVersionController>();
 
   RxList<UserTier> userTierList = RxList<UserTier>();
   Rx<UserTier> soloUserTier = UserTier().obs;
@@ -19,26 +23,28 @@ class CurrentGameParticipantController extends MasterController {
 
   getUserTier(CurrentGameParticipant participant, String region) async {
     this.currentGameParticipant = participant;
-    userTierList.value = await _participantRepository.getUserTier(this.currentGameParticipant.summonerId, region);
+    userTierList.value = await _participantRepository.getUserTier(
+        this.currentGameParticipant.summonerId, region);
     _getSoloRankedOnly(userTierList);
   }
 
   _getSoloRankedOnly(RxList<UserTier> userTierList) {
-    try{
+    try {
       soloUserTier.value = userTierList
           .where((tier) => tier.queueType == StringConstants.rankedSolo)
           .first;
       soloUserTier.value.winRate = getUserWinRate();
-    }catch(e){
+    } catch (e) {
       soloUserTier.value.winRate = 0.toString();
     }
     saveSearchedUserTier();
   }
 
-  saveSearchedUserTier(){
-    if(_masterController.userForCurrentGame.name ==
-        this.currentGameParticipant.summonerName){
-      _masterController.addUserToFavoriteCurrentGameList(soloUserTier.value.tier);
+  saveSearchedUserTier() {
+    if (_masterController.userForCurrentGame.name ==
+        this.currentGameParticipant.summonerName) {
+      _masterController
+          .addUserToFavoriteCurrentGameList(soloUserTier.value.tier);
     }
   }
 
@@ -56,14 +62,14 @@ class CurrentGameParticipantController extends MasterController {
   String getChampionBadgeUrl(String championId) {
     return _participantRepository.getChampionBadgeUrl(
         _masterController.getChampionById(championId).detail.id.toString(),
-        _masterController.lolVersionController.cachedLolVersion.getLatestVersion());
+        _lolVersionController.cachedLolVersion.getLatestVersion());
   }
 
   String getSpellUrl(String spellId) {
     Spell spell = _masterController.getSpellById(spellId);
     if (spell.name.isNotEmpty) {
       return _participantRepository.getSpellBadgeUrl(
-          spell.id, _masterController.lolVersionController.cachedLolVersion.getLatestVersion());
+          spell.id, _lolVersionController.cachedLolVersion.getLatestVersion());
     } else {
       return "";
     }
@@ -71,12 +77,12 @@ class CurrentGameParticipantController extends MasterController {
 
   String getItemUrl(String itemId) {
     return _participantRepository.getItemUrl(
-        itemId, _masterController.lolVersionController.cachedLolVersion.getLatestVersion());
+        itemId, _lolVersionController.cachedLolVersion.getLatestVersion());
   }
 
   String getPositionUrl(String position) {
     return _participantRepository.getPosition(
-        position, _masterController.lolVersionController.cachedLolVersion.getLatestVersion());
+        position, _lolVersionController.cachedLolVersion.getLatestVersion());
   }
 
   getSpectator(String summonerId, String region) async {
@@ -84,14 +90,16 @@ class CurrentGameParticipantController extends MasterController {
         await _participantRepository.getSpectator(summonerId, region);
   }
 
-  String getPerkStyleUrl(CurrentGamePerk currentGamePerk){
-    String perkName = _masterController.getPerkSubStyleIconName(currentGamePerk);
+  String getPerkStyleUrl(CurrentGamePerk currentGamePerk) {
+    String perkName =
+        _masterController.getPerkSubStyleIconName(currentGamePerk);
 
     return _participantRepository.getPerkUrl(perkName);
   }
 
-  String getFirsPerkUrl(CurrentGamePerk currentGamePerk){
-    String perkName = _masterController.getFirstPerkFromPerkStyle(currentGamePerk);
+  String getFirsPerkUrl(CurrentGamePerk currentGamePerk) {
+    String perkName =
+        _masterController.getFirstPerkFromPerkStyle(currentGamePerk);
     return _participantRepository.getPerkUrl(perkName);
   }
 }

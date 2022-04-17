@@ -1,12 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/controller/build_page_controller/build_page_controller.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/model/data_analysis/data_analysis_model.dart';
 import 'package:legends_panel/app/model/general/champion.dart';
 import 'package:legends_panel/app/model/general/champion_with_spell.dart';
 
+import '../../layers/presentation/controller/lol_version_controller.dart';
+
 class ChampionBuildBottomSheetController {
+  final BuildPageController _buildPageController =
+      Get.find<BuildPageController>();
+
+  final LolVersionController _lolVersionController =
+      GetIt.I.get<LolVersionController>();
+
+  final MasterController _masterController = GetIt.I.get<MasterController>();
+
   Rx<bool> isLoading = false.obs;
 
   String collectionChampionId = "";
@@ -28,10 +39,6 @@ class ChampionBuildBottomSheetController {
   stopLoadingChampion() {
     isLoadingChampion(false);
   }
-
-  final BuildPageController _buildPageController =
-      Get.find<BuildPageController>();
-  final MasterController _masterController = Get.find<MasterController>();
 
   startLoading() {
     isLoading(true);
@@ -71,7 +78,7 @@ class ChampionBuildBottomSheetController {
     championWithSpell =
         await _buildPageController.buildPageRepository.getChampionForSpell(
       champion.detail.id,
-      _masterController.lolVersionController.cachedLolVersion.getLatestVersion(),
+      _lolVersionController.cachedLolVersion.getLatestVersion(),
     );
     stopLoadingChampion();
   }
@@ -79,7 +86,7 @@ class ChampionBuildBottomSheetController {
   String getChampionSpell(String championId, int index) {
     return _buildPageController.buildPageRepository.getChampionSpellImage(
       championWithSpell.championWithSpellDetail.spells[index - 1].id,
-      _masterController.lolVersionController.cachedLolVersion.getLatestVersion(),
+      _lolVersionController.cachedLolVersion.getLatestVersion(),
     );
   }
 
@@ -100,7 +107,9 @@ class ChampionBuildBottomSheetController {
     var spell = _masterController.getSpellById(spellId);
     if (spell.name.isNotEmpty) {
       return _buildPageController.buildPageRepository.getSpellBadgeUrl(
-          spell.id, _masterController.lolVersionController.cachedLolVersion.getLatestVersion());
+        spell.id,
+        _lolVersionController.cachedLolVersion.getLatestVersion(),
+      );
     } else {
       return "";
     }
@@ -115,8 +124,10 @@ class ChampionBuildBottomSheetController {
   }
 
   String getItemUrl(String itemId) {
-    return _buildPageController.buildPageRepository
-        .getItemUrl(itemId, _masterController.lolVersionController.cachedLolVersion.getLatestVersion());
+    return _buildPageController.buildPageRepository.getItemUrl(
+      itemId,
+      _lolVersionController.cachedLolVersion.getLatestVersion(),
+    );
   }
 
   String getPerk(String perk) {

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
-import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
+import 'package:legends_panel/app/core/utils/package_info_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AboutPage extends StatelessWidget {
 
-  final MasterController _masterController = Get.find<MasterController>();
+  final PackageInfoUtils _packageInfoUtils = GetIt.I.get<PackageInfoUtils>();
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +84,7 @@ class AboutPage extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 50),
                       child: Text(
-                        _masterController.packageInfo.version,
+                        _packageInfoUtils.packageInfo.version,
                         style: GoogleFonts.montserrat(
                           color: Colors.white,
                           fontSize: 16,

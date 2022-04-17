@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
+import 'package:legends_panel/app/core/utils/package_info_utils.dart';
 import 'package:legends_panel/app/layers/presentation/controller/lol_version_controller.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_perk.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_summoner_spell.dart';
@@ -13,15 +14,14 @@ import 'package:legends_panel/app/model/general/stored_region.dart';
 import 'package:legends_panel/app/model/general/user.dart';
 import 'package:legends_panel/app/data/repository/general/master_repository.dart';
 import 'package:legends_panel/app/routes/app_routes.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 class MasterController {
   final MasterRepository _masterRepository = MasterRepository();
 
-  LolVersionController lolVersionController = GetIt.I.get<LolVersionController>();
+  LolVersionController _lolVersionController = GetIt.I.get<LolVersionController>();
+  PackageInfoUtils _packageInfoUtils = GetIt.I.get<PackageInfoUtils>();
 
   RxInt currentPageIndex = 0.obs;
-  late PackageInfo packageInfo;
 
   User userForCurrentGame = User();
   User userForProfile = User();
@@ -36,16 +36,16 @@ class MasterController {
   static const int NEXUS_ONE_SCREEN_WIDTH = 480;
 
   start() async {
+    await _packageInfoUtils.initialize();
+    await _lolVersionController.start();
     await getLastStoredRegions();
     await readPersistedUser();
-    await getLolVersion();
     await getChampionRoom();
     await getSummonerSpellsRoom();
     await getMapRoom();
     await getRunesRoom();
     await getFavoriteUsersStoredForCurrentGame();
     await getFavoriteUsersStoredForProfile();
-    packageInfo = await PackageInfo.fromPlatform();
     Get.offAllNamed(Routes.MASTER);
   }
 
@@ -64,10 +64,6 @@ class MasterController {
 
   readPersistedUser() async {
     userForProfile = await _masterRepository.readPersistedUserProfile();
-  }
-
-  getLolVersion() async {
-    await lolVersionController.start();
   }
 
   getLolVersionOnWeb() async {
@@ -147,7 +143,7 @@ class MasterController {
 
   getChampionRoomOnWeb() async {
     championRoom =
-        await _masterRepository.getChampionRoomOnWeb(lolVersionController.cachedLolVersion.getLatestVersion());
+        await _masterRepository.getChampionRoomOnWeb(_lolVersionController.cachedLolVersion.getLatestVersion());
     _masterRepository.saveChampionRoom(championRoom.toJson());
   }
 
@@ -164,7 +160,7 @@ class MasterController {
 
   getSpellRoomOnWeb() async {
     spellRoom =
-        await _masterRepository.getSpellRoomOnWeb(lolVersionController.cachedLolVersion.getLatestVersion());
+        await _masterRepository.getSpellRoomOnWeb(_lolVersionController.cachedLolVersion.getLatestVersion());
     _masterRepository.saveSpellRoom(spellRoom.toJson());
   }
 
@@ -197,7 +193,7 @@ class MasterController {
 
   getRunesRoomOnWeb() async {
     runesRoom = await _masterRepository.getRunesRoomOnWeb(
-        lolVersionController.cachedLolVersion.getLatestVersion(), storedRegion.getLocaleKey()!);
+        _lolVersionController.cachedLolVersion.getLatestVersion(), storedRegion.getLocaleKey()!);
     _masterRepository.saveRunesRoom(runesRoom.toJson());
   }
 

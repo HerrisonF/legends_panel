@@ -7,5 +7,5 @@ class API {
   static const String opGGUrl = "https://opgg-static.akamaized.net";
   static const String riotStaticDataUrl = "https://static.developer.riotgames.com";
   static String riotBaseUrl(String region)=> "https://$region.api.riotgames.com";
-  static const REQUEST_LOL_VERSION = riotDragonUrl + '/api/versions.json';
+  static const PATH_REQUEST_LOL_VERSION = '/api/versions.json';
 }

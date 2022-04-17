@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:legends_panel/app/core/data/services/dio_http_service_imp.dart';
+import 'package:legends_panel/app/decorators/lol_version_cache_repository_decorator.dart';
 import 'package:legends_panel/app/layers/data/datasources/get_lol_version_datasource.dart';
 import 'package:legends_panel/app/layers/data/datasources/remote/get_lol_version_remote_datasource_imp.dart';
 import 'package:legends_panel/app/layers/data/repositories/get_lol_version_repository_imp.dart';
@@ -9,9 +10,10 @@ import 'package:legends_panel/app/layers/domain/repositories/get_lol_version_rep
 main() {
   GetLolVersionDataSource dataSource = GetLolVersionRemoteDataSourceImp(DioHttpServiceImp());
   GetLolVersionRepository repository = GetLolVersionRepositoryImp(dataSource);
+  LolVersionCacheRepositoryDecorator decorator = LolVersionCacheRepositoryDecorator(repository);
 
   test('Should return versions', () async {
-    var result = await repository();
+    var result = await decorator();
     late LolVersionEntity resultExpect;
     result.fold((l) => null, (r) => resultExpect = r);
     expect(resultExpect.versions, isNotEmpty);
