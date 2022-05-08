@@ -1,7 +1,7 @@
-import 'package:legends_panel/app/layers/domain/entities/queue/queue_entity.dart';
+import 'package:legends_panel/app/layers/data/dtos/queue/queue_dto.dart';
 
 class QueueWrapper {
-  List<QueueEntity> queues;
+  List<QueueDto> queues;
 
   QueueWrapper({required this.queues});
 
@@ -9,17 +9,17 @@ class QueueWrapper {
     return queues.isNotEmpty;
   }
 
-  QueueEntity getMapById(int queueId) {
-    QueueEntity queueEntity = _getEmptyObject();
+  QueueDto getMapById(int queueId) {
+    QueueDto queueDto = _getEmptyObject();
     if (hasQueues()) {
       return queues.firstWhere((map) => map.queueId == queueId);
     } else {
-      return queueEntity;
+      return queueDto;
     }
   }
 
-  QueueEntity _getEmptyObject() {
-    return QueueEntity(
+  QueueDto _getEmptyObject() {
+    return QueueDto(
       queueId: 0,
       map: '',
       description: '',

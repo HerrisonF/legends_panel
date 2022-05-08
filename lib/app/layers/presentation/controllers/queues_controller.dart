@@ -1,34 +1,43 @@
+import 'package:dartz/dartz.dart';
 import 'package:get/get.dart';
 import 'package:legends_panel/app/layers/domain/entities/queue/queue_entity.dart';
 import 'package:legends_panel/app/layers/domain/usecases/queue/get_queues_usecase.dart';
 
-import '../../data/dtos/queue/queue_wrapper_dto.dart';
+import '../../domain/entities/queue/queue_wrapper.dart';
 
 class QueuesController {
   final GetQueuesUseCase _getQueuesUseCase;
 
   QueuesController(this._getQueuesUseCase);
 
-  late QueueWrapperDto cachedQueues;
-  Rx<QueueEntity> currentMapToShow = QueueEntity(queueId: 0, map: '', description: '', notes: '').obs;
+  late QueueWrapper cachedQueues;
+  Rx<QueueEntity> currentMapToShow = QueueEntity(
+    queueId: 0,
+    map: '',
+    description: '',
+    notes: '',
+  ).obs;
 
-  initialize() {
-    _getQueuesRemoteUseCase();
+  Future<bool> initialize() async {
+    return await _getQueuesRemoteUseCase();
   }
 
-  _getQueuesRemoteUseCase() async {
-    var result = await _getQueuesUseCase();
-    result.fold(
-      (l) => null,
-      (r) => cachedQueues = r,
+  Future<bool> _getQueuesRemoteUseCase() async {
+    Either<Exception, QueueWrapper> result = await _getQueuesUseCase();
+    return result.fold(
+      (error) => false,
+      (success) {
+        cachedQueues = success;
+        return true;
+      },
     );
   }
 
-  getCurrentMapById(int queueId){
+  getCurrentMapById(int queueId) {
     currentMapToShow.value = cachedQueues.getMapById(queueId);
   }
 
-  String getQueueDescriptionWithoutGamesString(){
+  String getQueueDescriptionWithoutGamesString() {
     return currentMapToShow.value.getQueueDescriptionWithoutGamesString();
   }
 }

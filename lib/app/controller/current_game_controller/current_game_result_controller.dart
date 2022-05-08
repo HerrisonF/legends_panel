@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
-import 'package:legends_panel/app/controller/util_controller/util_controller.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_banned_champion.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_spectator.dart';
 
 import '../../layers/presentation/controllers/queues_controller.dart';
+import '../../layers/presentation/util_controllers/util_controller.dart';
 
 class CurrentGameResultController extends UtilController {
   final MasterController _masterController = Get.find<MasterController>();

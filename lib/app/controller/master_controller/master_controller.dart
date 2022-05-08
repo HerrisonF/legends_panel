@@ -35,8 +35,12 @@ class MasterController {
 
   initialize() async {
     await _packageInfoUtils.initialize();
-    await _lolVersionController.initialize();
-    await _queuesController.initialize();
+    if(await ifMyVersionsNotLoad())
+      return;
+
+    if(await ifMyQueuesNotLoad())
+      return;
+
     await getLastStoredRegions();
     await readPersistedUser();
     await getChampionRoom();
@@ -45,7 +49,12 @@ class MasterController {
     await getFavoriteUsersStoredForCurrentGame();
     await getFavoriteUsersStoredForProfile();
     Get.offAllNamed(Routes.MASTER);
+
   }
+
+  Future<bool> ifMyQueuesNotLoad() async => !await _queuesController.initialize();
+
+  Future<bool> ifMyVersionsNotLoad() async => !await _lolVersionController.initialize();
 
   getLastStoredRegions() async {
     storedRegion = await _masterRepository.getLastStoredRegion();

@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:legends_panel/app/layers/domain/entities/lol_version/lol_version_entity.dart';
 
 import '../../domain/usecases/lol_version/get_lol_version/get_lol_version_usecase.dart';
@@ -9,15 +10,19 @@ class LolVersionController {
 
   LolVersionController(this._getLolVersionUseCase);
 
-  initialize() async {
-    await _getRemoteLolVersion();
+  Future<bool> initialize() async {
+    return await _getRemoteLolVersion();
   }
 
-  _getRemoteLolVersion() async {
-    var result = await _getLolVersionUseCase();
-    result.fold(
-      (error) => null,
-      (success) => cachedLolVersion = success,
+  Future<bool> _getRemoteLolVersion() async {
+    Either<Exception, LolVersionEntity> result = await _getLolVersionUseCase();
+    return result.fold(
+      (error) => false,
+      (success) {
+        cachedLolVersion = success;
+        print(cachedLolVersion);
+        return true;
+      },
     );
   }
 }

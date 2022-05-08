@@ -6,15 +6,23 @@ class LolVersionDto extends LolVersionEntity{
 
   LolVersionDto({required this.versions}) : super(versions: versions);
 
-  toMap() => {
+  toJson() => {
     'versions' : versions.map((e) => e.toString()).toList(),
   };
 
-  static LolVersionDto fromMap(List<dynamic> map) {
+  static LolVersionDto fromJson(List<dynamic> map) {
     List<String> versions = [];
     map.forEach((value) {
       versions.add(value.toString());
     });
    return LolVersionDto(versions: versions);
+  }
+
+  static LolVersionDto fromLocalJson(Map<String, dynamic> json) {
+    List<String> versions = [];
+    json['versions'].forEach((value) {
+      versions.add(value.toString());
+    });
+    return LolVersionDto(versions: versions);
   }
 }
