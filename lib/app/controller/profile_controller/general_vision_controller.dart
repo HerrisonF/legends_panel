@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
-import 'package:legends_panel/app/controller/data_analysis_controller/data_analysis_controller.dart';
-import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/data/repository/general_vision_repository/general_vision_repository.dart';
 import 'package:legends_panel/app/model/general/match_detail.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -22,10 +20,6 @@ class GeneralVisionController {
   RxList<Participant> blueTeam = RxList<Participant>();
   RxList<Participant> redTeam = RxList<Participant>();
 
-  final MasterController _masterController = Get.find<MasterController>();
-  final DataAnalysisController dataAnalysisController =
-      DataAnalysisController();
-
   static const BLUE_TEAM = 100;
 
   startInitialData(MatchDetail matchDetail, Participant participant) {
@@ -36,12 +30,6 @@ class GeneralVisionController {
     this.participant = participant;
     this.matchDetail = matchDetail;
     detachParticipantsIntoTeams();
-    dataAnalysisController.getGameTimeLine(
-      matchDetail.matchInfo.gameId.toString(),
-      _masterController.storedRegion.getKeyFromRegion(_masterController.storedRegion.lastStoredProfileRegion.toString())!,
-      participant,
-      _queuesController.currentMapToShow.value,
-    );
   }
 
   String getWinOrLoseHeaderText(BuildContext context) {

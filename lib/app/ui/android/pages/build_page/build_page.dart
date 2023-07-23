@@ -5,8 +5,6 @@ import 'package:legends_panel/app/controller/build_page_controller/build_page_co
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'champion_build_bottom_sheet.dart';
-
 class BuildPage extends StatefulWidget {
   const BuildPage({Key? key}) : super(key: key);
 
@@ -106,12 +104,6 @@ class _BuildPageState extends State<BuildPage> {
   championImageOrLoading(int index) {
     return InkWell(
       onTap: () {
-        _openBottomSheet(
-          _buildPageController.searchedChampion[index].detail.key,
-          _buildPageController.searchedChampion[index].detail.name,
-        );
-        _buildPageController.cleanSearch();
-        FocusScope.of(context).unfocus();
       },
       child: Column(
         children: [
@@ -140,25 +132,6 @@ class _BuildPageState extends State<BuildPage> {
           )
         ],
       ),
-    );
-  }
-
-  _openBottomSheet(String championKey, String championName) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: const Radius.circular(20),
-          topRight: const Radius.circular(20),
-        ),
-      ),
-      builder: (_) {
-        return ChampionBuildBottomSheet(
-          championId: championKey,
-          championName: championName,
-        );
-      },
     );
   }
 }

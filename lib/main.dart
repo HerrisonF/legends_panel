@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -11,29 +8,16 @@ import 'package:legends_panel/app/routes/app_routes.dart';
 import 'package:legends_panel/app/ui/theme/app_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'app/core/inject/inject.dart';
-import 'firebase_options.dart';
 
 import 'app/constants/storage_keys.dart';
 import 'l10n/l10n.dart';
 
-class MyHttpOverrides extends HttpOverrides{
-  @override
-  HttpClient createHttpClient(SecurityContext? context){
-    return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
-  }
-}
-
 void main() async {
-  HttpOverrides.global = new MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
 
   Inject.init();
 
   await GetStorage.init(StorageKeys.globalStorageKey);
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,
       overlays: [SystemUiOverlay.top]);
   SystemChrome.setPreferredOrientations(
