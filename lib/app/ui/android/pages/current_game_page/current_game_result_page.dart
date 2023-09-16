@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
@@ -14,10 +13,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CurrentGameResultPage extends StatelessWidget {
   final CurrentGameResultController _currentGameResultController =
-      Get.find<CurrentGameResultController>();
+      GetIt.I<CurrentGameResultController>();
   final QueuesController _queuesController = GetIt.I.get<QueuesController>();
 
-  final MasterController _masterController = Get.find<MasterController>();
+  final MasterController _masterController = GetIt.I<MasterController>();
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +76,9 @@ class CurrentGameResultPage extends StatelessWidget {
   }
 
   _mapName(BuildContext context) {
-    return Obx(() {
+    return ValueListenableBuilder(
+      valueListenable: _queuesController.currentMapToShow,
+            builder: (context, value, _) {
       return Column(
         children: [
           Container(
@@ -186,13 +187,13 @@ class CurrentGameResultPage extends StatelessWidget {
   _detachTeams() {
     return Column(
       children: [
-        _teamCard(_currentGameResultController.blueTeam, 100),
-        _teamCard(_currentGameResultController.redTeam, 200),
+        _teamCard(_currentGameResultController.blueTeam.value, 100),
+        _teamCard(_currentGameResultController.redTeam.value, 200),
       ],
     );
   }
 
-  _teamCard(RxList<CurrentGameParticipant> participants, int team) {
+  _teamCard(List<CurrentGameParticipant> participants, int team) {
     return Container(
       margin: EdgeInsets.only(
         top: team == 200 ? 20 : 0,

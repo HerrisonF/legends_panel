@@ -116,7 +116,7 @@ class AboutPage extends StatelessWidget {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context).backgroundColor,
+                        color: Theme.of(context).colorScheme.background,
                         borderRadius: BorderRadius.circular(8)
                       ),
                       margin: EdgeInsets.only(top: 40, bottom: 100),
@@ -141,10 +141,12 @@ class AboutPage extends StatelessWidget {
   }
 
   openGit(BuildContext context) async {
-    var gitUrl = "https://github.com/HerrisonF";
-    await canLaunch(gitUrl)
-        ? launch(gitUrl)
-        : showToast(context, AppLocalizations.of(context)!.gitInstall);
+    Uri uri = Uri(path: "https://github.com/HerrisonF");
+    if(await canLaunchUrl(Uri(path: "https://github.com/HerrisonF"))){
+      launchUrl(uri);
+    }else {
+      showToast(context, AppLocalizations.of(context)!.gitInstall);
+    }
   }
 
   showToast(BuildContext context, String text) {

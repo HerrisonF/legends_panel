@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/profile_controller/profile_result_game_detail_controller.dart';
@@ -248,7 +247,9 @@ class _ItemMatchListGameCardState extends State<ItemMatchListGameCard> {
   }
 
   Widget _championBadge(BuildContext context) {
-    return Obx(() {
+    return ValueListenableBuilder(
+      valueListenable: _profileResultGameDetailController.currentParticipant,
+            builder:(context, value, _) {
       return Row(
         children: [
           _profileResultGameDetailController

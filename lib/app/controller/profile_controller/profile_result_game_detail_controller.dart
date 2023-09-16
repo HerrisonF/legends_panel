@@ -1,15 +1,16 @@
-import 'package:get/get.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/current_game_controller/current_game_participant_controller.dart';
 import 'package:legends_panel/app/model/general/match_detail.dart';
 
 class ProfileResultGameDetailController {
-  final MasterController _masterController = Get.find<MasterController>();
+  final MasterController _masterController = GetIt.I<MasterController>();
   final CurrentGameParticipantController _currentGameParticipantController =
-  Get.put(CurrentGameParticipantController());
+  GetIt.I<CurrentGameParticipantController>();
 
-  Rx<MatchDetail> matchDetail = MatchDetail().obs;
-  Rx<Participant> currentParticipant = Participant().obs;
+  ValueNotifier<MatchDetail> matchDetail = ValueNotifier(MatchDetail());
+  ValueNotifier<Participant> currentParticipant = ValueNotifier(Participant());
 
   startProfileResultGame(MatchDetail matchDetail) async {
     this.matchDetail.value = matchDetail;
@@ -22,7 +23,7 @@ class ProfileResultGameDetailController {
       var list = matchDetail.value.matchInfo.participants.where((element) => element.summonerId == summonerId);
       if(list.length > 0){
         this.currentParticipant.value = list.first;
-        currentParticipant.refresh();
+        currentParticipant.notifyListeners();
       }
     }
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:get/get.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/layers/presentation/controllers/splashscreen_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
 
   SplashscreenController _splashscreenController =
-      Get.put(SplashscreenController());
+      GetIt.I<SplashscreenController>();
 
   late AnimationController _controller;
 
@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen>
     );
     _animation = Tween(begin: 0.0, end: 1.0).animate(_controller);
     _controller.repeat(reverse: true);
-    _splashscreenController.start();
+    _splashscreenController.start(context);
     super.initState();
   }
 
@@ -178,7 +178,7 @@ class _SplashScreenState extends State<SplashScreen>
                   offset: Offset(0, 2),
                 ),
               ],
-              fontSize: WidgetsBinding.instance!.window.physicalSize.width > NEXUS_ONE_SCREEN
+              fontSize: WidgetsBinding.instance.window.physicalSize.width > NEXUS_ONE_SCREEN
                   ? 38
                   : 22,
               fontWeight: FontWeight.w700,

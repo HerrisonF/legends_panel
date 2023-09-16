@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/constants/string_constants.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
@@ -12,23 +12,23 @@ import 'package:legends_panel/app/data/repository/profile_repository/participant
 
 class CurrentGameParticipantController extends MasterController {
   final ParticipantRepository _participantRepository = ParticipantRepository();
-  final MasterController _masterController = Get.find<MasterController>();
+  final MasterController _masterController = GetIt.I<MasterController>();
   final LolVersionController _lolVersionController =
-      GetIt.I.get<LolVersionController>();
+      GetIt.I<LolVersionController>();
 
-  RxList<UserTier> userTierList = RxList<UserTier>();
-  Rx<UserTier> soloUserTier = UserTier().obs;
-  Rx<CurrentGameSpectator> currentGameSpectator = CurrentGameSpectator().obs;
+  ValueNotifier<List<UserTier>> userTierList = ValueNotifier([]);
+  ValueNotifier<UserTier> soloUserTier = ValueNotifier(UserTier());
+  ValueNotifier<CurrentGameSpectator> currentGameSpectator = ValueNotifier(CurrentGameSpectator());
   CurrentGameParticipant currentGameParticipant = CurrentGameParticipant();
 
   getUserTier(CurrentGameParticipant participant, String region) async {
     this.currentGameParticipant = participant;
     userTierList.value = await _participantRepository.getUserTier(
         this.currentGameParticipant.summonerId, region);
-    _getSoloRankedOnly(userTierList);
+    _getSoloRankedOnly(userTierList.value);
   }
 
-  _getSoloRankedOnly(RxList<UserTier> userTierList) {
+  _getSoloRankedOnly(List<UserTier> userTierList) {
     try {
       soloUserTier.value = userTierList
           .where((tier) => tier.queueType == StringConstants.rankedSolo)
@@ -37,16 +37,16 @@ class CurrentGameParticipantController extends MasterController {
     } catch (e) {
       soloUserTier.value.winRate = 0.toString();
     }
-    saveSearchedUserTier();
+    // saveSearchedUserTier();
   }
 
-  saveSearchedUserTier() {
-    if (_masterController.userForCurrentGame.name ==
-        this.currentGameParticipant.summonerName) {
-      _masterController
-          .addUserToFavoriteCurrentGameList(soloUserTier.value.tier);
-    }
-  }
+  // saveSearchedUserTier() {
+  //   if (_masterController.userForCurrentGame.name ==
+  //       this.currentGameParticipant.summonerName) {
+  //     _masterController
+  //         .addUserToFavoriteCurrentGameList(soloUserTier.value.tier);
+  //   }
+  // }
 
   String getUserTierImage(String tier) {
     return _participantRepository.getUserTierImage(tier);

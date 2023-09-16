@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_banned_champion.dart';
@@ -9,13 +9,13 @@ import '../../layers/presentation/controllers/queues_controller.dart';
 import '../../layers/presentation/util_controllers/util_controller.dart';
 
 class CurrentGameResultController extends UtilController {
-  final MasterController _masterController = Get.find<MasterController>();
-  final QueuesController _queuesController = GetIt.I.get<QueuesController>();
+  final MasterController _masterController = GetIt.I<MasterController>();
+  final QueuesController _queuesController = GetIt.I<QueuesController>();
   String region = "";
 
   CurrentGameSpectator currentGameSpectator = CurrentGameSpectator();
-  RxList<CurrentGameParticipant> blueTeam = RxList<CurrentGameParticipant>();
-  RxList<CurrentGameParticipant> redTeam = RxList<CurrentGameParticipant>();
+  ValueNotifier<List<CurrentGameParticipant>> blueTeam = ValueNotifier([]);
+  ValueNotifier<List<CurrentGameParticipant>> redTeam = ValueNotifier([]);
 
   static const BLUE_TEAM = 100;
 
@@ -32,8 +32,8 @@ class CurrentGameResultController extends UtilController {
   }
 
   _clearOldCurrentGameSearch() {
-    blueTeam.clear();
-    redTeam.clear();
+    blueTeam.value.clear();
+    redTeam.value.clear();
   }
 
   detachParticipantsIntoTeams() {
@@ -47,9 +47,9 @@ class CurrentGameResultController extends UtilController {
       }
 
       if (currentGameParticipant.teamId == BLUE_TEAM) {
-        blueTeam.add(currentGameParticipant);
+        blueTeam.value.add(currentGameParticipant);
       }else {
-        redTeam.add(currentGameParticipant);
+        redTeam.value.add(currentGameParticipant);
       }
     }
   }

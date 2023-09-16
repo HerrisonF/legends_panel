@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 import 'package:legends_panel/app/layers/domain/entities/queue/queue_entity.dart';
 import 'package:legends_panel/app/layers/domain/usecases/queue/get_queues_usecase.dart';
 
@@ -11,12 +11,14 @@ class QueuesController {
   QueuesController(this._getQueuesUseCase);
 
   late QueueWrapper cachedQueues;
-  Rx<QueueEntity> currentMapToShow = QueueEntity(
-    queueId: 0,
-    map: '',
-    description: '',
-    notes: '',
-  ).obs;
+  ValueNotifier<QueueEntity> currentMapToShow = ValueNotifier(
+    QueueEntity(
+      queueId: 0,
+      map: '',
+      description: '',
+      notes: '',
+    ),
+  );
 
   Future<bool> initialize() async {
     return await _getQueuesRemoteUseCase();

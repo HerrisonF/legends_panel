@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
@@ -22,7 +22,7 @@ class _CurrentGameParticipantCardState
     extends State<CurrentGameParticipantCard> {
   final CurrentGameParticipantController _currentGameParticipantController =
       CurrentGameParticipantController();
-  final MasterController _masterController = Get.find<MasterController>();
+  final MasterController _masterController = GetIt.I<MasterController>();
 
   static const BLUE_TEAM = 100;
 
@@ -182,34 +182,40 @@ class _CurrentGameParticipantCardState
   }
 
   _playerWinRate() {
-    return Obx(() {
-      return _currentGameParticipantController
-              .soloUserTier.value.winRate.isNotEmpty
-          ? Container(
-              child: Text(
-                "WR " +
-                    _currentGameParticipantController
-                        .soloUserTier.value.winRate +
-                    "%",
-                style: GoogleFonts.montserrat(
-                  fontSize:
-                      ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 8 : 6,
-                  color: Colors.white,
-                ),
-              ),
-            )
-          : Container(
-              padding: EdgeInsets.only(right: 10),
-              child: Text(
-                " - ",
-                style: GoogleFonts.montserrat(
-                  fontSize:
-                      ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 8 : 6,
-                  color: Colors.white,
-                ),
-              ),
-            );
-    });
+    return ValueListenableBuilder(
+        valueListenable: _currentGameParticipantController.soloUserTier,
+        builder: (context, value, _) {
+          return _currentGameParticipantController
+                  .soloUserTier.value.winRate.isNotEmpty
+              ? Container(
+                  child: Text(
+                    "WR " +
+                        _currentGameParticipantController
+                            .soloUserTier.value.winRate +
+                        "%",
+                    style: GoogleFonts.montserrat(
+                      fontSize:
+                          ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                              ? 8
+                              : 6,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              : Container(
+                  padding: EdgeInsets.only(right: 10),
+                  child: Text(
+                    " - ",
+                    style: GoogleFonts.montserrat(
+                      fontSize:
+                          ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                              ? 8
+                              : 6,
+                      color: Colors.white,
+                    ),
+                  ),
+                );
+        });
   }
 
   _userTierNameAndSymbol() {
@@ -221,89 +227,99 @@ class _CurrentGameParticipantCardState
   Column _userTierName() {
     return Column(
       children: [
-        Obx(() {
-          return Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.only(
-                left:
-                    ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 5 : 0),
-            width: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 80 : 60,
-            child: _currentGameParticipantController
-                    .soloUserTier.value.tier.isNotEmpty
-                ? Text(
-                    _currentGameParticipantController.soloUserTier.value.tier +
-                        " " +
+        ValueListenableBuilder(
+            valueListenable: _currentGameParticipantController.soloUserTier,
+            builder: (context, value, _) {
+              return Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(
+                    left: ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                        ? 5
+                        : 0),
+                width:
+                    ScreenUtils.screenWidthSizeIsBiggerThanNexusOne() ? 80 : 60,
+                child: _currentGameParticipantController
+                        .soloUserTier.value.tier.isNotEmpty
+                    ? Text(
                         _currentGameParticipantController
-                            .soloUserTier.value.rank,
-                    style: GoogleFonts.montserrat(
-                      fontSize:
-                          ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
-                              ? 8
-                              : 6,
-                      color: Colors.white,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  )
-                : Container(
-                    margin: EdgeInsets.only(right: 22),
-                    child: Text(
-                      "UNRANKED",
-                      style: GoogleFonts.montserrat(
-                        fontSize:
-                            ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                                .soloUserTier.value.tier +
+                            " " +
+                            _currentGameParticipantController
+                                .soloUserTier.value.rank,
+                        style: GoogleFonts.montserrat(
+                          fontSize:
+                              ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                                  ? 8
+                                  : 6,
+                          color: Colors.white,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      )
+                    : Container(
+                        margin: EdgeInsets.only(right: 22),
+                        child: Text(
+                          "UNRANKED",
+                          style: GoogleFonts.montserrat(
+                            fontSize: ScreenUtils
+                                    .screenWidthSizeIsBiggerThanNexusOne()
                                 ? 8
                                 : 6,
-                        color: Colors.white,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-          );
-        }),
-        Obx(() {
-          return Container(
-            alignment: Alignment.center,
-            width: 80,
-            child: _currentGameParticipantController
-                    .soloUserTier.value.tier.isNotEmpty
-                ? Text(
-                    "(" +
-                        _currentGameParticipantController
-                            .soloUserTier.value.leaguePoints
-                            .toString() +
-                        "LP)",
-                    style: GoogleFonts.montserrat(
-                      fontSize:
-                          ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
-                              ? 8
-                              : 6,
-                      color: Colors.white,
-                    ),
-                  )
-                : SizedBox.shrink(),
-          );
-        }),
+              );
+            }),
+        ValueListenableBuilder(
+            valueListenable: _currentGameParticipantController.soloUserTier,
+            builder: (context, value, _) {
+              return Container(
+                alignment: Alignment.center,
+                width: 80,
+                child: _currentGameParticipantController
+                        .soloUserTier.value.tier.isNotEmpty
+                    ? Text(
+                        "(" +
+                            _currentGameParticipantController
+                                .soloUserTier.value.leaguePoints
+                                .toString() +
+                            "LP)",
+                        style: GoogleFonts.montserrat(
+                          fontSize:
+                              ScreenUtils.screenWidthSizeIsBiggerThanNexusOne()
+                                  ? 8
+                                  : 6,
+                          color: Colors.white,
+                        ),
+                      )
+                    : SizedBox.shrink(),
+              );
+            }),
       ],
     );
   }
 
   _userTierSymbol() {
-    return Obx(() {
-      return Container(
-        child:
-            _currentGameParticipantController.soloUserTier.value.tier.isNotEmpty
-                ? Image.asset(
-                    getUserTierImage(),
-                    width: 18,
-                  )
-                : Container(
-                    margin: EdgeInsets.only(right: 10),
-                    child: Image.asset(
-                      imageUnranked,
-                      width: 17,
-                    ),
+    return ValueListenableBuilder(
+      valueListenable: _currentGameParticipantController.soloUserTier,
+      builder: (context, value, _) {
+        return Container(
+          child: _currentGameParticipantController
+                  .soloUserTier.value.tier.isNotEmpty
+              ? Image.asset(
+                  getUserTierImage(),
+                  width: 18,
+                )
+              : Container(
+                  margin: EdgeInsets.only(right: 10),
+                  child: Image.asset(
+                    imageUnranked,
+                    width: 17,
                   ),
-      );
-    });
+                ),
+        );
+      },
+    );
   }
 
   String getUserTierImage() {

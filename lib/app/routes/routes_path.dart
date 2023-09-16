@@ -1,4 +1,4 @@
-abstract class Routes {
+abstract class RoutesPath {
   static const SPLASHSCREEN = "/";
   static const MASTER = "/master";
   static const HOME = "/home";

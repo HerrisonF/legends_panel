@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
@@ -23,14 +23,13 @@ class FoundUserComponent extends StatefulWidget {
 
 class _FoundUserComponentState extends State<FoundUserComponent> {
   final ScrollController _scrollController = ScrollController();
-  final ProfileController _profileController =
-      Get.put(ProfileController(), permanent: true);
-  final MasterController _masterController = Get.find<MasterController>();
+  final ProfileController _profileController = GetIt.I<ProfileController>();
+  final MasterController _masterController = GetIt.I<MasterController>();
 
   @override
   void initState() {
-    _masterController.addUserToFavoriteProfileList(
-        _profileController.userTierRankedSolo.value.tier);
+    // _masterController.addUserToFavoriteProfileList(
+    //     _profileController.userTierRankedSolo.value.tier);
     this._scrollController.addListener(this._scrollListenerFunction);
     super.initState();
   }
@@ -84,31 +83,33 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
             ],
           ),
           MasteryChampions(),
-          Obx(() {
-            return _profileController.matchList.length > 0
-                ? Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(bottom: 45),
-                      child: ListView.builder(
-                        itemCount: _hasMoreMatchesToLoad(),
-                        controller: this._scrollController,
-                        itemBuilder: (_, myCurrentPosition) {
-                          return _isLoadingGameCard(myCurrentPosition);
-                        },
-                      ),
-                    ),
-                  )
-                : DotsLoading();
-          }),
+          ValueListenableBuilder(
+              valueListenable: _profileController.matchList,
+              builder: (context, value, _) {
+                return _profileController.matchList.value.length > 0
+                    ? Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 45),
+                          child: ListView.builder(
+                            itemCount: _hasMoreMatchesToLoad(),
+                            controller: this._scrollController,
+                            itemBuilder: (_, myCurrentPosition) {
+                              return _isLoadingGameCard(myCurrentPosition);
+                            },
+                          ),
+                        ),
+                      )
+                    : DotsLoading();
+              }),
         ],
       ),
     );
   }
 
   Widget _isLoadingGameCard(int myCurrentPosition) {
-    if (myCurrentPosition < this._profileController.matchList.length) {
+    if (myCurrentPosition < this._profileController.matchList.value.length) {
       return ItemMatchListGameCard(
-          _profileController.matchList[myCurrentPosition]);
+          _profileController.matchList.value[myCurrentPosition]);
     } else {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
@@ -133,19 +134,19 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
 
   goToProfile() {
     _profileController.deletePersistedUser();
-    _profileController.isUserFound(false);
+    _profileController.isUserFound.value = false;
     _profileController.changeCurrentProfilePageTo(
         ProfileController.SEARCH_USER_PROFILE_COMPONENT);
   }
 
   int _hasMoreMatchesToLoad() {
     if (_profileController.lockNewLoadings.value) {
-      return _profileController.matchList.length;
+      return _profileController.matchList.value.length;
     }
     if (_profileController.isLoadingNewMatches.value) {
-      return _profileController.matchList.length + 1;
+      return _profileController.matchList.value.length + 1;
     }
-    return _profileController.matchList.length;
+    return _profileController.matchList.value.length;
   }
 
   Widget summonerPanel(BuildContext context) {
@@ -155,46 +156,49 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
           top: 0,
           left: 0,
           right: 0,
-          child: Obx(() {
-            return ShaderMask(
-              shaderCallback: (rect) {
-                return LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.black, Colors.transparent],
-                ).createShader(
-                  Rect.fromLTRB(0, 0, rect.width, rect.height),
+          child: ValueListenableBuilder(
+              valueListenable: _profileController.championMasteryList,
+              builder: (context, value, _) {
+                return ShaderMask(
+                  shaderCallback: (rect) {
+                    return LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Colors.black, Colors.transparent],
+                    ).createShader(
+                      Rect.fromLTRB(0, 0, rect.width, rect.height),
+                    );
+                  },
+                  blendMode: BlendMode.dstIn,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.elliptical(
+                          MediaQuery.of(context).size.width / 2, 0),
+                      bottomRight: Radius.elliptical(
+                          MediaQuery.of(context).size.width / 3, 100),
+                    ),
+                    child:
+                        _profileController.championMasteryList.value.isNotEmpty
+                            ? Container(
+                                height: MediaQuery.of(context).size.height / 4,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: NetworkImage(
+                                      _profileController.getChampionImage(
+                                        _profileController.championMasteryList
+                                            .value[0].championId,
+                                      ),
+                                    ),
+                                    fit: BoxFit.cover,
+                                    colorFilter: ColorFilter.mode(
+                                        Colors.black26, BlendMode.overlay),
+                                  ),
+                                ),
+                              )
+                            : SizedBox.shrink(),
+                  ),
                 );
-              },
-              blendMode: BlendMode.dstIn,
-              child: ClipRRect(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.elliptical(
-                      MediaQuery.of(context).size.width / 2, 0),
-                  bottomRight: Radius.elliptical(
-                      MediaQuery.of(context).size.width / 3, 100),
-                ),
-                child: _profileController.championMasteryList.isNotEmpty
-                    ? Container(
-                        height: MediaQuery.of(context).size.height / 4,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(
-                              _profileController.getChampionImage(
-                                _profileController
-                                    .championMasteryList[0].championId,
-                              ),
-                            ),
-                            fit: BoxFit.cover,
-                            colorFilter: ColorFilter.mode(
-                                Colors.black26, BlendMode.overlay),
-                          ),
-                        ),
-                      )
-                    : SizedBox.shrink(),
-              ),
-            );
-          }),
+              }),
         ),
         _profileController.getUserProfileImage() != ""
             ? _profileImage()
@@ -203,7 +207,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
             ? _profileName(context)
             : SizedBox.shrink(),
         _masterController.userForProfile.summonerLevel != "" &&
-                _profileController.userTierList.length > 0
+                _profileController.userTierList.value.length > 0
             ? _profileStatistics()
             : SizedBox.shrink(),
         _playerRankedEloEmblem(context),
@@ -221,15 +225,20 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Obx(() {
-            return Container(
-              height: MediaQuery.of(context).size.height / 8,
-              child: _profileController.userTierRankedSolo.value.tier.isNotEmpty
-                  ? Image.asset(
-                      "images/emblem_${_profileController.userTierRankedSolo.value.tier.toLowerCase()}.png")
-                  : SizedBox.shrink(),
-            );
-          }),
+          ValueListenableBuilder(
+            valueListenable: _profileController.userTierRankedSolo,
+            builder: (context, value, _) {
+              return Container(
+                height: MediaQuery.of(context).size.height / 8,
+                child:
+                    _profileController.userTierRankedSolo.value.tier.isNotEmpty
+                        ? Image.asset(
+                            "images/emblem_${_profileController.userTierRankedSolo.value.tier.toLowerCase()}.png",
+                          )
+                        : SizedBox.shrink(),
+              );
+            },
+          ),
         ],
       ),
     );

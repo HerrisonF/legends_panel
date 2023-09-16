@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/current_game_controller/current_game_result_controller.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_spectator.dart';
 import 'package:legends_panel/app/data/repository/current_game_repository/current_game_respository.dart';
-import 'package:legends_panel/app/routes/app_routes.dart';
+import 'package:legends_panel/app/routes/routes_path.dart';
 
-class CurrentGameController extends GetxController {
+class CurrentGameController {
   final CurrentGameResultController _currentGameResultController =
-      Get.put(CurrentGameResultController());
-  final MasterController masterController = Get.find<MasterController>();
+      GetIt.I<CurrentGameResultController>();
+  final MasterController masterController = GetIt.I<MasterController>();
   final CurrentGameRepository _currentGameRepository = CurrentGameRepository();
   final TextEditingController userNameInputController = TextEditingController();
 
-  Rx<bool> isLoadingUser = false.obs;
-  Rx<bool> isShowingMessage = false.obs;
-  Rx<bool> isShowingMessageUserIsNotPlaying = false.obs;
+  ValueNotifier<bool> isLoadingUser = ValueNotifier(false);
+  ValueNotifier<bool> isShowingMessage = ValueNotifier(false);
+  ValueNotifier<bool> isShowingMessageUserIsNotPlaying = ValueNotifier(false);
   CurrentGameSpectator currentGameForASpectator = CurrentGameSpectator();
 
   _startUserLoading() {
-    isLoadingUser(true);
+    isLoadingUser.value = true;
   }
 
   _stopUserLoading() {
-    isLoadingUser(false);
+    isLoadingUser.value = false;
   }
 
   String getLastStoredRegionForCurrentGame() {
@@ -38,17 +39,17 @@ class CurrentGameController extends GetxController {
     masterController.saveActualRegion();
   }
 
-  processCurrentGame() async {
+  processCurrentGame(BuildContext context) async {
     _startUserLoading();
     String keyRegion = getKeyFromARegion();
     await getCurrentUserOnCloud(keyRegion);
-    checkWhetherGameExist();
+    checkWhetherGameExist(context);
   }
 
-  void checkWhetherGameExist() {
+  void checkWhetherGameExist(BuildContext context) {
     if (userExist()) {
       _checkCurrentGameExistOnRegion(
-          masterController.storedRegion.lastStoredCurrentGameRegion);
+          masterController.storedRegion.lastStoredCurrentGameRegion, context);
     } else {
       _showMessageUserNotFound();
     }
@@ -66,10 +67,10 @@ class CurrentGameController extends GetxController {
 
   bool userExist() => masterController.userForCurrentGame.id.isNotEmpty;
 
-  _checkCurrentGameExistOnRegion(String region) async {
+  _checkCurrentGameExistOnRegion(String region, BuildContext context) async {
     await _getCurrentGame(region);
     if (userIsPlaying()) {
-      _pushToCurrentResultGamePage(region);
+      _pushToCurrentResultGamePage(region, context);
       _stopUserLoading();
       userNameInputController.clear();
     } else {
@@ -88,25 +89,25 @@ class CurrentGameController extends GetxController {
     return currentGameForASpectator.gameId > 0;
   }
 
-  _pushToCurrentResultGamePage(String region) {
+  _pushToCurrentResultGamePage(String region, BuildContext context) {
     _currentGameResultController.startController(
         currentGameForASpectator, region);
-    Get.toNamed(Routes.PROFILE_SUB);
+    context.push(RoutesPath.PROFILE_SUB);
   }
 
   _showMessageUserNotFound() {
     _stopUserLoading();
-    isShowingMessage(true);
+    isShowingMessage.value = true;
     Future.delayed(Duration(seconds: 3)).then((value) {
-      isShowingMessage(false);
+      isShowingMessage.value = false;
     });
   }
 
   _showMessageUserIsNotInAGame() {
     _stopUserLoading();
-    isShowingMessageUserIsNotPlaying(true);
+    isShowingMessageUserIsNotPlaying.value = true;
     Future.delayed(Duration(seconds: 3)).then((value) {
-      isShowingMessageUserIsNotPlaying(false);
+      isShowingMessageUserIsNotPlaying.value = false;
     });
   }
 }

@@ -130,14 +130,14 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
               _generalVisionController
                           .matchDetail.matchInfo.teams[index].teamId ==
                       BLUE_TEAM
-                  ? _generalVisionController.blueTeam
-                  : _generalVisionController.redTeam);
+                  ? _generalVisionController.blueTeam.value
+                  : _generalVisionController.redTeam.value);
         },
       ),
     );
   }
 
-  _teamCard(Team team, RxList<Participant> participants) {
+  _teamCard(Team team, List<Participant> participants) {
     return Container(
       color: team.teamId == BLUE_TEAM ? Colors.blue[200] : Colors.red[200],
       height: 520,

@@ -1,4 +1,9 @@
 import 'package:get_it/get_it.dart';
+import 'package:legends_panel/app/controller/current_game_controller/current_game_controller.dart';
+import 'package:legends_panel/app/controller/current_game_controller/current_game_participant_controller.dart';
+import 'package:legends_panel/app/controller/current_game_controller/current_game_result_controller.dart';
+import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
+import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
 import 'package:legends_panel/app/core/data/services/dio_http_service_imp.dart';
 import 'package:legends_panel/app/core/utils/package_info_utils.dart';
 import 'package:legends_panel/app/decorators/lol_version_decorator/lol_version_cache_repository_decorator.dart';
@@ -11,6 +16,8 @@ import 'package:legends_panel/app/core/domain/services/http_services.dart';
 import 'package:legends_panel/app/layers/domain/repositories/queue/get_queues_repository.dart';
 import 'package:legends_panel/app/layers/domain/usecases/queue/get_queues_usecase.dart';
 import 'package:legends_panel/app/layers/domain/usecases/queue/get_queues_usecase_imp.dart';
+import 'package:legends_panel/app/layers/presentation/controllers/splashscreen_controller.dart';
+import 'package:legends_panel/app/routes/routes.dart';
 import 'package:logging/logging.dart';
 
 import '../../decorators/queues_decorator/queues_cache_repository_decorator.dart';
@@ -28,6 +35,7 @@ class Inject {
     /// core
     getIt.registerLazySingleton<HttpService>(() => DioHttpServiceImp());
     getIt.registerLazySingleton<PackageInfoUtils>(() => PackageInfoUtils());
+    getIt.registerLazySingleton<Routes>(() => Routes());
 
     ///DataSources
     ///LOL VERSION
@@ -72,6 +80,27 @@ class Inject {
     /// LOL VERSION
     getIt.registerLazySingleton<LolVersionController>(
       () => LolVersionController(getIt()),
+    );
+
+    getIt.registerLazySingleton<CurrentGameController>(
+      () => CurrentGameController(),
+    );
+    getIt.registerLazySingleton<MasterController>(
+      () => MasterController(),
+    );
+
+    getIt.registerLazySingleton<ProfileController>(
+      () => ProfileController(),
+    );
+
+    getIt.registerLazySingleton<CurrentGameResultController>(
+        () => CurrentGameResultController());
+
+    getIt.registerLazySingleton<SplashscreenController>(
+      () => SplashscreenController(),
+    );
+    getIt.registerLazySingleton<CurrentGameParticipantController>(
+      () => CurrentGameParticipantController(),
     );
 
     ///QUEUES

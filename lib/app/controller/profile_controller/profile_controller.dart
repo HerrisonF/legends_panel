@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/constants/string_constants.dart';
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
@@ -15,28 +14,28 @@ import '../../layers/presentation/controllers/lol_version_controller.dart';
 class ProfileController {
   final ProfileRepository _profileRepository = ProfileRepository();
   final TextEditingController userNameInputController = TextEditingController();
-  final MasterController _masterController = Get.find<MasterController>();
+  final MasterController _masterController = GetIt.I<MasterController>();
   final LolVersionController _lolVersionController =
       GetIt.I.get<LolVersionController>();
 
-  Rx<int> oldIndex = 0.obs;
-  Rx<int> newIndex = 0.obs;
+  ValueNotifier<int> oldIndex = ValueNotifier(0);
+  ValueNotifier<int> newIndex = ValueNotifier(0);
 
-  Rx<int> currentProfilePage = 0.obs;
+  ValueNotifier<int> currentProfilePage = ValueNotifier(0);
 
-  RxList<UserTier> userTierList = RxList<UserTier>();
-  Rx<UserTier> userTierRankedSolo = UserTier().obs;
-  Rx<UserTier> userTierRankedFlex = UserTier().obs;
-  RxList<ChampionMastery> championMasteryList = RxList<ChampionMastery>();
+  ValueNotifier<List<UserTier>> userTierList = ValueNotifier([]);
+  ValueNotifier<UserTier> userTierRankedSolo = ValueNotifier(UserTier());
+  ValueNotifier<UserTier> userTierRankedFlex = ValueNotifier(UserTier());
+  ValueNotifier<List<ChampionMastery>> championMasteryList = ValueNotifier([]);
   List<String> matchIdList = [];
-  RxList<MatchDetail> matchList = RxList<MatchDetail>();
+  ValueNotifier<List<MatchDetail>> matchList = ValueNotifier([]);
 
-  Rx<bool> isUserLoading = false.obs;
-  Rx<bool> isShowingMessage = false.obs;
-  Rx<bool> isUserFound = false.obs;
-  Rx<bool> isShowingMessageUserIsNotPlaying = false.obs;
-  Rx<bool> lockNewLoadings = false.obs;
-  Rx<bool> isLoadingNewMatches = false.obs;
+  ValueNotifier<bool> isUserLoading = ValueNotifier(false);
+  ValueNotifier<bool> isShowingMessage = ValueNotifier(false);
+  ValueNotifier<bool> isUserFound = ValueNotifier(false);
+  ValueNotifier<bool> isShowingMessageUserIsNotPlaying = ValueNotifier(false);
+  ValueNotifier<bool> lockNewLoadings = ValueNotifier(false);
+  ValueNotifier<bool> isLoadingNewMatches = ValueNotifier(false);
 
   List<Widget> pages = [];
 
@@ -68,19 +67,19 @@ class ProfileController {
   }
 
   starUserLoading() {
-    isUserLoading(true);
+    isUserLoading.value = true;
   }
 
   stopUserLoading() {
-    isUserLoading(false);
+    isUserLoading.value = false;
   }
 
   startLoadingNewMatches() {
-    isLoadingNewMatches(true);
+    isLoadingNewMatches.value = true;
   }
 
   stopLoadingNewMatches() {
-    isLoadingNewMatches(false);
+    isLoadingNewMatches.value = false;
   }
 
   startProfileController() async {
@@ -90,7 +89,7 @@ class ProfileController {
   checkIsUserStored() async {
     if (_masterController.userProfileExist()) {
       if (_masterController.userForProfile.region.isNotEmpty) {
-        isUserFound(true);
+        isUserFound.value = true;
         final region = _masterController.userForProfile.region;
         starUserLoading();
         await getUserTierInformation(
@@ -110,13 +109,13 @@ class ProfileController {
   getUserTierInformation(String keyRegion) async {
     userTierList.value = await _profileRepository.getUserTier(
         _masterController.userForProfile.id, keyRegion);
-    for (UserTier userTier in userTierList) {
+    for (UserTier userTier in userTierList.value) {
       if (userTier.queueType == StringConstants.rankedSolo) {
         userTierRankedSolo.value = userTier;
-        userTierRankedSolo.refresh();
+        userTierRankedSolo.notifyListeners();
       } else if (userTier.queueType == StringConstants.rankedFlex) {
         userTierRankedFlex.value = userTier;
-        userTierRankedFlex.refresh();
+        userTierRankedFlex.notifyListeners();
       }
     }
   }
@@ -131,11 +130,11 @@ class ProfileController {
   }
 
   getMasteryChampions(String keyRegion) async {
-    championMasteryList.addAll(
+    championMasteryList.value.addAll(
       await _profileRepository.getChampionMastery(
           _masterController.userForProfile.id, keyRegion),
     );
-    championMasteryList
+    championMasteryList.value
         .sort((b, a) => a.championPoints.compareTo(b.championPoints));
   }
 
@@ -159,10 +158,10 @@ class ProfileController {
   }
 
   getMatches(String keyRegion) async {
-    for (int i = matchList.length; i < matchIdList.length; i++) {
+    for (int i = matchList.value.length; i < matchIdList.length; i++) {
       MatchDetail matchDetail =
           await _profileRepository.getMatchById(matchIdList[i], keyRegion);
-      matchList.add(matchDetail);
+      matchList.value.add(matchDetail);
     }
   }
 
@@ -195,7 +194,7 @@ class ProfileController {
 
   String getMasteryImage(int index) {
     return _profileRepository
-        .getMasteryImage(championMasteryList[index].championLevel.toString());
+        .getMasteryImage(championMasteryList.value[index].championLevel.toString());
   }
 
   getUser(String region) async {
@@ -227,22 +226,22 @@ class ProfileController {
 
   _showUserNotFoundMessage() {
     stopUserLoading();
-    isShowingMessage(true);
+    isShowingMessage.value = true;
     Future.delayed(Duration(seconds: 3)).then((value) {
-      isShowingMessage(false);
+      isShowingMessage.value = false;
     });
   }
 
   deletePersistedUser() {
     _masterController.deleteUserProfile();
-    this.isShowingMessage(false);
+    this.isShowingMessage.value = false;
     oldIndex.value = 0;
     newIndex.value = 0;
     userTierRankedSolo.value = UserTier();
-    this.userTierList.clear();
-    this.championMasteryList.clear();
+    this.userTierList.value.clear();
+    this.championMasteryList.value.clear();
     this.matchIdList.clear();
-    this.matchList.clear();
+    this.matchList.value.clear();
   }
 
   String getUserProfileImage() {

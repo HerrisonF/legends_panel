@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
-import 'package:legends_panel/app/core/utils/package_info_utils.dart';
+import 'package:go_router/go_router.dart';
 import 'package:legends_panel/app/layers/presentation/controllers/lol_version_controller.dart';
 import 'package:legends_panel/app/layers/presentation/controllers/queues_controller.dart';
 import 'package:legends_panel/app/model/current_game_spectator/current_game_perk.dart';
@@ -13,28 +12,26 @@ import 'package:legends_panel/app/model/general/spell_room.dart';
 import 'package:legends_panel/app/model/general/stored_region.dart';
 import 'package:legends_panel/app/model/general/user.dart';
 import 'package:legends_panel/app/data/repository/general/master_repository.dart';
-import 'package:legends_panel/app/routes/app_routes.dart';
+import 'package:legends_panel/app/routes/routes_path.dart';
 
 class MasterController {
   final MasterRepository _masterRepository = MasterRepository();
   final LolVersionController _lolVersionController =
       GetIt.I.get<LolVersionController>();
   final QueuesController _queuesController = GetIt.I.get<QueuesController>();
-  final PackageInfoUtils _packageInfoUtils = GetIt.I.get<PackageInfoUtils>();
 
-  RxInt currentPageIndex = 0.obs;
+  ValueNotifier<int> currentPageIndex = ValueNotifier(0);
 
   User userForCurrentGame = User();
   User userForProfile = User();
-  RxList<User> favoriteUsersForCurrentGame = RxList<User>();
-  RxList<User> favoriteUsersForProfile = RxList<User>();
+  //ValueNotifier<List<User>> favoriteUsersForCurrentGame = ValueNotifier([]);
+  //ValueNotifier<List<User>> favoriteUsersForProfile = ValueNotifier([]);
   StoredRegion storedRegion = StoredRegion();
   ChampionRoom championRoom = ChampionRoom();
   SpellRoom spellRoom = SpellRoom();
   RunesRoom runesRoom = RunesRoom();
 
-  initialize() async {
-    await _packageInfoUtils.initialize();
+  initialize(BuildContext context) async {
     if(await ifMyVersionsNotLoad())
       return;
 
@@ -46,10 +43,9 @@ class MasterController {
     await getChampionRoom();
     await getSummonerSpellsRoom();
     await getRunesRoom();
-    await getFavoriteUsersStoredForCurrentGame();
-    await getFavoriteUsersStoredForProfile();
-    Get.offAllNamed(Routes.MASTER);
-
+    // await getFavoriteUsersStoredForCurrentGame();
+    // await getFavoriteUsersStoredForProfile();
+    context.push(RoutesPath.MASTER);
   }
 
   Future<bool> ifMyQueuesNotLoad() async => !await _queuesController.initialize();
@@ -76,59 +72,59 @@ class MasterController {
     return championRoom.lastDate.isNotEmpty;
   }
 
-  addUserToFavoriteCurrentGameList(String userTier) {
-    bool notFound = true;
-    if (userTier.isNotEmpty) {
-      userForCurrentGame.userTier = userTier;
-    } else {
-      userForCurrentGame.userTier = "";
-    }
-    if (favoriteUsersForCurrentGame.length <= 0) {
-      favoriteUsersForCurrentGame.add(userForCurrentGame);
-      saveFavoriteUsersForCurrentGame();
-    } else {
-      for (User favoriteUser in favoriteUsersForCurrentGame) {
-        if (favoriteUser.name.toLowerCase() ==
-            userForCurrentGame.name.toLowerCase()) {
-          notFound = false;
-          favoriteUsersForCurrentGame.remove(favoriteUser);
-          favoriteUsersForCurrentGame.add(userForCurrentGame);
-          saveFavoriteUsersForCurrentGame();
-        }
-      }
-      if (notFound) {
-        favoriteUsersForCurrentGame.add(userForCurrentGame);
-        saveFavoriteUsersForCurrentGame();
-      }
-    }
-  }
+  // addUserToFavoriteCurrentGameList(String userTier) {
+  //   bool notFound = true;
+  //   if (userTier.isNotEmpty) {
+  //     userForCurrentGame.userTier = userTier;
+  //   } else {
+  //     userForCurrentGame.userTier = "";
+  //   }
+  //   if (favoriteUsersForCurrentGame.value.length <= 0) {
+  //     favoriteUsersForCurrentGame.value.add(userForCurrentGame);
+  //     saveFavoriteUsersForCurrentGame();
+  //   } else {
+  //     for (User favoriteUser in favoriteUsersForCurrentGame.value) {
+  //       if (favoriteUser.name.toLowerCase() ==
+  //           userForCurrentGame.name.toLowerCase()) {
+  //         notFound = false;
+  //         favoriteUsersForCurrentGame.value.remove(favoriteUser);
+  //         favoriteUsersForCurrentGame.value.add(userForCurrentGame);
+  //         saveFavoriteUsersForCurrentGame();
+  //       }
+  //     }
+  //     if (notFound) {
+  //       favoriteUsersForCurrentGame.value.add(userForCurrentGame);
+  //       saveFavoriteUsersForCurrentGame();
+  //     }
+  //   }
+  // }
 
-  addUserToFavoriteProfileList(String userTier) {
-    bool notFound = true;
-    if (userTier.isNotEmpty) {
-      userForProfile.userTier = userTier;
-    } else {
-      userForProfile.userTier = "";
-    }
-    if (favoriteUsersForProfile.length <= 0) {
-      favoriteUsersForProfile.add(userForProfile);
-      saveFavoriteUsersForProfile();
-    } else {
-      for (User favoriteUser in favoriteUsersForProfile) {
-        if (favoriteUser.name.toLowerCase() ==
-            userForProfile.name.toLowerCase()) {
-          notFound = false;
-          favoriteUsersForProfile.remove(favoriteUser);
-          favoriteUsersForProfile.add(userForProfile);
-          saveFavoriteUsersForProfile();
-        }
-      }
-      if (notFound) {
-        favoriteUsersForProfile.add(userForProfile);
-        saveFavoriteUsersForProfile();
-      }
-    }
-  }
+  // addUserToFavoriteProfileList(String userTier) {
+  //   bool notFound = true;
+  //   if (userTier.isNotEmpty) {
+  //     userForProfile.userTier = userTier;
+  //   } else {
+  //     userForProfile.userTier = "";
+  //   }
+  //   if (favoriteUsersForProfile.value.length <= 0) {
+  //     favoriteUsersForProfile.value.add(userForProfile);
+  //     saveFavoriteUsersForProfile();
+  //   } else {
+  //     for (User favoriteUser in favoriteUsersForProfile.value) {
+  //       if (favoriteUser.name.toLowerCase() ==
+  //           userForProfile.name.toLowerCase()) {
+  //         notFound = false;
+  //         favoriteUsersForProfile.value.remove(favoriteUser);
+  //         favoriteUsersForProfile.value.add(userForProfile);
+  //         saveFavoriteUsersForProfile();
+  //       }
+  //     }
+  //     if (notFound) {
+  //       favoriteUsersForProfile.value.add(userForProfile);
+  //       saveFavoriteUsersForProfile();
+  //     }
+  //   }
+  // }
 
   getUserTierImage(String tier) {
     return _masterRepository.getUserTierImage(tier);
@@ -210,7 +206,7 @@ class MasterController {
 
   changeCurrentPageIndex(int newPageIndex, BuildContext context) {
     FocusScope.of(context).unfocus();
-    currentPageIndex(newPageIndex);
+    currentPageIndex.value = newPageIndex;
   }
 
   Champion getChampionById(String championId) {
@@ -249,35 +245,35 @@ class MasterController {
     userForProfile = User();
   }
 
-  getFavoriteUsersStoredForCurrentGame() async {
-    favoriteUsersForCurrentGame
-        .addAll(await _masterRepository.getFavoriteUsersStoredForCurrentGame());
-  }
+  // getFavoriteUsersStoredForCurrentGame() async {
+  //   favoriteUsersForCurrentGame.value
+  //       .addAll(await _masterRepository.getFavoriteUsersStoredForCurrentGame());
+  // }
+  //
+  // getFavoriteUsersStoredForProfile() async {
+  //   favoriteUsersForProfile.value
+  //       .addAll(await _masterRepository.getFavoriteUsersStoredForProfile());
+  // }
 
-  getFavoriteUsersStoredForProfile() async {
-    favoriteUsersForProfile
-        .addAll(await _masterRepository.getFavoriteUsersStoredForProfile());
-  }
+  // saveFavoriteUsersForCurrentGame() {
+  //   _masterRepository
+  //       .saveFavoriteUsersForCurrentGame(favoriteUsersForCurrentGame.value);
+  // }
+  //
+  // saveFavoriteUsersForProfile() {
+  //   _masterRepository.saveFavoriteUsersForProfile(favoriteUsersForProfile.value);
+  // }
+  //
+  // removeFavoriteUserForCurrentGame(int index) {
+  //   favoriteUsersForCurrentGame.value.removeAt(index);
+  //   _masterRepository
+  //       .saveFavoriteUsersForCurrentGame(favoriteUsersForCurrentGame.value);
+  // }
 
-  saveFavoriteUsersForCurrentGame() {
-    _masterRepository
-        .saveFavoriteUsersForCurrentGame(favoriteUsersForCurrentGame);
-  }
-
-  saveFavoriteUsersForProfile() {
-    _masterRepository.saveFavoriteUsersForProfile(favoriteUsersForProfile);
-  }
-
-  removeFavoriteUserForCurrentGame(int index) {
-    favoriteUsersForCurrentGame.removeAt(index);
-    _masterRepository
-        .saveFavoriteUsersForCurrentGame(favoriteUsersForCurrentGame);
-  }
-
-  removeFavoriteUserForProfile(int index) {
-    favoriteUsersForProfile.removeAt(index);
-    _masterRepository.saveFavoriteUsersForProfile(favoriteUsersForProfile);
-  }
+  // removeFavoriteUserForProfile(int index) {
+  //   favoriteUsersForProfile.value.removeAt(index);
+  //   _masterRepository.saveFavoriteUsersForProfile(favoriteUsersForProfile.value);
+  // }
 
   resetCurrentGameUser() {
     userForCurrentGame = User();

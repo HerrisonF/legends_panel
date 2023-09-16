@@ -1,5 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/data/repository/general_vision_repository/general_vision_repository.dart';
 import 'package:legends_panel/app/model/general/match_detail.dart';
@@ -15,18 +14,18 @@ class GeneralVisionController {
   late MatchDetail matchDetail;
   late Participant participant;
 
-  Rx<bool> isLoadingTeamInfo = false.obs;
+  ValueNotifier<bool> isLoadingTeamInfo = ValueNotifier(false);
 
-  RxList<Participant> blueTeam = RxList<Participant>();
-  RxList<Participant> redTeam = RxList<Participant>();
+  ValueNotifier<List<Participant>> blueTeam = ValueNotifier([]);
+  ValueNotifier<List<Participant>> redTeam = ValueNotifier([]);
 
   static const BLUE_TEAM = 100;
 
   startInitialData(MatchDetail matchDetail, Participant participant) {
-    blueTeam.clear();
-    redTeam.clear();
+    blueTeam.value.clear();
+    redTeam.value.clear();
     _queuesController.getCurrentMapById(matchDetail.matchInfo.queueId);
-    isLoadingTeamInfo(true);
+    isLoadingTeamInfo.value = true;
     this.participant = participant;
     this.matchDetail = matchDetail;
     detachParticipantsIntoTeams();
@@ -55,12 +54,12 @@ class GeneralVisionController {
   detachParticipantsIntoTeams() {
     for (int i = 0; i < matchDetail.matchInfo.participants.length; i++) {
       if (matchDetail.matchInfo.participants[i].teamId == BLUE_TEAM) {
-        blueTeam.add(matchDetail.matchInfo.participants[i]);
+        blueTeam.value.add(matchDetail.matchInfo.participants[i]);
       } else {
-        redTeam.add(matchDetail.matchInfo.participants[i]);
+        redTeam.value.add(matchDetail.matchInfo.participants[i]);
       }
     }
-    isLoadingTeamInfo(false);
+    isLoadingTeamInfo.value = false;
   }
 
   String getBaronIcon() {
