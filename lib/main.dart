@@ -4,7 +4,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:legends_panel/app/core/utils/package_info_utils.dart';
 import 'package:legends_panel/app/routes/routes.dart';
 import 'package:legends_panel/app/ui/theme/app_theme.dart';
 import 'app/core/inject/inject.dart';
@@ -25,7 +24,6 @@ void main() async {
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp],
   );
-  GetIt.I<PackageInfoUtils>().initialize();
   runApp(MyApp());
 }
 

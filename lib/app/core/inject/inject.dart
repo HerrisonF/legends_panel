@@ -5,7 +5,6 @@ import 'package:legends_panel/app/controller/current_game_controller/current_gam
 import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
 import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
 import 'package:legends_panel/app/core/data/services/dio_http_service_imp.dart';
-import 'package:legends_panel/app/core/utils/package_info_utils.dart';
 import 'package:legends_panel/app/decorators/lol_version_decorator/lol_version_cache_repository_decorator.dart';
 import 'package:legends_panel/app/layers/data/datasources/contracts/queue_datasources/get_queues_datasource.dart';
 import 'package:legends_panel/app/layers/data/datasources/remote_imp/queues/get_queues_remote_datasource_imp.dart';
@@ -34,7 +33,6 @@ class Inject {
 
     /// core
     getIt.registerLazySingleton<HttpService>(() => DioHttpServiceImp());
-    getIt.registerLazySingleton<PackageInfoUtils>(() => PackageInfoUtils());
     getIt.registerLazySingleton<Routes>(() => Routes());
 
     ///DataSources

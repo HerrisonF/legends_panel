@@ -4,13 +4,11 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/constants/assets.dart';
-import 'package:legends_panel/app/core/utils/package_info_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AboutPage extends StatelessWidget {
 
-  final PackageInfoUtils _packageInfoUtils = GetIt.I.get<PackageInfoUtils>();
 
   @override
   Widget build(BuildContext context) {
@@ -75,16 +73,6 @@ class AboutPage extends StatelessWidget {
                       margin: EdgeInsets.only(top: 80),
                       child: Text(
                         "Watch Summoner",
-                        style: GoogleFonts.montserrat(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 50),
-                      child: Text(
-                        _packageInfoUtils.packageInfo.version,
                         style: GoogleFonts.montserrat(
                           color: Colors.white,
                           fontSize: 16,
