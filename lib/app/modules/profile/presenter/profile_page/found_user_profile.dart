@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
-import 'package:legends_panel/app/core/widgets/dots_loading.dart';
-import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/master_controller/master_controller.dart';
+import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/master_controller.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_controller/profile_controller.dart';
 
 import 'item_match_list_game_card.dart';
@@ -91,7 +90,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
                           ),
                         ),
                       )
-                    : DotsLoading();
+                    : CircularProgressIndicator();
               }),
         ],
       ),
@@ -106,7 +105,7 @@ class _FoundUserComponentState extends State<FoundUserComponent> {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
         margin: EdgeInsets.only(bottom: 30),
-        child: DotsLoading(),
+        child: CircularProgressIndicator(),
       );
     }
   }

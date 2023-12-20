@@ -3,14 +3,14 @@ import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/core/constants/string_constants.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
-import 'package:legends_panel/app/layers/presentation/controllers/lol_version_controller.dart';
-import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
-import 'package:legends_panel/app/model/current_game_spectator/current_game_perk.dart';
-import 'package:legends_panel/app/model/current_game_spectator/current_game_spectator.dart';
-import 'package:legends_panel/app/model/current_game_spectator/current_game_summoner_spell.dart';
-import 'package:legends_panel/app/model/general/user_tier.dart';
-import 'package:legends_panel/app/data/repository/profile_repository/participant_repository.dart';
-import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/master_controller/master_controller.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/user_tier.dart';
+import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/lol_version_controller.dart';
+import 'package:legends_panel/app/modules/current_game/data/repositories/participant_repository.dart';
+import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/master_controller.dart';
+import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_participant.dart';
+import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_perk.dart';
+import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_spectator.dart';
+import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_summoner_spell.dart';
 
 class CurrentGameParticipantController extends MasterController {
   final ParticipantRepository _participantRepository = ParticipantRepository(
@@ -43,7 +43,6 @@ class CurrentGameParticipantController extends MasterController {
     } catch (e) {
       soloUserTier.value.winRate = 0.toString();
     }
-    // saveSearchedUserTier();
   }
 
   String getUserTierImage(String tier) {
@@ -60,14 +59,14 @@ class CurrentGameParticipantController extends MasterController {
   String getChampionBadgeUrl(String championId) {
     return _participantRepository.getChampionBadgeUrl(
         _masterController.getChampionById(championId).detail.id.toString(),
-        _lolVersionController.cachedLolVersion.getLatestVersion());
+        _lolVersionController.lolVersionEntity.getLatestVersion());
   }
 
   String getSpellUrl(String spellId) {
     Spell spell = _masterController.getSpellById(spellId);
     if (spell.name.isNotEmpty) {
       return _participantRepository.getSpellBadgeUrl(
-          spell.id, _lolVersionController.cachedLolVersion.getLatestVersion());
+          spell.id, _lolVersionController.lolVersionEntity.getLatestVersion());
     } else {
       return "";
     }
@@ -75,13 +74,13 @@ class CurrentGameParticipantController extends MasterController {
 
   String getItemUrl(String itemId) {
     return _participantRepository.getItemUrl(
-        itemId, _lolVersionController.cachedLolVersion.getLatestVersion());
+        itemId, _lolVersionController.lolVersionEntity.getLatestVersion());
   }
 
   String getPositionUrl(String position) {
     return _participantRepository.getPositionUrl(
       position,
-      _lolVersionController.cachedLolVersion.getLatestVersion(),
+      _lolVersionController.lolVersionEntity.getLatestVersion(),
     );
   }
 

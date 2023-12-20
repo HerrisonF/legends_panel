@@ -4,14 +4,12 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
-import 'package:legends_panel/app/model/general/match_detail.dart';
-import 'package:legends_panel/app/core/widgets/dots_loading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/match_detail.dart';
+import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/queues_controller.dart';
 import 'package:legends_panel/app/modules/current_game/presenter/current_game_controller/current_game_participant_controller.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_controller/general_vision_controller.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_controller/profile_result_game_detail_controller.dart';
-
-import '../../../../../layers/presentation/controllers/queues_controller.dart';
 
 class GeneralVisionComponent extends StatefulWidget {
   final MatchDetail matchDetail;
@@ -62,7 +60,7 @@ class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
           color: Colors.white,
         ),
         child: _generalVisionController.isLoadingTeamInfo.value
-            ? DotsLoading()
+            ? CircularProgressIndicator()
             : Column(
                 children: [
                   _header(),

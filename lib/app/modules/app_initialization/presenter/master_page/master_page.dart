@@ -5,7 +5,7 @@ import 'package:legends_panel/app/modules/about/presenter/about_page/about_page.
 import 'package:legends_panel/app/modules/current_game/presenter/current_game_page/current_game_page.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_page/profile_page.dart';
 
-import 'master_controller/master_controller.dart';
+import 'master_controller.dart';
 
 class MasterPage extends StatelessWidget {
   final MasterController _masterController = GetIt.I<MasterController>();

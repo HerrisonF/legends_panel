@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:legends_panel/app/core/widgets/dots_loading.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_controller/profile_controller.dart';
 
 class MasteryChampions extends StatelessWidget {
@@ -25,7 +24,7 @@ class MasteryChampions extends StatelessWidget {
                   _championBadge(2, context),
                 ],
               )
-            : DotsLoading();
+            : CircularProgressIndicator();
       },
     );
   }

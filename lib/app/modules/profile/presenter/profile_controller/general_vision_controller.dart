@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
-import 'package:legends_panel/app/data/repository/general_vision_repository/general_vision_repository.dart';
-import 'package:legends_panel/app/layers/presentation/controllers/queues_controller.dart';
-import 'package:legends_panel/app/model/general/match_detail.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/match_detail.dart';
+import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/queues_controller.dart';
+import 'package:legends_panel/app/modules/profile/data/repositories/general_vision_repository.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GeneralVisionController {

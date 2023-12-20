@@ -3,12 +3,12 @@ import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/core/constants/string_constants.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
-import 'package:legends_panel/app/layers/presentation/controllers/lol_version_controller.dart';
-import 'package:legends_panel/app/model/general/champion_mastery.dart';
-import 'package:legends_panel/app/model/general/match_detail.dart';
-import 'package:legends_panel/app/model/general/user_tier.dart';
-import 'package:legends_panel/app/data/repository/profile_repository/profile_repository.dart';
-import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/master_controller/master_controller.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/champion_mastery.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/match_detail.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/user_tier.dart';
+import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/lol_version_controller.dart';
+import 'package:legends_panel/app/modules/profile/data/repositories/profile_repository.dart';
+import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/master_controller.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_page/found_user_profile.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_page/search_user_profile_component.dart';
 
@@ -194,7 +194,7 @@ class ProfileController {
         .id
         .toString();
     return _profileRepository.getCircularChampionImage(returnedChampion,
-        _lolVersionController.cachedLolVersion.getLatestVersion());
+        _lolVersionController.lolVersionEntity.getLatestVersion());
   }
 
   String getMasteryImage(int index) {
@@ -251,7 +251,7 @@ class ProfileController {
 
   String getUserProfileImage() {
     return _profileRepository.getProfileImage(
-      _lolVersionController.cachedLolVersion.getLatestVersion(),
+      _lolVersionController.lolVersionEntity.getLatestVersion(),
       _masterController.userForProfile.profileIconId.toString(),
     );
   }

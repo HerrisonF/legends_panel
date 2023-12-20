@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
-import 'package:legends_panel/app/core/widgets/dots_loading.dart';
 import 'package:legends_panel/app/core/widgets/header_screen_information.dart';
 import 'package:legends_panel/app/core/widgets/region_dropdown_component.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -129,7 +128,7 @@ class _SearchUserProfileComponentState
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  if (_profileController.isUserLoading.value) DotsLoading()
+                  if (_profileController.isUserLoading.value) CircularProgressIndicator()
                 ],
               ),
               onPressed: _profileController.isShowingMessage.value

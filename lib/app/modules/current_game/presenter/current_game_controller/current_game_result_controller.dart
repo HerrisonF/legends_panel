@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
-import 'package:legends_panel/app/layers/presentation/controllers/queues_controller.dart';
-import 'package:legends_panel/app/layers/presentation/util_controllers/util_controller.dart';
-import 'package:legends_panel/app/model/current_game_spectator/current_game_banned_champion.dart';
-import 'package:legends_panel/app/model/current_game_spectator/current_game_participant.dart';
-import 'package:legends_panel/app/model/current_game_spectator/current_game_spectator.dart';
-import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/master_controller/master_controller.dart';
+import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/master_controller.dart';
+import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/queues_controller.dart';
+import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_banned_champion.dart';
+import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_participant.dart';
+import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_spectator.dart';
 
-class CurrentGameResultController extends UtilController {
+class CurrentGameResultController {
   final MasterController _masterController = GetIt.I<MasterController>();
   final QueuesController _queuesController = GetIt.I<QueuesController>();
   String region = "";

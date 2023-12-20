@@ -4,9 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/core/routes/routes_path.dart';
-import 'package:legends_panel/app/model/current_game_spectator/current_game_spectator.dart';
-import 'package:legends_panel/app/data/repository/current_game_repository/current_game_respository.dart';
-import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/master_controller/master_controller.dart';
+import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/master_controller.dart';
+import 'package:legends_panel/app/modules/current_game/data/repositories/current_game_respository.dart';
+import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_spectator.dart';
 import 'package:legends_panel/app/modules/current_game/presenter/current_game_controller/current_game_result_controller.dart';
 
 class CurrentGameController {

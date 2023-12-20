@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
-import 'package:legends_panel/app/model/general/match_detail.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/match_detail.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_controller/profile_result_game_detail_controller.dart';
 
 import 'general_vision/general_vision_component.dart';
