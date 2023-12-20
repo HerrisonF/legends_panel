@@ -1,27 +1,18 @@
 import 'package:get_it/get_it.dart';
-import 'package:legends_panel/app/controller/current_game_controller/current_game_controller.dart';
-import 'package:legends_panel/app/controller/current_game_controller/current_game_participant_controller.dart';
-import 'package:legends_panel/app/controller/current_game_controller/current_game_result_controller.dart';
-import 'package:legends_panel/app/controller/master_controller/master_controller.dart';
-import 'package:legends_panel/app/controller/profile_controller/profile_controller.dart';
-import 'package:legends_panel/app/core/data/services/dio_http_service_imp.dart';
-import 'package:legends_panel/app/decorators/lol_version_decorator/lol_version_cache_repository_decorator.dart';
-import 'package:legends_panel/app/layers/data/datasources/contracts/queue_datasources/get_queues_datasource.dart';
-import 'package:legends_panel/app/layers/data/datasources/remote_imp/queues/get_queues_remote_datasource_imp.dart';
-import 'package:legends_panel/app/layers/data/repositories/lol_version_repositories/get_lol_version_repository_imp.dart';
-import 'package:legends_panel/app/layers/data/repositories/queue_repositories/get_queue_repository_imp.dart';
-import 'package:legends_panel/app/layers/domain/repositories/lol_version/get_lol_version_repository.dart';
-import 'package:legends_panel/app/core/domain/services/http_services.dart';
-import 'package:legends_panel/app/layers/domain/repositories/queue/get_queues_repository.dart';
+import 'package:legends_panel/app/core/http_configuration/http_services_impl.dart';
+import 'package:legends_panel/app/core/logger/logger.dart';
+import 'package:legends_panel/app/core/logger/logger_impl.dart';
+import 'package:legends_panel/app/core/routes/routes.dart';
+import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/layers/domain/usecases/queue/get_queues_usecase.dart';
 import 'package:legends_panel/app/layers/domain/usecases/queue/get_queues_usecase_imp.dart';
-import 'package:legends_panel/app/layers/presentation/controllers/splashscreen_controller.dart';
-import 'package:legends_panel/app/routes/routes.dart';
-import 'package:logging/logging.dart';
+import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/master_controller/master_controller.dart';
+import 'package:legends_panel/app/modules/app_initialization/presenter/splashscreen_page/splashscreen_controller.dart';
+import 'package:legends_panel/app/modules/current_game/presenter/current_game_controller/current_game_controller.dart';
+import 'package:legends_panel/app/modules/current_game/presenter/current_game_controller/current_game_participant_controller.dart';
+import 'package:legends_panel/app/modules/current_game/presenter/current_game_controller/current_game_result_controller.dart';
+import 'package:legends_panel/app/modules/profile/presenter/profile_controller/profile_controller.dart';
 
-import '../../decorators/queues_decorator/queues_cache_repository_decorator.dart';
-import '../../layers/data/datasources/contracts/lol_version_datasources/get_lol_version_datasource.dart';
-import '../../layers/data/datasources/remote_imp/lol_version/get_lol_version_remote_datasource_imp.dart';
 import '../../layers/domain/usecases/lol_version/get_lol_version/get_lol_version_usecase.dart';
 import '../../layers/domain/usecases/lol_version/get_lol_version/get_lol_version_usecase_imp.dart';
 import '../../layers/presentation/controllers/lol_version_controller.dart';
@@ -32,34 +23,13 @@ class Inject {
     GetIt getIt = GetIt.instance;
 
     /// core
-    getIt.registerLazySingleton<HttpService>(() => DioHttpServiceImp());
-    getIt.registerLazySingleton<Routes>(() => Routes());
-
-    ///DataSources
-    ///LOL VERSION
-    getIt.registerLazySingleton<GetLolVersionDataSource>(
-      () => GetLolVersionRemoteDataSourceImp(getIt()),
-    );
-
-    ///QUEUES
-    getIt.registerLazySingleton<GetQueuesDataSource>(
-      () => GetQueuesRemoteDataSourceImp(getIt()),
-    );
-
-    ///Repositories
-    ///LOL VERSION
-    getIt.registerLazySingleton<GetLolVersionRepository>(
-      () => LolVersionCacheRepositoryDecorator(
-        GetLolVersionRepositoryImp(getIt()),
+    getIt.registerSingleton<Logger>(LoggerImpl());
+    getIt.registerSingleton<HttpServices>(
+      HttpServicesImp(
+        logger: getIt(),
       ),
     );
-
-    ///QUEUES
-    getIt.registerLazySingleton<GetQueuesRepository>(
-      () => QueuesCacheRepositoryDecorator(
-        GetQueuesRepositoryImp(getIt()),
-      ),
-    );
+    getIt.registerSingleton<Routes>(Routes());
 
     ///Usecases
     ///LOL VERSION
@@ -105,11 +75,5 @@ class Inject {
     getIt.registerLazySingleton<QueuesController>(
       () => QueuesController(getIt()),
     );
-
-    /// Application logger
-    Logger.root.level = Level.ALL;
-    Logger.root.onRecord.listen((record) {
-      print('${record.level.name}: ${record.time}: ${record.message}');
-    });
   }
 }

@@ -1,45 +1,123 @@
-import 'package:legends_panel/app/data/provider/general_vision_provider/general_vision_provider.dart';
+import 'package:legends_panel/app/core/http_configuration/api_paths_ednpoints.dart';
+import 'package:legends_panel/app/core/logger/logger.dart';
 
-class GeneralVisionRepository{
-  final GeneralVisionProvider _generalVisionProvider = GeneralVisionProvider();
+class GeneralVisionRepository {
+  late Logger logger;
 
-  String getBaronIcon(){
-    return _generalVisionProvider.getBaronIcon();
+  GeneralVisionRepository({
+    required this.logger,
+  });
+
+  String getBaronIcon() {
+    final String path = "/images/site/summoner/icon-baron-b.png";
+    logger.logDEBUG("building Image Baron Url ...");
+    try {
+      return API.opGGUrl + path;
+    } catch (e) {
+      logger.logDEBUG("Error to build Baron Image URL ...");
+      return "";
+    }
   }
 
-  String getDragonIcon(){
-    return _generalVisionProvider.getDragonIcon();
+  String getDragonIcon() {
+    final String path = "/images/site/summoner/icon-dragon-b.png";
+    logger.logDEBUG("building Image Dragon Url ...");
+    try {
+      return API.opGGUrl + path;
+    } catch (e) {
+      logger.logDEBUG("Error to build Dragon Image URL ...");
+      return "";
+    }
   }
 
-  String getTowerIcon(){
-    return _generalVisionProvider.getTowerIcon();
+  String getTowerIcon() {
+    final String path = "/images/site/summoner/icon-tower-b.png";
+    logger.logDEBUG("building Image Tower Url ...");
+    try {
+      return API.opGGUrl + path;
+    } catch (e) {
+      logger.logDEBUG("Error to build Tower Image URL ...");
+      return "";
+    }
   }
 
-  String getKillIcon(){
-    return _generalVisionProvider.getKillIcon();
+  String getKillIcon() {
+    final String path =
+        "/latest/game/assets/ux/traiticons/trait_icon_blademaster.png";
+    logger.logDEBUG("building Image Kill Url ...");
+    try {
+      return API.rawDataDragonUrl + path;
+    } catch (e) {
+      logger.logDEBUG("Error to build Kill Image URL ...");
+      return "";
+    }
   }
 
-  String getPerkStyleUrl(String perkStyle){
-    return _generalVisionProvider.getPerkStyleUrl(perkStyle);
+  String getPerkStyleUrl(String perkStyle) {
+    final String path = "/images/lol/perkStyle/$perkStyle.png";
+    logger.logDEBUG("building Image Perk Style Url ...");
+    try {
+      return API.opGGUrl + path;
+    } catch (e) {
+      logger.logDEBUG("Error to build Perk Style Image URL ...");
+      return "";
+    }
   }
 
-  String getPerkUrl(String perk){
-    return _generalVisionProvider.getPerkUrl(perk);
+  String getPerkUrl(String perk) {
+    final String path = "/images/lol/perk/$perk.png";
+    logger.logDEBUG("building Image Perk Url ...");
+    try {
+      return API.opGGUrl + path;
+    } catch (e) {
+      logger.logDEBUG("Error to build Perk Image URL ...");
+      return "";
+    }
   }
 
-  String getMinionUrl(){
-    return _generalVisionProvider.getMinionUrl();
+  String getMinionUrl() {
+    final String path =
+        "/latest/game/assets/ux/tft/stageicons/minionsupcoming.png";
+    logger.logDEBUG("building Image Minion Url ...");
+    try {
+      return API.rawDataDragonUrl + path;
+    } catch (e) {
+      logger.logDEBUG("Error to build Perk Minion URL ...");
+      return "";
+    }
   }
 
-  String getGoldIconUrl(){
-    return _generalVisionProvider.getGoldIconUrl();
+  String getGoldIconUrl() {
+    final String path = "/latest/game/assets/ux/floatingtext/goldicon.png";
+    logger.logDEBUG("building Gold icon Url ...");
+    try {
+      return API.rawDataDragonUrl + path;
+    } catch (e) {
+      logger.logDEBUG("Error to build Gold icon URL ...");
+      return "";
+    }
   }
 
-  String getHeraldIcon(){
-    return _generalVisionProvider.getHeraldIcon();
+  String getHeraldIcon() {
+    final String path =
+        "/latest/game/assets/ux/tft/stageicons/heraldupcoming.png";
+    logger.logDEBUG("building Herald icon Url ...");
+    try {
+      return API.rawDataDragonUrl + path;
+    } catch (e) {
+      logger.logDEBUG("Error to build Herald icon URL ...");
+      return "";
+    }
   }
 
-  String getCriticIcon(){
-    return _generalVisionProvider.getCriticIcon();
+  String getCriticIcon() {
+    final String path = "/latest/game/assets/ux/floatingtext/criticon.png";
+    logger.logDEBUG("building Critic icon Url ...");
+    try {
+      return API.rawDataDragonUrl + path;
+    } catch (e) {
+      logger.logDEBUG("Error to build Critic icon URL ...");
+      return "";
+    }
   }
 }
