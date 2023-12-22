@@ -2,9 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:legends_panel/app/core/error_base/failure.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/repositories/splash_repository/splash_repository.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/repositories/splash_repository/splash_repository_local.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/game_language_model.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/champion_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/game_mode_model.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/game_version_model.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/item_mother_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/lol_constants_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/mapa_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/queue_model.dart';
@@ -25,13 +25,44 @@ class FetchGameConstantsUsecaseImpl extends FetchGameConstantsUsecase {
   Future<Either<Failure, LolConstantsModel>> call() async {
     try {
       LolConstantsModel lolConstantsModel = LolConstantsModel();
+
+      /// Nesse caso, preciso esperar pelo get de versões para poder chamar
+      /// a lista de champions.
+      await remoteRepository.fetchGameLanguages()
+        ..fold((l) => id, (r) async {
+          lolConstantsModel.setGameLanguages(r);
+
+          await remoteRepository.fetchVersions()
+            ..fold((l) => id, (r) async {
+              lolConstantsModel.setGameVersions(r);
+              final response = await Future.value([
+                await remoteRepository.fetchChampions(
+                  language: lolConstantsModel.getLanguage(localization),
+                  version: lolConstantsModel.getLatestLolVersion(),
+                ),
+                await remoteRepository.fetchItems(
+                  language: lolConstantsModel.getLanguage(localization),
+                  version: lolConstantsModel.getLatestLolVersion(),
+                )
+              ]);
+
+              response[0].fold((l) => id, (r) {
+                lolConstantsModel.setChampions(r as List<ChampionModel>);
+              });
+
+              response[1].fold((l) => id, (r) {
+                lolConstantsModel.setItemMotherModel(r as ItemMotherModel);
+              });
+            });
+        });
+
+      ///
+
       final response = await Future.value(
         [
           await remoteRepository.fetchQueues(),
-          await remoteRepository.fetchVersions(),
           await remoteRepository.fetchMaps(),
           await remoteRepository.fetchGameModes(),
-          await remoteRepository.fetchGameLanguages(),
         ],
       );
 
@@ -39,16 +70,10 @@ class FetchGameConstantsUsecaseImpl extends FetchGameConstantsUsecase {
         lolConstantsModel.setQueues(r as List<QueueModel>);
       });
       response[1].fold((l) => id, (r) {
-        lolConstantsModel.setGameVersions(r as List<GameVersionModel>);
-      });
-      response[2].fold((l) => id, (r) {
         lolConstantsModel.setMaps(r as List<MapaModel>);
       });
-      response[3].fold((l) => id, (r) {
+      response[2].fold((l) => id, (r) {
         lolConstantsModel.setGameModes(r as List<GameModeModel>);
-      });
-      response[4].fold((l) => id, (r) {
-        lolConstantsModel.setGameLanguages(r as List<GameLanguageModel>);
       });
 
       return Right(lolConstantsModel);

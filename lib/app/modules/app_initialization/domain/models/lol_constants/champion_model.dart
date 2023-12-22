@@ -1,3 +1,5 @@
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/image_model.dart';
+
 class ChampionModel {
   String version;
   String id;
@@ -27,10 +29,10 @@ class ChampionModel {
 }
 
 class InformationModel {
-  double attack;
-  double defense;
-  double magic;
-  double difficulty;
+  dynamic attack;
+  dynamic defense;
+  dynamic magic;
+  dynamic difficulty;
 
   InformationModel({
     required this.attack,
@@ -38,49 +40,38 @@ class InformationModel {
     required this.magic,
     required this.difficulty,
   });
-}
 
-class ImageModel {
-  String full;
-  String sprite;
-  String group;
-  double x;
-  double y;
-  double w;
-  double h;
-
-  ImageModel({
-    required this.full,
-    required this.sprite,
-    required this.group,
-    required this.x,
-    required this.y,
-    required this.w,
-    required this.h,
-  });
+  factory InformationModel.empty() {
+    return InformationModel(
+      attack: 0,
+      defense: 0,
+      magic: 0,
+      difficulty: 0,
+    );
+  }
 }
 
 class StatsModel {
-  double hp;
-  double hpperlevel;
-  double mp;
-  double mpperlevel;
-  double movespeed;
-  double armor;
-  double armorperlevel;
-  double spellblock;
-  double spellblockperlevel;
-  double attackrange;
-  double hpregen;
-  double hpregenperlevel;
-  double mpregen;
-  double mpregenperlevel;
-  double crit;
-  double critperlevel;
-  double attackdamage;
-  double attackdamageperlevel;
-  double attackspeedperlevel;
-  double attackspeed;
+  dynamic hp;
+  dynamic hpperlevel;
+  dynamic mp;
+  dynamic mpperlevel;
+  dynamic movespeed;
+  dynamic armor;
+  dynamic armorperlevel;
+  dynamic spellblock;
+  dynamic spellblockperlevel;
+  dynamic attackrange;
+  dynamic hpregen;
+  dynamic hpregenperlevel;
+  dynamic mpregen;
+  dynamic mpregenperlevel;
+  dynamic crit;
+  dynamic critperlevel;
+  dynamic attackdamage;
+  dynamic attackdamageperlevel;
+  dynamic attackspeedperlevel;
+  dynamic attackspeed;
 
   StatsModel({
     required this.hp,
@@ -104,4 +95,29 @@ class StatsModel {
     required this.spellblock,
     required this.spellblockperlevel,
   });
+
+  factory StatsModel.empty() {
+    return StatsModel(
+      hp: 0,
+      hpperlevel: 0,
+      mp: 0,
+      mpperlevel: 0,
+      movespeed: 0,
+      mpregen: 0,
+      armor: 0,
+      armorperlevel: 0,
+      attackdamage: 0,
+      attackdamageperlevel: 0,
+      attackrange: 0,
+      attackspeed: 0,
+      attackspeedperlevel: 0,
+      crit: 0,
+      critperlevel: 0,
+      hpregen: 0,
+      hpregenperlevel: 0,
+      mpregenperlevel: 0,
+      spellblock: 0,
+      spellblockperlevel: 0,
+    );
+  }
 }

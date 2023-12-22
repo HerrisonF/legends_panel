@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/champion_dto.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/champion_room.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/repositories/master_repository.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/runesRoom.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/spell_room.dart';
@@ -23,7 +22,6 @@ class MasterController {
   User userForCurrentGame = User();
   User userForProfile = User();
   StoredRegion storedRegion = StoredRegion();
-  ChampionRoom championRoom = ChampionRoom();
   SpellRoom spellRoom = SpellRoom();
   RunesRoom runesRoom = RunesRoom();
 
@@ -57,9 +55,9 @@ class MasterController {
     await getChampionRoomOnWeb();
   }
 
-  bool isChampionRoomStored() {
-    return championRoom.lastDate.isNotEmpty;
-  }
+  // bool isChampionRoomStored() {
+  //   //return championRoom.lastDate.isNotEmpty;
+  // }
 
   getUserTierImage(String tier) {
     //return _masterRepository.getUserTierImage(tier);
@@ -140,14 +138,14 @@ class MasterController {
     FocusScope.of(context).unfocus();
     currentPageIndex.value = newPageIndex;
   }
-
-  Champion getChampionById(String championId) {
-    Champion champion = Champion();
-    var champs = championRoom.champions
-        .where((champ) => champ.detail.key.toString() == championId);
-    if (champs.length > 0) champion = champs.first;
-    return champion;
-  }
+  //
+  // Champion getChampionById(String championId) {
+  //   Champion champion = Champion();
+  //   var champs = championRoom.champions
+  //       .where((champ) => champ.detail.key.toString() == championId);
+  //   if (champs.length > 0) champion = champs.first;
+  //   return champion;
+  // }
 
   getSpellById(String spellId) {
     Spell spell = Spell();

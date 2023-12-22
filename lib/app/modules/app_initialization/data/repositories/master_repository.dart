@@ -4,7 +4,6 @@ import 'package:legends_panel/app/core/http_configuration/api_paths_endpoints.da
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/champion_dto.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/champion_room.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/runesRoom.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/spell_room.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/stored_region.dart';

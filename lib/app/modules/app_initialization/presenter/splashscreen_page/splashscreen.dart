@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
@@ -31,6 +33,7 @@ class _SplashScreenState extends State<SplashScreen>
     );
     _animation = Tween(begin: 0.0, end: 1.0).animate(_controller);
     _controller.repeat(reverse: true);
+    super.initState();
     SplashscreenController(
       callback: goToMainPage,
       fetchGameConstantsUsecase: FetchGameConstantsUsecaseImpl(
@@ -40,10 +43,9 @@ class _SplashScreenState extends State<SplashScreen>
         localRepository: SplashRepositoryLocalImpl(
           sharedPreferences: GetIt.I<SharedPreferences>(),
         ),
-        localization: AppLocalizations.of(context)!.language,
+        localization: Platform.localeName,
       ),
     );
-    super.initState();
   }
 
   goToMainPage() {

@@ -1,6 +1,8 @@
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/champion_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/game_language_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/game_mode_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/game_version_model.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/item_mother_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/mapa_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/queue_model.dart';
 
@@ -14,12 +16,16 @@ class LolConstantsModel {
   List<MapaModel>? maps;
   List<GameModeModel>? gameModes;
   List<GameLanguageModel>? gameLanguages;
+  List<ChampionModel>? champions;
+  ItemMotherModel?  itemMotherModel;
 
   LolConstantsModel({
     this.queues,
     this.versions,
     this.maps,
     this.gameModes,
+    this.champions,
+    this.itemMotherModel,
   });
 
   setQueues(List<QueueModel> queues) {
@@ -45,6 +51,31 @@ class LolConstantsModel {
   setGameLanguages(List<GameLanguageModel> gameLanguages) {
     this.gameLanguages = [];
     this.gameLanguages!.addAll(gameLanguages);
+  }
+
+  setChampions(List<ChampionModel> champions) {
+    this.champions = [];
+    this.champions!.addAll(champions);
+  }
+
+  setItemMotherModel(ItemMotherModel itemMotherModel){
+    this.itemMotherModel = itemMotherModel;
+  }
+
+  String getLatestLolVersion() {
+    return versions!.first.version;
+  }
+
+  /// Se a localization do usuário não for encontrada nas constantes,então
+  /// retorno o padrão en_US.
+  String getLanguage(String localization) {
+    List<GameLanguageModel> languages = gameLanguages!
+        .where((element) => element.language == localization)
+        .toList();
+    if (languages.isNotEmpty) {
+      return languages.first.language;
+    }
+    return "en_US";
   }
 
   String getMapQueueById(int queueId) {

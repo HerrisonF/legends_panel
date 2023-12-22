@@ -1,36 +1,6 @@
+import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/image_dto.dart';
+
 class ChampionDTO {
-  String type;
-  String format;
-  String version;
-  DetailDTO? detailDTO;
-
-  ChampionDTO({
-    required this.type,
-    required this.format,
-    required this.version,
-    required this.detailDTO,
-  });
-
-  factory ChampionDTO.fromJson(Map<String, dynamic> json, name) {
-    return ChampionDTO(
-      type: json['type'] ?? "",
-      format: json['format'] ?? "",
-      version: json['version'] ?? "",
-      detailDTO: json[name] != null ? DetailDTO.fromJson(json[name]) : null,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'type': this.type,
-      'format': this.format,
-      'version': this.version,
-      'data': this.detailDTO?.toJson(),
-    };
-  }
-}
-
-class DetailDTO {
   String version;
   String id;
   String key;
@@ -41,9 +11,9 @@ class DetailDTO {
   ImageDTO? image;
   List<String> tags;
   String partype;
-  StatsDTO stats;
+  StatsDTO? stats;
 
-  DetailDTO({
+  ChampionDTO({
     required this.version,
     required this.id,
     required this.key,
@@ -57,20 +27,19 @@ class DetailDTO {
     required this.tags,
   });
 
-  factory DetailDTO.fromJson(Map<String, dynamic> json) {
-    return DetailDTO(
+  factory ChampionDTO.fromJson(Map<String, dynamic> json) {
+    return ChampionDTO(
       version: json['version'] ?? "",
       id: json['id'] ?? "",
       key: json['key'] ?? "",
       name: json['name'] ?? "",
       title: json['title'] ?? "",
       blurb: json['blurb'] ?? "",
-      info: json['info'] ?? InformationDTO.fromJson(json['info']),
-      image: json['image'] ?? ImageDTO.fromJson(json['image']),
-      tags: json['tags'] ??
-          (json['tags'] as List<dynamic>).map((tag) => tag as String).toList(),
+      info: json['info'] != null ? InformationDTO.fromJson(json['info']) : null,
+      image: json['image'] != null ? ImageDTO.fromJson(json['image']) : null,
+      tags: json['tags'] != null ? (json['tags'] as List<dynamic>).cast<String>() : [],
       partype: json['partype'] ?? "",
-      stats: json['stats'] ?? StatsDTO.fromJson(json['stats']),
+      stats: json['stats'] != null ? StatsDTO.fromJson(json['stats']) : null,
     );
   }
 
@@ -86,16 +55,16 @@ class DetailDTO {
       'image': this.image?.toJson(),
       'tags': this.tags,
       'partype': this.partype,
-      'stats': this.stats.toJson(),
+      'stats': this.stats?.toJson(),
     };
   }
 }
 
 class InformationDTO {
-  double attack = 0;
-  double defense = 0;
-  double magic = 0;
-  double difficulty = 0;
+  dynamic attack;
+  dynamic defense;
+  dynamic magic;
+  dynamic difficulty;
 
   InformationDTO({
     required this.attack,
@@ -123,71 +92,27 @@ class InformationDTO {
   }
 }
 
-class ImageDTO {
-  String full;
-  String sprite;
-  String group;
-  double x;
-  double y;
-  double w;
-  double h;
-
-  ImageDTO({
-    required this.full,
-    required this.sprite,
-    required this.group,
-    required this.x,
-    required this.y,
-    required this.w,
-    required this.h,
-  });
-
-  factory ImageDTO.fromJson(Map<String, dynamic> json) {
-    return ImageDTO(
-      full: json['full'] ?? "",
-      sprite: json['sprite'] ?? "",
-      group: json['group'] ?? "",
-      x: json['x'] ?? 0,
-      y: json['y'] ?? 0,
-      w: json['w'] ?? 0,
-      h: json['h'] ?? 0,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'full': this.full,
-      'sprite': this.sprite,
-      'group': this.group,
-      'x': this.x,
-      'y': this.y,
-      'w': this.w,
-      'h': this.h,
-    };
-  }
-}
-
 class StatsDTO {
-  double hp = 0;
-  double hpperlevel = 0;
-  double mp = 0;
-  double mpperlevel = 0;
-  double movespeed = 0;
-  double armor = 0;
-  double armorperlevel = 0;
-  double spellblock = 0;
-  double spellblockperlevel = 0;
-  double attackrange = 0;
-  double hpregen = 0;
-  double hpregenperlevel = 0;
-  double mpregen = 0;
-  double mpregenperlevel = 0;
-  double crit = 0;
-  double critperlevel = 0;
-  double attackdamage = 0;
-  double attackdamageperlevel = 0;
-  double attackspeedperlevel = 0;
-  double attackspeed = 0;
+  dynamic hp;
+  dynamic hpperlevel;
+  dynamic mp;
+  dynamic mpperlevel;
+  dynamic movespeed;
+  dynamic armor;
+  dynamic armorperlevel;
+  dynamic spellblock;
+  dynamic spellblockperlevel;
+  dynamic attackrange;
+  dynamic hpregen;
+  dynamic hpregenperlevel;
+  dynamic mpregen;
+  dynamic mpregenperlevel;
+  dynamic crit;
+  dynamic critperlevel;
+  dynamic attackdamage;
+  dynamic attackdamageperlevel;
+  dynamic attackspeedperlevel;
+  dynamic attackspeed;
 
   StatsDTO({
     required this.spellblockperlevel,
