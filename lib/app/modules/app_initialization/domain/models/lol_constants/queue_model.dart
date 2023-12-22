@@ -1,10 +1,10 @@
-class QueueEntity {
+class QueueModel {
   int queueId;
   String map;
   String description;
   String notes;
 
-  QueueEntity({
+  QueueModel({
     required this.queueId,
     required this.map,
     required this.description,

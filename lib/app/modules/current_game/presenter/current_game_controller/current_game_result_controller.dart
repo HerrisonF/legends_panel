@@ -22,7 +22,6 @@ class CurrentGameResultController {
     _clearOldCurrentGameSearch();
     setCurrentGameSpectator(currentGameSpectator);
     detachParticipantsIntoTeams();
-    _queuesController.getCurrentMapById(currentGameSpectator.gameQueueConfigId);
   }
 
   setCurrentGameSpectator(CurrentGameSpectator spectator) {
@@ -35,30 +34,37 @@ class CurrentGameResultController {
   }
 
   detachParticipantsIntoTeams() {
-    for (int i = 0; i < currentGameSpectator.currentGameParticipants.length; i++) {
+    for (int i = 0;
+        i < currentGameSpectator.currentGameParticipants.length;
+        i++) {
       CurrentGameParticipant currentGameParticipant =
           currentGameSpectator.currentGameParticipants[i];
-      if(isPlayingMapWithBans()){
-        currentGameParticipant.currentGameBannedChampion = currentGameSpectator.bannedChampions[i];
-      }else{
-        currentGameParticipant.currentGameBannedChampion = CurrentGameBannedChampion();
+      if (isPlayingMapWithBans()) {
+        currentGameParticipant.currentGameBannedChampion =
+            currentGameSpectator.bannedChampions[i];
+      } else {
+        currentGameParticipant.currentGameBannedChampion =
+            CurrentGameBannedChampion();
       }
 
       if (currentGameParticipant.teamId == BLUE_TEAM) {
         blueTeam.value.add(currentGameParticipant);
-      }else {
+      } else {
         redTeam.value.add(currentGameParticipant);
       }
     }
   }
 
-  bool isPlayingMapWithBans() => currentGameSpectator.bannedChampions.length > 0;
+  bool isPlayingMapWithBans() =>
+      currentGameSpectator.bannedChampions.length > 0;
 
   int getCurrentGameMinutes() {
     return currentGameSpectator.gameLength;
   }
 
-  String getCurrentMapDescription(){
-    return _queuesController.getQueueDescriptionWithoutGamesString();
+  String getCurrentMapDescription() {
+    return _queuesController.getQueueDescriptionWithoutGamesString(
+      queueId: currentGameSpectator.gameQueueConfigId,
+    );
   }
 }

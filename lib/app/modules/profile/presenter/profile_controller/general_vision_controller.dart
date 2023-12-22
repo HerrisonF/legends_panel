@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/match_detail.dart';
-import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/queues_controller.dart';
 import 'package:legends_panel/app/modules/profile/data/repositories/general_vision_repository.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -11,7 +10,6 @@ class GeneralVisionController {
       GeneralVisionRepository(
         logger: GetIt.I<Logger>(),
       );
-  final QueuesController _queuesController = GetIt.I.get<QueuesController>();
 
   late MatchDetail matchDetail;
   late Participant participant;
@@ -26,7 +24,6 @@ class GeneralVisionController {
   startInitialData(MatchDetail matchDetail, Participant participant) {
     blueTeam.value.clear();
     redTeam.value.clear();
-    _queuesController.getCurrentMapById(matchDetail.matchInfo.queueId);
     isLoadingTeamInfo.value = true;
     this.participant = participant;
     this.matchDetail = matchDetail;

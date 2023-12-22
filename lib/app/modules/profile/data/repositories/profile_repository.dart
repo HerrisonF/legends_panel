@@ -16,8 +16,8 @@ class ProfileRepository {
 
   static const String origin = "ProfileRepository";
 
-  String getProfileImage(String version, String profileIconId) {
-    final String path = "/cdn/$version/img/profileicon/$profileIconId.png";
+  String getProfileImage(String profileIconId) {
+    final String path = "/cdn/latest/img/profileicon/$profileIconId.png";
     logger.logDEBUG("building Image profile Url ...");
     try {
       return API.riotDragonUrl + path;
@@ -100,8 +100,8 @@ class ProfileRepository {
     }
   }
 
-  String getCircularChampionImage(String championId, String version) {
-    final String path = "/cdn/$version/img/champion/$championId.png";
+  String getCircularChampionImage(String championId) {
+    final String path = "/cdn/latest/img/champion/$championId.png";
     logger.logDEBUG("building Image Champion for mastery URL...");
     try {
       return API.riotDragonUrl + path;

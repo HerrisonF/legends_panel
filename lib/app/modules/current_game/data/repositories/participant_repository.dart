@@ -54,9 +54,9 @@ class ParticipantRepository {
     }
   }
 
-  String getChampionBadgeUrl(String championId, String version) {
-    logger.logDEBUG("building Image Champion URL... $championId # $version");
-    final String path = "/cdn/$version/img/champion/$championId.png";
+  String getChampionBadgeUrl(String championId) {
+    logger.logDEBUG("building Image Champion URL... $championId # latest");
+    final String path = "/cdn/latest/img/champion/$championId.png";
     try {
       return API.riotDragonUrl + path;
     } catch (e) {
@@ -65,8 +65,8 @@ class ParticipantRepository {
     }
   }
 
-  String getItemUrl(String itemId, String version) {
-    final String path = "/cdn/$version/img/item/$itemId.png";
+  String getItemUrl(String itemId) {
+    final String path = "/cdn/latest/img/item/$itemId.png";
     logger.logDEBUG("building Image Item URL...");
     try {
       return API.riotDragonUrl + path;
@@ -76,7 +76,7 @@ class ParticipantRepository {
     }
   }
 
-  String getPositionUrl(String position, String version) {
+  String getPositionUrl(String position) {
     final String path =
         "/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-${position.toLowerCase()}.png";
     logger.logDEBUG("building Image Positon URL...");
@@ -88,8 +88,8 @@ class ParticipantRepository {
     }
   }
 
-  String getSpellBadgeUrl(String spellName, String version) {
-    final String path = "/cdn/$version/img/spell/$spellName.png";
+  String getSpellBadgeUrl(String spellName) {
+    final String path = "/cdn/latest/img/spell/$spellName.png";
     logger.logDEBUG("building Image Spell Url ...");
     try {
       return API.riotDragonUrl + path;

@@ -19,10 +19,9 @@ dependencies:
   get_it:
   dartz: ^0.10.1
   logging: ^1.0.2
-  shared_preferences: ^2.0.13
+  shared_preferences: ^2.2.2
   google_fonts: ^4.0.1
   cupertino_icons: ^1.0.2
-  get_storage: ^2.0.3
   dio: ^4.0.0
   basic_utils: ^3.4.0
   flutter_feather_icons: ^2.0.0

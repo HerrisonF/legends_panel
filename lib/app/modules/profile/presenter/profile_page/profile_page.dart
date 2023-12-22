@@ -8,26 +8,26 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final ProfileController _profileController = GetIt.I<ProfileController>();
+  //final ProfileController _profileController = GetIt.I<ProfileController>();
 
   @override
   void initState() {
-    _profileController.buildPages();
-    _profileController.startProfileController();
+    // _profileController.buildPages();
+    // _profileController.startProfileController();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ValueListenableBuilder(
-        valueListenable: _profileController.currentProfilePage,
-        builder: (context, value, _) {
-          return _profileController.pages.elementAt(
-            _profileController.currentProfilePage.value,
-          );
-        },
-      ),
+      // body: ValueListenableBuilder(
+      //   valueListenable: _profileController.currentProfilePage,
+      //   builder: (context, value, _) {
+      //     return _profileController.pages.elementAt(
+      //       _profileController.currentProfilePage.value,
+      //     );
+      //   },
+      // ),
     );
   }
 }

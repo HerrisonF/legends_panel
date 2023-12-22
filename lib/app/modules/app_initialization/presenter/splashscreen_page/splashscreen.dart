@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
+import 'package:legends_panel/app/core/http_configuration/http_services.dart';
+import 'package:legends_panel/app/core/routes/routes_path.dart';
+import 'package:legends_panel/app/modules/app_initialization/data/repositories/splash_repository/splash_repository_local_impl.dart';
+import 'package:legends_panel/app/modules/app_initialization/data/repositories/splash_repository/splash_repository_remote_impl.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/usecases/game_constants_usecase/fetch_game_constants_usecase_impl.dart';
 import 'package:legends_panel/app/modules/app_initialization/presenter/splashscreen_page/splashscreen_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -12,10 +19,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-
-  SplashscreenController _splashscreenController =
-      GetIt.I<SplashscreenController>();
-
   late AnimationController _controller;
 
   late Animation<double> _animation;
@@ -28,8 +31,23 @@ class _SplashScreenState extends State<SplashScreen>
     );
     _animation = Tween(begin: 0.0, end: 1.0).animate(_controller);
     _controller.repeat(reverse: true);
-    _splashscreenController.start(context);
+    SplashscreenController(
+      callback: goToMainPage,
+      fetchGameConstantsUsecase: FetchGameConstantsUsecaseImpl(
+        remoteRepository: SplashRepositoryRemoteImpl(
+          httpServices: GetIt.I<HttpServices>(),
+        ),
+        localRepository: SplashRepositoryLocalImpl(
+          sharedPreferences: GetIt.I<SharedPreferences>(),
+        ),
+        localization: AppLocalizations.of(context)!.language,
+      ),
+    );
     super.initState();
+  }
+
+  goToMainPage() {
+    context.push(RoutesPath.MASTER);
   }
 
   @override

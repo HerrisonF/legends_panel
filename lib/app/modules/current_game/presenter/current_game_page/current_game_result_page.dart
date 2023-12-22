@@ -44,7 +44,7 @@ class CurrentGameResultPage extends StatelessWidget {
         SingleChildScrollView(
           child: Column(
             children: [
-              _mapName(context),
+              //_mapName(context),
               _gameClockAndTimerText(),
               _userName(),
               _detachTeams(),
@@ -70,41 +70,41 @@ class CurrentGameResultPage extends StatelessWidget {
     );
   }
 
-  _mapName(BuildContext context) {
-    return ValueListenableBuilder(
-        valueListenable: _queuesController.currentMapToShow,
-        builder: (context, value, _) {
-          return Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(top: 80),
-                child: Text(
-                  _queuesController.currentMapToShow.value.map.isEmpty
-                      ? AppLocalizations.of(context)!.loadingMessage
-                      : _queuesController.currentMapToShow.value.map,
-                  style: GoogleFonts.aBeeZee(
-                    fontSize: 12,
-                    color: Colors.white,
-                    letterSpacing: 0.2,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-              ),
-              Container(
-                child: Text(
-                  _currentGameResultController.getCurrentMapDescription(),
-                  style: GoogleFonts.aBeeZee(
-                    fontSize: 8,
-                    color: Colors.white,
-                    letterSpacing: 0.2,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-              ),
-            ],
-          );
-        });
-  }
+  // _mapName(BuildContext context) {
+  //   return ValueListenableBuilder(
+  //       valueListenable: _queuesController.currentMapToShow,
+  //       builder: (context, value, _) {
+  //         return Column(
+  //           children: [
+  //             Container(
+  //               margin: EdgeInsets.only(top: 80),
+  //               child: Text(
+  //                 _queuesController.currentMapToShow.value.map.isEmpty
+  //                     ? AppLocalizations.of(context)!.loadingMessage
+  //                     : _queuesController.currentMapToShow.value.map,
+  //                 style: GoogleFonts.aBeeZee(
+  //                   fontSize: 12,
+  //                   color: Colors.white,
+  //                   letterSpacing: 0.2,
+  //                   fontWeight: FontWeight.w300,
+  //                 ),
+  //               ),
+  //             ),
+  //             Container(
+  //               child: Text(
+  //                 _currentGameResultController.getCurrentMapDescription(),
+  //                 style: GoogleFonts.aBeeZee(
+  //                   fontSize: 8,
+  //                   color: Colors.white,
+  //                   letterSpacing: 0.2,
+  //                   fontWeight: FontWeight.w300,
+  //                 ),
+  //               ),
+  //             ),
+  //           ],
+  //         );
+  //       });
+  // }
 
   Container _gameClockAndTimerText() {
     return Container(

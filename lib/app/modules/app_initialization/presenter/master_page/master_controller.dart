@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
-import 'package:legends_panel/app/core/routes/routes_path.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/champion.dart';
+import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/champion_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/champion_room.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/repositories/master_repository.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/runesRoom.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/spell_room.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/stored_region.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/user.dart';
-import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/lol_version_controller.dart';
 import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/queues_controller.dart';
 import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_perk.dart';
 import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_summoner_spell.dart';
@@ -19,8 +16,6 @@ class MasterController {
   final MasterRepository _masterRepository = MasterRepository(
     logger: GetIt.I.get<Logger>(),
   );
-  final LolVersionController _lolVersionController =
-      GetIt.I.get<LolVersionController>();
   final QueuesController _queuesController = GetIt.I.get<QueuesController>();
 
   ValueNotifier<int> currentPageIndex = ValueNotifier(0);
@@ -32,35 +27,30 @@ class MasterController {
   SpellRoom spellRoom = SpellRoom();
   RunesRoom runesRoom = RunesRoom();
 
-  initialize(BuildContext context) async {
-    if (await ifMyVersionsNotLoad()) return;
+  Future<void> initialize() async {
 
-    if (await ifMyQueuesNotLoad()) return;
+    // if (await ifMyQueuesNotLoad()) return;
 
     await getLastStoredRegions();
     await readPersistedUser();
     await getChampionRoom();
     await getSummonerSpellsRoom();
     await getRunesRoom();
-    context.push(RoutesPath.MASTER);
   }
 
-  Future<bool> ifMyQueuesNotLoad() async =>
-      !await _queuesController.initialize();
-
-  Future<bool> ifMyVersionsNotLoad() async =>
-      !await _lolVersionController.initialize();
+  // Future<bool> ifMyQueuesNotLoad() async =>
+  //     !await _queuesController.initialize();
 
   getLastStoredRegions() async {
-    storedRegion = await _masterRepository.getLastStoredRegion();
+    //storedRegion = await _masterRepository.getLastStoredRegion();
   }
 
   saveActualRegion() async {
-    await _masterRepository.saveActualRegion(storedRegion);
+    //await _masterRepository.saveActualRegion(storedRegion);
   }
 
   readPersistedUser() async {
-    userForProfile = await _masterRepository.readPersistedUserProfile();
+    //userForProfile = await _masterRepository.readPersistedUserProfile();
   }
 
   getChampionRoom() async {
@@ -72,17 +62,16 @@ class MasterController {
   }
 
   getUserTierImage(String tier) {
-    return _masterRepository.getUserTierImage(tier);
+    //return _masterRepository.getUserTierImage(tier);
   }
 
   getChampionRoomOnWeb() async {
-    championRoom = await _masterRepository.getChampionRoomOnWeb(
-        _lolVersionController.lolVersionEntity.getLatestVersion());
-    _masterRepository.saveChampionRoom(championRoom.toJson());
+    //championRoom = await _masterRepository.getChampionRoomOnWeb();
+    //_masterRepository.saveChampionRoom(championRoom.toJson());
   }
 
   getSummonerSpellsRoom() async {
-    spellRoom = await _masterRepository.getSpellRoomOnLocal();
+    //spellRoom = await _masterRepository.getSpellRoomOnLocal();
     if (!isSpellRoomStored() || spellRoom.needToLoadVersionFromWeb()) {
       await getSpellRoomOnWeb();
     }
@@ -93,13 +82,12 @@ class MasterController {
   }
 
   getSpellRoomOnWeb() async {
-    spellRoom = await _masterRepository.getSpellRoomOnWeb(
-        _lolVersionController.lolVersionEntity.getLatestVersion());
-    _masterRepository.saveSpellRoom(spellRoom.toJson());
+    //spellRoom = await _masterRepository.getSpellRoomOnWeb();
+    //_masterRepository.saveSpellRoom(spellRoom.toJson());
   }
 
   getRunesRoom() async {
-    runesRoom = await _masterRepository.getRunesRoomOnLocal();
+    // runesRoom = await _masterRepository.getRunesRoomOnLocal();
     if (!isRunesRoomStored() || runesRoom.needToLoadVersionFromWeb()) {
       await getRunesRoomOnWeb();
     }
@@ -110,10 +98,9 @@ class MasterController {
   }
 
   getRunesRoomOnWeb() async {
-    runesRoom = await _masterRepository.getRunesRoomOnWeb(
-        _lolVersionController.lolVersionEntity.getLatestVersion(),
-        storedRegion.getLocaleKey()!);
-    _masterRepository.saveRunesRoom(runesRoom.toJson());
+    // runesRoom = await _masterRepository.getRunesRoomOnWeb(
+    //     storedRegion.getLocaleKey()!);
+    // _masterRepository.saveRunesRoom(runesRoom.toJson());
   }
 
   String getPerkSubStyleIconName(CurrentGamePerk perk) {
@@ -171,23 +158,23 @@ class MasterController {
   }
 
   getCurrentUserOnCloud(String userName, String keyRegion) async {
-    userForCurrentGame =
-        await _masterRepository.getUserOnCloud(userName, keyRegion);
+    // userForCurrentGame =
+    //     await _masterRepository.getUserOnCloud(userName, keyRegion);
   }
 
   getUserProfileOnCloud(String userName, String keyRegion) async {
-    userForProfile =
-        await _masterRepository.getUserOnCloud(userName, keyRegion);
+    // userForProfile =
+    //     await _masterRepository.getUserOnCloud(userName, keyRegion);
   }
 
   saveUserProfile(String region) {
-    this.userForProfile.region = region;
-    _masterRepository.saveUserProfile(this.userForProfile);
+    // this.userForProfile.region = region;
+    // _masterRepository.saveUserProfile(this.userForProfile);
   }
 
   deleteUserProfile() {
-    _masterRepository.deletePersistedUser();
-    userForProfile = User();
+    // _masterRepository.deletePersistedUser();
+    // userForProfile = User();
   }
 
   resetCurrentGameUser() {

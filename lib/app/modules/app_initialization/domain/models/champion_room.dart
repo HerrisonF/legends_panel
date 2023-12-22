@@ -1,4 +1,4 @@
-import 'champion.dart';
+import '../../data/dtos/lol_constants/champion_dto.dart';
 
 class ChampionRoom {
   DateTime actualDate = DateTime.now();

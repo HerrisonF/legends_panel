@@ -4,7 +4,6 @@ import 'package:legends_panel/app/core/constants/string_constants.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/user_tier.dart';
-import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/lol_version_controller.dart';
 import 'package:legends_panel/app/modules/current_game/data/repositories/participant_repository.dart';
 import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/master_controller.dart';
 import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_participant.dart';
@@ -18,8 +17,6 @@ class CurrentGameParticipantController extends MasterController {
     httpServices: GetIt.I.get<HttpServices>(),
   );
   final MasterController _masterController = GetIt.I<MasterController>();
-  final LolVersionController _lolVersionController =
-      GetIt.I<LolVersionController>();
 
   ValueNotifier<List<UserTier>> userTierList = ValueNotifier([]);
   ValueNotifier<UserTier> soloUserTier = ValueNotifier(UserTier());
@@ -58,29 +55,25 @@ class CurrentGameParticipantController extends MasterController {
 
   String getChampionBadgeUrl(String championId) {
     return _participantRepository.getChampionBadgeUrl(
-        _masterController.getChampionById(championId).detail.id.toString(),
-        _lolVersionController.lolVersionEntity.getLatestVersion());
+        _masterController.getChampionById(championId).detail.id.toString());
   }
 
   String getSpellUrl(String spellId) {
     Spell spell = _masterController.getSpellById(spellId);
     if (spell.name.isNotEmpty) {
-      return _participantRepository.getSpellBadgeUrl(
-          spell.id, _lolVersionController.lolVersionEntity.getLatestVersion());
+      return _participantRepository.getSpellBadgeUrl(spell.id);
     } else {
       return "";
     }
   }
 
   String getItemUrl(String itemId) {
-    return _participantRepository.getItemUrl(
-        itemId, _lolVersionController.lolVersionEntity.getLatestVersion());
+    return _participantRepository.getItemUrl(itemId);
   }
 
   String getPositionUrl(String position) {
     return _participantRepository.getPositionUrl(
       position,
-      _lolVersionController.lolVersionEntity.getLatestVersion(),
     );
   }
 
