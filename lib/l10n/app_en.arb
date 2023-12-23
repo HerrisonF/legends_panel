@@ -3,13 +3,13 @@
   "@language": {
     "description": "The current Language"
   },
-  "appNameTitle": "Watch",
+  "appNameTitle": "Summoner's",
   "@appNameTitle": {
-    "description": "Watch"
+    "description": "Summoner's"
   },
-  "appNameSubTitle": "Summoner",
+  "appNameSubTitle": "Panel",
   "@appNameSubTitle": {
-    "description": "Summoner"
+    "description": "Panel"
   },
   "titleCurrentGamePage": "See a game in progress",
   "@titleCurrentGamePage": {

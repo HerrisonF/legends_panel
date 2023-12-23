@@ -7,11 +7,10 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AboutPage extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return Scaffold(
       body: Stack(
         children: [
@@ -50,9 +49,7 @@ class AboutPage extends StatelessWidget {
                   height: MediaQuery.of(context).size.height / 2,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(
-                          imageBackgroundAboutPage
-                        ),
+                      image: AssetImage(imageBackgroundAboutPage),
                       fit: BoxFit.cover,
                     ),
                     color: Colors.white.withOpacity(0.45),
@@ -71,7 +68,7 @@ class AboutPage extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.only(top: 80),
                       child: Text(
-                        "Watch Summoner",
+                        "Summoner's Panel",
                         style: GoogleFonts.montserrat(
                           color: Colors.white,
                           fontSize: 16,
@@ -80,7 +77,7 @@ class AboutPage extends StatelessWidget {
                     ),
                     Container(
                       child: Text(
-                        "© 2021 WatchSummoner was created under Riot Games' \"Legal Jibber Jabber\" policy using assets owned by Riot Games.  Riot Games does not endorse or sponsor this project.",
+                        "© 2021 Summoner's Panel was created under Riot Games' \"Legal Jibber Jabber\" policy using assets owned by Riot Games.  Riot Games does not endorse or sponsor this project.",
                         style: GoogleFonts.montserrat(
                           color: Colors.white,
                           fontSize: 14,
@@ -103,9 +100,8 @@ class AboutPage extends StatelessWidget {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.background,
-                        borderRadius: BorderRadius.circular(8)
-                      ),
+                          color: Theme.of(context).colorScheme.background,
+                          borderRadius: BorderRadius.circular(8)),
                       margin: EdgeInsets.only(top: 40, bottom: 100),
                       child: IconButton(
                         onPressed: () {
@@ -129,9 +125,9 @@ class AboutPage extends StatelessWidget {
 
   openGit(BuildContext context) async {
     Uri uri = Uri(path: "https://github.com/HerrisonF");
-    if(await canLaunchUrl(Uri(path: "https://github.com/HerrisonF"))){
+    if (await canLaunchUrl(Uri(path: "https://github.com/HerrisonF"))) {
       launchUrl(uri);
-    }else {
+    } else {
       showToast(context, AppLocalizations.of(context)!.gitInstall);
     }
   }

@@ -31,15 +31,14 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: "^0.9.2"
-  logger: ^1.1.0
+  flutter_launcher_icons: ^0.13.1
 
-flutter_icons:
-  image_path: "images/launcher_icon_ios/icon_launcher_ios.png"
+flutter_launcher_icons:
+  ios: false
   android: true
+  image_path_android: "images/launcher_icon_android/icon_launcher_android.png"
   adaptive_icon_background: "images/launcher_icon_android/icon_background.png"
   adaptive_icon_foreground: "images/launcher_icon_android/icon_launcher_android.png"
-  ios: true
 
 flutter:
 
