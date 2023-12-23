@@ -117,6 +117,8 @@ class FetchGameConstantsUsecaseImpl extends FetchGameConstantsUsecase {
       });
   }
 
+  /// Caso não encontre a data ou dê algum erro. Por segurança libero como true
+  /// para que a request de constantes seja feita.
   Future<bool> temMaisQue24Horas() async {
     DateTime actualDate = DateTime.now();
     int milissegundosInt = 0;
