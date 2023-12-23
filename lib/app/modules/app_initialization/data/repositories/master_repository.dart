@@ -1,13 +1,5 @@
-import 'dart:convert';
-
-import 'package:legends_panel/app/core/http_configuration/api_paths_endpoints.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
-import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/champion_dto.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/runesRoom.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/stored_region.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/user.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/user_favorite.dart';
 
 class MasterRepository {
   late Logger logger;
@@ -19,123 +11,6 @@ class MasterRepository {
     required this.logger,
   });
 
-  // Future<ChampionRoom> getChampionRoomOnWeb() async {
-  //   final String path = "/cdn/latest/data/en_US/champion.json";
-  //   ChampionRoom championRoom = ChampionRoom();
-  //
-  //   try {
-  //     final response = await httpServices.get(
-  //       url: API.riotDragonUrl,
-  //       path: path,
-  //       origin: origin,
-  //     );
-  //
-  //     return response.fold((l) {
-  //       logger.logDEBUG("Error to get ChampionRoom");
-  //       return championRoom;
-  //     }, (r) {
-  //       for (final name in r.data['data'].keys) {
-  //         championRoom.champions.add(
-  //           Champion.fromJson(r.data['data'], name),
-  //         );
-  //       }
-  //       logger.logDEBUG("Success To get Champion Room ...");
-  //       return championRoom;
-  //     });
-  //   } catch (e) {
-  //     logger.logDEBUG("Error to get ChampionRoom $e");
-  //     return championRoom;
-  //   }
-  // }
-  //
-  // Future<ChampionRoom> getChampionRoomOnLocal() async {
-  //   logger.logDEBUG("Getting ChampionRoom on local_imp ...");
-  //   try {
-  //     String championRoomString = await box.read(StorageKeys.championRoomKey);
-  //     if (championRoomString.isNotEmpty) {
-  //       logger.logDEBUG("Success to get ChampionRoom on Local ...");
-  //       return ChampionRoom.fromJson(
-  //         jsonDecode(championRoomString),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     logger.logDEBUG("Error to get ChampionRoom on local_imp $e");
-  //     return ChampionRoom();
-  //   }
-  //   logger.logDEBUG("ChampionRoom not found on local_imp ...");
-  //   return ChampionRoom();
-  // }
-  //
-  // saveChampionRoom(Map<String, dynamic> championRoom) {
-  //   logger.logDEBUG("Persisting ChampionRoom ...");
-  //   try {
-  //     box.write(StorageKeys.championRoomKey, jsonEncode(championRoom));
-  //     logger.logDEBUG("Success to persist ChampionRoom ...");
-  //   } catch (e) {
-  //     logger.logDEBUG("Error to persist ChampionRoom ... $e");
-  //   }
-  // }
-  //
-  // Future<SpellRoom> getSpellRoomOnWeb() async {
-  //   final String path = "/cdn/latest/data/en_US/summoner.json";
-  //   SpellRoom spellRoom = SpellRoom();
-  //   try{
-  //     final response = await httpServices.get(
-  //       url: API.riotDragonUrl,
-  //       path: path,
-  //       origin: origin,
-  //     );
-  //
-  //     return response.fold((l) {
-  //       logger.logDEBUG("Error to get SpellRoom");
-  //       return spellRoom;
-  //     }, (r) {
-  //       logger.logDEBUG("Success to get SpellRoom ...");
-  //       spellRoom.summonerSpell = SummonerSpell.fromJson(r.data);
-  //       return spellRoom;
-  //     });
-  //   }catch(e){
-  //     logger.logDEBUG("Error to get SpellRoom");
-  //     return spellRoom;
-  //   }
-  // }
-  //
-  // Future<SpellRoom> getSpellRoomOnLocal() async {
-  //   logger.logDEBUG("Getting SpellRoom on Local ...");
-  //   try {
-  //     String spellRoomString = await box.read(StorageKeys.spellRoomKey);
-  //     if (spellRoomString.isNotEmpty) {
-  //       logger.logDEBUG("Success to get SpellRoom on Local ...");
-  //       return SpellRoom.fromJson(jsonDecode(spellRoomString));
-  //     }
-  //   } catch (e) {
-  //     logger.logDEBUG("Error to get SpellRoom on local_imp $e");
-  //     return SpellRoom();
-  //   }
-  //   logger.logDEBUG("SpellRoom on local_imp not found ...");
-  //   return SpellRoom();
-  // }
-  //
-  // saveSpellRoom(Map<String, dynamic> spellRoom) {
-  //   logger.logDEBUG("Persisting SpellRoom ...");
-  //   try {
-  //     box.write(StorageKeys.spellRoomKey, jsonEncode(spellRoom));
-  //     logger.logDEBUG("Success to persist SpellRoom ...");
-  //   } catch (e) {
-  //     logger.logDEBUG("Error to persist SpellRoom ... $e");
-  //   }
-  // }
-  //
-  // saveMapRoom(Map<String, dynamic> mapRoom) {
-  //   logger.logDEBUG("Persisting mapRoom ...");
-  //   try {
-  //     box.write(StorageKeys.mapRoomKey, jsonEncode(mapRoom));
-  //     logger.logDEBUG("Success to persist MapRoom ...");
-  //   } catch (e) {
-  //     logger.logDEBUG("Error to persist MapRoom ... $e");
-  //   }
-  // }
-  //
   // Future<RunesRoom> getRunesRoomOnWeb(String regionKey) async {
   //
   //   final String path = "/cdn/latest/data/$regionKey/runesReforged.json";
@@ -218,40 +93,7 @@ class MasterRepository {
   //   }
   // }
   //
-  // Future<UserFavorite> readFavoriteUsersStoredForCurrentGame() async {
-  //   logger.logDEBUG("Reading favorite users stored for current game ...");
-  //   try {
-  //     String userFavoriteStore =
-  //         await box.read(StorageKeys.userFavoriteForCurrentGameKey);
-  //     if (userFavoriteStore.isNotEmpty) {
-  //       logger.logDEBUG("Success to get userFavorite on Local for current game ...");
-  //       return UserFavorite.fromJson(jsonDecode(userFavoriteStore));
-  //     }
-  //     logger.logDEBUG("No userFavorite persisted found for current game ...");
-  //     return UserFavorite();
-  //   } catch (e) {
-  //     logger.logDEBUG("Error to Read persisted favorite users for current game ... $e");
-  //     return UserFavorite();
-  //   }
-  // }
-  //
-  // Future<UserFavorite> readFavoriteUsersStoredForProfile() async {
-  //   logger.logDEBUG("Reading favorite users stored for profile ...");
-  //   try {
-  //     String userFavoriteStore =
-  //         await box.read(StorageKeys.userFavoriteForProfileKey);
-  //     if (userFavoriteStore.isNotEmpty) {
-  //       logger.logDEBUG("Success to get userFavorite on Local for profile ...");
-  //       return UserFavorite.fromJson(jsonDecode(userFavoriteStore));
-  //     }
-  //     logger.logDEBUG("No userProfile persisted found for profile ...");
-  //     return UserFavorite();
-  //   } catch (e) {
-  //     logger.logDEBUG("Error to Read persisted favorite users for profile ... $e");
-  //     return UserFavorite();
-  //   }
-  // }
-  //
+
   // String getUserTierImage(String tier) {
   //   logger.logDEBUG("building Image Tier Url ...");
   //   try {
@@ -285,25 +127,6 @@ class MasterRepository {
   //     logger.logDEBUG("Error to persist favorite user for profile ... $e");
   //   }
   // }
-  //
-  // deleteFavoriteUsersForCurrentGame() {
-  //   try {
-  //     logger.logDEBUG("deleting favorite users for current game");
-  //     box.remove(StorageKeys.userFavoriteForCurrentGameKey);
-  //   } catch (e) {
-  //     logger.logDEBUG("Error to delete favorite users for current game $e");
-  //   }
-  // }
-  //
-  // deleteFavoriteUsersForProfile() {
-  //   try {
-  //     logger.logDEBUG("deleting favorite users for profile");
-  //     box.remove(StorageKeys.userFavoriteForProfileKey);
-  //   } catch (e) {
-  //     logger.logDEBUG("Error to delete favorite users for profile $e");
-  //   }
-  // }
-  //
   // saveUserProfile(User user) async {
   //   logger.logDEBUG("Persisting UserProfile ...");
   //   try {
@@ -335,42 +158,6 @@ class MasterRepository {
   //   }catch(e){
   //     logger.logDEBUG("Error to find User ${e.toString()}");
   //     return User();
-  //   }
-  // }
-  //
-  // deletePersistedUser() {
-  //   try {
-  //     logger.logDEBUG("deleting userProfile");
-  //     box.remove(StorageKeys.userProfileKey);
-  //   } catch (e) {
-  //     logger.logDEBUG("Error to delete userProfile $e");
-  //   }
-  // }
-  //
-  // Future<StoredRegion> getLastStoredRegion() async {
-  //   logger.logDEBUG("Getting LastStoredRegion ...");
-  //   StoredRegion storedRegion = StoredRegion();
-  //   try {
-  //     String lastStoredRegionString = await box.read(StorageKeys.regionKey);
-  //     if (lastStoredRegionString.isNotEmpty) {
-  //       storedRegion =
-  //           StoredRegion.fromJson(jsonDecode(lastStoredRegionString));
-  //     }
-  //     logger.logDEBUG("Success to get LastStoredRegion ...");
-  //     return storedRegion;
-  //   } catch (e) {
-  //     logger.logDEBUG("Error to get LastStoredRegion $e");
-  //     return storedRegion;
-  //   }
-  // }
-  //
-  // saveActualRegion(StoredRegion storedRegion) async {
-  //   logger.logDEBUG("Saving Actual Region ...");
-  //   try {
-  //     await box.write(StorageKeys.regionKey, jsonEncode(storedRegion));
-  //     logger.logDEBUG("Success to persist Actual Region ...");
-  //   } catch (e) {
-  //     logger.logDEBUG("Error to save Actual Region $e");
   //   }
   // }
 }
