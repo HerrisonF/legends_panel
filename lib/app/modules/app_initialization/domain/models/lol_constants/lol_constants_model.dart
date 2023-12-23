@@ -30,9 +30,10 @@ class LolConstantsModel {
     this.gameModes,
     this.champions,
     this.itemMotherModel,
-  }){
-    rankedConstants = RankedConstants();
-  }
+    this.spells,
+    this.gameLanguages,
+    this.rankedConstants,
+  });
 
   setQueues(List<QueueModel> queues) {
     this.queues = [];
@@ -71,6 +72,10 @@ class LolConstantsModel {
   setSummonerSpells(List<SummonerSpell> spells){
     this.spells = [];
     this.spells!.addAll(spells);
+  }
+
+  setRankedConstants(){
+    rankedConstants = RankedConstants();
   }
 
   String getLatestLolVersion() {

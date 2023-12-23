@@ -14,6 +14,7 @@ import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_const
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/tree_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/repositories/splash_repository/splash_repository.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/champion_model.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/champion_stats_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/game_language_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/game_mode_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/game_version_model.dart';
@@ -89,7 +90,7 @@ class SplashRepositoryRemoteImpl extends SplashRepository {
         (r) {
           List<GameVersionModel> gameVersions = [];
           r.data.forEach((item) {
-            GameVersionDTO dto = GameVersionDTO.fromJson(item);
+            GameVersionDTO dto = GameVersionDTO.fromJsonRemote(item);
             gameVersions.add(
               GameVersionModel(
                 version: dto.version,
@@ -195,7 +196,7 @@ class SplashRepositoryRemoteImpl extends SplashRepository {
         (r) {
           List<GameLanguageModel> gameLanguages = [];
           r.data.forEach((item) {
-            GameLanguageDTO dto = GameLanguageDTO.fromJson(item);
+            GameLanguageDTO dto = GameLanguageDTO.fromJsonRemote(item);
             gameLanguages.add(
               GameLanguageModel(
                 language: dto.language,
@@ -265,7 +266,7 @@ class SplashRepositoryRemoteImpl extends SplashRepository {
                   name: dto.name,
                   partype: dto.partype,
                   stats: dto.stats != null
-                      ? StatsModel(
+                      ? ChampionStatsModel(
                           hp: dto.stats!.hp,
                           hpperlevel: dto.stats!.hpperlevel,
                           mp: dto.stats!.mp,
@@ -287,7 +288,7 @@ class SplashRepositoryRemoteImpl extends SplashRepository {
                           spellblock: dto.stats!.spellblock,
                           spellblockperlevel: dto.stats!.spellblockperlevel,
                         )
-                      : StatsModel.empty(),
+                      : ChampionStatsModel.empty(),
                   title: dto.title,
                 ),
               );

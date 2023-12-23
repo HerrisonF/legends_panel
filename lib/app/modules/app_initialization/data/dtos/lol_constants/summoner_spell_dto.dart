@@ -42,7 +42,7 @@ class SummonerSpellDTO {
       tooltip: json['tooltip'] ?? "",
       cooldownBurn: json['cooldownBurn'],
       effectBurn: json['effectBurn'] != null
-          ? json['effectBurn'].cast<String>()
+          ? json['effectBurn'].map((item) => item ?? '').toList().cast<String>()
           : [],
       rangeBurn: json['rangeBurn'] ?? "",
       maxAmmo: json['maxammo'] ?? "",
@@ -63,8 +63,8 @@ class SummonerSpellDTO {
       'rangeBurn': rangeBurn,
       'cooldownBurn' : cooldownBurn,
       'maxammo': maxAmmo,
-      'effectBurn': effectBurn.map((e) => e).toList().toString(),
-      'modes': modes.map((e) => (e) => e).toList().toString(),
+      'effectBurn': effectBurn.map((e) => e).toList(),
+      'modes': modes.map((e) => e).toList(),
       'summonerLevel': summonerLevel,
     };
   }

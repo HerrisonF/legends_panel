@@ -27,64 +27,24 @@ class FetchGameConstantsUsecaseImpl extends FetchGameConstantsUsecase {
     try {
       LolConstantsModel lolConstantsModel = LolConstantsModel();
 
-      /// Nesse caso, preciso esperar pelo get de versões para poder chamar
-      /// a lista de champions.
-      await remoteRepository.fetchGameLanguages()
-        ..fold((l) => id, (r) async {
-          lolConstantsModel.setGameLanguages(r);
+      /// Essas requests só podem ser chamadas 1 vez por dia para economizar
+      /// recursos. A ideia é que o dará tempo do aplicativo se atualizar caso
+      /// o jogo se atualize. Um dia não é algo crítico.
 
-          await remoteRepository.fetchVersions()
-            ..fold((l) => id, (r) async {
-              lolConstantsModel.setGameVersions(r);
-              final response = await Future.value([
-                await remoteRepository.fetchChampions(
-                  language: lolConstantsModel.getLanguage(localization),
-                  version: lolConstantsModel.getLatestLolVersion(),
-                ),
-                await remoteRepository.fetchItems(
-                  language: lolConstantsModel.getLanguage(localization),
-                  version: lolConstantsModel.getLatestLolVersion(),
-                ),
-                await remoteRepository.fetchSummonerSpells(
-                  language: lolConstantsModel.getLanguage(localization),
-                  version: lolConstantsModel.getLatestLolVersion(),
-                ),
-              ]);
-
-              response[0].fold((l) => id, (r) {
-                lolConstantsModel.setChampions(r as List<ChampionModel>);
-              });
-
-              response[1].fold((l) => id, (r) {
-                lolConstantsModel.setItemMotherModel(r as ItemMotherModel);
-              });
-
-              response[2].fold((l) => id, (r) {
-                lolConstantsModel.setSummonerSpells(r as List<SummonerSpell>);
-              });
-            });
-        });
-
-      ///
-
-      final response = await Future.value(
-        [
-          await remoteRepository.fetchQueues(),
-          await remoteRepository.fetchMaps(),
-          await remoteRepository.fetchGameModes(),
-        ],
-      );
-
-      response[0].fold((l) => id, (r) {
-        lolConstantsModel.setQueues(r as List<QueueModel>);
-      });
-      response[1].fold((l) => id, (r) {
-        lolConstantsModel.setMaps(r as List<MapaModel>);
-      });
-      response[2].fold((l) => id, (r) {
-        lolConstantsModel.setGameModes(r as List<GameModeModel>);
-      });
-
+      if (await temMaisQue24Horas()) {
+        await _syncRequest(lolConstantsModel);
+        await _asyncRequest(lolConstantsModel);
+        await localRepository.saveRegisterDate();
+        await localRepository.saveLolConstants(
+          lolConstantsModel: lolConstantsModel,
+        );
+      } else {
+        final response = await localRepository.fetchLolConstantsLocal();
+        return response.fold(
+          (l) => Left(l),
+          (r) => Right(r),
+        );
+      }
       return Right(lolConstantsModel);
     } catch (e) {
       return Left(
@@ -94,5 +54,90 @@ class FetchGameConstantsUsecaseImpl extends FetchGameConstantsUsecase {
         ),
       );
     }
+  }
+
+  Future<void> _asyncRequest(LolConstantsModel lolConstantsModel) async {
+    final response = await Future.value(
+      [
+        await remoteRepository.fetchQueues(),
+        await remoteRepository.fetchMaps(),
+        await remoteRepository.fetchGameModes(),
+      ],
+    );
+
+    response[0].fold((l) => Left(l), (r) {
+      lolConstantsModel.setQueues(r as List<QueueModel>);
+    });
+    response[1].fold((l) => Left(l), (r) {
+      lolConstantsModel.setMaps(r as List<MapaModel>);
+    });
+    response[2].fold((l) => Left(l), (r) {
+      lolConstantsModel.setGameModes(r as List<GameModeModel>);
+    });
+  }
+
+  /// Nesse caso, preciso esperar pelo get de versões para poder chamar
+  /// a lista de champions. Depois de recuperado, o resto das requests podem
+  /// ser asyncronas.
+  Future<void> _syncRequest(LolConstantsModel lolConstantsModel) async {
+    await remoteRepository.fetchGameLanguages()
+      ..fold((l) => Left(l), (r) async {
+        lolConstantsModel.setGameLanguages(r);
+        await remoteRepository.fetchVersions()
+          ..fold((l) => Left(l), (r) async {
+            lolConstantsModel.setGameVersions(r);
+            final response = await Future.value([
+              await remoteRepository.fetchChampions(
+                language: lolConstantsModel.getLanguage(localization),
+                version: lolConstantsModel.getLatestLolVersion(),
+              ),
+              await remoteRepository.fetchItems(
+                language: lolConstantsModel.getLanguage(localization),
+                version: lolConstantsModel.getLatestLolVersion(),
+              ),
+              await remoteRepository.fetchSummonerSpells(
+                language: lolConstantsModel.getLanguage(localization),
+                version: lolConstantsModel.getLatestLolVersion(),
+              ),
+            ]);
+
+            response[0].fold((l) => Left(l), (r) {
+              lolConstantsModel.setChampions(r as List<ChampionModel>);
+            });
+
+            response[1].fold((l) => Left(l), (r) {
+              lolConstantsModel.setItemMotherModel(r as ItemMotherModel);
+            });
+
+            response[2].fold((l) => Left(l), (r) {
+              lolConstantsModel.setSummonerSpells(r as List<SummonerSpell>);
+            });
+            lolConstantsModel.setRankedConstants();
+          });
+      });
+  }
+
+  Future<bool> temMaisQue24Horas() async {
+    DateTime actualDate = DateTime.now();
+    int milissegundosInt = 0;
+    final response = await localRepository.fetchRegisterDate();
+
+    return response.fold(
+      (l) => true,
+      (r) {
+        if (r.isNotEmpty) {
+          milissegundosInt = int.parse(r);
+
+          var timeDifference = actualDate.difference(
+            r.isEmpty
+                ? actualDate
+                : DateTime.fromMillisecondsSinceEpoch(milissegundosInt),
+          );
+          return timeDifference.inHours > 24;
+        }
+
+        return true;
+      },
+    );
   }
 }

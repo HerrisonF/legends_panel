@@ -1,9 +1,15 @@
 import 'package:dartz/dartz.dart';
 import 'package:legends_panel/app/core/error_base/failure.dart';
-import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/queue_dto.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/queue_model.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/lol_constants_model.dart';
 
 abstract class SplashRepositoryLocal {
-  Future<Either<Failure, QueueModel>> fetchQueuesLocal();
-  Future<Either<Failure, bool>> saveQueues({required QueueDto dto});
+  Future<Either<Failure, LolConstantsModel>> fetchLolConstantsLocal();
+
+  Future<Either<Failure, bool>> saveLolConstants({
+    required LolConstantsModel lolConstantsModel,
+  });
+
+  Future<Either<Failure, bool>> saveRegisterDate();
+
+  Future<Either<Failure, String>> fetchRegisterDate();
 }
