@@ -8,6 +8,7 @@ import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_c
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/lol_constants_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/mapa_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/queue_model.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/summoner_spell.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/usecases/game_constants_usecase/fetch_game_constants_usecase.dart';
 
 class FetchGameConstantsUsecaseImpl extends FetchGameConstantsUsecase {
@@ -43,7 +44,11 @@ class FetchGameConstantsUsecaseImpl extends FetchGameConstantsUsecase {
                 await remoteRepository.fetchItems(
                   language: lolConstantsModel.getLanguage(localization),
                   version: lolConstantsModel.getLatestLolVersion(),
-                )
+                ),
+                await remoteRepository.fetchSummonerSpells(
+                  language: lolConstantsModel.getLanguage(localization),
+                  version: lolConstantsModel.getLatestLolVersion(),
+                ),
               ]);
 
               response[0].fold((l) => id, (r) {
@@ -52,6 +57,10 @@ class FetchGameConstantsUsecaseImpl extends FetchGameConstantsUsecase {
 
               response[1].fold((l) => id, (r) {
                 lolConstantsModel.setItemMotherModel(r as ItemMotherModel);
+              });
+
+              response[2].fold((l) => id, (r) {
+                lolConstantsModel.setSummonerSpells(r as List<SummonerSpell>);
               });
             });
         });

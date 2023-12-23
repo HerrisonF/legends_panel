@@ -5,6 +5,8 @@ import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_c
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/item_mother_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/mapa_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/queue_model.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/ranked_constants.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/summoner_spell.dart';
 
 /// Essa classe é responsável por guardar todas as constantes do lol. Cada qual
 /// com seu respectivo objeto.
@@ -17,7 +19,9 @@ class LolConstantsModel {
   List<GameModeModel>? gameModes;
   List<GameLanguageModel>? gameLanguages;
   List<ChampionModel>? champions;
+  List<SummonerSpell>? spells;
   ItemMotherModel?  itemMotherModel;
+  RankedConstants? rankedConstants;
 
   LolConstantsModel({
     this.queues,
@@ -26,7 +30,9 @@ class LolConstantsModel {
     this.gameModes,
     this.champions,
     this.itemMotherModel,
-  });
+  }){
+    rankedConstants = RankedConstants();
+  }
 
   setQueues(List<QueueModel> queues) {
     this.queues = [];
@@ -60,6 +66,11 @@ class LolConstantsModel {
 
   setItemMotherModel(ItemMotherModel itemMotherModel){
     this.itemMotherModel = itemMotherModel;
+  }
+
+  setSummonerSpells(List<SummonerSpell> spells){
+    this.spells = [];
+    this.spells!.addAll(spells);
   }
 
   String getLatestLolVersion() {

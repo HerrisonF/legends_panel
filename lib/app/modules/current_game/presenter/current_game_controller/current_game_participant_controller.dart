@@ -9,7 +9,6 @@ import 'package:legends_panel/app/modules/app_initialization/presenter/master_pa
 import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_participant.dart';
 import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_perk.dart';
 import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_spectator.dart';
-import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_summoner_spell.dart';
 
 class CurrentGameParticipantController extends MasterController {
   final ParticipantRepository _participantRepository = ParticipantRepository(
@@ -60,12 +59,13 @@ class CurrentGameParticipantController extends MasterController {
   }
 
   String getSpellUrl(String spellId) {
-    Spell spell = _masterController.getSpellById(spellId);
-    if (spell.name.isNotEmpty) {
-      return _participantRepository.getSpellBadgeUrl(spell.id);
-    } else {
-      return "";
-    }
+    // Spell spell = _masterController.getSpellById(spellId);
+    // if (spell.name.isNotEmpty) {
+    //   return _participantRepository.getSpellBadgeUrl(spell.id);
+    // } else {
+    //   return "";
+    // }
+    return "";
   }
 
   String getItemUrl(String itemId) {

@@ -4,12 +4,10 @@ import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/champion_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/repositories/master_repository.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/runesRoom.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/spell_room.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/stored_region.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/user.dart';
 import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/queues_controller.dart';
 import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_perk.dart';
-import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_summoner_spell.dart';
 
 class MasterController {
   final MasterRepository _masterRepository = MasterRepository(
@@ -22,7 +20,6 @@ class MasterController {
   User userForCurrentGame = User();
   User userForProfile = User();
   StoredRegion storedRegion = StoredRegion();
-  SpellRoom spellRoom = SpellRoom();
   RunesRoom runesRoom = RunesRoom();
 
   Future<void> initialize() async {
@@ -70,13 +67,14 @@ class MasterController {
 
   getSummonerSpellsRoom() async {
     //spellRoom = await _masterRepository.getSpellRoomOnLocal();
-    if (!isSpellRoomStored() || spellRoom.needToLoadVersionFromWeb()) {
-      await getSpellRoomOnWeb();
-    }
+    // if (!isSpellRoomStored() || spellRoom.needToLoadVersionFromWeb()) {
+    //   await getSpellRoomOnWeb();
+    // }
   }
 
   bool isSpellRoomStored() {
-    return spellRoom.lastDate.isNotEmpty;
+    //return spellRoom.lastDate.isNotEmpty;
+    return false;
   }
 
   getSpellRoomOnWeb() async {
@@ -148,11 +146,11 @@ class MasterController {
   // }
 
   getSpellById(String spellId) {
-    Spell spell = Spell();
-    var spells = spellRoom.summonerSpell.spells
-        .where((spell) => spell.key.toString() == spellId);
-    if (spells.length > 0) spell = spells.first;
-    return spell;
+    // Spell spell = Spell();
+    // var spells = spellRoom.summonerSpell.spells
+    //     .where((spell) => spell.key.toString() == spellId);
+    // if (spells.length > 0) spell = spells.first;
+    // return spell;
   }
 
   getCurrentUserOnCloud(String userName, String keyRegion) async {

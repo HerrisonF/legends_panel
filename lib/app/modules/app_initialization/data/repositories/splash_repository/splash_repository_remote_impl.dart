@@ -10,6 +10,7 @@ import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_const
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/item_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/mapa_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/queue_dto.dart';
+import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/summoner_spell_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/tree_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/repositories/splash_repository/splash_repository.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/champion_model.dart';
@@ -22,6 +23,7 @@ import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_c
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/item_mother_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/mapa_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/queue_model.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/summoner_spell.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/tree_model.dart';
 
 class SplashRepositoryRemoteImpl extends SplashRepository {
@@ -393,6 +395,65 @@ class SplashRepositoryRemoteImpl extends SplashRepository {
       return Left(
         Failure(
           message: 'Falha na busca remota de ITEMS.',
+          error: e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<SummonerSpell>>> fetchSummonerSpells({
+    required String version,
+    required String language,
+  }) async {
+    try {
+      final response = await httpServices.get(
+        url: API.riotDragonUrl,
+        path: '/cdn/$version/data/$language/summoner.json',
+        origin: origin,
+      );
+
+      return response.fold(
+        (l) => Left(l),
+        (r) {
+          List<SummonerSpell> spells = [];
+
+          r.data["data"].values.forEach((element) {
+            SummonerSpellDTO dto = SummonerSpellDTO.fromJson(element);
+            spells.add(
+              SummonerSpell(
+                summonerLevel: dto.summonerLevel,
+                modes: dto.modes,
+                maxAmmo: dto.maxAmmo,
+                rangeBurn: dto.rangeBurn,
+                cooldownBurn: dto.cooldownBurn,
+                description: dto.description,
+                image: dto.image != null ? ImageModel(
+                  y: dto.image!.y,
+                  x: dto.image!.x,
+                  w: dto.image!.w,
+                  sprite: dto.image!.sprite,
+                  h: dto.image!.h,
+                  group: dto.image!.group,
+                  full: dto.image!.full,
+                ) : ImageModel.empty(),
+                name: dto.name,
+                key: dto.key,
+                id: dto.id,
+                effectBurn: dto.effectBurn,
+                maxRank: dto.maxRank,
+                tooltip: dto.tooltip,
+              ),
+            );
+          });
+
+          return Right(spells);
+        },
+      );
+    } catch (e) {
+      return Left(
+        Failure(
+          message: 'Falha na busca remota de SUMMONER SPELLS.',
           error: e.toString(),
         ),
       );
