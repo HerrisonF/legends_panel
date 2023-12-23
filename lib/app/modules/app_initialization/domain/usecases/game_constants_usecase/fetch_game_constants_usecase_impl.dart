@@ -128,12 +128,10 @@ class FetchGameConstantsUsecaseImpl extends FetchGameConstantsUsecase {
         if (r.isNotEmpty) {
           milissegundosInt = int.parse(r);
 
-          var timeDifference = actualDate.difference(
-            r.isEmpty
-                ? actualDate
-                : DateTime.fromMillisecondsSinceEpoch(milissegundosInt),
+          Duration timeDifference = actualDate.difference(
+            DateTime.fromMillisecondsSinceEpoch(milissegundosInt),
           );
-          return timeDifference.inHours > 24;
+          return timeDifference.inHours > 12;
         }
 
         return true;
