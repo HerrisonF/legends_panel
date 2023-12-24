@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
-import 'package:legends_panel/app/core/widgets/header_screen_information.dart';
 import 'package:legends_panel/app/core/widgets/region_dropdown_component.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:legends_panel/app/modules/profile/data/repositories/profile_repository.dart';
@@ -64,10 +63,14 @@ class _ProfilePageState extends State<ProfilePage> {
           Container(
             child: ListView(
               children: [
-                HeaderScreenInformation(
-                  title: AppLocalizations.of(context)!.titleProfilePage,
-                  topSpace: 40,
-                  bottomSpace: 85,
+                Text(
+                  AppLocalizations.of(context)!.titleProfilePage,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 36,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 40),

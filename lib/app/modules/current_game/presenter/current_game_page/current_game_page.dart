@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
-import 'package:legends_panel/app/core/widgets/header_screen_information.dart';
 import 'package:legends_panel/app/core/widgets/region_dropdown_component.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:legends_panel/app/modules/current_game/presenter/current_game_controller/current_game_controller.dart';
+import 'package:legends_panel/app/modules/current_game/presenter/current_game_page/current_game_controller.dart';
 
 class CurrentGamePage extends StatefulWidget {
   @override
@@ -22,22 +21,43 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).primaryColor,
-      child: Stack(
-        children: [
-          Container(decoration: _currentGameBackgroundImage()),
-          ListView(
-            children: [
-              HeaderScreenInformation(
-                title: AppLocalizations.of(context)!.titleCurrentGamePage,
-                topSpace: 40,
-                bottomSpace: 30,
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: SizedBox.expand(
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(imageBackgroundCurrentGame),
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(
+                Theme.of(context).primaryColor.withOpacity(0.8),
+                BlendMode.plus,
               ),
-              _summonerSearch(),
+            ),
+          ),
+          child: Column(
+            children: [
+              Container(
+                color: Colors.green,
+                child: Expanded(
+                  child: Text(
+                    AppLocalizations.of(context)!.titleCurrentGamePage,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 36,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                color: Colors.orange,
+                child: Expanded(child: _summonerSearch()),
+              ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -77,18 +97,6 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
           ),
         ),
       ],
-    );
-  }
-
-  BoxDecoration _currentGameBackgroundImage() {
-    return BoxDecoration(
-      color: Theme.of(context).primaryColor,
-      image: DecorationImage(
-        image: AssetImage(imageBackgroundCurrentGame),
-        fit: BoxFit.cover,
-        colorFilter: ColorFilter.mode(
-            Theme.of(context).primaryColor.withOpacity(0.8), BlendMode.plus),
-      ),
     );
   }
 
@@ -142,7 +150,8 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                if (_currentGameController.isLoadingUser.value) CircularProgressIndicator()
+                if (_currentGameController.isLoadingUser.value)
+                  CircularProgressIndicator()
               ],
             ),
             onPressed: _currentGameController.isShowingMessage.value

@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
 import 'package:legends_panel/app/core/widgets/timer_text.dart';
 import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_participant.dart';
-import 'package:legends_panel/app/modules/current_game/presenter/current_game_controller/current_game_result_controller.dart';
+import 'package:legends_panel/app/modules/current_game/presenter/current_game_page/current_game_result_controller.dart';
 import 'package:legends_panel/app/modules/current_game/presenter/current_game_page/current_game_participant_card.dart';
 
 class CurrentGameResultPage extends StatelessWidget {

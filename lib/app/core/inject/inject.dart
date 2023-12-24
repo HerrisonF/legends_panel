@@ -3,9 +3,10 @@ import 'package:legends_panel/app/core/http_configuration/http_services_impl.dar
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/core/logger/logger_impl.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
-import 'package:legends_panel/app/modules/current_game/presenter/current_game_controller/current_game_controller.dart';
-import 'package:legends_panel/app/modules/current_game/presenter/current_game_controller/current_game_participant_controller.dart';
-import 'package:legends_panel/app/modules/current_game/presenter/current_game_controller/current_game_result_controller.dart';
+import 'package:legends_panel/app/core/routes/routes.dart';
+import 'package:legends_panel/app/modules/current_game/presenter/current_game_page/current_game_controller.dart';
+import 'package:legends_panel/app/modules/current_game/presenter/current_game_page/current_game_participant_controller.dart';
+import 'package:legends_panel/app/modules/current_game/presenter/current_game_page/current_game_result_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Inject {
@@ -19,6 +20,7 @@ class Inject {
         logger: getIt(),
       ),
     );
+    getIt.registerLazySingleton<Routes>(() => Routes());
 
     GetIt.I.registerSingletonAsync<SharedPreferences>(() async {
       return await SharedPreferences.getInstance();

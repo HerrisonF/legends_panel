@@ -27,14 +27,7 @@ class _MenuNavigatorContainerState extends State<MenuNavigatorContainer> {
         child: widget.child,
       ),
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: Colors.black,
-              width: 1,
-            ),
-          ),
-        ),
+        height: 60,
         child: ValueListenableBuilder(
           valueListenable: menuNavigatorController.currentPageIndex,
           builder: (context, index, _) {
@@ -42,10 +35,10 @@ class _MenuNavigatorContainerState extends State<MenuNavigatorContainer> {
               child: Row(
                 children: [
                   MenuTabIconWidget(
-                    activeColor: index == 0
-                        ? Colors.black
+                    activeColor: index == RoutesPath.currentGamePageIndex
+                        ? Theme.of(context).primaryColor
                         : Colors.grey,
-                    icon: Icons.home_outlined,
+                    icon: Icons.gamepad,
                     onTapMenuItem: () => menuNavigatorController.navigateToPage(
                       context,
                       RoutesPath.currentGamePageIndex,
@@ -54,9 +47,9 @@ class _MenuNavigatorContainerState extends State<MenuNavigatorContainer> {
                   ),
                   MenuTabIconWidget(
                     activeColor: index == RoutesPath.profilePageIndex
-                        ? Colors.black
+                        ? Theme.of(context).primaryColor
                         : Colors.grey,
-                    icon: Icons.directions_bus,
+                    icon: Icons.account_box,
                     onTapMenuItem: () => menuNavigatorController.navigateToPage(
                       context,
                       RoutesPath.profilePageIndex,
@@ -65,9 +58,9 @@ class _MenuNavigatorContainerState extends State<MenuNavigatorContainer> {
                   ),
                   MenuTabIconWidget(
                     activeColor: index == RoutesPath.aboutPageIndex
-                        ? Colors.black
+                        ? Theme.of(context).primaryColor
                         : Colors.grey,
-                    icon: Icons.settings,
+                    icon: Icons.apps_sharp,
                     onTapMenuItem: () => menuNavigatorController.navigateToPage(
                       context,
                       RoutesPath.aboutPageIndex,

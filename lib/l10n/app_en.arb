@@ -11,9 +11,9 @@
   "@appNameSubTitle": {
     "description": "Panel"
   },
-  "titleCurrentGamePage": "See a game in progress",
+  "titleCurrentGamePage": "Search for a game in progress",
   "@titleCurrentGamePage": {
-    "description": "See a game in progress"
+    "description": "Search for a game in progress"
   },
   "titleProfilePage": "Search for a profile",
   "@titleProfilePage": {

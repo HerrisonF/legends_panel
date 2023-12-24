@@ -33,22 +33,49 @@ class Routes {
               GoRoute(
                 parentNavigatorKey: _shellNavigatorKey,
                 path: RoutesPath.CURRENT_GAME_PAGE,
-                builder: (BuildContext context, GoRouterState state) {
-                  return CurrentGamePage();
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: CurrentGamePage(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) =>
+                            FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    ),
+                  );
                 },
               ),
               GoRoute(
                 parentNavigatorKey: _shellNavigatorKey,
                 path: RoutesPath.PROFILE_PAGE,
-                builder: (BuildContext context, GoRouterState state) {
-                  return ProfilePage();
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: ProfilePage(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) =>
+                            FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    ),
+                  );
                 },
               ),
               GoRoute(
                 parentNavigatorKey: _shellNavigatorKey,
                 path: RoutesPath.ABOUT_PAGE,
-                builder: (BuildContext context, GoRouterState state) {
-                  return AboutPage();
+                pageBuilder: (context, state) {
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: AboutPage(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) =>
+                            FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    ),
+                  );
                 },
               ),
             ],
@@ -56,8 +83,17 @@ class Routes {
           GoRoute(
             parentNavigatorKey: _rootNavigatorKey,
             path: RoutesPath.SPLASHSCREEN,
-            builder: (BuildContext _, GoRouterState state) {
-              return SplashScreen();
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                key: state.pageKey,
+                child: SplashScreen(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) =>
+                        FadeTransition(
+                  opacity: animation,
+                  child: child,
+                ),
+              );
             },
           ),
         ],
