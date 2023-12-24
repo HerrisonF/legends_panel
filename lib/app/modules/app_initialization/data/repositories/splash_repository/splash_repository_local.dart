@@ -9,7 +9,9 @@ abstract class SplashRepositoryLocal {
     required LolConstantsModel lolConstantsModel,
   });
 
+  /// Irá salvar os segundos da data atual.
   Future<Either<Failure, bool>> saveRegisterDate();
 
-  Future<Either<Failure, String>> fetchRegisterDate();
+  /// Irá retornar o valor em segundos guardados.
+  Future<Either<Failure, int>> fetchRegisterDate();
 }

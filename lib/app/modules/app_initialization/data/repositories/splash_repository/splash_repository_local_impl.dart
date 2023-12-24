@@ -61,12 +61,18 @@ class SplashRepositoryLocalImpl extends SplashRepositoryLocal {
                   ))
               .toList(),
           versions: dto.versionsDTO
-              .map((e) => GameVersionModel(version: e.version))
+              .map(
+                (e) => GameVersionModel(
+                  version: e.version,
+                ),
+              )
               .toList(),
           gameModes: dto.gameModesDTO
               .map(
                 (e) => GameModeModel(
-                    description: e.description, gameMode: e.gameMode),
+                  description: e.description,
+                  gameMode: e.gameMode,
+                ),
               )
               .toList(),
           champions: dto.championsDTO
@@ -121,15 +127,22 @@ class SplashRepositoryLocalImpl extends SplashRepositoryLocal {
               )
               .toList(),
           maps: dto.mapasDTO
-              .map((e) => MapaModel(
-                    mapName: e.mapName,
-                    mapaId: e.mapId,
-                    notes: e.notes,
-                  ))
+              .map(
+                (e) => MapaModel(
+                  mapName: e.mapName,
+                  mapaId: e.mapId,
+                  notes: e.notes,
+                ),
+              )
               .toList(),
           itemMotherModel: ItemMotherModel(
             trees: dto.itemMotherDTO.trees
-                .map((e) => TreeModel(header: e.header, tags: e.tags!.toList()))
+                .map(
+                  (e) => TreeModel(
+                    header: e.header,
+                    tags: e.tags!.toList(),
+                  ),
+                )
                 .toList(),
             groups: dto.itemMotherDTO.groups
                 .map((e) => GroupModel(id: e.id))
@@ -176,7 +189,11 @@ class SplashRepositoryLocalImpl extends SplashRepositoryLocal {
               )
               .toList(),
           gameLanguages: dto.gameLanguagesDTO
-              .map((e) => GameLanguageModel(language: e.language))
+              .map(
+                (e) => GameLanguageModel(
+                  language: e.language,
+                ),
+              )
               .toList(),
         );
         lolConstantsModel.setRankedConstants();
@@ -231,7 +248,9 @@ class SplashRepositoryLocalImpl extends SplashRepositoryLocal {
             .toList(),
         gameLanguagesDTO: lolConstantsModel.gameLanguages!
             .map(
-              (e) => GameLanguageDTO(language: e.language),
+              (e) => GameLanguageDTO(
+                language: e.language,
+              ),
             )
             .toList(),
         itemMotherDTO: ItemMotherDTO(
@@ -273,21 +292,27 @@ class SplashRepositoryLocalImpl extends SplashRepositoryLocal {
               )
               .toList(),
           groups: lolConstantsModel.itemMotherModel!.groups
-              .map((e) => GroupDTO(id: e.id))
+              .map(
+                (e) => GroupDTO(id: e.id),
+              )
               .toList(),
           trees: lolConstantsModel.itemMotherModel!.trees
-              .map((e) => TreeDTO(
-                    tags: e.tags,
-                    header: e.header,
-                  ))
+              .map(
+                (e) => TreeDTO(
+                  tags: e.tags,
+                  header: e.header,
+                ),
+              )
               .toList(),
         ),
         mapasDTO: lolConstantsModel.maps!
-            .map((e) => MapaDTO(
-                  mapId: e.mapaId,
-                  mapName: e.mapName,
-                  notes: e.notes,
-                ))
+            .map(
+              (e) => MapaDTO(
+                mapId: e.mapaId,
+                mapName: e.mapName,
+                notes: e.notes,
+              ),
+            )
             .toList(),
         championsDTO: lolConstantsModel.champions!
             .map(
@@ -342,20 +367,27 @@ class SplashRepositoryLocalImpl extends SplashRepositoryLocal {
             .toList(),
         gameModesDTO: lolConstantsModel.gameModes!
             .map(
-              (e) =>
-                  GameModeDTO(gameMode: e.gameMode, description: e.description),
+              (e) => GameModeDTO(
+                gameMode: e.gameMode,
+                description: e.description,
+              ),
             )
             .toList(),
         versionsDTO: lolConstantsModel.versions!
-            .map((e) => GameVersionDTO(version: e.version))
+            .map(
+              (e) => GameVersionDTO(
+                version: e.version,
+              ),
+            )
             .toList(),
         queuesDTO: lolConstantsModel.queues!
             .map(
               (e) => QueueDto(
-                  queueId: e.queueId,
-                  map: e.map,
-                  description: e.description,
-                  notes: e.notes),
+                queueId: e.queueId,
+                map: e.map,
+                description: e.description,
+                notes: e.notes,
+              ),
             )
             .toList(),
       );
@@ -377,10 +409,10 @@ class SplashRepositoryLocalImpl extends SplashRepositoryLocal {
   }
 
   @override
-  Future<Either<Failure, String>> fetchRegisterDate() async {
+  Future<Either<Failure, int>> fetchRegisterDate() async {
     try {
-      final result = sharedPreferences.getString('LAST_REGISTER_DATE');
-      return Right(result ?? "");
+      final result = sharedPreferences.getInt('LAST_REGISTER_DATE');
+      return Right(result ?? 0);
     } catch (e) {
       return Left(
         Failure(
@@ -394,9 +426,9 @@ class SplashRepositoryLocalImpl extends SplashRepositoryLocal {
   @override
   Future<Either<Failure, bool>> saveRegisterDate() async {
     try {
-      bool result = await sharedPreferences.setString(
+      bool result = await sharedPreferences.setInt(
         'LAST_REGISTER_DATE',
-        DateTime.now().millisecondsSinceEpoch.toString(),
+        DateTime.now().millisecondsSinceEpoch,
       );
       return Right(result);
     } catch (e) {

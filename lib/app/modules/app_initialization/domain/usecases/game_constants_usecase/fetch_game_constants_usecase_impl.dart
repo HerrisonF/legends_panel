@@ -14,6 +14,10 @@ import 'package:legends_panel/app/modules/app_initialization/domain/usecases/gam
 class FetchGameConstantsUsecaseImpl extends FetchGameConstantsUsecase {
   late SplashRepository remoteRepository;
   late SplashRepositoryLocal localRepository;
+
+  /// Esse localization deriva da localização do próprio celular.
+  /// Caso a linguagem dele esteja en_US a localização recebida será en_US.
+  /// ISso serve para pesquisar os dados na riot pela linguagem do usuário.
   late String localization;
 
   FetchGameConstantsUsecaseImpl({
@@ -31,7 +35,7 @@ class FetchGameConstantsUsecaseImpl extends FetchGameConstantsUsecase {
       /// recursos. A ideia é que o dará tempo do aplicativo se atualizar caso
       /// o jogo se atualize. Um dia não é algo crítico.
 
-      if (await temMaisQue24Horas()) {
+      if (await temMaisQue12Horas()) {
         await _syncRequest(lolConstantsModel);
         await _asyncRequest(lolConstantsModel);
         await localRepository.saveRegisterDate();
@@ -119,19 +123,16 @@ class FetchGameConstantsUsecaseImpl extends FetchGameConstantsUsecase {
 
   /// Caso não encontre a data ou dê algum erro. Por segurança libero como true
   /// para que a request de constantes seja feita.
-  Future<bool> temMaisQue24Horas() async {
+  Future<bool> temMaisQue12Horas() async {
     DateTime actualDate = DateTime.now();
-    int milissegundosInt = 0;
     final response = await localRepository.fetchRegisterDate();
 
     return response.fold(
       (l) => true,
       (r) {
-        if (r.isNotEmpty) {
-          milissegundosInt = int.parse(r);
-
+        if (r > 0) {
           Duration timeDifference = actualDate.difference(
-            DateTime.fromMillisecondsSinceEpoch(milissegundosInt),
+            DateTime.fromMillisecondsSinceEpoch(r),
           );
           return timeDifference.inHours > 12;
         }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
-import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/master_controller.dart';
 import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_participant.dart';
 import 'package:legends_panel/app/modules/current_game/presenter/current_game_controller/current_game_participant_controller.dart';
 
@@ -21,7 +19,6 @@ class _CurrentGameParticipantCardState
     extends State<CurrentGameParticipantCard> {
   final CurrentGameParticipantController _currentGameParticipantController =
       CurrentGameParticipantController();
-  final MasterController _masterController = GetIt.I<MasterController>();
 
   static const BLUE_TEAM = 100;
 
@@ -158,8 +155,9 @@ class _CurrentGameParticipantCardState
   }
 
   bool _isToPaintUserName() {
-    return _masterController.userForCurrentGame.name ==
-        widget.participant.summonerName;
+    // return _masterController.userForCurrentGame.name ==
+    //     widget.participant.summonerName;
+    return false;
   }
 
   _bannedChampion() {

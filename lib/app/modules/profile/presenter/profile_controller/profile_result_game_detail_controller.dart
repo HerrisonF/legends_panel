@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/match_detail.dart';
-import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/master_controller.dart';
 import 'package:legends_panel/app/modules/current_game/presenter/current_game_controller/current_game_participant_controller.dart';
 
 class ProfileResultGameDetailController {
-  final MasterController _masterController = GetIt.I<MasterController>();
   final CurrentGameParticipantController _currentGameParticipantController =
   GetIt.I<CurrentGameParticipantController>();
 
@@ -15,7 +13,7 @@ class ProfileResultGameDetailController {
   startProfileResultGame(MatchDetail matchDetail) async {
     this.matchDetail.value = matchDetail;
 
-    getParticipantById(_masterController.userForProfile.id);
+    //getParticipantById(_masterController.userForProfile.id);
   }
 
   getParticipantById(String summonerId) {

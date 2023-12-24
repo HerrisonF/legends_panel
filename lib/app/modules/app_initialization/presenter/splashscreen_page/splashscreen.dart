@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen>
     _controller.repeat(reverse: true);
     super.initState();
     SplashscreenController(
-      callback: goToMainPage,
+      callback: goToProfilePage,
       fetchGameConstantsUsecase: FetchGameConstantsUsecaseImpl(
         remoteRepository: SplashRepositoryRemoteImpl(
           httpServices: GetIt.I<HttpServices>(),
@@ -48,8 +48,8 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 
-  goToMainPage() {
-    context.push(RoutesPath.MASTER);
+  goToProfilePage() {
+    context.go(RoutesPath.PROFILE_PAGE);
   }
 
   @override

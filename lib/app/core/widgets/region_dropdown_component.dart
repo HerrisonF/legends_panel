@@ -52,7 +52,7 @@ class _RegionDropDownComponentState extends State<RegionDropDownComponent> {
       padding: EdgeInsets.only(left: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).colorScheme.background,
       ),
       child: DropdownButton(
         isExpanded: true,
@@ -63,7 +63,7 @@ class _RegionDropDownComponentState extends State<RegionDropDownComponent> {
         ),
         elevation: 8,
         underline: SizedBox.shrink(),
-        dropdownColor: Theme.of(context).backgroundColor,
+        dropdownColor: Theme.of(context).colorScheme.background,
         value: selectedLocation,
         onChanged: widget.isLoading
             ? null

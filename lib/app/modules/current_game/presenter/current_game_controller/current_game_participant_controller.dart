@@ -5,17 +5,15 @@ import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/user_tier.dart';
 import 'package:legends_panel/app/modules/current_game/data/repositories/participant_repository.dart';
-import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/master_controller.dart';
 import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_participant.dart';
 import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_perk.dart';
 import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_spectator.dart';
 
-class CurrentGameParticipantController extends MasterController {
+class CurrentGameParticipantController {
   final ParticipantRepository _participantRepository = ParticipantRepository(
     logger: GetIt.I.get<Logger>(),
     httpServices: GetIt.I.get<HttpServices>(),
   );
-  final MasterController _masterController = GetIt.I<MasterController>();
 
   ValueNotifier<List<UserTier>> userTierList = ValueNotifier([]);
   ValueNotifier<UserTier> soloUserTier = ValueNotifier(UserTier());
@@ -84,15 +82,15 @@ class CurrentGameParticipantController extends MasterController {
   }
 
   String getPerkStyleUrl(CurrentGamePerk currentGamePerk) {
-    String perkName =
-        _masterController.getPerkSubStyleIconName(currentGamePerk);
+    // String perkName =
+    //     _masterController.getPerkSubStyleIconName(currentGamePerk);
 
-    return _participantRepository.getPerkUrl(perkName);
+    return _participantRepository.getPerkUrl("");
   }
 
   String getFirsPerkUrl(CurrentGamePerk currentGamePerk) {
-    String perkName =
-        _masterController.getFirstPerkFromPerkStyle(currentGamePerk);
-    return _participantRepository.getPerkUrl(perkName);
+    // String perkName =
+    //     _masterController.getFirstPerkFromPerkStyle(currentGamePerk);
+    return _participantRepository.getPerkUrl("");
   }
 }

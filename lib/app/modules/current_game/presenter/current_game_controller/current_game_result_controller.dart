@@ -1,14 +1,9 @@
-import 'package:flutter/cupertino.dart';
-import 'package:get_it/get_it.dart';
-import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/master_controller.dart';
-import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/queues_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_banned_champion.dart';
 import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_participant.dart';
 import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_spectator.dart';
 
 class CurrentGameResultController {
-  final MasterController _masterController = GetIt.I<MasterController>();
-  final QueuesController _queuesController = GetIt.I<QueuesController>();
   String region = "";
 
   CurrentGameSpectator currentGameSpectator = CurrentGameSpectator();
@@ -18,7 +13,7 @@ class CurrentGameResultController {
   static const BLUE_TEAM = 100;
 
   startController(CurrentGameSpectator currentGameSpectator, String region) {
-    this.region = _masterController.storedRegion.getKeyFromRegion(region)!;
+   // this.region = _masterController.storedRegion.getKeyFromRegion(region)!;
     _clearOldCurrentGameSearch();
     setCurrentGameSpectator(currentGameSpectator);
     detachParticipantsIntoTeams();
@@ -60,11 +55,5 @@ class CurrentGameResultController {
 
   int getCurrentGameMinutes() {
     return currentGameSpectator.gameLength;
-  }
-
-  String getCurrentMapDescription() {
-    return _queuesController.getQueueDescriptionWithoutGamesString(
-      queueId: currentGameSpectator.gameQueueConfigId,
-    );
   }
 }

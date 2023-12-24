@@ -18,19 +18,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
   final CurrentGameController _currentGameController =
       GetIt.I<CurrentGameController>();
 
-  String initialRegion = '';
-
-  @override
-  void initState() {
-    getLastStoredRegionForCurrentGame();
-    super.initState();
-  }
-
-  getLastStoredRegionForCurrentGame() {
-    String receivedRegion =
-        _currentGameController.getLastStoredRegionForCurrentGame();
-    initialRegion = receivedRegion;
-  }
+  String initialRegion = 'NA';
 
   @override
   Widget build(BuildContext context) {
@@ -80,9 +68,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                 initialRegion: initialRegion,
                 onRegionChoose: (region) {
                   setState(
-                    () {
-                      _currentGameController.setAndSaveActualRegion(region);
-                    },
+                    () {},
                   );
                 },
                 isLoading: _currentGameController.isLoadingUser.value,
