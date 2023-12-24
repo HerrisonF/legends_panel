@@ -17,7 +17,6 @@ class CurrentGameController {
     logger: GetIt.I.get<Logger>(),
     httpServices: GetIt.I.get<HttpServices>(),
   );
-  final TextEditingController userNameInputController = TextEditingController();
 
   ValueNotifier<bool> isLoadingUser = ValueNotifier(false);
   ValueNotifier<bool> isShowingMessage = ValueNotifier(false);
@@ -59,7 +58,7 @@ class CurrentGameController {
     if (userIsPlaying()) {
       _pushToCurrentResultGamePage(region, context);
       _stopUserLoading();
-      userNameInputController.clear();
+      //userNameInputController.clear();
     } else {
       _showMessageUserIsNotInAGame();
     }

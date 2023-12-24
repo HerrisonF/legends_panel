@@ -13,6 +13,7 @@ class CurrentGamePage extends StatefulWidget {
 
 class _CurrentGamePageState extends State<CurrentGamePage> {
   final GlobalKey<FormState> currentGameUserFormKey = GlobalKey<FormState>();
+  final TextEditingController userNameInputController = TextEditingController();
 
   final CurrentGameController _currentGameController =
       GetIt.I<CurrentGameController>();
@@ -23,80 +24,86 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SizedBox.expand(
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(imageBackgroundCurrentGame),
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(
-                Theme.of(context).primaryColor.withOpacity(0.8),
-                BlendMode.plus,
-              ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(imageBackgroundCurrentGame),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Theme.of(context).primaryColor.withOpacity(0.7),
+              BlendMode.plus,
             ),
           ),
-          child: Column(
-            children: [
-              Container(
-                color: Colors.green,
-                child: Expanded(
-                  child: Text(
-                    AppLocalizations.of(context)!.titleCurrentGamePage,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 36,
-                      fontWeight: FontWeight.w900,
-                    ),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Center(
+                child: Text(
+                  AppLocalizations.of(context)!
+                      .titleCurrentGamePage
+                      .toUpperCase(),
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              Container(
-                color: Colors.orange,
-                child: Expanded(child: _summonerSearch()),
-              ),
-            ],
-          ),
+            ),
+            Expanded(
+              flex: 3,
+              child: _summonerSearch(),
+            ),
+          ],
         ),
       ),
     );
   }
 
   _summonerSearch() {
-    return Column(
-      children: [
-        Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 25,
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 25),
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(bottom: 40),
+            child: _inputForSummonerName(),
           ),
-          child: _inputForSummonerName(),
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 25,
+          Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child: Container(
+                  margin: EdgeInsets.only(top: 20),
+                  child: _buttonSearchSummoner(),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.only(left: 10),
+                  child: ValueListenableBuilder(
+                    valueListenable: _currentGameController.isLoadingUser,
+                    builder: (context, isLoading, _) {
+                      return RegionDropDownComponent(
+                        initialRegion: initialRegion,
+                        onRegionChoose: (region) {
+                          setState(() {
+                            print(region);
+                          });
+                        },
+                        isLoading: isLoading,
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
-          child: _buttonForSearchSummoner(),
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 25,
-          ),
-          child: ValueListenableBuilder(
-            valueListenable: _currentGameController.isLoadingUser,
-            builder: (context, value, _) {
-              return RegionDropDownComponent(
-                initialRegion: initialRegion,
-                onRegionChoose: (region) {
-                  setState(
-                    () {},
-                  );
-                },
-                isLoading: _currentGameController.isLoadingUser.value,
-              );
-            },
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -104,62 +111,74 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
     return Form(
       key: currentGameUserFormKey,
       child: ValueListenableBuilder(
-          valueListenable: _currentGameController.isLoadingUser,
-          builder: (context, value, _) {
-            return TextFormField(
-              enabled: !_currentGameController.isLoadingUser.value,
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context)!.hintSummonerName,
-                hintStyle: TextStyle(
-                  fontSize: 12,
-                ),
-                errorStyle: GoogleFonts.montserrat(
-                  fontWeight: FontWeight.w500,
+        valueListenable: _currentGameController.isLoadingUser,
+        builder: (context, value, _) {
+          return TextFormField(
+            enabled: !_currentGameController.isLoadingUser.value,
+            decoration: InputDecoration(
+              hintText: AppLocalizations.of(context)!.hintSummonerName,
+              hintStyle: TextStyle(
+                fontSize: 12,
+                color: Colors.white,
+              ),
+              enabledBorder: const OutlineInputBorder(
+                // width: 0.0 produces a thin "hairline" border
+                borderSide: const BorderSide(
                   color: Colors.white,
                 ),
               ),
-              controller: _currentGameController.userNameInputController,
-              validator: (value) {
-                if (value!.trim().isEmpty) {
-                  _currentGameController.userNameInputController.clear();
-                  return AppLocalizations.of(context)!.inputValidatorHome;
-                }
-                return null;
-              },
-            );
-          }),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.yellow),
+              ),
+              border: const OutlineInputBorder(),
+              errorStyle: GoogleFonts.montserrat(
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+              ),
+            ),
+            controller: userNameInputController,
+            validator: (value) {
+              if (value!.trim().isEmpty) {
+                userNameInputController.clear();
+                return AppLocalizations.of(context)!.inputValidatorHome;
+              }
+              return null;
+            },
+          );
+        },
+      ),
     );
   }
 
-  Container _buttonForSearchSummoner() {
+  Container _buttonSearchSummoner() {
     return Container(
+      width: MediaQuery.sizeOf(context).width,
+      height: 50,
+      decoration: BoxDecoration(
+        color: Color(0xFF2E4053),
+        borderRadius: BorderRadius.circular(4),
+      ),
       margin: EdgeInsets.symmetric(vertical: 15),
-      height: 45,
       child: ValueListenableBuilder(
         valueListenable: _currentGameController.isLoadingUser,
-        builder: (context, value, _) {
-          return OutlinedButton(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  _whichMessageShowToUser(),
-                  style: GoogleFonts.montserrat(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
+        builder: (context, isLoading, _) {
+          return isLoading
+              ? Center(child: CircularProgressIndicator())
+              : OutlinedButton(
+                  child: Text(
+                    _whichMessageShowToUser(),
+                    style: GoogleFonts.montserrat(
+                      color: Colors.yellow,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                if (_currentGameController.isLoadingUser.value)
-                  CircularProgressIndicator()
-              ],
-            ),
-            onPressed: _currentGameController.isShowingMessage.value
-                ? null
-                : () {
-                    _validateAndSearchSummoner();
+                  onPressed: () {
+                    if (!isLoading) {
+                      _validateAndSearchSummoner();
+                    }
                   },
-          );
+                );
         },
       ),
     );

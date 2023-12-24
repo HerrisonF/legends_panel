@@ -11,7 +11,7 @@
   "@appNameSubTitle": {
     "description": "Panel"
   },
-  "titleCurrentGamePage": "Search for a game in progress",
+  "titleCurrentGamePage": "Search for a game \n in progress",
   "@titleCurrentGamePage": {
     "description": "Search for a game in progress"
   },
@@ -27,9 +27,13 @@
   "@inputValidatorHome": {
     "description": "This Field is Mandatory !"
   },
-  "buttonMessageSearch": "Search",
+  "buttonMessageSearch": "Search Summoner",
   "@buttonMessageSearch": {
-    "description": "Search"
+    "description": "Search Summoner"
+  },
+  "region": "Region",
+  "@region": {
+    "description": "Region"
   },
   "buttonMessageUserNotFound": "User not found !",
   "@buttonMessageUserNotFound": {

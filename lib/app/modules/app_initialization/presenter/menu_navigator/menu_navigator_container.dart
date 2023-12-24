@@ -23,6 +23,7 @@ class _MenuNavigatorContainerState extends State<MenuNavigatorContainer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: widget.child,
       ),
