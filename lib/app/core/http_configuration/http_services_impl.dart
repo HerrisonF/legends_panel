@@ -15,7 +15,7 @@ class HttpServicesImp implements HttpServices {
     BaseOptions options = BaseOptions(
       responseType: ResponseType.json,
       headers: {
-        "X-Riot-Token": "RGAPI-463b3317-5dec-422-819c-d010a822c83f",
+        "X-Riot-Token": "RGAPI-32f1d472-9dea-4306-a471-b1750ec5fd0d",
       },
     );
     _dio = Dio(options);

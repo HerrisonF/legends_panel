@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
-import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_participant.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_participant_model.dart';
 import 'package:legends_panel/app/modules/current_game/presenter/current_game_page/current_game_participant_controller.dart';
 
 class CurrentGameParticipantCard extends StatefulWidget {
-  final CurrentGameParticipant participant;
+  final ActiveGameParticipantModel participant;
   final String region;
 
   CurrentGameParticipantCard({required this.participant, required this.region});
@@ -25,8 +25,7 @@ class _CurrentGameParticipantCardState
   @override
   void initState() {
     super.initState();
-    _currentGameParticipantController.getUserTier(
-        widget.participant, widget.region);
+    //_currentGameParticipantController.getUserTier();
     _currentGameParticipantController.getSpectator(
         widget.participant.summonerId, widget.region);
   }
@@ -114,11 +113,11 @@ class _CurrentGameParticipantCardState
           width: 18,
           height: 18,
           child: _currentGameParticipantController
-                  .getFirsPerkUrl(widget.participant.perks)
+                  .getFirsPerkUrl()
                   .isNotEmpty
               ? Image.network(
                   _currentGameParticipantController
-                      .getFirsPerkUrl(widget.participant.perks),
+                      .getFirsPerkUrl(),
                 )
               : SizedBox.shrink(),
         ),
@@ -126,11 +125,11 @@ class _CurrentGameParticipantCardState
           width: 15,
           height: 15,
           child: _currentGameParticipantController
-                  .getPerkStyleUrl(widget.participant.perks)
+                  .getPerkStyleUrl()
                   .isNotEmpty
               ? Image.network(
                   _currentGameParticipantController
-                      .getPerkStyleUrl(widget.participant.perks),
+                      .getPerkStyleUrl(),
                 )
               : SizedBox.shrink(),
         ),
@@ -163,10 +162,10 @@ class _CurrentGameParticipantCardState
   _bannedChampion() {
     return Container(
       margin: const EdgeInsets.only(left: 5),
-      child: widget.participant.currentGameBannedChampion.championId > 0
+      child: widget.participant.championId > 0
           ? Image.network(
               _currentGameParticipantController.getChampionBadgeUrl(
-                widget.participant.currentGameBannedChampion.championId
+                widget.participant.championId
                     .toString(),
               ),
               width: MediaQuery.of(context).size.width / 14,

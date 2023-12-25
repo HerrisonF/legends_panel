@@ -12,5 +12,4 @@ abstract class API {
   static const String riotStaticDataUrl = "https://static.developer.riotgames.com";
   static const String riotDevUrl = "https://developer.riotgames.com/apis";
   static const String riotStaticDragonUrl = "https://ddragon.leagueoflegends.com";
-
 }

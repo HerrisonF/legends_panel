@@ -5,9 +5,6 @@ import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/user_tier.dart';
 import 'package:legends_panel/app/modules/current_game/data/repositories/participant_repository.dart';
-import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_participant.dart';
-import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_perk.dart';
-import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_spectator.dart';
 
 class CurrentGameParticipantController {
   final ParticipantRepository _participantRepository = ParticipantRepository(
@@ -17,16 +14,16 @@ class CurrentGameParticipantController {
 
   ValueNotifier<List<UserTier>> userTierList = ValueNotifier([]);
   ValueNotifier<UserTier> soloUserTier = ValueNotifier(UserTier());
-  ValueNotifier<CurrentGameSpectator> currentGameSpectator =
-      ValueNotifier(CurrentGameSpectator());
-  CurrentGameParticipant currentGameParticipant = CurrentGameParticipant();
-
-  getUserTier(CurrentGameParticipant participant, String region) async {
-    this.currentGameParticipant = participant;
-    userTierList.value = await _participantRepository.getUserTier(
-        this.currentGameParticipant.summonerId, region);
-    _getSoloRankedOnly(userTierList.value);
-  }
+  // ValueNotifier<CurrentGameSpectator> currentGameSpectator =
+  //     ValueNotifier(CurrentGameSpectator());
+  // CurrentGameParticipant currentGameParticipant = CurrentGameParticipant();
+  //
+  // getUserTier(CurrentGameParticipant participant, String region) async {
+  //   this.currentGameParticipant = participant;
+  //   userTierList.value = await _participantRepository.getUserTier(
+  //       this.currentGameParticipant.summonerId, region);
+  //   _getSoloRankedOnly(userTierList.value);
+  // }
 
   _getSoloRankedOnly(List<UserTier> userTierList) {
     try {
@@ -77,18 +74,18 @@ class CurrentGameParticipantController {
   }
 
   getSpectator(String summonerId, String region) async {
-    currentGameSpectator.value =
-        await _participantRepository.getSpectator(summonerId, region);
+    // currentGameSpectator.value =
+    //     await _participantRepository.getSpectator(summonerId, region);
   }
 
-  String getPerkStyleUrl(CurrentGamePerk currentGamePerk) {
+  String getPerkStyleUrl() {
     // String perkName =
     //     _masterController.getPerkSubStyleIconName(currentGamePerk);
 
     return _participantRepository.getPerkUrl("");
   }
 
-  String getFirsPerkUrl(CurrentGamePerk currentGamePerk) {
+  String getFirsPerkUrl() {
     // String perkName =
     //     _masterController.getFirstPerkFromPerkStyle(currentGamePerk);
     return _participantRepository.getPerkUrl("");

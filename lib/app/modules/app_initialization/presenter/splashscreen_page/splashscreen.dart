@@ -5,10 +5,12 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
+import 'package:legends_panel/app/core/general_controller/general_controller.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/routes/routes_path.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/repositories/splash_repository/splash_repository_local_impl.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/repositories/splash_repository/splash_repository_remote_impl.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/lol_constants_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/usecases/game_constants_usecase/fetch_game_constants_usecase_impl.dart';
 import 'package:legends_panel/app/modules/app_initialization/presenter/splashscreen_page/splashscreen_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -45,11 +47,15 @@ class _SplashScreenState extends State<SplashScreen>
         ),
         localization: Platform.localeName,
       ),
+      generalController: GetIt.I<GeneralController>(),
     );
   }
 
-  goToProfilePage() {
-    context.go(RoutesPath.PROFILE_PAGE);
+  goToProfilePage(LolConstantsModel lolConstantsModel) {
+    context.go(
+      RoutesPath.PROFILE_PAGE,
+      extra: lolConstantsModel,
+    );
   }
 
   @override

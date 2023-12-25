@@ -3,7 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
 import 'package:legends_panel/app/core/widgets/timer_text.dart';
-import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_participant.dart';
 import 'package:legends_panel/app/modules/current_game/presenter/current_game_page/current_game_result_controller.dart';
 import 'package:legends_panel/app/modules/current_game/presenter/current_game_page/current_game_participant_card.dart';
 
@@ -38,9 +37,9 @@ class CurrentGameResultPage extends StatelessWidget {
           child: Column(
             children: [
               //_mapName(context),
-              _gameClockAndTimerText(),
+              //_gameClockAndTimerText(),
               _userName(),
-              _detachTeams(),
+              //_detachTeams(),
             ],
           ),
         ),
@@ -99,25 +98,25 @@ class CurrentGameResultPage extends StatelessWidget {
   //       });
   // }
 
-  Container _gameClockAndTimerText() {
-    return Container(
-      margin: EdgeInsets.only(top: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            child: Icon(
-              Icons.access_alarm_outlined,
-              size: 16,
-              color: Colors.white,
-            ),
-            margin: EdgeInsets.only(right: 5),
-          ),
-          TimerText(time: _currentGameResultController.getCurrentGameMinutes()),
-        ],
-      ),
-    );
-  }
+  // Container _gameClockAndTimerText() {
+  //   return Container(
+  //     margin: EdgeInsets.only(top: 10),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: [
+  //         Container(
+  //           child: Icon(
+  //             Icons.access_alarm_outlined,
+  //             size: 16,
+  //             color: Colors.white,
+  //           ),
+  //           margin: EdgeInsets.only(right: 5),
+  //         ),
+  //         TimerText(time: _currentGameResultController.getCurrentGameMinutes()),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Container _userName() {
     return Container(
@@ -171,33 +170,33 @@ class CurrentGameResultPage extends StatelessWidget {
     );
   }
 
-  _detachTeams() {
-    return Column(
-      children: [
-        _teamCard(_currentGameResultController.blueTeam.value, 100),
-        _teamCard(_currentGameResultController.redTeam.value, 200),
-      ],
-    );
-  }
+  // _detachTeams() {
+  //   return Column(
+  //     children: [
+  //       _teamCard(_currentGameResultController.blueTeam.value, 100),
+  //       _teamCard(_currentGameResultController.redTeam.value, 200),
+  //     ],
+  //   );
+  // }
 
-  _teamCard(List<CurrentGameParticipant> participants, int team) {
-    return Container(
-      margin: EdgeInsets.only(
-        top: team == 200 ? 20 : 0,
-        bottom: team == 200 ? 20 : 0,
-      ),
-      height: 318,
-      child: ListView.builder(
-        padding: EdgeInsets.zero,
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: participants.length,
-        itemBuilder: (_, index) {
-          return CurrentGameParticipantCard(
-            participant: participants[index],
-            region: _currentGameResultController.region,
-          );
-        },
-      ),
-    );
-  }
+  // _teamCard(List<CurrentGameParticipant> participants, int team) {
+  //   return Container(
+  //     margin: EdgeInsets.only(
+  //       top: team == 200 ? 20 : 0,
+  //       bottom: team == 200 ? 20 : 0,
+  //     ),
+  //     height: 318,
+  //     child: ListView.builder(
+  //       padding: EdgeInsets.zero,
+  //       physics: NeverScrollableScrollPhysics(),
+  //       itemCount: participants.length,
+  //       itemBuilder: (_, index) {
+  //         return CurrentGameParticipantCard(
+  //           participant: participants[index],
+  //           region: _currentGameResultController.region,
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 }

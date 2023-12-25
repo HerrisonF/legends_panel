@@ -18,7 +18,13 @@ class MenuNavigatorContainer extends StatefulWidget {
 }
 
 class _MenuNavigatorContainerState extends State<MenuNavigatorContainer> {
-  MenuNavigatorController menuNavigatorController = MenuNavigatorController();
+  late MenuNavigatorController menuNavigatorController;
+
+  @override
+  void initState() {
+    menuNavigatorController = MenuNavigatorController();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

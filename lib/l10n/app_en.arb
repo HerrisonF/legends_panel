@@ -19,13 +19,13 @@
   "@titleProfilePage": {
     "description": "Search for a profile"
   },
-  "hintSummonerName": "Summoner's name",
+  "hintSummonerName": "Type here Summoner's name",
   "@hintSummonerName": {
-    "description": "Summoner's name"
+    "description": "Type here Summoner's name"
   },
-  "hintTagline": "Summoner's tag",
+  "hintTagline": "Type here Summoner's tag",
   "@hintTagline": {
-    "description": "Summoner's tag"
+    "description": "Type here Summoner's tag"
   },
   "inputValidatorHome": "This Field is Mandatory !",
   "@inputValidatorHome": {
@@ -43,13 +43,13 @@
   "@buttonMessageUserNotFound": {
     "description": "User not found !"
   },
-  "buttonMessageGameNotFound": "That summoner isn't playing !",
+  "buttonMessageGameNotFound": "The Summoner isn't playing !",
   "@buttonMessageGameNotFound": {
     "description": "That summoner isn't playing !"
   },
-  "loadingMessage": "Looking for the player",
+  "loadingMessage": "Looking for summoner",
   "@loadingMessage": {
-    "description": "Looking for the player"
+    "description": "Looking for summoner"
   },
   "level": "Level",
   "@level": {
@@ -65,15 +65,15 @@
   },
   "development": "Hello. I am a solo dev on this application. So if you encounter problems, please, report it to me on Play Store and have a little patience, because I make this app in my spare time. Do you like the application ? You can help me going to Play Store and giving some stars. :)",
   "@development": {
-    "description": "An experimental app beeing developed by"
+    "description": "An app beeing developed by"
   },
   "gitInstall": "We got problems to open Git !",
   "@gitInstall": {
     "description": "We got problems to open Git !"
   },
-  "userFound": "We found you ! ",
+  "userFound": "We found ! ",
   "@userFound": {
-    "description": "We found you ! "
+    "description": "We found ! "
   },
   "searching": "Searching ",
   "@searching": {
@@ -111,17 +111,9 @@
   "@favoriteUsers": {
     "description": "Your favorite users will be here"
   },
-  "buildPageTitle": "Look for builds clicking on champions",
-  "@buildPageTitle": {
-    "description": "Look for builds clicking on champions"
-  },
   "championName": "Champion's name",
   "@championName": {
     "description": "champion's name"
-  },
-  "noBuildChampion": "No data for this champion yet",
-  "@noBuildChampion": {
-    "description": "No data for this champion yet"
   },
   "spell": "Spell",
   "@spell": {
@@ -134,9 +126,5 @@
   "abilityOrder": "Ability order",
   "@abilityOrder" : {
     "description" : "Ability order"
-  },
-  "buildSuggestion" : "Build Suggestion",
-  "@buildSuggestion" : {
-    "description" : "Build Suggestion"
   }
 }

@@ -2,7 +2,6 @@ import 'package:legends_panel/app/core/http_configuration/api_endpoints.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/user_tier.dart';
-import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_spectator.dart';
 
 class ParticipantRepository {
   late Logger logger;
@@ -99,33 +98,33 @@ class ParticipantRepository {
     }
   }
 
-  Future<CurrentGameSpectator> getSpectator(
-      String userId,
-      String region,
-      ) async {
-    final String path = "/lol/spectator/v4/active-games/by-summoner/$userId";
-    logger.logDEBUG("Fetching Current Game ...");
-    try {
-      final response = await httpServices.get(
-        url: API.riotAmericasUrl,
-        path: path,
-        origin: origin,
-      );
-
-      return response.fold(
-            (l) {
-          logger.logDEBUG("Error fetching Current Game");
-          return CurrentGameSpectator();
-        },
-            (r) {
-          return CurrentGameSpectator.fromJson(r.data);
-        },
-      );
-    } catch (e) {
-      logger.logDEBUG("Error fetching Current Game $e");
-      return CurrentGameSpectator();
-    }
-  }
+  // Future<CurrentGameSpectator> getSpectator(
+  //     String userId,
+  //     String region,
+  //     ) async {
+  //   final String path = "/lol/spectator/v4/active-games/by-summoner/$userId";
+  //   logger.logDEBUG("Fetching Current Game ...");
+  //   try {
+  //     final response = await httpServices.get(
+  //       url: API.riotAmericasUrl,
+  //       path: path,
+  //       origin: origin,
+  //     );
+  //
+  //     return response.fold(
+  //           (l) {
+  //         logger.logDEBUG("Error fetching Current Game");
+  //         return CurrentGameSpectator();
+  //       },
+  //           (r) {
+  //         return CurrentGameSpectator.fromJson(r.data);
+  //       },
+  //     );
+  //   } catch (e) {
+  //     logger.logDEBUG("Error fetching Current Game $e");
+  //     return CurrentGameSpectator();
+  //   }
+  // }
 
   String getPerkUrl(String iconName) {
     final String path = "/cdn/img/$iconName";
