@@ -1,4 +1,4 @@
-import 'package:legends_panel/app/core/http_configuration/api_paths_endpoints.dart';
+import 'package:legends_panel/app/core/http_configuration/api_endpoints.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/user_tier.dart';
@@ -24,7 +24,7 @@ class ParticipantRepository {
     List<UserTier> listTier = [];
     try {
       final response = await httpServices.get(
-        url: API.riotBaseUrl(region),
+        url: API.riotAmericasUrl,
         path: path,
         origin: origin,
       );
@@ -107,7 +107,7 @@ class ParticipantRepository {
     logger.logDEBUG("Fetching Current Game ...");
     try {
       final response = await httpServices.get(
-        url: API.riotBaseUrl(region),
+        url: API.riotAmericasUrl,
         path: path,
         origin: origin,
       );

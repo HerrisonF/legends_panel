@@ -5,6 +5,7 @@
   "titleCurrentGamePage": "Procure por um jogo \n em andamento",
   "titleProfilePage": "Procure por um perfil de invocador",
   "hintSummonerName": "Nome do Invocador",
+  "hintTagline": "Tag de invocador",
   "inputValidatorHome": "Esse campo é obrigatório !",
   "buttonMessageSearch": "Procurar",
   "buttonMessageUserNotFound": "Usuário não encontrado !",

@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
-import 'package:legends_panel/app/core/widgets/region_dropdown_component.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:legends_panel/app/modules/profile/data/repositories/profile_repository.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_controller/profile_controller.dart';
@@ -17,7 +16,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  //final  formKey = GlobalKey<FormState>();
   late ProfileController _profileController;
   TextEditingController userNameInputController = TextEditingController();
 
@@ -72,30 +71,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     fontWeight: FontWeight.w900,
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: _inputSummonerName(),
-                ),
+                // Container(
+                //   padding: const EdgeInsets.symmetric(horizontal: 40),
+                //   child: _inputSummonerName(),
+                // ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: _buttonSearchSummonerProfile(),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: ValueListenableBuilder(
-                    valueListenable: _profileController.isLoadingProfile,
-                    builder: (context, isLoading, _) {
-                      return RegionDropDownComponent(
-                        initialRegion: initialRegion,
-                        onRegionChoose: (region) {
-                          setState(() {
-                            //_profileController.saveActualRegion(region);
-                          });
-                        },
-                        isLoading: isLoading,
-                      );
-                    },
-                  ),
                 ),
               ],
             ),
@@ -147,42 +129,42 @@ class _ProfilePageState extends State<ProfilePage> {
                     : AppLocalizations.of(context)!.buttonMessageSearch;
   }
 
-  _inputSummonerName() {
-    return Form(
-      key: formKey,
-      child: ValueListenableBuilder(
-        valueListenable: _profileController.isLoadingProfile,
-        builder: (context, value, _) {
-          return TextFormField(
-            enabled: !_profileController.isLoadingProfile.value,
-            controller: userNameInputController,
-            decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)!.hintSummonerName,
-              hintStyle: TextStyle(
-                fontSize: 12,
-              ),
-              errorStyle: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              ),
-            ),
-            validator: (value) {
-              if (value!.trim().isEmpty) {
-                userNameInputController.clear();
-                return AppLocalizations.of(context)!.inputValidatorHome;
-              }
-              userNameInputController.clear();
-              return AppLocalizations.of(context)!.inputValidatorHome;
-            },
-          );
-        },
-      ),
-    );
-  }
+  // _inputSummonerName() {
+  //   return Form(
+  //     key: formKey,
+  //     child: ValueListenableBuilder(
+  //       valueListenable: _profileController.isLoadingProfile,
+  //       builder: (context, value, _) {
+  //         return TextFormField(
+  //           enabled: !_profileController.isLoadingProfile.value,
+  //           controller: userNameInputController,
+  //           decoration: InputDecoration(
+  //             hintText: AppLocalizations.of(context)!.hintSummonerName,
+  //             hintStyle: TextStyle(
+  //               fontSize: 12,
+  //             ),
+  //             errorStyle: TextStyle(
+  //               fontWeight: FontWeight.w500,
+  //               color: Colors.black,
+  //             ),
+  //           ),
+  //           validator: (value) {
+  //             if (value!.trim().isEmpty) {
+  //               userNameInputController.clear();
+  //               return AppLocalizations.of(context)!.inputValidatorHome;
+  //             }
+  //             userNameInputController.clear();
+  //             return AppLocalizations.of(context)!.inputValidatorHome;
+  //           },
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 
   _searchForUserOnCloud() {
-    if (formKey.currentState!.validate()) {
-      FocusScope.of(context).unfocus();
-    }
+    // if (formKey.currentState!.validate()) {
+    //   FocusScope.of(context).unfocus();
+    // }
   }
 }

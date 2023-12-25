@@ -12,7 +12,13 @@ class HttpServicesImp implements HttpServices {
   HttpServicesImp({
     required this.logger,
   }) {
-    _dio = Dio();
+    BaseOptions options = BaseOptions(
+      responseType: ResponseType.json,
+      headers: {
+        "X-Riot-Token": "RGAPI-463b3317-5dec-422-819c-d010a822c83f",
+      },
+    );
+    _dio = Dio(options);
   }
 
   _getUrlBase(String requestUrl) {

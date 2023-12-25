@@ -1,4 +1,4 @@
-import 'package:legends_panel/app/core/http_configuration/api_paths_endpoints.dart';
+import 'package:legends_panel/app/core/http_configuration/api_endpoints.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/champion_mastery.dart';
@@ -36,7 +36,7 @@ class ProfileRepository {
     List<UserTier> listTier = [];
     try {
       final response = await httpServices.get(
-        url: API.riotBaseUrl(keyRegion),
+        url: API.riotAmericasUrl,
         path: path,
         origin: origin,
       );
@@ -67,7 +67,7 @@ class ProfileRepository {
 
     try {
       final response = await httpServices.get(
-        url: API.riotBaseUrl(keyRegion),
+        url: API.riotAmericasUrl,
         path: path,
         origin: origin,
       );

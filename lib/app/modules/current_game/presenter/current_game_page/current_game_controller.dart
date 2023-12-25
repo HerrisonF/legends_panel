@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:legends_panel/app/core/http_configuration/http_services.dart';
-import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/core/routes/routes_path.dart';
-import 'package:legends_panel/app/modules/app_initialization/presenter/master_controller.dart';
-import 'package:legends_panel/app/modules/current_game/data/repositories/current_game_respository.dart';
 import 'package:legends_panel/app/modules/current_game/domain/current_game_spectator/current_game_spectator.dart';
+import 'package:legends_panel/app/modules/current_game/domain/usecases/fetch_puuid_and_summonerID_from_riot_usecase.dart';
 import 'package:legends_panel/app/modules/current_game/presenter/current_game_page/current_game_result_controller.dart';
 
 class CurrentGameController {
   final CurrentGameResultController _currentGameResultController =
       GetIt.I<CurrentGameResultController>();
+  final FetchPUUIDAndSummonerIDFromRiotUsecase
+      fetchPUUIDAndSummonerIDFromRiotUsecase;
+
   //final MasterController masterController = GetIt.I<MasterController>();
-  final CurrentGameRepository _currentGameRepository = CurrentGameRepository(
-    logger: GetIt.I.get<Logger>(),
-    httpServices: GetIt.I.get<HttpServices>(),
-  );
 
   ValueNotifier<bool> isLoadingUser = ValueNotifier(false);
   ValueNotifier<bool> isShowingMessage = ValueNotifier(false);
   ValueNotifier<bool> isShowingMessageUserIsNotPlaying = ValueNotifier(false);
   CurrentGameSpectator currentGameForASpectator = CurrentGameSpectator();
+
+  CurrentGameController({
+    required this.fetchPUUIDAndSummonerIDFromRiotUsecase,
+  });
 
   _startUserLoading() {
     isLoadingUser.value = true;
@@ -31,10 +31,21 @@ class CurrentGameController {
     isLoadingUser.value = false;
   }
 
-  processCurrentGame(BuildContext context) async {
-    _startUserLoading();
-    //await getCurrentUserOnCloud(keyRegion);
-    checkWhetherGameExist(context);
+  searchGoingOnGame({
+    required String summonerName,
+    required String tag,
+  }) async {
+    //_startUserLoading();
+    final result = await fetchPUUIDAndSummonerIDFromRiotUsecase(
+      summonerName: summonerName,
+      tagLine: tag,
+    );
+    result.fold((l) {
+      print(l.message);
+    }, (r) {
+      print(r);
+    });
+    //checkWhetherGameExist(context);
   }
 
   void checkWhetherGameExist(BuildContext context) {

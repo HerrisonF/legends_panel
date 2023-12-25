@@ -23,13 +23,17 @@
   "@hintSummonerName": {
     "description": "Summoner's name"
   },
+  "hintTagline": "Summoner's tag",
+  "@hintTagline": {
+    "description": "Summoner's tag"
+  },
   "inputValidatorHome": "This Field is Mandatory !",
   "@inputValidatorHome": {
     "description": "This Field is Mandatory !"
   },
-  "buttonMessageSearch": "Search Summoner",
+  "buttonMessageSearch": "Search",
   "@buttonMessageSearch": {
-    "description": "Search Summoner"
+    "description": "Search"
   },
   "region": "Region",
   "@region": {

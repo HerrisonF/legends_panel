@@ -1,4 +1,4 @@
-import 'package:legends_panel/app/core/http_configuration/api_paths_endpoints.dart';
+import 'package:legends_panel/app/core/http_configuration/api_endpoints.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 
 class GeneralVisionRepository {

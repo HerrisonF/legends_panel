@@ -10,9 +10,7 @@ abstract class API {
 
   /// CONSIGO ARQUIVOS ESTÁTICOS POR MEIO DESSE ENDPOINT
   static const String riotStaticDataUrl = "https://static.developer.riotgames.com";
+  static const String riotDevUrl = "https://developer.riotgames.com/apis";
   static const String riotStaticDragonUrl = "https://ddragon.leagueoflegends.com";
-
-  /// CONFORME A CHAVE QUE RECEBO, O LINK DA REGIÃO MUDA.
-  static String riotBaseUrl(String region)=> "https://$region.api.riotgames.com";
 
 }

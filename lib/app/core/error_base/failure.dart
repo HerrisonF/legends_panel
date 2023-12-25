@@ -24,8 +24,8 @@ class Failure implements Exception {
   factory Failure.dioError(DioError dioError){
     return Failure(
       id: dioError.response != null ? dioError.response!.data["id"] : "",
-      status: dioError.response != null ? dioError.response!.data["status"] : 0,
-      message: dioError.response != null ? dioError.response!.data["message"] : "",
+      status: dioError.response != null ? dioError.response!.data["status"]["status_code"] : 0,
+      message: dioError.response != null ? (dioError.response!.data["message"] != null ? dioError.response!.data["message"] : "") : "",
       error: dioError.response != null ? dioError.response!.data["error"] : "",
     );
   }
