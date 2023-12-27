@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_banned_champion_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_info_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_participant_model.dart';
 
@@ -9,13 +10,18 @@ class ActiveGameResultController {
 
   List<ActiveGameParticipantModel> blueTeam = [];
   List<ActiveGameParticipantModel> redTeam = [];
+  List<ActiveGameBannedChampionModel> bansReadTeam = [];
+  List<ActiveGameBannedChampionModel> bansBlueTeam = [];
   ValueNotifier<bool> isLoading = ValueNotifier(false);
+
+  static const BLUE_TEAM = 100;
 
   ActiveGameResultController({
     required this.activeGameInfoModel,
   }){
     startLoading();
     detachTeams();
+    detachChampionBanTeams();
     stopLoading();
   }
 
@@ -28,13 +34,23 @@ class ActiveGameResultController {
   }
 
   detachTeams() {
-    const BLUE_TEAM = 100;
 
     for(ActiveGameParticipantModel participantModel in activeGameInfoModel.activeGameParticipants) {
       if (participantModel.teamId == BLUE_TEAM) {
         blueTeam.add(participantModel);
       } else {
         redTeam.add(participantModel);
+      }
+    }
+  }
+
+  detachChampionBanTeams(){
+    const BLUE_TEAM = 100;
+    for(ActiveGameBannedChampionModel bannedChampion in activeGameInfoModel.activeGameBannedChampions) {
+      if (bannedChampion.teamId == BLUE_TEAM) {
+        bansBlueTeam.add(bannedChampion);
+      } else {
+        bansReadTeam.add(bannedChampion);
       }
     }
   }

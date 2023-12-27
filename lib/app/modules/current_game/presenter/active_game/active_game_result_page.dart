@@ -128,32 +128,70 @@ class _ActiveGameResultPageState extends State<ActiveGameResultPage> {
     return Column(
       children: [
         _teamCard(controller.blueTeam, 100),
+        _bannerChampionsBlueTeam(),
         _teamCard(controller.redTeam, 200),
+        _bannedChampionsRedTeam(),
       ],
     );
   }
 
-  _teamCard(List<ActiveGameParticipantModel> participants, int team) {
+  _teamCard(
+    List<ActiveGameParticipantModel> participants,
+    int team,
+  ) {
     return Container(
       margin: EdgeInsets.only(
         top: team == 200 ? 20 : 0,
         bottom: team == 200 ? 20 : 0,
       ),
-      height: 318,
       child: ListView(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         children: participants
-            .map((e) => CurrentGameParticipantCard(
-                  participant: e,
-                  region: '',
-                ))
+            .map(
+              (e) => CurrentGameParticipantCard(
+                participant: e,
+                region: '',
+                isToPaintUserName: e.summonerName ==
+                    controller.activeGameInfoModel.summonerProfileModel!.name,
+              ),
+            )
             .toList(),
       ),
     );
   }
 
-  _shimmerLoading(){
+  _bannedChampionsRedTeam() {
+    return ListView(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      children: controller.bansReadTeam
+          .map(
+            (e) => Container(
+              color: Colors.redAccent,
+              child: Text(e.championId.toString()),
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  _bannerChampionsBlueTeam() {
+    return ListView(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      children: controller.bansBlueTeam
+          .map(
+            (e) => Container(
+              color: Colors.blue,
+              child: Text(e.championId.toString()),
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  _shimmerLoading() {
     return CircularProgressIndicator();
   }
 }

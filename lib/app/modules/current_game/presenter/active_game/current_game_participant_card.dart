@@ -7,8 +7,13 @@ import 'package:legends_panel/app/modules/current_game/presenter/active_game/cur
 class CurrentGameParticipantCard extends StatefulWidget {
   final ActiveGameParticipantModel participant;
   final String region;
+  final bool isToPaintUserName;
 
-  CurrentGameParticipantCard({required this.participant, required this.region});
+  CurrentGameParticipantCard({
+    required this.participant,
+    required this.region,
+    required this.isToPaintUserName,
+  });
 
   @override
   _CurrentGameParticipantCardState createState() =>
@@ -112,24 +117,18 @@ class _CurrentGameParticipantCardState
           margin: EdgeInsets.only(bottom: 2),
           width: 18,
           height: 18,
-          child: _currentGameParticipantController
-                  .getFirsPerkUrl()
-                  .isNotEmpty
+          child: _currentGameParticipantController.getFirsPerkUrl().isNotEmpty
               ? Image.network(
-                  _currentGameParticipantController
-                      .getFirsPerkUrl(),
+                  _currentGameParticipantController.getFirsPerkUrl(),
                 )
               : SizedBox.shrink(),
         ),
         Container(
           width: 15,
           height: 15,
-          child: _currentGameParticipantController
-                  .getPerkStyleUrl()
-                  .isNotEmpty
+          child: _currentGameParticipantController.getPerkStyleUrl().isNotEmpty
               ? Image.network(
-                  _currentGameParticipantController
-                      .getPerkStyleUrl(),
+                  _currentGameParticipantController.getPerkStyleUrl(),
                 )
               : SizedBox.shrink(),
         ),
@@ -145,18 +144,12 @@ class _CurrentGameParticipantCardState
         widget.participant.summonerName,
         style: GoogleFonts.montserrat(
           fontSize: 8,
-          color: _isToPaintUserName() ? Colors.yellow : Colors.white,
+          color: widget.isToPaintUserName ? Colors.yellow : Colors.white,
         ),
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),
     );
-  }
-
-  bool _isToPaintUserName() {
-    // return _masterController.userForCurrentGame.name ==
-    //     widget.participant.summonerName;
-    return false;
   }
 
   _bannedChampion() {
@@ -165,8 +158,7 @@ class _CurrentGameParticipantCardState
       child: widget.participant.championId > 0
           ? Image.network(
               _currentGameParticipantController.getChampionBadgeUrl(
-                widget.participant.championId
-                    .toString(),
+                widget.participant.championId.toString(),
               ),
               width: MediaQuery.of(context).size.width / 14,
             )
