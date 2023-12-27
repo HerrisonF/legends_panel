@@ -53,8 +53,8 @@ class _TimerTextState extends State<TimerText> {
     return Text(
       "${min<10? "0" : ""}$min : ${seconds<10? "0" : ""}$seconds",
       style: GoogleFonts.aBeeZee(
-        fontSize: 11,
-        color: Colors.white,
+        fontSize: 16,
+        color: Colors.yellow,
         letterSpacing: 0.5,
       ),
     );

@@ -27,7 +27,9 @@ enum RegionEndpoints {
             (element) => element.toString().split('.').last.contains(str),
           ).apiAddress;
     } catch (e) {
-      throw FormatException("Invalid region code");
+      /// Caso a região da pessoa não exista, então retorno por padrão a primeira
+      /// url.
+      return RegionEndpoints.values.first.apiAddress;
     }
   }
 

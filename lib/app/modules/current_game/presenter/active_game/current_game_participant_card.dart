@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_participant_model.dart';
-import 'package:legends_panel/app/modules/current_game/presenter/current_game_page/current_game_participant_controller.dart';
+import 'package:legends_panel/app/modules/current_game/presenter/active_game/current_game_participant_controller.dart';
 
 class CurrentGameParticipantCard extends StatefulWidget {
   final ActiveGameParticipantModel participant;
@@ -43,12 +43,12 @@ class _CurrentGameParticipantCardState
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _playerChampionBadge(),
-          _playerPerks(),
+          //_playerChampionBadge(),
+          //_playerPerks(),
           _summonerName(),
-          _userTierNameAndSymbol(),
-          _playerWinRate(),
-          _bannedChampion(),
+          //_userTierNameAndSymbol(),
+          //_playerWinRate(),
+          //_bannedChampion(),
         ],
       ),
     );

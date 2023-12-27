@@ -42,24 +42,24 @@ class _MenuNavigatorContainerState extends State<MenuNavigatorContainer> {
               child: Row(
                 children: [
                   MenuTabIconWidget(
-                    activeColor: index == RoutesPath.currentGamePageIndex
+                    activeColor: index == RoutesPath.activeGamePageIndex
                         ? Theme.of(context).primaryColor
                         : Colors.grey,
                     icon: Icons.gamepad,
                     onTapMenuItem: () => menuNavigatorController.navigateToPage(
                       context,
-                      RoutesPath.currentGamePageIndex,
-                      RoutesPath.CURRENT_GAME_PAGE,
+                      RoutesPath.activeGamePageIndex,
+                      RoutesPath.ACTIVE_GAME_SEARCH_PAGE,
                     ),
                   ),
                   MenuTabIconWidget(
-                    activeColor: index == RoutesPath.profilePageIndex
+                    activeColor: index == RoutesPath.profileSearchPageIndex
                         ? Theme.of(context).primaryColor
                         : Colors.grey,
                     icon: Icons.account_box,
                     onTapMenuItem: () => menuNavigatorController.navigateToPage(
                       context,
-                      RoutesPath.profilePageIndex,
+                      RoutesPath.profileSearchPageIndex,
                       RoutesPath.PROFILE_PAGE,
                     ),
                   ),

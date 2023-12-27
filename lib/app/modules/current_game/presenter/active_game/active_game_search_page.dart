@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:legends_panel/app/core/general_controller/general_controller.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
+import 'package:legends_panel/app/core/routes/routes_path.dart';
 import 'package:legends_panel/app/modules/current_game/data/repositories/current_game_repository_impl.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_info_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/active_games/fetch_active_game_by_summoner_id_usecase_impl.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_puuid_and_summonerID_from_riot_usecase_impl.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_summoner_profile_by_puuid_usecase_impl.dart';
-import 'package:legends_panel/app/modules/current_game/presenter/current_game_page/current_game_controller.dart';
+import 'package:legends_panel/app/modules/current_game/presenter/active_game/active_game_search_controller.dart';
 
-class CurrentGamePage extends StatefulWidget {
+class ActiveGameSearchPage extends StatefulWidget {
   @override
-  State<CurrentGamePage> createState() => _CurrentGamePageState();
+  State<ActiveGameSearchPage> createState() => _ActiveGameSearchPageState();
 }
 
-class _CurrentGamePageState extends State<CurrentGamePage> {
+class _ActiveGameSearchPageState extends State<ActiveGameSearchPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late TextEditingController summonerNameInputController;
   late TextEditingController tagLineInputController;
 
-  late CurrentGameController _currentGameController;
+  late ActiveGameSearchController _activeGameSearchController;
 
   @override
   void initState() {
@@ -32,7 +35,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
       logger: GetIt.I<Logger>(),
       httpServices: GetIt.I<HttpServices>(),
     );
-    _currentGameController = CurrentGameController(
+    _activeGameSearchController = ActiveGameSearchController(
       fetchPUUIDAndSummonerIDFromRiotUsecase:
           FetchPUUIDAndSummonerIDFromRiotUsecaseImpl(
         currentGameRepository: _repository,
@@ -46,6 +49,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
         currentGameRepository: _repository,
       ),
       generalController: GetIt.I<GeneralController>(),
+      goToGameResultPageCallback: goToActiveGamePageResult,
     );
     super.initState();
   }
@@ -140,8 +144,9 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                         child: DropdownButton<String>(
                           underline: SizedBox.shrink(),
                           itemHeight: 50,
-                          value: _currentGameController.selectedRegion.value,
-                          items: _currentGameController.regions
+                          value:
+                              _activeGameSearchController.selectedRegion.value,
+                          items: _activeGameSearchController.regions
                               .map((String region) {
                             return DropdownMenuItem<String>(
                               value: region,
@@ -161,7 +166,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                           menuMaxHeight: 150,
                           onChanged: (String? newValue) {
                             setState(() {
-                              _currentGameController.selectedRegion.value =
+                              _activeGameSearchController.selectedRegion.value =
                                   newValue!;
                             });
                           },
@@ -182,7 +187,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
     return Form(
       key: _formKey,
       child: ValueListenableBuilder(
-        valueListenable: _currentGameController.isLoadingUser,
+        valueListenable: _activeGameSearchController.isLoadingUser,
         builder: (context, isLoading, _) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -190,7 +195,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
               Container(
                 margin: EdgeInsets.only(bottom: 20),
                 child: TextFormField(
-                  enabled: !_currentGameController.isLoadingUser.value,
+                  enabled: !_activeGameSearchController.isLoadingUser.value,
                   decoration: InputDecoration(
                     hintText: AppLocalizations.of(context)!.hintSummonerName,
                     filled: true,
@@ -224,7 +229,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
                 ),
               ),
               TextFormField(
-                enabled: !_currentGameController.isLoadingUser.value,
+                enabled: !_activeGameSearchController.isLoadingUser.value,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -273,7 +278,7 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
       ),
       margin: EdgeInsets.only(top: 22),
       child: ValueListenableBuilder(
-        valueListenable: _currentGameController.isLoadingUser,
+        valueListenable: _activeGameSearchController.isLoadingUser,
         builder: (context, isLoading, _) {
           return isLoading
               ? Center(child: CircularProgressIndicator())
@@ -298,10 +303,10 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
   }
 
   String _messageToShowToUser() {
-    if (_currentGameController.isShowingMessageUserIsNotPlaying.value) {
+    if (_activeGameSearchController.isShowingMessageUserIsNotPlaying.value) {
       return AppLocalizations.of(context)!.buttonMessageGameNotFound;
     }
-    if (_currentGameController.isLoadingUser.value) {
+    if (_activeGameSearchController.isLoadingUser.value) {
       return AppLocalizations.of(context)!.searching;
     }
 
@@ -311,10 +316,17 @@ class _CurrentGamePageState extends State<CurrentGamePage> {
   _validateAndSearchSummoner() {
     if (_formKey.currentState!.validate()) {
       FocusScope.of(context).unfocus();
-      _currentGameController.searchGoingOnGame(
+      _activeGameSearchController.searchActiveGame(
         summonerName: summonerNameInputController.text,
         tag: tagLineInputController.text,
       );
     }
+  }
+
+  goToActiveGamePageResult(ActiveGameInfoModel activeGameInfoModel) {
+    context.push(
+      RoutesPath.ACTIVE_GAME_RESULT,
+      extra: activeGameInfoModel,
+    );
   }
 }

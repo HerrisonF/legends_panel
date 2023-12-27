@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/match_detail.dart';
-import 'package:legends_panel/app/modules/current_game/presenter/current_game_page/current_game_participant_controller.dart';
+import 'package:legends_panel/app/modules/current_game/presenter/active_game/current_game_participant_controller.dart';
 
 class ProfileResultGameDetailController {
   final CurrentGameParticipantController _currentGameParticipantController =

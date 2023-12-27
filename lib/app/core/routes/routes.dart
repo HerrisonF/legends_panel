@@ -4,7 +4,9 @@ import 'package:legends_panel/app/core/routes/routes_path.dart';
 import 'package:legends_panel/app/modules/about/presenter/about_page/about_page.dart';
 import 'package:legends_panel/app/modules/app_initialization/presenter/menu_navigator/menu_navigator_container.dart';
 import 'package:legends_panel/app/modules/app_initialization/presenter/splashscreen_page/splashscreen.dart';
-import 'package:legends_panel/app/modules/current_game/presenter/current_game_page/current_game_page.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_info_model.dart';
+import 'package:legends_panel/app/modules/current_game/presenter/active_game/active_game_result_page.dart';
+import 'package:legends_panel/app/modules/current_game/presenter/active_game/active_game_search_page.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_page/profile_page.dart';
 
 class Routes {
@@ -32,11 +34,11 @@ class Routes {
             routes: [
               GoRoute(
                 parentNavigatorKey: _shellNavigatorKey,
-                path: RoutesPath.CURRENT_GAME_PAGE,
+                path: RoutesPath.ACTIVE_GAME_SEARCH_PAGE,
                 pageBuilder: (BuildContext context, GoRouterState state) {
                   return CustomTransitionPage(
                     key: state.pageKey,
-                    child: CurrentGamePage(),
+                    child: ActiveGameSearchPage(),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) =>
                             FadeTransition(
@@ -87,6 +89,27 @@ class Routes {
               return CustomTransitionPage(
                 key: state.pageKey,
                 child: SplashScreen(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) =>
+                        FadeTransition(
+                  opacity: animation,
+                  child: child,
+                ),
+              );
+            },
+          ),
+          GoRoute(
+            parentNavigatorKey: _rootNavigatorKey,
+            path: RoutesPath.ACTIVE_GAME_RESULT,
+            pageBuilder: (context, state) {
+              ActiveGameInfoModel activeGameInfo =
+                  state.extra as ActiveGameInfoModel;
+
+              return CustomTransitionPage(
+                key: state.pageKey,
+                child: ActiveGameResultPage(
+                  activeGameInfoModel: activeGameInfo,
+                ),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) =>
                         FadeTransition(
