@@ -20,7 +20,7 @@ class LolConstantsModel {
   List<GameLanguageModel>? gameLanguages;
   List<ChampionModel>? champions;
   List<SummonerSpell>? spells;
-  ItemMotherModel?  itemMotherModel;
+  ItemMotherModel? itemMotherModel;
   RankedConstants? rankedConstants;
 
   LolConstantsModel({
@@ -65,16 +65,16 @@ class LolConstantsModel {
     this.champions!.addAll(champions);
   }
 
-  setItemMotherModel(ItemMotherModel itemMotherModel){
+  setItemMotherModel(ItemMotherModel itemMotherModel) {
     this.itemMotherModel = itemMotherModel;
   }
 
-  setSummonerSpells(List<SummonerSpell> spells){
+  setSummonerSpells(List<SummonerSpell> spells) {
     this.spells = [];
     this.spells!.addAll(spells);
   }
 
-  setRankedConstants(){
+  setRankedConstants() {
     rankedConstants = RankedConstants();
   }
 
@@ -92,6 +92,15 @@ class LolConstantsModel {
       return languages.first.language;
     }
     return "en_US";
+  }
+
+  ChampionModel? getChampionById(int id) {
+    List<ChampionModel> championsTemp =
+        champions!.where((element) => element.key == id.toString()).toList();
+    if (championsTemp.isNotEmpty) {
+      return championsTemp.first;
+    }
+    return null;
   }
 
   String getMapQueueById(int queueId) {

@@ -1,15 +1,15 @@
 import 'package:dartz/dartz.dart';
-import 'package:legends_panel/app/modules/current_game/data/repositories/current_game_respository.dart';
-import 'package:legends_panel/app/modules/current_game/domain/models/summoner_profile_model.dart';
+import 'package:legends_panel/app/modules/current_game/data/repositories/active_game_search_respository.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_profile_model.dart';
 
 import 'fetch_summoner_profile_by_puuid_usecase.dart';
 
 class FetchSummonerProfileByPUUIDUsecaseImpl
     extends FetchSummonerProfileByPUUIDUsecase {
-  late final CurrentGameRepository currentGameRepository;
+  late final ActiveGameSearchRepository activeGameSearchRepository;
 
   FetchSummonerProfileByPUUIDUsecaseImpl({
-    required this.currentGameRepository,
+    required this.activeGameSearchRepository,
   });
 
   @override
@@ -17,7 +17,7 @@ class FetchSummonerProfileByPUUIDUsecaseImpl
     required String puuid,
     required String region,
   }) async {
-    final result = await currentGameRepository.fetchSummonerProfile(
+    final result = await activeGameSearchRepository.fetchSummonerProfile(
       puuid: puuid,
       region: region,
     );

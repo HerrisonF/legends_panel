@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:legends_panel/app/core/general_controller/general_controller.dart';
-import 'package:legends_panel/app/modules/current_game/domain/usecases/active_games/fetch_active_game_by_summoner_id_usecase.dart';
+import 'package:legends_panel/app/modules/current_game/domain/usecases/active_game/fetch_active_game_by_summoner_id_usecase.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_puuid_and_summonerID_from_riot_usecase.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_summoner_profile_by_puuid_usecase.dart';
 
@@ -11,7 +10,6 @@ class ActiveGameSearchController {
       fetchActiveGameBySummonerIDUsecase;
   late final FetchSummonerProfileByPUUIDUsecase
       fetchSummonerProfileByPUUIDUsecase;
-  late final GeneralController generalController;
   late final Function goToGameResultPageCallback;
 
   ValueNotifier<bool> isLoadingUser = ValueNotifier(false);
@@ -41,7 +39,6 @@ class ActiveGameSearchController {
     required this.fetchPUUIDAndSummonerIDFromRiotUsecase,
     required this.fetchActiveGameBySummonerIDUsecase,
     required this.fetchSummonerProfileByPUUIDUsecase,
-    required this.generalController,
     required this.goToGameResultPageCallback,
   });
 

@@ -1,14 +1,14 @@
 import 'package:dartz/dartz.dart';
-import 'package:legends_panel/app/modules/current_game/data/repositories/current_game_respository.dart';
+import 'package:legends_panel/app/modules/current_game/data/repositories/active_game_search_respository.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_info_model.dart';
-import 'package:legends_panel/app/modules/current_game/domain/usecases/active_games/fetch_active_game_by_summoner_id_usecase.dart';
+import 'package:legends_panel/app/modules/current_game/domain/usecases/active_game/fetch_active_game_by_summoner_id_usecase.dart';
 
 class FetchActiveGameBySummonerIDUsecaseImpl
     extends FetchActiveGameBySummonerIDUsecase {
-  late CurrentGameRepository currentGameRepository;
+  late ActiveGameSearchRepository activeGameSearchRepository;
 
   FetchActiveGameBySummonerIDUsecaseImpl({
-    required this.currentGameRepository,
+    required this.activeGameSearchRepository,
   });
 
   @override
@@ -16,7 +16,7 @@ class FetchActiveGameBySummonerIDUsecaseImpl
     required String summonerId,
     required String region,
   }) async {
-    final result = await currentGameRepository.fetchActiveGame(
+    final result = await activeGameSearchRepository.fetchActiveGame(
       summonerId: summonerId,
       region: region,
     );

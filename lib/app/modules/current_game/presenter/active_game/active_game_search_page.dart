@@ -4,13 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:legends_panel/app/core/general_controller/general_controller.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/core/routes/routes_path.dart';
-import 'package:legends_panel/app/modules/current_game/data/repositories/current_game_repository_impl.dart';
+import 'package:legends_panel/app/modules/current_game/data/repositories/active_game_search_repository_impl.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_info_model.dart';
-import 'package:legends_panel/app/modules/current_game/domain/usecases/active_games/fetch_active_game_by_summoner_id_usecase_impl.dart';
+import 'package:legends_panel/app/modules/current_game/domain/usecases/active_game/fetch_active_game_by_summoner_id_usecase_impl.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_puuid_and_summonerID_from_riot_usecase_impl.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_summoner_profile_by_puuid_usecase_impl.dart';
 import 'package:legends_panel/app/modules/current_game/presenter/active_game/active_game_search_controller.dart';
@@ -31,24 +30,23 @@ class _ActiveGameSearchPageState extends State<ActiveGameSearchPage> {
   void initState() {
     summonerNameInputController = TextEditingController();
     tagLineInputController = TextEditingController();
-    final _repository = CurrentGameRepositoryImpl(
+    final _repository = ActiveGameSearchRepositoryImpl(
       logger: GetIt.I<Logger>(),
       httpServices: GetIt.I<HttpServices>(),
     );
     _activeGameSearchController = ActiveGameSearchController(
       fetchPUUIDAndSummonerIDFromRiotUsecase:
           FetchPUUIDAndSummonerIDFromRiotUsecaseImpl(
-        currentGameRepository: _repository,
+            activeGameSearchRepository: _repository,
       ),
       fetchActiveGameBySummonerIDUsecase:
           FetchActiveGameBySummonerIDUsecaseImpl(
-        currentGameRepository: _repository,
+            activeGameSearchRepository: _repository,
       ),
       fetchSummonerProfileByPUUIDUsecase:
           FetchSummonerProfileByPUUIDUsecaseImpl(
-        currentGameRepository: _repository,
+            activeGameSearchRepository: _repository,
       ),
-      generalController: GetIt.I<GeneralController>(),
       goToGameResultPageCallback: goToActiveGamePageResult,
     );
     super.initState();

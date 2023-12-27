@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification_model.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_identification_model.dart';
 
 abstract class FetchPUUIDAndSummonerIDFromRiotUsecase {
   Future<Either<bool, SummonerIdentificationModel>> call({

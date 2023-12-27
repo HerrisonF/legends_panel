@@ -1,19 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/core/constants/string_constants.dart';
+import 'package:legends_panel/app/core/general_controller/general_controller.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/champion_model.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/lol_constants_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/user_tier.dart';
-import 'package:legends_panel/app/modules/current_game/data/repositories/participant_repository.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_participant_model.dart';
 
-class CurrentGameParticipantController {
-  final ParticipantRepository _participantRepository = ParticipantRepository(
-    logger: GetIt.I.get<Logger>(),
-    httpServices: GetIt.I.get<HttpServices>(),
-  );
-
+class ActiveGameParticipantController {
   ValueNotifier<List<UserTier>> userTierList = ValueNotifier([]);
   ValueNotifier<UserTier> soloUserTier = ValueNotifier(UserTier());
+
+  late ActiveGameParticipantModel activeGameParticipantModel;
+  late GeneralController generalController;
+
+  ActiveGameParticipantController({
+    required this.activeGameParticipantModel,
+    required this.generalController,
+  });
+
   // ValueNotifier<CurrentGameSpectator> currentGameSpectator =
   //     ValueNotifier(CurrentGameSpectator());
   // CurrentGameParticipant currentGameParticipant = CurrentGameParticipant();
@@ -35,22 +42,16 @@ class CurrentGameParticipantController {
       soloUserTier.value.winRate = 0.toString();
     }
   }
-
-  String getUserTierImage(String tier) {
-    return _participantRepository.getUserTierImage(tier);
-  }
+  //
+  // String getUserTierImage(String tier) {
+  //   return activeGameParticipantRepository.getUserTierImage(tier);
+  // }
 
   String getUserWinRate() {
     return ((soloUserTier.value.wins /
                 (soloUserTier.value.wins + soloUserTier.value.losses)) *
             100)
         .toStringAsFixed(0);
-  }
-
-  String getChampionBadgeUrl(String championId) {
-    // return _participantRepository.getChampionBadgeUrl(
-    //     _masterController.getChampionById(championId).detail.id.toString());
-    return "";
   }
 
   String getSpellUrl(String spellId) {
@@ -63,31 +64,31 @@ class CurrentGameParticipantController {
     return "";
   }
 
-  String getItemUrl(String itemId) {
-    return _participantRepository.getItemUrl(itemId);
-  }
-
-  String getPositionUrl(String position) {
-    return _participantRepository.getPositionUrl(
-      position,
-    );
-  }
+  // String getItemUrl(String itemId) {
+  //   return activeGameParticipantRepository.getItemUrl(itemId);
+  // }
+  //
+  // String getPositionUrl(String position) {
+  //   return activeGameParticipantRepository.getPositionUrl(
+  //     position,
+  //   );
+  // }
 
   getSpectator(String summonerId, String region) async {
     // currentGameSpectator.value =
     //     await _participantRepository.getSpectator(summonerId, region);
   }
 
-  String getPerkStyleUrl() {
-    // String perkName =
-    //     _masterController.getPerkSubStyleIconName(currentGamePerk);
-
-    return _participantRepository.getPerkUrl("");
-  }
-
-  String getFirsPerkUrl() {
-    // String perkName =
-    //     _masterController.getFirstPerkFromPerkStyle(currentGamePerk);
-    return _participantRepository.getPerkUrl("");
-  }
+  // String getPerkStyleUrl() {
+  //   // String perkName =
+  //   //     _masterController.getPerkSubStyleIconName(currentGamePerk);
+  //
+  //   return activeGameParticipantRepository.getPerkUrl("");
+  // }
+  //
+  // String getFirsPerkUrl() {
+  //   // String perkName =
+  //   //     _masterController.getFirstPerkFromPerkStyle(currentGamePerk);
+  //   return activeGameParticipantRepository.getPerkUrl("");
+  // }
 }

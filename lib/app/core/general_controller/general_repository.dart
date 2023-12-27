@@ -3,11 +3,11 @@ import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/user_tier.dart';
 
-class ParticipantRepository {
+class GeneralRepository {
   late Logger logger;
   late HttpServices httpServices;
 
-  ParticipantRepository({
+  GeneralRepository({
     required this.logger,
     required this.httpServices,
   });
@@ -15,9 +15,9 @@ class ParticipantRepository {
   static const String origin = "ParticipantRepository";
 
   Future<List<UserTier>> getUserTier(
-      String encryptedSummonerId,
-      String region,
-      ) async {
+    String encryptedSummonerId,
+    String region,
+  ) async {
     final String path =
         "/lol/league/v4/entries/by-summoner/$encryptedSummonerId";
     List<UserTier> listTier = [];
@@ -53,9 +53,12 @@ class ParticipantRepository {
     }
   }
 
-  String getChampionBadgeUrl(String championId) {
+  String getChampionBadgeUrl({
+    required String championId,
+    required String version,
+  }) {
     logger.logDEBUG("building Image Champion URL... $championId # latest");
-    final String path = "/cdn/latest/img/champion/$championId.png";
+    final String path = "/cdn/$version/img/champion/$championId";
     try {
       return API.riotDragonUrl + path;
     } catch (e) {

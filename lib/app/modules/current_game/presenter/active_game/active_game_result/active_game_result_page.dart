@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
+import 'package:legends_panel/app/core/general_controller/general_controller.dart';
 import 'package:legends_panel/app/core/widgets/timer_text.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_info_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_participant_model.dart';
-import 'package:legends_panel/app/modules/current_game/presenter/active_game/active_game_result_controller.dart';
-import 'package:legends_panel/app/modules/current_game/presenter/active_game/current_game_participant_card.dart';
+import 'package:legends_panel/app/modules/current_game/presenter/active_game/active_game_result/components/active_game_participant_card.dart';
+
+import 'active_game_result_controller.dart';
 
 class ActiveGameResultPage extends StatefulWidget {
   late final ActiveGameInfoModel activeGameInfoModel;
@@ -26,6 +29,7 @@ class _ActiveGameResultPageState extends State<ActiveGameResultPage> {
   void initState() {
     controller = ActiveGameResultController(
       activeGameInfoModel: widget.activeGameInfoModel,
+      generalController: GetIt.I<GeneralController>(),
     );
     super.initState();
   }
@@ -128,9 +132,23 @@ class _ActiveGameResultPageState extends State<ActiveGameResultPage> {
     return Column(
       children: [
         _teamCard(controller.blueTeam, 100),
-        _bannerChampionsBlueTeam(),
+        Text("BAN"),
+        Container(
+          margin: EdgeInsets.only(top: 5),
+          height: 40,
+          child: Expanded(
+            child: _bannerChampionsBlueTeam(),
+          ),
+        ),
         _teamCard(controller.redTeam, 200),
-        _bannedChampionsRedTeam(),
+        Text("BAN"),
+        Container(
+          margin: EdgeInsets.only(top: 5),
+          height: 40,
+          child: Expanded(
+            child: _bannedChampionsRedTeam(),
+          ),
+        ),
       ],
     );
   }
@@ -142,14 +160,13 @@ class _ActiveGameResultPageState extends State<ActiveGameResultPage> {
     return Container(
       margin: EdgeInsets.only(
         top: team == 200 ? 20 : 0,
-        bottom: team == 200 ? 20 : 0,
       ),
       child: ListView(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         children: participants
             .map(
-              (e) => CurrentGameParticipantCard(
+              (e) => ActiveGameParticipantCard(
                 participant: e,
                 region: '',
                 isToPaintUserName: e.summonerName ==
@@ -164,14 +181,10 @@ class _ActiveGameResultPageState extends State<ActiveGameResultPage> {
   _bannedChampionsRedTeam() {
     return ListView(
       shrinkWrap: true,
+      scrollDirection: Axis.horizontal,
       physics: NeverScrollableScrollPhysics(),
       children: controller.bansReadTeam
-          .map(
-            (e) => Container(
-              color: Colors.redAccent,
-              child: Text(e.championId.toString()),
-            ),
-          )
+          .map((e) => _championBadge(e.championId))
           .toList(),
     );
   }
@@ -179,15 +192,24 @@ class _ActiveGameResultPageState extends State<ActiveGameResultPage> {
   _bannerChampionsBlueTeam() {
     return ListView(
       shrinkWrap: true,
+      scrollDirection: Axis.horizontal,
       physics: NeverScrollableScrollPhysics(),
       children: controller.bansBlueTeam
           .map(
-            (e) => Container(
-              color: Colors.blue,
-              child: Text(e.championId.toString()),
-            ),
+            (e) => _championBadge(e.championId),
           )
           .toList(),
+    );
+  }
+
+  Widget _championBadge(int id) {
+    return Container(
+      margin: const EdgeInsets.only(left: 5),
+      child: id > 0
+          ? Image.network(
+              controller.generalController.getChampionBadgeUrl(id),
+            )
+          : Image.asset(imageNoChampion),
     );
   }
 

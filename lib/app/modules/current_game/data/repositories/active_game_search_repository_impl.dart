@@ -7,20 +7,20 @@ import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/modules/current_game/data/dtos/active_game/active_game_info_dto.dart';
 import 'package:legends_panel/app/modules/current_game/data/dtos/summoner_identification_dto.dart';
 import 'package:legends_panel/app/modules/current_game/data/dtos/summoner_profile_dto.dart';
-import 'package:legends_panel/app/modules/current_game/data/repositories/current_game_respository.dart';
+import 'package:legends_panel/app/modules/current_game/data/repositories/active_game_search_respository.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_banned_champion_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_customization_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_info_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_participant_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_perk_model.dart';
-import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification_model.dart';
-import 'package:legends_panel/app/modules/current_game/domain/models/summoner_profile_model.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_identification_model.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_profile_model.dart';
 
-class CurrentGameRepositoryImpl extends CurrentGameRepository {
+class ActiveGameSearchRepositoryImpl extends ActiveGameSearchRepository {
   late Logger logger;
   late HttpServices httpServices;
 
-  CurrentGameRepositoryImpl({
+  ActiveGameSearchRepositoryImpl({
     required this.logger,
     required this.httpServices,
   });

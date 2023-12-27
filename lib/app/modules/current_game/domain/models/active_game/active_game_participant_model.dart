@@ -32,6 +32,9 @@ class ActiveGameParticipantModel {
   /// List of Game Customizations
   List<ActiveGameCustomizationModel> gameCustomizations;
 
+  ///Items que não são buscados na API. Apenas são usados na transição de dados
+  ///dentro da aplicação.
+
   ActiveGameParticipantModel({
     required this.championId,
     required this.perk,

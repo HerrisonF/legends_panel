@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:legends_panel/app/core/general_controller/general_repository.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/lol_constants_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/runesRoom.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/user.dart';
 
 class GeneralController {
-
   ValueNotifier<int> currentPageIndex = ValueNotifier(0);
 
   User userForCurrentGame = User();
   User userForProfile = User();
   RunesRoom runesRoom = RunesRoom();
   late LolConstantsModel lolConstantsModel;
+  late GeneralRepository generalRepository;
 
   Future<void> initialize() async {
     await getRunesRoom();
   }
 
+  GeneralController({
+    required this.generalRepository,
+  });
 
-  setLolConstants(LolConstantsModel lolConstantsModel){
+  setLolConstants(LolConstantsModel lolConstantsModel) {
     this.lolConstantsModel = lolConstantsModel;
   }
 
@@ -92,5 +96,12 @@ class GeneralController {
   getUserProfileOnCloud(String userName, String keyRegion) async {
     // userForProfile =
     //     await _masterRepository.getUserOnCloud(userName, keyRegion);
+  }
+
+  String getChampionBadgeUrl(int championId) {
+    return generalRepository.getChampionBadgeUrl(
+      championId: lolConstantsModel.getChampionById(championId)!.image.full,
+      version: lolConstantsModel.getLatestLolVersion(),
+    );
   }
 }

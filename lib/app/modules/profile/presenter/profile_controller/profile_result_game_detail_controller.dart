@@ -1,11 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/match_detail.dart';
-import 'package:legends_panel/app/modules/current_game/presenter/active_game/current_game_participant_controller.dart';
 
 class ProfileResultGameDetailController {
-  final CurrentGameParticipantController _currentGameParticipantController =
-  GetIt.I<CurrentGameParticipantController>();
 
   ValueNotifier<MatchDetail> matchDetail = ValueNotifier(MatchDetail());
   ValueNotifier<Participant> currentParticipant = ValueNotifier(Participant());
@@ -27,18 +24,18 @@ class ProfileResultGameDetailController {
   }
 
   getSpellImage(int spellId) {
-    return _currentGameParticipantController.getSpellUrl(
-      _getParticipantSpellId(spellId),
-    );
+    // return _currentGameParticipantController.getSpellUrl(
+    //   _getParticipantSpellId(spellId),
+    // );
   }
 
-  String getItemUrl(String itemId){
-    return _currentGameParticipantController.getItemUrl(itemId);
-  }
-
-  String getPositionUrl(String position){
-    return _currentGameParticipantController.getPositionUrl(position);
-  }
+  // String getItemUrl(String itemId){
+  //   return _currentGameParticipantController.getItemUrl(itemId);
+  // }
+  //
+  // String getPositionUrl(String position){
+  //   return _currentGameParticipantController.getPositionUrl(position);
+  // }
 
 
   String _getParticipantSpellId(int id) {
@@ -49,9 +46,9 @@ class ProfileResultGameDetailController {
     }
   }
 
-  String getChampionBadgeUrl() {
-    return _currentGameParticipantController.getChampionBadgeUrl(
-        currentParticipant.value.championId.toString()
-    );
-  }
+  // String getChampionBadgeUrl() {
+  //   return _currentGameParticipantController.getChampionBadgeUrl(
+  //       currentParticipant.value.championId.toString()
+  //   );
+  // }
 }
