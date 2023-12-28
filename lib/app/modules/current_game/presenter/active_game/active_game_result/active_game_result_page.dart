@@ -47,21 +47,49 @@ class _ActiveGameResultPageState extends State<ActiveGameResultPage> {
         ),
         child: Column(
           children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Container(
-                margin: EdgeInsets.only(left: 10, top: 20),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    size: 24,
+            Row(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    margin: EdgeInsets.only(left: 10, top: 20),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back,
+                        size: 24,
+                      ),
+                      onPressed: () {
+                        context.pop(context);
+                      },
+                      color: Colors.white,
+                    ),
                   ),
-                  onPressed: () {
-                    context.pop(context);
-                  },
-                  color: Colors.white,
                 ),
-              ),
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(right: 5),
+                          child: Icon(
+                            Icons.access_alarm_outlined,
+                            size: 16,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(right: 45),
+                          child: TimerText(
+                            time: controller.getCurrentGameMinutes(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
             ),
             ValueListenableBuilder(
               valueListenable: controller.isLoading,
@@ -79,31 +107,8 @@ class _ActiveGameResultPageState extends State<ActiveGameResultPage> {
     return Expanded(
       child: ListView(
         children: [
-          _gameClockAndTimerText(),
           _userName(),
           _teams(),
-        ],
-      ),
-    );
-  }
-
-  Container _gameClockAndTimerText() {
-    return Container(
-      margin: EdgeInsets.only(top: 35),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            child: Icon(
-              Icons.access_alarm_outlined,
-              size: 20,
-              color: Colors.white,
-            ),
-            margin: EdgeInsets.only(right: 5),
-          ),
-          TimerText(
-            time: controller.getCurrentGameMinutes(),
-          ),
         ],
       ),
     );
@@ -132,24 +137,34 @@ class _ActiveGameResultPageState extends State<ActiveGameResultPage> {
     return Column(
       children: [
         _teamCard(controller.blueTeam, 100),
-        Text("BAN"),
+        _banText(),
         Container(
-          margin: EdgeInsets.only(top: 5),
+          margin: EdgeInsets.only(top: 2),
           height: 40,
-          child: Expanded(
-            child: _bannerChampionsBlueTeam(),
-          ),
+          child: _bannerChampionsBlueTeam(),
         ),
         _teamCard(controller.redTeam, 200),
-        Text("BAN"),
+        _banText(),
         Container(
-          margin: EdgeInsets.only(top: 5),
+          margin: EdgeInsets.only(top: 5, bottom: 20),
           height: 40,
-          child: Expanded(
-            child: _bannedChampionsRedTeam(),
-          ),
+          child: _bannedChampionsRedTeam(),
         ),
       ],
+    );
+  }
+
+  _banText() {
+    return Container(
+      width: MediaQuery.sizeOf(context).width,
+      alignment: Alignment.center,
+      child: Text(
+        "BAN",
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 
@@ -179,10 +194,8 @@ class _ActiveGameResultPageState extends State<ActiveGameResultPage> {
   }
 
   _bannedChampionsRedTeam() {
-    return ListView(
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      physics: NeverScrollableScrollPhysics(),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: controller.bansReadTeam
           .map((e) => _championBadge(e.championId))
           .toList(),
@@ -190,10 +203,8 @@ class _ActiveGameResultPageState extends State<ActiveGameResultPage> {
   }
 
   _bannerChampionsBlueTeam() {
-    return ListView(
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      physics: NeverScrollableScrollPhysics(),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: controller.bansBlueTeam
           .map(
             (e) => _championBadge(e.championId),
@@ -204,7 +215,6 @@ class _ActiveGameResultPageState extends State<ActiveGameResultPage> {
 
   Widget _championBadge(int id) {
     return Container(
-      margin: const EdgeInsets.only(left: 5),
       child: id > 0
           ? Image.network(
               controller.generalController.getChampionBadgeUrl(id),

@@ -41,9 +41,12 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: widget.participant.teamId == BLUE_TEAM
-          ? Colors.blue.withOpacity(0.12)
-          : Colors.red.withOpacity(0.12),
+      decoration: BoxDecoration(
+        color: widget.participant.teamId == BLUE_TEAM
+            ? Colors.blue.withOpacity(0.5)
+            : Colors.red.withOpacity(0.5),
+        border: Border.all(color: Colors.black, width: 0.1),
+      ),
       padding: EdgeInsets.symmetric(
         horizontal: 3,
         vertical: 5,
@@ -53,8 +56,12 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
           Expanded(
             child: _playerChampionBadge(),
           ),
+          Expanded(
+            child: _playerSpells(),
+          ),
           //_playerPerks(),
           Expanded(
+            flex: 8,
             child: _summonerName(),
           ),
           //_userTierNameAndSymbol(),
@@ -65,17 +72,11 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
   }
 
   _playerChampionBadge() {
-    return Row(
-      children: [
-        Image.network(
-          _activeGameParticipantController.generalController
-              .getChampionBadgeUrl(
-            widget.participant.championId,
-          ),
-          width: 36,
-        ),
-        _playerSpells(),
-      ],
+    return Image.network(
+      _activeGameParticipantController.generalController.getChampionBadgeUrl(
+        widget.participant.championId,
+      ),
+      width: 36,
     );
   }
 
@@ -85,32 +86,26 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
         Container(
           width: 18,
           height: 18,
-          child: _activeGameParticipantController
-                  .getSpellUrl(
-                    widget.participant.spell1Id.toString(),
-                  )
-                  .isNotEmpty
-              ? Image.network(
-                  _activeGameParticipantController.getSpellUrl(
-                    widget.participant.spell1Id.toString(),
-                  ),
-                )
-              : SizedBox.shrink(),
+          child: Image.network(
+            _activeGameParticipantController.generalController.getSpellBadgeUrl(
+              widget.participant.spell1Id,
+            ),
+            errorBuilder: (context, error, stackTrace) {
+              return SizedBox.shrink();
+            },
+          ),
         ),
         Container(
           width: 18,
           height: 18,
-          child: _activeGameParticipantController
-                  .getSpellUrl(
-                    widget.participant.spell2Id.toString(),
-                  )
-                  .isNotEmpty
-              ? Image.network(
-                  _activeGameParticipantController.getSpellUrl(
-                    widget.participant.spell2Id.toString(),
-                  ),
-                )
-              : SizedBox.shrink(),
+          child: Image.network(
+            _activeGameParticipantController.generalController.getSpellBadgeUrl(
+              widget.participant.spell2Id,
+            ),
+            errorBuilder: (context, error, stackTrace) {
+              return SizedBox.shrink();
+            },
+          ),
         ),
       ],
     );
@@ -254,32 +249,32 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
     );
   }
 
-  // _userTierSymbol() {
-  //   return ValueListenableBuilder(
-  //     valueListenable: _activeGameParticipantController.soloUserTier,
-  //     builder: (context, value, _) {
-  //       return Container(
-  //         child: _activeGameParticipantController
-  //                 .soloUserTier.value.tier.isNotEmpty
-  //             ? Image.asset(
-  //                 getUserTierImage(),
-  //                 width: 18,
-  //               )
-  //             : Container(
-  //                 margin: EdgeInsets.only(right: 10),
-  //                 child: Image.asset(
-  //                   imageUnranked,
-  //                   width: 17,
-  //                 ),
-  //               ),
-  //       );
-  //     },
-  //   );
-  // }
+// _userTierSymbol() {
+//   return ValueListenableBuilder(
+//     valueListenable: _activeGameParticipantController.soloUserTier,
+//     builder: (context, value, _) {
+//       return Container(
+//         child: _activeGameParticipantController
+//                 .soloUserTier.value.tier.isNotEmpty
+//             ? Image.asset(
+//                 getUserTierImage(),
+//                 width: 18,
+//               )
+//             : Container(
+//                 margin: EdgeInsets.only(right: 10),
+//                 child: Image.asset(
+//                   imageUnranked,
+//                   width: 17,
+//                 ),
+//               ),
+//       );
+//     },
+//   );
+// }
 
-  // String getUserTierImage() {
-  //   return _activeGameParticipantController.getUserTierImage(
-  //     _activeGameParticipantController.soloUserTier.value.tier,
-  //   );
-  // }
+// String getUserTierImage() {
+//   return _activeGameParticipantController.getUserTierImage(
+//     _activeGameParticipantController.soloUserTier.value.tier,
+//   );
+// }
 }

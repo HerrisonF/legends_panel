@@ -90,8 +90,11 @@ class GeneralRepository {
     }
   }
 
-  String getSpellBadgeUrl(String spellName) {
-    final String path = "/cdn/latest/img/spell/$spellName.png";
+  String getSpellBadgeUrl({
+    required String spellName,
+    required String version,
+  }) {
+    final String path = "/cdn/$version/img/spell/$spellName";
     logger.logDEBUG("building Image Spell Url ...");
     try {
       return API.riotDragonUrl + path;

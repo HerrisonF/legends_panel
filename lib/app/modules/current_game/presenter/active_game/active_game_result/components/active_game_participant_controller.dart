@@ -54,16 +54,6 @@ class ActiveGameParticipantController {
         .toStringAsFixed(0);
   }
 
-  String getSpellUrl(String spellId) {
-    // Spell spell = _masterController.getSpellById(spellId);
-    // if (spell.name.isNotEmpty) {
-    //   return _participantRepository.getSpellBadgeUrl(spell.id);
-    // } else {
-    //   return "";
-    // }
-    return "";
-  }
-
   // String getItemUrl(String itemId) {
   //   return activeGameParticipantRepository.getItemUrl(itemId);
   // }

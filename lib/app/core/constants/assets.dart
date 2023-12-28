@@ -9,7 +9,6 @@ final String imageBackgroundAboutPage2 = _getImagePath("background_about_page_2.
 final String imageBackgroundProfilePage = _getImagePath("profile_page_background.jpeg");
 final String imageIconItemNone = _getImagePath("icon_item_none.png");
 final String imageMapSelect = _getImagePath("map_select.jpeg");
-final String imageDivider = _getImagePath("divider.png");
 final String imageNoChampion = _getImagePath("no_champion.png");
 final String imageUnranked = _getImagePath("unranked_icon.png");
 

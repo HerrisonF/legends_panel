@@ -80,14 +80,6 @@ class GeneralController {
     currentPageIndex.value = newPageIndex;
   }
 
-  getSpellById(String spellId) {
-    // Spell spell = Spell();
-    // var spells = spellRoom.summonerSpell.spells
-    //     .where((spell) => spell.key.toString() == spellId);
-    // if (spells.length > 0) spell = spells.first;
-    // return spell;
-  }
-
   getCurrentUserOnCloud(String userName, String keyRegion) async {
     // userForCurrentGame =
     //     await _masterRepository.getUserOnCloud(userName, keyRegion);
@@ -102,6 +94,13 @@ class GeneralController {
     return generalRepository.getChampionBadgeUrl(
       championId: lolConstantsModel.getChampionById(championId)!.image.full,
       version: lolConstantsModel.getLatestLolVersion(),
+    );
+  }
+
+  getSpellBadgeUrl(int spellId) {
+    return generalRepository.getSpellBadgeUrl(
+      version: lolConstantsModel.getLatestLolVersion(),
+      spellName: lolConstantsModel.getSpellById(spellId)!.image!.full,
     );
   }
 }

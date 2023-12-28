@@ -103,6 +103,15 @@ class LolConstantsModel {
     return null;
   }
 
+  SummonerSpell? getSpellById(int spellId) {
+    List<SummonerSpell> spellsTemp =
+    spells!.where((element) => element.key == spellId.toString()).toList();
+    if (spellsTemp.isNotEmpty) {
+      return spellsTemp.first;
+    }
+    return null;
+  }
+
   String getMapQueueById(int queueId) {
     List<QueueModel> tempQueues =
         queues!.where((queue) => queue.queueId == queueId).toList();
