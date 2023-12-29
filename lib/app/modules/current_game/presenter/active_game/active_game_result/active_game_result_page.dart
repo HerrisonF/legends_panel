@@ -118,17 +118,27 @@ class _ActiveGameResultPageState extends State<ActiveGameResultPage> {
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.only(
-        top: 50,
+        top: 20,
         bottom: 20,
       ),
-      child: Text(
-        controller.activeGameInfoModel.summonerProfileModel!.name,
-        style: GoogleFonts.aBeeZee(
-          fontSize: 14,
-          color: Colors.yellow,
-          letterSpacing: 0.2,
-          fontWeight: FontWeight.bold,
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Summoner",
+            style: TextStyle(color: Colors.white),
+          ),
+          Text(
+            controller.activeGameInfoModel.summonerProfileModel!
+                .summonerIdentificationModel!.gameName,
+            style: GoogleFonts.aBeeZee(
+              fontSize: 14,
+              color: Colors.yellow,
+              letterSpacing: 0.2,
+              fontWeight: FontWeight.bold,
+            ),
+          )
+        ],
       ),
     );
   }

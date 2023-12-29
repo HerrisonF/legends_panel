@@ -80,8 +80,8 @@ class ActiveGameSearchController {
                 /// Todos os dados foram encontrados. Então posso levar o usuário
                 /// para a tela de resultados. A tela que irá montar a visualização
                 /// do jogo ativo que foi encontrado.
-                profile.setSummonerIdentification(summonerIdentification);
                 gameInfo.setSummonerProfile(profile);
+                gameInfo.setSummonerIdentification(summonerIdentification);
                 goToGameResultPageCallback(gameInfo);
                 _stopUserLoading();
               },

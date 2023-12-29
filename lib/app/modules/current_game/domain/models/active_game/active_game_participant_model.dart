@@ -32,6 +32,8 @@ class ActiveGameParticipantModel {
   /// List of Game Customizations
   List<ActiveGameCustomizationModel> gameCustomizations;
 
+
+
   ActiveGameParticipantModel({
     required this.championId,
     required this.perk,
