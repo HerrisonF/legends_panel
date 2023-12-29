@@ -1,3 +1,5 @@
+import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_identification_model.dart';
+
 class SummonerProfileModel {
   String accountId;
   int profileIconId;
@@ -5,6 +7,7 @@ class SummonerProfileModel {
   String id;
   String puuid;
   int summonerLevel;
+  SummonerIdentificationModel? summonerIdentificationModel;
 
   SummonerProfileModel({
     required this.accountId,
@@ -14,4 +17,14 @@ class SummonerProfileModel {
     required this.puuid,
     required this.summonerLevel,
   });
+
+  setSummonerIdentification(
+    SummonerIdentificationModel model,
+  ) {
+    this.summonerIdentificationModel = SummonerIdentificationModel(
+      puuid: model.puuid,
+      gameName: model.gameName,
+      tagLine: model.tagLine,
+    );
+  }
 }

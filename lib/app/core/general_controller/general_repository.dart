@@ -57,7 +57,7 @@ class GeneralRepository {
     required String championId,
     required String version,
   }) {
-    logger.logDEBUG("building Image Champion URL... $championId # latest");
+    logger.logDEBUG("building Image Champion URL... $championId");
     final String path = "/cdn/$version/img/champion/$championId";
     try {
       return API.riotDragonUrl + path;

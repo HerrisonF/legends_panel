@@ -4,6 +4,7 @@ import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_c
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/game_version_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/item_mother_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/mapa_model.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/perk_style_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/queue_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/ranked_constants.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/summoner_spell.dart';
@@ -20,8 +21,28 @@ class LolConstantsModel {
   List<GameLanguageModel>? gameLanguages;
   List<ChampionModel>? champions;
   List<SummonerSpell>? spells;
+  List<PerkStyleModel>? perks;
   ItemMotherModel? itemMotherModel;
   RankedConstants? rankedConstants;
+
+  List<String> regions = [
+    'BR1',
+    'EUN1',
+    'EUW1',
+    'JP1',
+    'KR',
+    'LA1',
+    'LA2',
+    'NA1',
+    'OC1',
+    'TR1',
+    'RU',
+    'PH2',
+    'SG2',
+    'TH2',
+    'TW2',
+    'VN2',
+  ];
 
   LolConstantsModel({
     this.queues,
@@ -33,6 +54,7 @@ class LolConstantsModel {
     this.spells,
     this.gameLanguages,
     this.rankedConstants,
+    this.perks,
   });
 
   setQueues(List<QueueModel> queues) {
@@ -72,6 +94,11 @@ class LolConstantsModel {
   setSummonerSpells(List<SummonerSpell> spells) {
     this.spells = [];
     this.spells!.addAll(spells);
+  }
+
+  setPerks(List<PerkStyleModel> perks) {
+    this.perks = [];
+    this.perks!.addAll(perks);
   }
 
   setRankedConstants() {

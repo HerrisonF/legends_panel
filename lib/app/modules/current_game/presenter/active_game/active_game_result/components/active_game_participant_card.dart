@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:legends_panel/app/core/constants/assets.dart';
 import 'package:legends_panel/app/core/general_controller/general_controller.dart';
-import 'package:legends_panel/app/core/http_configuration/http_services.dart';
-import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_participant_model.dart';
 import 'package:legends_panel/app/modules/current_game/presenter/active_game/active_game_result/components/active_game_participant_controller.dart';
 
@@ -54,12 +51,14 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
       child: Row(
         children: [
           Expanded(
-            child: _playerChampionBadge(),
+            child: _summonerChampionBadge(),
           ),
           Expanded(
-            child: _playerSpells(),
+            child: _summonerSpells(),
           ),
-          //_playerPerks(),
+          Expanded(
+            child: _summonerPerks(),
+          ),
           Expanded(
             flex: 8,
             child: _summonerName(),
@@ -71,7 +70,7 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
     );
   }
 
-  _playerChampionBadge() {
+  _summonerChampionBadge() {
     return Image.network(
       _activeGameParticipantController.generalController.getChampionBadgeUrl(
         widget.participant.championId,
@@ -80,7 +79,7 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
     );
   }
 
-  Column _playerSpells() {
+  Column _summonerSpells() {
     return Column(
       children: [
         Container(
@@ -111,31 +110,37 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
     );
   }
 
-  // _playerPerks() {
-  //   return Column(
-  //     children: [
-  //       Container(
-  //         margin: EdgeInsets.only(bottom: 2),
-  //         width: 18,
-  //         height: 18,
-  //         child: _activeGameParticipantController.getFirsPerkUrl().isNotEmpty
-  //             ? Image.network(
-  //                 _activeGameParticipantController.getFirsPerkUrl(),
-  //               )
-  //             : SizedBox.shrink(),
-  //       ),
-  //       Container(
-  //         width: 15,
-  //         height: 15,
-  //         child: _activeGameParticipantController.getPerkStyleUrl().isNotEmpty
-  //             ? Image.network(
-  //                 _activeGameParticipantController.getPerkStyleUrl(),
-  //               )
-  //             : SizedBox.shrink(),
-  //       ),
-  //     ],
-  //   );
-  // }
+  _summonerPerks() {
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 2),
+          width: 18,
+          height: 18,
+          child: Image.network(
+            _activeGameParticipantController.generalController.getPerkStyleBadgeUrl(
+              perkStyleId: widget.participant.perk!.perkSubStyle,
+            ),
+            errorBuilder: (context, error, stackTrace) {
+              return SizedBox.shrink();
+            },
+          ),
+        ),
+        Container(
+          width: 15,
+          height: 15,
+          child: Image.network(
+            _activeGameParticipantController.generalController.getPerkSubStyleBadgeUrl(
+              perkSubStyleId: widget.participant.perk!.perkSubStyle,
+            ),
+            errorBuilder: (context, error, stackTrace) {
+              return SizedBox.shrink();
+            },
+          ),
+        ),
+      ],
+    );
+  }
 
   Container _summonerName() {
     return Container(

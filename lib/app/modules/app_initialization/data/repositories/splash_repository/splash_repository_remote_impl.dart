@@ -9,6 +9,7 @@ import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_const
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/group_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/item_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/mapa_dto.dart';
+import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/perk_style_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/queue_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/summoner_spell_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/tree_dto.dart';
@@ -23,6 +24,7 @@ import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_c
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/item_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/item_mother_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/mapa_model.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/perk_style_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/queue_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/summoner_spell.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/tree_model.dart';
@@ -429,15 +431,17 @@ class SplashRepositoryRemoteImpl extends SplashRepository {
                 rangeBurn: dto.rangeBurn,
                 cooldownBurn: dto.cooldownBurn,
                 description: dto.description,
-                image: dto.image != null ? ImageModel(
-                  y: dto.image!.y,
-                  x: dto.image!.x,
-                  w: dto.image!.w,
-                  sprite: dto.image!.sprite,
-                  h: dto.image!.h,
-                  group: dto.image!.group,
-                  full: dto.image!.full,
-                ) : ImageModel.empty(),
+                image: dto.image != null
+                    ? ImageModel(
+                        y: dto.image!.y,
+                        x: dto.image!.x,
+                        w: dto.image!.w,
+                        sprite: dto.image!.sprite,
+                        h: dto.image!.h,
+                        group: dto.image!.group,
+                        full: dto.image!.full,
+                      )
+                    : ImageModel.empty(),
                 name: dto.name,
                 key: dto.key,
                 id: dto.id,
@@ -455,6 +459,67 @@ class SplashRepositoryRemoteImpl extends SplashRepository {
       return Left(
         Failure(
           message: 'Falha na busca remota de SUMMONER SPELLS.',
+          error: e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<PerkStyleModel>>> fetchSummonerRunes({
+    required String version,
+    required String region,
+  }) async {
+    final String path = "/cdn/$version/data/$region/runesReforged.json";
+
+    List<PerkStyleModel> models = [];
+
+    try {
+      final response = await httpServices.get(
+        url: API.riotDragonUrl,
+        path: path,
+        origin: origin,
+      );
+
+      return response.fold((l) {
+        return Left(l);
+      }, (r) {
+        r.data.forEach((element) {
+          PerkStyleDTO dto = PerkStyleDTO.fromJson(element);
+          PerkStyleModel model = PerkStyleModel(
+            id: dto.id,
+            key: dto.key,
+            icon: dto.icon,
+            name: dto.name,
+            slotModels: dto.slotsDTO
+                .map(
+                  (e) => SlotsModel(
+                    runeModels: e.runeDTOs
+                        .map(
+                          (a) => RuneModel(
+                            id: a.id,
+                            key: a.key,
+                            icon: a.icon,
+                            name: a.name,
+                            shortDesc: a.shortDesc,
+                            longDesc: a.longDesc,
+                          ),
+                        )
+                        .toList(),
+                  ),
+                )
+                .toList(),
+          );
+
+          models.add(model);
+        });
+
+        return Right(models);
+      });
+    } catch (e) {
+      return Left(
+        Failure(
+          message: 'Falha na busca remota de SUMMONER PERKS.',
           error: e.toString(),
         ),
       );

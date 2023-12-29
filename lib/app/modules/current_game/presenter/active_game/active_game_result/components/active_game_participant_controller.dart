@@ -32,27 +32,27 @@ class ActiveGameParticipantController {
   //   _getSoloRankedOnly(userTierList.value);
   // }
 
-  _getSoloRankedOnly(List<UserTier> userTierList) {
-    try {
-      soloUserTier.value = userTierList
-          .where((tier) => tier.queueType == StringConstants.rankedSolo)
-          .first;
-      soloUserTier.value.winRate = getUserWinRate();
-    } catch (e) {
-      soloUserTier.value.winRate = 0.toString();
-    }
-  }
+  // _getSoloRankedOnly(List<UserTier> userTierList) {
+  //   try {
+  //     soloUserTier.value = userTierList
+  //         .where((tier) => tier.queueType == StringConstants.rankedSolo)
+  //         .first;
+  //     soloUserTier.value.winRate = getUserWinRate();
+  //   } catch (e) {
+  //     soloUserTier.value.winRate = 0.toString();
+  //   }
+  // }
   //
   // String getUserTierImage(String tier) {
   //   return activeGameParticipantRepository.getUserTierImage(tier);
   // }
 
-  String getUserWinRate() {
-    return ((soloUserTier.value.wins /
-                (soloUserTier.value.wins + soloUserTier.value.losses)) *
-            100)
-        .toStringAsFixed(0);
-  }
+  // String getUserWinRate() {
+  //   return ((soloUserTier.value.wins /
+  //               (soloUserTier.value.wins + soloUserTier.value.losses)) *
+  //           100)
+  //       .toStringAsFixed(0);
+  // }
 
   // String getItemUrl(String itemId) {
   //   return activeGameParticipantRepository.getItemUrl(itemId);
@@ -68,17 +68,4 @@ class ActiveGameParticipantController {
     // currentGameSpectator.value =
     //     await _participantRepository.getSpectator(summonerId, region);
   }
-
-  // String getPerkStyleUrl() {
-  //   // String perkName =
-  //   //     _masterController.getPerkSubStyleIconName(currentGamePerk);
-  //
-  //   return activeGameParticipantRepository.getPerkUrl("");
-  // }
-  //
-  // String getFirsPerkUrl() {
-  //   // String perkName =
-  //   //     _masterController.getFirstPerkFromPerkStyle(currentGamePerk);
-  //   return activeGameParticipantRepository.getPerkUrl("");
-  // }
 }

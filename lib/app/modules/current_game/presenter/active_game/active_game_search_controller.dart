@@ -61,10 +61,10 @@ class ActiveGameSearchController {
     );
     result.fold(
       (_) => _showMessageUserIsNotInAGame(),
-      (r) async {
+      (summonerIdentification) async {
         /// Depois de ter a identificação, posso procurar pelo jogo em andamento.
         final result = await fetchSummonerProfileByPUUIDUsecase(
-          puuid: r.puuid,
+          puuid: summonerIdentification.puuid,
           region: selectedRegion.value,
         );
         result.fold(
@@ -80,6 +80,7 @@ class ActiveGameSearchController {
                 /// Todos os dados foram encontrados. Então posso levar o usuário
                 /// para a tela de resultados. A tela que irá montar a visualização
                 /// do jogo ativo que foi encontrado.
+                profile.setSummonerIdentification(summonerIdentification);
                 gameInfo.setSummonerProfile(profile);
                 goToGameResultPageCallback(gameInfo);
                 _stopUserLoading();

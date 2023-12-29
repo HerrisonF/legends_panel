@@ -7,6 +7,7 @@ import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_c
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/item_mother_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/lol_constants_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/mapa_model.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/perk_style_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/queue_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/summoner_spell.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/usecases/game_constants_usecase/fetch_game_constants_usecase.dart';
@@ -103,6 +104,10 @@ class FetchGameConstantsUsecaseImpl extends FetchGameConstantsUsecase {
                 language: lolConstantsModel.getLanguage(localization),
                 version: lolConstantsModel.getLatestLolVersion(),
               ),
+              await remoteRepository.fetchSummonerRunes(
+                version: lolConstantsModel.getLatestLolVersion(),
+                region: lolConstantsModel.getLanguage(localization),
+              ),
             ]);
 
             response[0].fold((l) => Left(l), (r) {
@@ -116,6 +121,11 @@ class FetchGameConstantsUsecaseImpl extends FetchGameConstantsUsecase {
             response[2].fold((l) => Left(l), (r) {
               lolConstantsModel.setSummonerSpells(r as List<SummonerSpell>);
             });
+
+            response[3].fold((l) => Left(l), (r) {
+              lolConstantsModel.setPerks(r as List<PerkStyleModel>);
+            });
+
             lolConstantsModel.setRankedConstants();
           });
       });

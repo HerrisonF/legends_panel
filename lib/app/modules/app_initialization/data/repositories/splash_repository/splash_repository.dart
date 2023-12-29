@@ -6,6 +6,7 @@ import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_c
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/game_version_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/item_mother_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/mapa_model.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/perk_style_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/queue_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/summoner_spell.dart';
 
@@ -26,5 +27,9 @@ abstract class SplashRepository{
   Future<Either<Failure, List<SummonerSpell>>> fetchSummonerSpells({
     required String version,
     required String language,
+  });
+  Future<Either<Failure, List<PerkStyleModel>>> fetchSummonerRunes({
+    required String version,
+    required String region,
   });
 }

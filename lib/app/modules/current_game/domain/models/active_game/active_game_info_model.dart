@@ -1,5 +1,6 @@
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_banned_champion_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_participant_model.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_identification_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_profile_model.dart';
 
 class ActiveGameInfoModel {
@@ -53,7 +54,21 @@ class ActiveGameInfoModel {
     required this.activeGameParticipants,
   });
 
-  setSummonerProfile(SummonerProfileModel summonerProfileModel){
-    this.summonerProfileModel = summonerProfileModel;
+  setSummonerProfile(SummonerProfileModel model) {
+    this.summonerProfileModel = SummonerProfileModel(
+      accountId: model.accountId,
+      profileIconId: model.profileIconId,
+      name: model.name,
+      id: model.id,
+      puuid: model.puuid,
+      summonerLevel: model.summonerLevel,
+    );
+  }
+
+  setSummonerIdentification(
+      SummonerIdentificationModel summonerIdentificationModel) {
+    this
+        .summonerProfileModel!
+        .setSummonerIdentification(summonerIdentificationModel);
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:legends_panel/app/core/general_controller/general_repository.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/lol_constants_model.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/runesRoom.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/user.dart';
 
 class GeneralController {
@@ -9,7 +8,6 @@ class GeneralController {
 
   User userForCurrentGame = User();
   User userForProfile = User();
-  RunesRoom runesRoom = RunesRoom();
   late LolConstantsModel lolConstantsModel;
   late GeneralRepository generalRepository;
 
@@ -31,9 +29,9 @@ class GeneralController {
 
   getRunesRoom() async {
     // runesRoom = await _masterRepository.getRunesRoomOnLocal();
-    if (runesRoom.needToLoadVersionFromWeb()) {
-      await getRunesRoomOnWeb();
-    }
+    // if (runesRoom.needToLoadVersionFromWeb()) {
+    //   await getRunesRoomOnWeb();
+    // }
   }
 
   getRunesRoomOnWeb() async {
@@ -42,32 +40,41 @@ class GeneralController {
     // _masterRepository.saveRunesRoom(runesRoom.toJson());
   }
 
-  // String getPerkSubStyleIconName(CurrentGamePerk perk) {
-  //   PerkStyle perkStyle = PerkStyle();
-  //   var currentPerk = runesRoom.perkStyle.where(
-  //       (perkStyle) => perkStyle.id.toString() == perk.perkSubStyle.toString());
-  //   if (currentPerk.length > 0) {
-  //     perkStyle = currentPerk.first;
-  //   }
-  //   return perkStyle.icon;
-  // }
-  //
-  // String getFirstPerkFromPerkStyle(CurrentGamePerk perk) {
-  //   PerkStyle perkStyle = PerkStyle();
-  //   var currentPerk = runesRoom.perkStyle.where(
-  //       (perkStyle) => perkStyle.id.toString() == perk.perkStyle.toString());
-  //   if (currentPerk.length > 0) {
-  //     perkStyle = currentPerk.first;
-  //   }
-  //   Runes runes = Runes();
-  //   var firstIcon;
-  //   for (Slots slot in perkStyle.slots) {
-  //     firstIcon = slot.runes
-  //         .where((rune) => rune.id.toString() == perk.perkIds[0].toString());
-  //     if (firstIcon.length > 0) {
-  //       break;
-  //     }
-  //   }
+  String getPerkSubStyleBadgeUrl({
+    required int perkSubStyleId,
+  }) {
+    // PerkStyle perkStyle = PerkStyle();
+    // var currentPerk = runesRoom.perkStyle.where(
+    //     (perkStyle) => perkStyle.id.toString() == perk.perkSubStyle.toString());
+    // if (currentPerk.length > 0) {
+    //   perkStyle = currentPerk.first;
+    // }
+    // return perkStyle.icon;
+
+    return "";
+  }
+
+  String getPerkStyleBadgeUrl({
+    required int perkStyleId,
+  }) {
+    // PerkStyle perkStyle = PerkStyle();
+    // var currentPerk = runesRoom.perkStyle.where(
+    //     (perkStyle) => perkStyle.id.toString() == perk.perkStyle.toString());
+    // if (currentPerk.length > 0) {
+    //   perkStyle = currentPerk.first;
+    // }
+    // Runes runes = Runes();
+    // var firstIcon;
+    // for (Slots slot in perkStyle.slots) {
+    //   firstIcon = slot.runes
+    //       .where((rune) => rune.id.toString() == perk.perkIds[0].toString());
+    //   if (firstIcon.length > 0) {
+    //     break;
+    //   }
+    // }
+    return "";
+  }
+
   //
   //   if (firstIcon.length > 0) {
   //     runes = firstIcon.first;

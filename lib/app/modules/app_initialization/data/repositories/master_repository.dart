@@ -39,44 +39,6 @@ class MasterRepository {
   //   }
   // }
   //
-  // Future<RunesRoom> getRunesRoomOnLocal() async {
-  //   logger.logDEBUG("Getting RunesRoom on Local ...");
-  //   try {
-  //     String runesRoomString = await box.read(StorageKeys.runesRoomKey);
-  //     if (runesRoomString.isNotEmpty) {
-  //       logger.logDEBUG("Success to get RunesRoom on Local ...");
-  //       return RunesRoom.fromJson(jsonDecode(runesRoomString));
-  //     }
-  //   } catch (e) {
-  //     logger.logDEBUG("Error to get RunesRoom on local_imp $e");
-  //     return RunesRoom();
-  //   }
-  //   logger.logDEBUG("runesRoom on local_imp not found ...");
-  //   return RunesRoom();
-  // }
-  //
-  // saveRunesRoom(Map<String, dynamic> runesRoom) {
-  //   logger.logDEBUG("Persisting runesRoom ...");
-  //   try {
-  //     box.write(StorageKeys.runesRoomKey, jsonEncode(runesRoom));
-  //     logger.logDEBUG("Success to persist runesRoom ...");
-  //   } catch (e) {
-  //     logger.logDEBUG("Error to persist runesRoom ... $e");
-  //   }
-  // }
-  //
-  // String getImageUrl(String championName, String version) {
-  //   final String path =
-  //       "/cdn/$version/img/champion/${championName.replaceAll(" ", "")}.png";
-  //   logger.logDEBUG("building Image URL...");
-  //   try {
-  //     return API.riotDragonUrl + path;
-  //   } catch (e) {
-  //     logger.logDEBUG("Error to build Image Url $e");
-  //     return "";
-  //   }
-  // }
-  //
   // Future<User> readPersistedUserProfile() async {
   //   logger.logDEBUG("Reading persisted UserProfile Url ...");
   //   User user = User();
@@ -137,27 +99,4 @@ class MasterRepository {
   //   }
   // }
   //
-  // Future<User> getUserOnCloud(String summonerName, String keyRegion) async {
-  //
-  //   final String path = "/lol/summoner/v4/summoners/by-name/$summonerName";
-  //
-  //   try{
-  //     final response = await httpServices.get(
-  //       url: API.riotDragonUrl,
-  //       path: path,
-  //       origin: origin,
-  //     );
-  //
-  //     return response.fold((l) {
-  //       logger.logDEBUG("Error to find User");
-  //       return User();
-  //     }, (r) {
-  //       logger.logDEBUG("Success to Found User...");
-  //       return User.fromJson(r.data);
-  //     });
-  //   }catch(e){
-  //     logger.logDEBUG("Error to find User ${e.toString()}");
-  //     return User();
-  //   }
-  // }
 }
