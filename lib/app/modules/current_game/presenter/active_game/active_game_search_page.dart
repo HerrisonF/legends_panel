@@ -308,7 +308,7 @@ class _ActiveGameSearchPageState extends State<ActiveGameSearchPage> {
       return AppLocalizations.of(context)!.searching;
     }
 
-    return AppLocalizations.of(context)!.buttonMessageSearch;
+    return AppLocalizations.of(context)!.buttonMessageSearch.toUpperCase();
   }
 
   _validateAndSearchSummoner() {

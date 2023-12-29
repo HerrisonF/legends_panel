@@ -2,6 +2,9 @@ import 'package:legends_panel/app/modules/current_game/data/dtos/active_game/act
 import 'package:legends_panel/app/modules/current_game/data/dtos/active_game/active_game_perk_dto.dart';
 
 class ActiveGameParticipantDTO {
+
+  String puuid;
+
   /// The ID of the champion played by this participant
   int championId;
 
@@ -43,11 +46,13 @@ class ActiveGameParticipantDTO {
     required this.spell1Id,
     required this.spell2Id,
     required this.gameCustomizations,
+    required this.puuid,
   });
 
   factory ActiveGameParticipantDTO.fromJson(Map<String, dynamic> json) {
     return ActiveGameParticipantDTO(
       championId: json['championId'] ?? 0,
+      puuid: json['puuid'] ?? "",
       perk: ActiveGamePerkDTO.fromJson(json['perks']),
       profileIconId: json['profileIconId'] ?? 0,
       bot: json['bot'] ?? false,
@@ -67,6 +72,7 @@ class ActiveGameParticipantDTO {
     return {
       'championId': championId,
       'perks': perk.toJson(),
+      'puuid' : puuid,
       'profileIconId': profileIconId,
       'bot': bot,
       'teamId': teamId,

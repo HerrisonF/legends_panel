@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_participant_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/active_game/fetch_active_game_by_summoner_id_usecase.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_puuid_and_summonerID_from_riot_usecase.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_summoner_profile_by_puuid_usecase.dart';
@@ -13,7 +14,6 @@ class ActiveGameSearchController {
   late final Function goToGameResultPageCallback;
 
   ValueNotifier<bool> isLoadingUser = ValueNotifier(false);
-  ValueNotifier<bool> isShowingMessage = ValueNotifier(false);
   ValueNotifier<bool> isShowingMessageUserIsNotPlaying = ValueNotifier(false);
   ValueNotifier<String> selectedRegion = ValueNotifier('BR1');
   List<String> regions = [
@@ -76,12 +76,21 @@ class ActiveGameSearchController {
             );
             result.fold(
               (_) => _showMessageUserIsNotInAGame(),
-              (gameInfo) {
+              (gameInfo) async {
                 /// Todos os dados foram encontrados. Então posso levar o usuário
                 /// para a tela de resultados. A tela que irá montar a visualização
                 /// do jogo ativo que foi encontrado.
                 gameInfo.setSummonerProfile(profile);
                 gameInfo.setSummonerIdentification(summonerIdentification);
+
+                ActiveGameParticipantModel model = gameInfo.activeGameParticipants
+                    .where((element) =>
+                        element.puuid == gameInfo.summonerProfileModel!.puuid)
+                    .first;
+
+                model.setSummonerProfile(profile);
+                model.setSummonerIdentification(summonerIdentification);
+
                 goToGameResultPageCallback(gameInfo);
                 _stopUserLoading();
               },
@@ -97,6 +106,7 @@ class ActiveGameSearchController {
     isShowingMessageUserIsNotPlaying.value = true;
     Future.delayed(Duration(seconds: 3)).then((value) {
       isShowingMessageUserIsNotPlaying.value = false;
+      _stopUserLoading();
     });
   }
 }

@@ -43,11 +43,6 @@ class GeneralController {
     //     await _masterRepository.getUserOnCloud(userName, keyRegion);
   }
 
-  getUserProfileOnCloud(String userName, String keyRegion) async {
-    // userForProfile =
-    //     await _masterRepository.getUserOnCloud(userName, keyRegion);
-  }
-
   String getChampionBadgeUrl(int championId) {
     return generalRepository.getChampionBadgeUrl(
       championId: lolConstantsModel.getChampionById(championId)!.image.full,

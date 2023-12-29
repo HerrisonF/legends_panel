@@ -13,9 +13,10 @@ class QueueModel {
 
   String getQueueDescriptionWithoutGamesString(){
     if(description.isNotEmpty){
-      String result =  description.replaceAll('games', ' ');
-      String result2 = result.replaceFirst(new RegExp(r"\s+$"), "");
-      return result2;
+      String result =  description.replaceAll('5v5', '');
+      String result2 =  result.replaceAll('games', '');
+      String result3 = result2.replaceFirst(new RegExp(r"\s+$"), "");
+      return result3;
     }
     return description;
   }

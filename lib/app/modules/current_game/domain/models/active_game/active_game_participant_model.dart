@@ -1,7 +1,11 @@
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_customization_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_perk_model.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_identification_model.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_profile_model.dart';
 
 class ActiveGameParticipantModel {
+  String puuid;
+
   /// The ID of the champion played by this participant
   int championId;
 
@@ -32,7 +36,12 @@ class ActiveGameParticipantModel {
   /// List of Game Customizations
   List<ActiveGameCustomizationModel> gameCustomizations;
 
+  ///Items que não são buscados na API. Apenas são usados na transição de dados
+  ///dentro da aplicação.
 
+  SummonerProfileModel? summonerProfileModel;
+
+  ///
 
   ActiveGameParticipantModel({
     required this.championId,
@@ -45,6 +54,32 @@ class ActiveGameParticipantModel {
     required this.spell1Id,
     required this.spell2Id,
     required this.gameCustomizations,
+    required this.puuid,
   });
 
+  setSummonerProfile(SummonerProfileModel model) {
+    this.summonerProfileModel = SummonerProfileModel(
+      accountId: model.accountId,
+      profileIconId: model.profileIconId,
+      name: model.name,
+      id: model.id,
+      puuid: model.puuid,
+      summonerLevel: model.summonerLevel,
+    );
+  }
+
+  setSummonerIdentification(
+    SummonerIdentificationModel summonerIdentificationModel,
+  ) {
+    this
+        .summonerProfileModel!
+        .setSummonerIdentification(summonerIdentificationModel);
+  }
+
+  String getSummonerName() {
+    return summonerProfileModel != null &&
+            summonerProfileModel!.summonerIdentificationModel != null
+        ? summonerProfileModel!.summonerIdentificationModel!.gameName
+        : summonerName;
+  }
 }

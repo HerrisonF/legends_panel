@@ -104,34 +104,6 @@ class GeneralRepository {
     }
   }
 
-  // Future<CurrentGameSpectator> getSpectator(
-  //     String userId,
-  //     String region,
-  //     ) async {
-  //   final String path = "/lol/spectator/v4/active-games/by-summoner/$userId";
-  //   logger.logDEBUG("Fetching Current Game ...");
-  //   try {
-  //     final response = await httpServices.get(
-  //       url: API.riotAmericasUrl,
-  //       path: path,
-  //       origin: origin,
-  //     );
-  //
-  //     return response.fold(
-  //           (l) {
-  //         logger.logDEBUG("Error fetching Current Game");
-  //         return CurrentGameSpectator();
-  //       },
-  //           (r) {
-  //         return CurrentGameSpectator.fromJson(r.data);
-  //       },
-  //     );
-  //   } catch (e) {
-  //     logger.logDEBUG("Error fetching Current Game $e");
-  //     return CurrentGameSpectator();
-  //   }
-  // }
-
   String getPerkUrl(String iconName) {
     final String path = "/cdn/img/$iconName";
     logger.logDEBUG("building Image Perk Url ...");

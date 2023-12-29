@@ -139,9 +139,18 @@ class LolConstantsModel {
     return null;
   }
 
-  String getMapQueueById(int queueId) {
+  String getMapNameById({required int mapId}) {
+    List<MapaModel> tempMaps =
+        maps!.where((map) => map.mapaId == mapId).toList();
+    if (tempMaps.isNotEmpty) {
+      return tempMaps.first.mapName;
+    }
+    return "";
+  }
+
+  String getQueueNameById({required int queueId}) {
     List<QueueModel> tempQueues =
-        queues!.where((queue) => queue.queueId == queueId).toList();
+    queues!.where((queue) => queue.queueId == queueId).toList();
     if (tempQueues.isNotEmpty) {
       return tempQueues.first.getQueueDescriptionWithoutGamesString();
     }
@@ -157,4 +166,5 @@ class LolConstantsModel {
     }
     return null;
   }
+
 }

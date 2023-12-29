@@ -54,16 +54,23 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
             child: _summonerChampionBadge(),
           ),
           Expanded(
-            child: _summonerSpells(),
+            child: Row(
+              children: [_summonerSpells(), _summonerPerks()],
+            ),
           ),
           Expanded(
-            child: _summonerPerks(),
-          ),
-          Expanded(
-            flex: 8,
+            flex: 4,
             child: _summonerName(),
           ),
-          //_userTierNameAndSymbol(),
+          Expanded(
+            flex: 2,
+            child: Row(
+              children: [
+                // _userTierSymbol(),
+                _userTierName(),
+              ],
+            ),
+          ),
           //_playerWinRate(),
         ],
       ),
@@ -71,11 +78,14 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
   }
 
   _summonerChampionBadge() {
-    return Image.network(
-      _activeGameParticipantController.generalController.getChampionBadgeUrl(
-        widget.participant.championId,
+    return Container(
+      margin: EdgeInsets.only(right: 2),
+      child: Image.network(
+        _activeGameParticipantController.generalController.getChampionBadgeUrl(
+          widget.participant.championId,
+        ),
+        width: 36,
       ),
-      width: 36,
     );
   }
 
@@ -118,7 +128,8 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
           width: 18,
           height: 18,
           child: Image.network(
-            _activeGameParticipantController.generalController.getPerkStyleBadgeUrl(
+            _activeGameParticipantController.generalController
+                .getPerkStyleBadgeUrl(
               perkId: widget.participant.perk!.perkStyle,
             ),
             errorBuilder: (context, error, stackTrace) {
@@ -130,7 +141,8 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
           width: 15,
           height: 15,
           child: Image.network(
-            _activeGameParticipantController.generalController.getPerkStyleBadgeUrl(
+            _activeGameParticipantController.generalController
+                .getPerkStyleBadgeUrl(
               perkId: widget.participant.perk!.perkSubStyle,
             ),
             errorBuilder: (context, error, stackTrace) {
@@ -146,7 +158,7 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
     return Container(
       margin: const EdgeInsets.only(left: 5),
       child: Text(
-        widget.participant.summonerName,
+        widget.participant.getSummonerName(),
         style: GoogleFonts.montserrat(
           fontSize: 10,
           color: widget.isToPaintUserName ? Colors.yellow : Colors.white,
@@ -187,12 +199,6 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
         });
   }
 
-  // _userTierNameAndSymbol() {
-  //   return Row(
-  //     children: [_userTierSymbol(), _userTierName()],
-  //   );
-  // }
-
   Column _userTierName() {
     return Column(
       children: [
@@ -201,7 +207,6 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
             builder: (context, value, _) {
               return Container(
                 alignment: Alignment.center,
-                width: 60,
                 child: _activeGameParticipantController
                         .soloUserTier.value.tier.isNotEmpty
                     ? Text(
@@ -228,28 +233,28 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
                       ),
               );
             }),
-        ValueListenableBuilder(
-            valueListenable: _activeGameParticipantController.soloUserTier,
-            builder: (context, value, _) {
-              return Container(
-                alignment: Alignment.center,
-                width: 80,
-                child: _activeGameParticipantController
-                        .soloUserTier.value.tier.isNotEmpty
-                    ? Text(
-                        "(" +
-                            _activeGameParticipantController
-                                .soloUserTier.value.leaguePoints
-                                .toString() +
-                            "LP)",
-                        style: GoogleFonts.montserrat(
-                          fontSize: 6,
-                          color: Colors.white,
-                        ),
-                      )
-                    : SizedBox.shrink(),
-              );
-            }),
+        // ValueListenableBuilder(
+        //     valueListenable: _activeGameParticipantController.soloUserTier,
+        //     builder: (context, value, _) {
+        //       return Container(
+        //         alignment: Alignment.center,
+        //         width: 80,
+        //         child: _activeGameParticipantController
+        //                 .soloUserTier.value.tier.isNotEmpty
+        //             ? Text(
+        //                 "(" +
+        //                     _activeGameParticipantController
+        //                         .soloUserTier.value.leaguePoints
+        //                         .toString() +
+        //                     "LP)",
+        //                 style: GoogleFonts.montserrat(
+        //                   fontSize: 6,
+        //                   color: Colors.white,
+        //                 ),
+        //               )
+        //             : SizedBox.shrink(),
+        //       );
+        //     }),
       ],
     );
   }

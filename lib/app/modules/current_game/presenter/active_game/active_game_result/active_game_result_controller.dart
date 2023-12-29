@@ -5,7 +5,6 @@ import 'package:legends_panel/app/modules/current_game/domain/models/active_game
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_participant_model.dart';
 
 class ActiveGameResultController {
-  String region = "";
 
   late final ActiveGameInfoModel activeGameInfoModel;
   late final GeneralController generalController;

@@ -116,6 +116,7 @@ class ActiveGameSearchRepositoryImpl extends ActiveGameSearchRepository {
           activeGameParticipants: dto.activeGameParticipants
               .map((e) => ActiveGameParticipantModel(
                     championId: e.championId,
+                    puuid: e.puuid,
                     perk: ActiveGamePerkModel(
                       perkIds: e.perk.perkIds.map((e) => e).toList(),
                       perkStyle: e.perk.perkStyle,

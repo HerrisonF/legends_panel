@@ -72,11 +72,14 @@ class _ActiveGameResultPageState extends State<ActiveGameResultPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(right: 5),
-                          child: Icon(
-                            Icons.access_alarm_outlined,
-                            size: 16,
-                            color: Colors.white,
+                          child: Text(
+                            "${controller.generalController.lolConstantsModel.getMapNameById(
+                              mapId: controller.activeGameInfoModel.mapId,
+                            )} - ",
+                            style: GoogleFonts.aBeeZee(
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                         Container(
@@ -107,9 +110,34 @@ class _ActiveGameResultPageState extends State<ActiveGameResultPage> {
     return Expanded(
       child: ListView(
         children: [
-          _userName(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _userName(),
+              _gameQueueName(),
+            ],
+          ),
           _teams(),
         ],
+      ),
+    );
+  }
+
+  Container _gameQueueName() {
+    return Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(
+        top: 20,
+        bottom: 20,
+      ),
+      child: Text(
+        controller.generalController.lolConstantsModel.getQueueNameById(
+          queueId: controller.activeGameInfoModel.gameQueueConfigId,
+        ),
+        style: GoogleFonts.aBeeZee(
+          fontSize: 14,
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -121,23 +149,25 @@ class _ActiveGameResultPageState extends State<ActiveGameResultPage> {
         top: 20,
         bottom: 20,
       ),
-      child: Column(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            "Summoner",
-            style: TextStyle(color: Colors.white),
-          ),
           Text(
             controller.activeGameInfoModel.summonerProfileModel!
                 .summonerIdentificationModel!.gameName,
             style: GoogleFonts.aBeeZee(
-              fontSize: 14,
+              fontSize: 16,
               color: Colors.yellow,
-              letterSpacing: 0.2,
               fontWeight: FontWeight.bold,
             ),
-          )
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 5),
+            child: Text(
+              "is playing",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
         ],
       ),
     );
@@ -168,6 +198,7 @@ class _ActiveGameResultPageState extends State<ActiveGameResultPage> {
     return Container(
       width: MediaQuery.sizeOf(context).width,
       alignment: Alignment.center,
+      margin: EdgeInsets.only(top: 10),
       child: Text(
         "BAN",
         style: TextStyle(

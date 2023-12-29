@@ -63,9 +63,4 @@ class ActiveGameParticipantController {
   //     position,
   //   );
   // }
-
-  getSpectator(String summonerId, String region) async {
-    // currentGameSpectator.value =
-    //     await _participantRepository.getSpectator(summonerId, region);
-  }
 }
