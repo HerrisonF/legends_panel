@@ -147,4 +147,14 @@ class LolConstantsModel {
     }
     return "";
   }
+
+  PerkStyleModel? getPerkById({required int perkId}) {
+    List<PerkStyleModel> tempPerks = perks!
+        .where((perkStyle) => perkStyle.id == perkId)
+        .toList();
+    if (tempPerks.isNotEmpty) {
+      return tempPerks.first;
+    }
+    return null;
+  }
 }

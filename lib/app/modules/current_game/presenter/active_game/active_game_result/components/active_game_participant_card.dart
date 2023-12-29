@@ -119,7 +119,7 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
           height: 18,
           child: Image.network(
             _activeGameParticipantController.generalController.getPerkStyleBadgeUrl(
-              perkStyleId: widget.participant.perk!.perkSubStyle,
+              perkId: widget.participant.perk!.perkSubStyle,
             ),
             errorBuilder: (context, error, stackTrace) {
               return SizedBox.shrink();
@@ -130,8 +130,8 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
           width: 15,
           height: 15,
           child: Image.network(
-            _activeGameParticipantController.generalController.getPerkSubStyleBadgeUrl(
-              perkSubStyleId: widget.participant.perk!.perkSubStyle,
+            _activeGameParticipantController.generalController.getPerkStyleBadgeUrl(
+              perkId: widget.participant.perk!.perkSubStyle,
             ),
             errorBuilder: (context, error, stackTrace) {
               return SizedBox.shrink();

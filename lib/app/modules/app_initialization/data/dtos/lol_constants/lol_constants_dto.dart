@@ -4,6 +4,7 @@ import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_const
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/game_version_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/item_mother_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/mapa_dto.dart';
+import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/perk_style_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/queue_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/summoner_spell_dto.dart';
 
@@ -16,6 +17,7 @@ class LolConstantsDTO {
   List<ChampionDTO> championsDTO;
   List<SummonerSpellDTO> spellsDTO;
   ItemMotherDTO  itemMotherDTO;
+  List<PerkStyleDTO> perksDTO;
 
   LolConstantsDTO({
     required this.queuesDTO,
@@ -26,6 +28,7 @@ class LolConstantsDTO {
     required this.itemMotherDTO,
     required this.spellsDTO,
     required this.gameLanguagesDTO,
+    required this.perksDTO,
   });
 
   Map<String, dynamic> toJson() {
@@ -38,6 +41,7 @@ class LolConstantsDTO {
       'itemMother' : itemMotherDTO.toJson(),
       'spells' : spellsDTO.map((element) => element.toJson()).toList(),
       'gameLanguages' : gameLanguagesDTO.map((element) => element.toJson()).toList(),
+      'perks' : perksDTO.map((e) => e.toJson()).toList(),
     };
   }
 
@@ -51,6 +55,7 @@ class LolConstantsDTO {
       gameLanguagesDTO: json['gameLanguages'].map<GameLanguageDTO>((element) => GameLanguageDTO.fromJsonLocal(element)).toList(),
       itemMotherDTO: ItemMotherDTO.fromJson(json['itemMother']),
       spellsDTO: json['spells'].map<SummonerSpellDTO>((element) => SummonerSpellDTO.fromJson(element)).toList(),
+      perksDTO: json['perks'].map<PerkStyleDTO>((element) => PerkStyleDTO.fromJson(element)).toList(),
     );
   }
 }

@@ -14,6 +14,7 @@ import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_const
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/item_mother_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/lol_constants_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/mapa_dto.dart';
+import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/perk_style_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/queue_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/summoner_spell_dto.dart';
 import 'package:legends_panel/app/modules/app_initialization/data/dtos/lol_constants/tree_dto.dart';
@@ -29,6 +30,7 @@ import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_c
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/item_mother_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/lol_constants_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/mapa_model.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/perk_style_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/queue_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/summoner_spell.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/tree_model.dart';
@@ -52,6 +54,32 @@ class SplashRepositoryLocalImpl extends SplashRepositoryLocal {
         Map<String, dynamic> json = jsonDecode(response);
         LolConstantsDTO dto = LolConstantsDTO.fromJson(json);
         LolConstantsModel lolConstantsModel = LolConstantsModel(
+          perks: dto.perksDTO
+              .map(
+                (e) => PerkStyleModel(
+                  id: e.id,
+                  key: e.key,
+                  icon: e.icon,
+                  name: e.name,
+                  slotModels: e.slotsDTO
+                      .map(
+                        (e) => SlotsModel(
+                          runeModels: e.runeDTOs
+                              .map((e) => RuneModel(
+                                    id: e.id,
+                                    key: e.key,
+                                    icon: e.icon,
+                                    name: e.name,
+                                    shortDesc: e.shortDesc,
+                                    longDesc: e.longDesc,
+                                  ))
+                              .toList(),
+                        ),
+                      )
+                      .toList(),
+                ),
+              )
+              .toList(),
           queues: dto.queuesDTO
               .map((e) => QueueModel(
                     queueId: e.queueId,
@@ -219,6 +247,32 @@ class SplashRepositoryLocalImpl extends SplashRepositoryLocal {
   }) async {
     try {
       LolConstantsDTO lolConstantsDTO = LolConstantsDTO(
+        perksDTO: lolConstantsModel.perks!
+            .map(
+              (e) => PerkStyleDTO(
+                id: e.id,
+                key: e.key,
+                icon: e.icon,
+                name: e.name,
+                slotsDTO: e.slotModels
+                    .map(
+                      (e) => SlotsDTO(
+                        runeDTOs: e.runeModels
+                            .map((e) => RuneDTO(
+                                  id: e.id,
+                                  key: e.key,
+                                  icon: e.icon,
+                                  name: e.name,
+                                  shortDesc: e.shortDesc,
+                                  longDesc: e.longDesc,
+                                ))
+                            .toList(),
+                      ),
+                    )
+                    .toList(),
+              ),
+            )
+            .toList(),
         spellsDTO: lolConstantsModel.spells!
             .map(
               (e) => SummonerSpellDTO(

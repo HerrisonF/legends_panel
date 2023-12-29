@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:legends_panel/app/core/general_controller/general_repository.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/lol_constants_model.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/perk_style_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/user.dart';
 
 class GeneralController {
@@ -10,10 +11,6 @@ class GeneralController {
   User userForProfile = User();
   late LolConstantsModel lolConstantsModel;
   late GeneralRepository generalRepository;
-
-  Future<void> initialize() async {
-    await getRunesRoom();
-  }
 
   GeneralController({
     required this.generalRepository,
@@ -27,60 +24,14 @@ class GeneralController {
     //return _masterRepository.getUserTierImage(tier);
   }
 
-  getRunesRoom() async {
-    // runesRoom = await _masterRepository.getRunesRoomOnLocal();
-    // if (runesRoom.needToLoadVersionFromWeb()) {
-    //   await getRunesRoomOnWeb();
-    // }
+  String getPerkStyleBadgeUrl({required int perkId}) {
+    PerkStyleModel? tempPerk = lolConstantsModel.getPerkById(perkId: perkId);
+    String perkIconName = "";
+    if (tempPerk != null) {
+      perkIconName = tempPerk.icon;
+    }
+    return generalRepository.getPerkUrl(perkIconName);
   }
-
-  getRunesRoomOnWeb() async {
-    // runesRoom = await _masterRepository.getRunesRoomOnWeb(
-    //     storedRegion.getLocaleKey()!);
-    // _masterRepository.saveRunesRoom(runesRoom.toJson());
-  }
-
-  String getPerkSubStyleBadgeUrl({
-    required int perkSubStyleId,
-  }) {
-    // PerkStyle perkStyle = PerkStyle();
-    // var currentPerk = runesRoom.perkStyle.where(
-    //     (perkStyle) => perkStyle.id.toString() == perk.perkSubStyle.toString());
-    // if (currentPerk.length > 0) {
-    //   perkStyle = currentPerk.first;
-    // }
-    // return perkStyle.icon;
-
-    return "";
-  }
-
-  String getPerkStyleBadgeUrl({
-    required int perkStyleId,
-  }) {
-    // PerkStyle perkStyle = PerkStyle();
-    // var currentPerk = runesRoom.perkStyle.where(
-    //     (perkStyle) => perkStyle.id.toString() == perk.perkStyle.toString());
-    // if (currentPerk.length > 0) {
-    //   perkStyle = currentPerk.first;
-    // }
-    // Runes runes = Runes();
-    // var firstIcon;
-    // for (Slots slot in perkStyle.slots) {
-    //   firstIcon = slot.runes
-    //       .where((rune) => rune.id.toString() == perk.perkIds[0].toString());
-    //   if (firstIcon.length > 0) {
-    //     break;
-    //   }
-    // }
-    return "";
-  }
-
-  //
-  //   if (firstIcon.length > 0) {
-  //     runes = firstIcon.first;
-  //   }
-  //   return runes.icon;
-  // }
 
   changeCurrentPageIndex(int newPageIndex, BuildContext context) {
     FocusScope.of(context).unfocus();
