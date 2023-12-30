@@ -66,12 +66,11 @@ class GeneralRepository {
     }
   }
 
-  String getTierImageUrl({
-    required String version,
+  String getTierEmblemUrl({
     required String tier,
   }) {
-    final String path =
-        "$version/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-mini-crests/$tier.png";
+    final String path = "latest/plugins/rcp-fe-lol-static-assets/"
+        "global/default/images/ranked-mini-crests/$tier.png";
     try {
       return API.rawDataDragonUrl + path;
     } catch (e) {
@@ -101,8 +100,8 @@ class GeneralRepository {
   }
 
   String getPositionUrl(String position) {
-    final String path =
-        "/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-${position.toLowerCase()}.png";
+    final String path = "/latest/plugins/rcp-fe-lol-clash/global/default/"
+        "assets/images/position-selector/positions/icon-position-${position.toLowerCase()}.png";
     try {
       return API.rawDataDragonUrl + path;
     } catch (e) {

@@ -97,6 +97,7 @@ class ActiveGameSearchController {
 
                 model.setSummonerProfile(profile);
                 model.setSummonerIdentification(summonerIdentification);
+
                 ///
 
                 List<Future> futures = [];
@@ -110,7 +111,8 @@ class ActiveGameSearchController {
                       (result) {
                         result.fold(
                           (l) => id,
-                          (leagueEntries) => participant.setLeagueEntriesModel(leagueEntries),
+                          (leagueEntries) =>
+                              participant.setLeagueEntriesModel(leagueEntries),
                         );
                       },
                     ),

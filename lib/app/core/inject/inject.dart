@@ -6,6 +6,8 @@ import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/core/logger/logger_impl.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/routes/routes.dart';
+import 'package:legends_panel/app/modules/current_game/data/repositories/active_game_result_repository/active_game_result_repository.dart';
+import 'package:legends_panel/app/modules/current_game/data/repositories/active_game_result_repository/active_game_result_repository_impl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Inject {
@@ -31,6 +33,10 @@ class Inject {
 
     GetIt.I.registerLazySingleton<GeneralController>(
       () => GeneralController(generalRepository: getIt()),
+    );
+
+    GetIt.I.registerLazySingleton<ActiveGameResultRepository>(
+          () => ActiveGameResultRepositoryImpl(),
     );
 
     ///

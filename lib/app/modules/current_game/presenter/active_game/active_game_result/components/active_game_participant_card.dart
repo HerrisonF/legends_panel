@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/general_controller/general_controller.dart';
+import 'package:legends_panel/app/modules/current_game/data/repositories/active_game_result_repository/active_game_result_repository.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_participant_model.dart';
 import 'package:legends_panel/app/modules/current_game/presenter/active_game/active_game_result/components/active_game_participant_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ActiveGameParticipantCard extends StatefulWidget {
   final ActiveGameParticipantModel participant;
@@ -31,6 +33,7 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
     _activeGameParticipantController = ActiveGameParticipantController(
       activeGameParticipantModel: widget.participant,
       generalController: GetIt.I<GeneralController>(),
+      activeGameResultRepository: GetIt.I<ActiveGameResultRepository>(),
     );
     super.initState();
   }
@@ -40,38 +43,62 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
     return Container(
       decoration: BoxDecoration(
         color: widget.participant.teamId == BLUE_TEAM
-            ? Colors.blue.withOpacity(0.5)
-            : Colors.red.withOpacity(0.5),
-        border: Border.all(color: Colors.black, width: 0.1),
+            ? Colors.blue[800]
+            : Color(0xFF7A1712),
+        border: Border.all(
+          color: Colors.black,
+          width: 0.5,
+        ),
       ),
-      padding: EdgeInsets.symmetric(
-        horizontal: 3,
-        vertical: 5,
-      ),
-      child: Row(
+      padding: EdgeInsets.only(top: 10, bottom: 5),
+      child: Column(
         children: [
-          Expanded(
-            child: _summonerChampionBadge(),
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Row(
+                  children: [
+                    Container(
+                      color: Colors.black,
+                      margin: EdgeInsets.only(left: 5),
+                      child: _summonerChampionBadge(),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: Colors.black,
+                      ),
+                      margin: EdgeInsets.only(right: 5),
+                      child: Row(
+                        children: [
+                          _summonerSpells(),
+                          _summonerPerks(),
+                        ],
+                      ),
+                    ),
+                    _summonerName(),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _userTierEmblem(),
+                    Expanded(child: _userTierName()),
+                  ],
+                ),
+              ),
+            ],
           ),
-          Expanded(
-            child: Row(
-              children: [_summonerSpells(), _summonerPerks()],
-            ),
-          ),
-          Expanded(
-            flex: 4,
-            child: _summonerName(),
-          ),
-          Expanded(
-            flex: 3,
-            child: Row(
-              children: [
-                // _userTierSymbol(),
-                _userTierName(),
-              ],
-            ),
-          ),
-          //_playerWinRate(),
+          Row(
+            children: [
+              Expanded(
+                child: _summonerWinRate(),
+              ),
+            ],
+          )
         ],
       ),
     );
@@ -79,12 +106,12 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
 
   _summonerChampionBadge() {
     return Container(
+      height: 40,
       margin: EdgeInsets.only(right: 2),
       child: Image.network(
         _activeGameParticipantController.generalController.getChampionBadgeUrl(
           widget.participant.championId,
         ),
-        width: 36,
       ),
     );
   }
@@ -93,8 +120,7 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
     return Column(
       children: [
         Container(
-          width: 18,
-          height: 18,
+          height: 20,
           child: Image.network(
             _activeGameParticipantController.generalController.getSpellBadgeUrl(
               widget.participant.spell1Id,
@@ -105,8 +131,7 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
           ),
         ),
         Container(
-          width: 18,
-          height: 18,
+          height: 20,
           child: Image.network(
             _activeGameParticipantController.generalController.getSpellBadgeUrl(
               widget.participant.spell2Id,
@@ -121,139 +146,116 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
   }
 
   _summonerPerks() {
-    return Column(
-      children: [
-        Container(
-          margin: EdgeInsets.only(bottom: 2),
-          width: 18,
-          height: 18,
-          child: Image.network(
-            _activeGameParticipantController.generalController
-                .getPerkStyleBadgeUrl(
-              perkId: widget.participant.perk!.perkStyle,
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 2),
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(bottom: 2),
+            height: 18,
+            child: Image.network(
+              _activeGameParticipantController.generalController
+                  .getPerkStyleBadgeUrl(
+                perkId: widget.participant.perk!.perkStyle,
+              ),
+              errorBuilder: (context, error, stackTrace) {
+                return SizedBox.shrink();
+              },
             ),
-            errorBuilder: (context, error, stackTrace) {
-              return SizedBox.shrink();
-            },
           ),
-        ),
-        Container(
-          width: 15,
-          height: 15,
-          child: Image.network(
-            _activeGameParticipantController.generalController
-                .getPerkStyleBadgeUrl(
-              perkId: widget.participant.perk!.perkSubStyle,
+          Container(
+            height: 18,
+            child: Image.network(
+              _activeGameParticipantController.generalController
+                  .getPerkStyleBadgeUrl(
+                perkId: widget.participant.perk!.perkSubStyle,
+              ),
+              errorBuilder: (context, error, stackTrace) {
+                return SizedBox.shrink();
+              },
             ),
-            errorBuilder: (context, error, stackTrace) {
-              return SizedBox.shrink();
-            },
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Container _summonerName() {
     return Container(
-      margin: const EdgeInsets.only(left: 5),
+      alignment: Alignment.centerLeft,
       child: Text(
         widget.participant.getSummonerName(),
+        textAlign: TextAlign.start,
+        maxLines: 2,
         style: GoogleFonts.montserrat(
-          fontSize: 10,
+          fontSize: 14,
           color: widget.isToPaintUserName ? Colors.yellow : Colors.white,
+          fontWeight: FontWeight.bold,
         ),
         overflow: TextOverflow.ellipsis,
       ),
     );
   }
 
-  // _playerWinRate() {
-  //   return ValueListenableBuilder(
-  //       valueListenable: _activeGameParticipantController.soloUserTier,
-  //       builder: (context, value, _) {
-  //         return _activeGameParticipantController
-  //                 .soloUserTier.value.winRate.isNotEmpty
-  //             ? Container(
-  //                 child: Text(
-  //                   "WR " +
-  //                       _activeGameParticipantController
-  //                           .soloUserTier.value.winRate +
-  //                       "%",
-  //                   style: GoogleFonts.montserrat(
-  //                     fontSize: 6,
-  //                     color: Colors.white,
-  //                   ),
-  //                 ),
-  //               )
-  //             : Container(
-  //                 padding: EdgeInsets.only(right: 10),
-  //                 child: Text(
-  //                   " - ",
-  //                   style: GoogleFonts.montserrat(
-  //                     fontSize: 6,
-  //                     color: Colors.white,
-  //                   ),
-  //                 ),
-  //               );
-  //       });
-  // }
-
-  Column _userTierName() {
-    return Column(
-      children: [
-        Container(
-            alignment: Alignment.center,
-            child: Text(
-              _activeGameParticipantController
-                  .getRankedSoloTierNameAndRank(),
-              style: GoogleFonts.montserrat(
-                fontSize: 12,
-                color: Colors.white,
-              ),
-              overflow: TextOverflow.ellipsis,
-            )),
-        Container(
-          alignment: Alignment.center,
-          width: 80,
-          child: Text(
-            "( ${_activeGameParticipantController.getRankedSoloLeaguePoints()} LP)",
+  _summonerWinRate() {
+    return Container(
+      margin: EdgeInsets.only(left: 5, top: 5),
+      child: Row(
+        children: [
+          Text(
+            "${_activeGameParticipantController.getUserWinRate()}%",
             style: GoogleFonts.montserrat(
               fontSize: 12,
               color: Colors.white,
             ),
           ),
-        ),
-      ],
+          Text(
+            " ( ${_activeGameParticipantController.getPlaySum()} ${AppLocalizations.of(context)!.played} )",
+            style: GoogleFonts.montserrat(
+              fontSize: 12,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
-// _userTierSymbol() {
-//   return ValueListenableBuilder(
-//     valueListenable: _activeGameParticipantController.soloUserTier,
-//     builder: (context, value, _) {
-//       return Container(
-//         child: _activeGameParticipantController
-//                 .soloUserTier.value.tier.isNotEmpty
-//             ? Image.asset(
-//                 getUserTierImage(),
-//                 width: 18,
-//               )
-//             : Container(
-//                 margin: EdgeInsets.only(right: 10),
-//                 child: Image.asset(
-//                   imageUnranked,
-//                   width: 17,
-//                 ),
-//               ),
-//       );
-//     },
-//   );
-// }
+  Container _userTierName() {
+    return Container(
+      child: Column(
+        children: [
+          Text(
+            _activeGameParticipantController.getRankedSoloTierNameAndRank(),
+            style: GoogleFonts.montserrat(
+              fontSize: 10,
+              color: Colors.white,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            _activeGameParticipantController.getRankedSoloLeaguePoints(),
+            style: GoogleFonts.montserrat(
+              fontSize: 10,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-// String getUserTierImage() {
-//   return _activeGameParticipantController.getUserTierImage(
-//     _activeGameParticipantController.soloUserTier.value.tier,
-//   );
-// }
+  _userTierEmblem() {
+    return Container(
+      height: 30,
+      child: Image.network(
+        _activeGameParticipantController.getTierMiniEmblem(),
+        errorBuilder: (context, error, stackTrace) {
+          return Image.network(
+            _activeGameParticipantController.getUnrankedEmblemUrl(),
+          );
+        },
+      ),
+    );
+  }
 }
