@@ -3,7 +3,6 @@ import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/champion_mastery.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/match_detail.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/user_tier.dart';
 
 class ProfileRepository {
   late Logger logger;
@@ -27,34 +26,34 @@ class ProfileRepository {
     }
   }
 
-  Future<List<UserTier>> getUserTier(
-    String encryptedSummonerId,
-    String keyRegion,
-  ) async {
-    final String path =
-        "/lol/league/v4/entries/by-summoner/$encryptedSummonerId";
-    List<UserTier> listTier = [];
-    try {
-      final response = await httpServices.get(
-        url: API.riotAmericasUrl,
-        path: path,
-        origin: origin,
-      );
-
-      return response.fold((l) {
-        logger.logDEBUG("SummonerTier not found ...");
-        return listTier;
-      }, (r) {
-        for (dynamic tier in r.data) {
-          listTier.add(UserTier.fromJson(tier));
-        }
-        return listTier;
-      });
-    } catch (e) {
-      logger.logDEBUG("Error to get SummonerTier ... $e");
-      return [];
-    }
-  }
+  // Future<List<UserTier>> getUserTier(
+  //   String encryptedSummonerId,
+  //   String keyRegion,
+  // ) async {
+  //   final String path =
+  //       "/lol/league/v4/entries/by-summoner/$encryptedSummonerId";
+  //   List<UserTier> listTier = [];
+  //   try {
+  //     final response = await httpServices.get(
+  //       url: API.riotAmericasUrl,
+  //       path: path,
+  //       origin: origin,
+  //     );
+  //
+  //     return response.fold((l) {
+  //       logger.logDEBUG("SummonerTier not found ...");
+  //       return listTier;
+  //     }, (r) {
+  //       for (dynamic tier in r.data) {
+  //         listTier.add(UserTier.fromJson(tier));
+  //       }
+  //       return listTier;
+  //     });
+  //   } catch (e) {
+  //     logger.logDEBUG("Error to get SummonerTier ... $e");
+  //     return [];
+  //   }
+  // }
 
   Future<List<ChampionMastery>> getChampionMastery(
     String summonerId,

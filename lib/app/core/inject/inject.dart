@@ -26,7 +26,7 @@ class Inject {
     });
 
     GetIt.I.registerLazySingleton<GeneralRepository>(
-      () => GeneralRepository(logger: getIt(), httpServices: getIt()),
+      () => GeneralRepository(httpServices: getIt()),
     );
 
     GetIt.I.registerLazySingleton<GeneralController>(

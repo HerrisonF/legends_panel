@@ -1,18 +1,9 @@
-import 'package:flutter/cupertino.dart';
-import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/core/constants/string_constants.dart';
 import 'package:legends_panel/app/core/general_controller/general_controller.dart';
-import 'package:legends_panel/app/core/http_configuration/http_services.dart';
-import 'package:legends_panel/app/core/logger/logger.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/champion_model.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/lol_constants_model.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/user_tier.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_participant_model.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/user_tier_entries/league_entry_model.dart';
 
 class ActiveGameParticipantController {
-  ValueNotifier<List<UserTier>> userTierList = ValueNotifier([]);
-  ValueNotifier<UserTier> soloUserTier = ValueNotifier(UserTier());
-
   late ActiveGameParticipantModel activeGameParticipantModel;
   late GeneralController generalController;
 
@@ -21,28 +12,9 @@ class ActiveGameParticipantController {
     required this.generalController,
   });
 
-  // ValueNotifier<CurrentGameSpectator> currentGameSpectator =
-  //     ValueNotifier(CurrentGameSpectator());
-  // CurrentGameParticipant currentGameParticipant = CurrentGameParticipant();
-  //
-  // getUserTier(CurrentGameParticipant participant, String region) async {
-  //   this.currentGameParticipant = participant;
-  //   userTierList.value = await _participantRepository.getUserTier(
-  //       this.currentGameParticipant.summonerId, region);
-  //   _getSoloRankedOnly(userTierList.value);
-  // }
+  /// Guarda em cache para não correr a lista o tempo inteiro.
+  List<LeagueEntryModel> tempList = [];
 
-  // _getSoloRankedOnly(List<UserTier> userTierList) {
-  //   try {
-  //     soloUserTier.value = userTierList
-  //         .where((tier) => tier.queueType == StringConstants.rankedSolo)
-  //         .first;
-  //     soloUserTier.value.winRate = getUserWinRate();
-  //   } catch (e) {
-  //     soloUserTier.value.winRate = 0.toString();
-  //   }
-  // }
-  //
   // String getUserTierImage(String tier) {
   //   return activeGameParticipantRepository.getUserTierImage(tier);
   // }
@@ -63,4 +35,21 @@ class ActiveGameParticipantController {
   //     position,
   //   );
   // }
+
+  String getRankedSoloTierNameAndRank() {
+    List<LeagueEntryModel> tempListLocal = activeGameParticipantModel
+        .leagueEntryModel!
+        .where((element) => element.queueType == RankedConstants.rankedSolo)
+        .toList();
+
+    if (tempListLocal.isNotEmpty) {
+      tempList.add(tempListLocal.first);
+      return tempList.first.tier + tempList.first.rank;
+    }
+    return "UNRANKED";
+  }
+
+  String getRankedSoloLeaguePoints() {
+   return tempList.first.leaguePoints.toString();
+  }
 }

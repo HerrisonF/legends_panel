@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:legends_panel/app/core/general_controller/general_repository.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/lol_constants_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/perk_style_model.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/user.dart';
 
 class GeneralController {
   ValueNotifier<int> currentPageIndex = ValueNotifier(0);
 
-  User userForCurrentGame = User();
-  User userForProfile = User();
   late LolConstantsModel lolConstantsModel;
   late GeneralRepository generalRepository;
 
@@ -18,10 +15,6 @@ class GeneralController {
 
   setLolConstants(LolConstantsModel lolConstantsModel) {
     this.lolConstantsModel = lolConstantsModel;
-  }
-
-  getUserTierImage(String tier) {
-    //return _masterRepository.getUserTierImage(tier);
   }
 
   String getPerkStyleBadgeUrl({required int perkId}) {
@@ -36,11 +29,6 @@ class GeneralController {
   changeCurrentPageIndex(int newPageIndex, BuildContext context) {
     FocusScope.of(context).unfocus();
     currentPageIndex.value = newPageIndex;
-  }
-
-  getCurrentUserOnCloud(String userName, String keyRegion) async {
-    // userForCurrentGame =
-    //     await _masterRepository.getUserOnCloud(userName, keyRegion);
   }
 
   String getChampionBadgeUrl(int championId) {

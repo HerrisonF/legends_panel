@@ -63,7 +63,7 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
             child: _summonerName(),
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Row(
               children: [
                 // _userTierSymbol(),
@@ -168,93 +168,62 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
     );
   }
 
-  _playerWinRate() {
-    return ValueListenableBuilder(
-        valueListenable: _activeGameParticipantController.soloUserTier,
-        builder: (context, value, _) {
-          return _activeGameParticipantController
-                  .soloUserTier.value.winRate.isNotEmpty
-              ? Container(
-                  child: Text(
-                    "WR " +
-                        _activeGameParticipantController
-                            .soloUserTier.value.winRate +
-                        "%",
-                    style: GoogleFonts.montserrat(
-                      fontSize: 6,
-                      color: Colors.white,
-                    ),
-                  ),
-                )
-              : Container(
-                  padding: EdgeInsets.only(right: 10),
-                  child: Text(
-                    " - ",
-                    style: GoogleFonts.montserrat(
-                      fontSize: 6,
-                      color: Colors.white,
-                    ),
-                  ),
-                );
-        });
-  }
+  // _playerWinRate() {
+  //   return ValueListenableBuilder(
+  //       valueListenable: _activeGameParticipantController.soloUserTier,
+  //       builder: (context, value, _) {
+  //         return _activeGameParticipantController
+  //                 .soloUserTier.value.winRate.isNotEmpty
+  //             ? Container(
+  //                 child: Text(
+  //                   "WR " +
+  //                       _activeGameParticipantController
+  //                           .soloUserTier.value.winRate +
+  //                       "%",
+  //                   style: GoogleFonts.montserrat(
+  //                     fontSize: 6,
+  //                     color: Colors.white,
+  //                   ),
+  //                 ),
+  //               )
+  //             : Container(
+  //                 padding: EdgeInsets.only(right: 10),
+  //                 child: Text(
+  //                   " - ",
+  //                   style: GoogleFonts.montserrat(
+  //                     fontSize: 6,
+  //                     color: Colors.white,
+  //                   ),
+  //                 ),
+  //               );
+  //       });
+  // }
 
   Column _userTierName() {
     return Column(
       children: [
-        ValueListenableBuilder(
-            valueListenable: _activeGameParticipantController.soloUserTier,
-            builder: (context, value, _) {
-              return Container(
-                alignment: Alignment.center,
-                child: _activeGameParticipantController
-                        .soloUserTier.value.tier.isNotEmpty
-                    ? Text(
-                        _activeGameParticipantController
-                                .soloUserTier.value.tier +
-                            " " +
-                            _activeGameParticipantController
-                                .soloUserTier.value.rank,
-                        style: GoogleFonts.montserrat(
-                          fontSize: 6,
-                          color: Colors.white,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      )
-                    : Container(
-                        margin: EdgeInsets.only(right: 22),
-                        child: Text(
-                          "UNRANKED",
-                          style: GoogleFonts.montserrat(
-                            fontSize: 6,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-              );
-            }),
-        // ValueListenableBuilder(
-        //     valueListenable: _activeGameParticipantController.soloUserTier,
-        //     builder: (context, value, _) {
-        //       return Container(
-        //         alignment: Alignment.center,
-        //         width: 80,
-        //         child: _activeGameParticipantController
-        //                 .soloUserTier.value.tier.isNotEmpty
-        //             ? Text(
-        //                 "(" +
-        //                     _activeGameParticipantController
-        //                         .soloUserTier.value.leaguePoints
-        //                         .toString() +
-        //                     "LP)",
-        //                 style: GoogleFonts.montserrat(
-        //                   fontSize: 6,
-        //                   color: Colors.white,
-        //                 ),
-        //               )
-        //             : SizedBox.shrink(),
-        //       );
-        //     }),
+        Container(
+            alignment: Alignment.center,
+            child: Text(
+              _activeGameParticipantController
+                  .getRankedSoloTierNameAndRank(),
+              style: GoogleFonts.montserrat(
+                fontSize: 12,
+                color: Colors.white,
+              ),
+              overflow: TextOverflow.ellipsis,
+            )),
+        Container(
+          alignment: Alignment.center,
+          width: 80,
+          child: Text(
+            "( ${_activeGameParticipantController.getRankedSoloLeaguePoints()} LP)",
+            style: GoogleFonts.montserrat(
+              fontSize: 12,
+              color: Colors.white,
+            ),
+          ),
+        ),
       ],
     );
   }

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:legends_panel/app/core/general_controller/general_repository.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/core/routes/routes_path.dart';
@@ -12,6 +13,7 @@ import 'package:legends_panel/app/modules/current_game/domain/models/active_game
 import 'package:legends_panel/app/modules/current_game/domain/usecases/active_game/fetch_active_game_by_summoner_id_usecase_impl.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_puuid_and_summonerID_from_riot_usecase_impl.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_summoner_profile_by_puuid_usecase_impl.dart';
+import 'package:legends_panel/app/modules/current_game/domain/usecases/user_tier/fetch_user_tier_by_summoner_id_usecase_impl.dart';
 import 'package:legends_panel/app/modules/current_game/presenter/active_game/active_game_search_controller.dart';
 
 class ActiveGameSearchPage extends StatefulWidget {
@@ -37,15 +39,17 @@ class _ActiveGameSearchPageState extends State<ActiveGameSearchPage> {
     _activeGameSearchController = ActiveGameSearchController(
       fetchPUUIDAndSummonerIDFromRiotUsecase:
           FetchPUUIDAndSummonerIDFromRiotUsecaseImpl(
-            activeGameSearchRepository: _repository,
+        activeGameSearchRepository: _repository,
       ),
+      fetchUserTierBySummonerIdUsecase: FetchUserTierBySummonerIdUsecaseImpl(
+          generalRepository: GetIt.I<GeneralRepository>()),
       fetchActiveGameBySummonerIDUsecase:
           FetchActiveGameBySummonerIDUsecaseImpl(
-            activeGameSearchRepository: _repository,
+        activeGameSearchRepository: _repository,
       ),
       fetchSummonerProfileByPUUIDUsecase:
           FetchSummonerProfileByPUUIDUsecaseImpl(
-            activeGameSearchRepository: _repository,
+        activeGameSearchRepository: _repository,
       ),
       goToGameResultPageCallback: goToActiveGamePageResult,
     );

@@ -2,6 +2,7 @@ import 'package:legends_panel/app/modules/current_game/domain/models/active_game
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_perk_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_identification_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_profile_model.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/user_tier_entries/league_entry_model.dart';
 
 class ActiveGameParticipantModel {
   String puuid;
@@ -40,6 +41,7 @@ class ActiveGameParticipantModel {
   ///dentro da aplicação.
 
   SummonerProfileModel? summonerProfileModel;
+  List<LeagueEntryModel>? leagueEntryModel;
 
   ///
 
@@ -81,5 +83,12 @@ class ActiveGameParticipantModel {
             summonerProfileModel!.summonerIdentificationModel != null
         ? summonerProfileModel!.summonerIdentificationModel!.gameName
         : summonerName;
+  }
+
+  /// É uma lista de entries que significa as rankes.
+  /// Ex: Ranked solo -> master Ranked Flex -> Bronze.
+  setLeagueEntriesModel(List<LeagueEntryModel> entries){
+    this.leagueEntryModel = [];
+    this.leagueEntryModel!.addAll(entries);
   }
 }

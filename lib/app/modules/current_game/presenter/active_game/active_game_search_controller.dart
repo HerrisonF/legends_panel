@@ -1,8 +1,10 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_participant_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/active_game/fetch_active_game_by_summoner_id_usecase.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_puuid_and_summonerID_from_riot_usecase.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_summoner_profile_by_puuid_usecase.dart';
+import 'package:legends_panel/app/modules/current_game/domain/usecases/user_tier/fetch_user_tier_by_summoner_id.dart';
 
 class ActiveGameSearchController {
   late final FetchPUUIDAndSummonerIDFromRiotUsecase
@@ -11,11 +13,12 @@ class ActiveGameSearchController {
       fetchActiveGameBySummonerIDUsecase;
   late final FetchSummonerProfileByPUUIDUsecase
       fetchSummonerProfileByPUUIDUsecase;
+  late final FetchUserTierBySummonerIdUsecase fetchUserTierBySummonerIdUsecase;
   late final Function goToGameResultPageCallback;
 
   ValueNotifier<bool> isLoadingUser = ValueNotifier(false);
   ValueNotifier<bool> isShowingMessageUserIsNotPlaying = ValueNotifier(false);
-  ValueNotifier<String> selectedRegion = ValueNotifier('BR1');
+  ValueNotifier<String> selectedRegion = ValueNotifier('EUN1');
   List<String> regions = [
     'BR1',
     'EUN1',
@@ -39,6 +42,7 @@ class ActiveGameSearchController {
     required this.fetchPUUIDAndSummonerIDFromRiotUsecase,
     required this.fetchActiveGameBySummonerIDUsecase,
     required this.fetchSummonerProfileByPUUIDUsecase,
+    required this.fetchUserTierBySummonerIdUsecase,
     required this.goToGameResultPageCallback,
   });
 
@@ -83,16 +87,40 @@ class ActiveGameSearchController {
                 gameInfo.setSummonerProfile(profile);
                 gameInfo.setSummonerIdentification(summonerIdentification);
 
-                ActiveGameParticipantModel model = gameInfo.activeGameParticipants
+                /// Esse trecho serve para colocar o gameName do usuário
+                /// pesquisado dentro do seu objeto.
+                ActiveGameParticipantModel model = gameInfo
+                    .activeGameParticipants
                     .where((element) =>
                         element.puuid == gameInfo.summonerProfileModel!.puuid)
                     .first;
 
                 model.setSummonerProfile(profile);
                 model.setSummonerIdentification(summonerIdentification);
+                ///
 
-                goToGameResultPageCallback(gameInfo);
-                _stopUserLoading();
+                List<Future> futures = [];
+
+                gameInfo.activeGameParticipants.forEach((participant) {
+                  futures.add(
+                    fetchUserTierBySummonerIdUsecase(
+                      summonerId: participant.summonerId,
+                      region: selectedRegion.value,
+                    ).then(
+                      (result) {
+                        result.fold(
+                          (l) => id,
+                          (leagueEntries) => participant.setLeagueEntriesModel(leagueEntries),
+                        );
+                      },
+                    ),
+                  );
+                });
+
+                await Future.wait(futures).whenComplete(() {
+                  _stopUserLoading();
+                  goToGameResultPageCallback(gameInfo);
+                });
               },
             );
           },
