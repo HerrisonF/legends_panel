@@ -109,20 +109,17 @@ class ActiveGameSearchController {
                       region: selectedRegion.value,
                     ).then(
                       (result) {
-                        result.fold(
-                          (l) => id,
-                          (leagueEntries) =>
-                              participant.setLeagueEntriesModel(leagueEntries),
-                        );
+                        result.fold((l) => id, (leagueEntries) {
+                          participant.setLeagueEntriesModel(leagueEntries);
+                        });
                       },
                     ),
                   );
                 });
 
-                await Future.wait(futures).whenComplete(() {
-                  _stopUserLoading();
-                  goToGameResultPageCallback(gameInfo);
-                });
+                await Future.wait(futures);
+                _stopUserLoading();
+                goToGameResultPageCallback(gameInfo);
               },
             );
           },

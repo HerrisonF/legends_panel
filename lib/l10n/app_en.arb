@@ -125,7 +125,7 @@
   },
   "perk": "Runes",
   "@perk" : {
-    "description" : "Spell"
+    "description" : "Runes"
   },
   "abilityOrder": "Ability order",
   "@abilityOrder" : {

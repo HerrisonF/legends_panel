@@ -15,9 +15,12 @@ class ActiveGameParticipantController {
     required this.generalController,
     required this.activeGameResultRepository,
   }) {
-    tempList.addAll(activeGameParticipantModel.leagueEntryModel!
-        .where((element) => element.queueType == RankedConstants.rankedSolo)
-        .toList());
+
+    if(activeGameParticipantModel.leagueEntryModel != null){
+      tempList.addAll(activeGameParticipantModel.leagueEntryModel!
+          .where((element) => element.queueType == RankedConstants.rankedSolo)
+          .toList());
+    }
   }
 
   /// Guarda em cache para não correr a lista o tempo inteiro.

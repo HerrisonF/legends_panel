@@ -26,6 +26,14 @@ class GeneralController {
     return generalRepository.getPerkUrl(perkIconName);
   }
 
+  String getPerkDetailBadgeUrl({
+    required String iconPath,
+  }) {
+    return generalRepository.getPerkDetailUrl(
+      iconPath: iconPath,
+    );
+  }
+
   changeCurrentPageIndex(int newPageIndex, BuildContext context) {
     FocusScope.of(context).unfocus();
     currentPageIndex.value = newPageIndex;
@@ -43,5 +51,12 @@ class GeneralController {
       version: lolConstantsModel.getLatestLolVersion(),
       spellName: lolConstantsModel.getSpellById(spellId)!.image!.full,
     );
+  }
+
+  bool checkPerkIsAssigned({
+    required List<int> options,
+    required int perkCorrente,
+  }) {
+    return options.contains(perkCorrente);
   }
 }

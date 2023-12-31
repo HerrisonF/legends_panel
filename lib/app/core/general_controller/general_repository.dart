@@ -129,4 +129,16 @@ class GeneralRepository {
       return "";
     }
   }
+
+  String getPerkDetailUrl({
+    required String iconPath,
+  }) {
+    final String path =
+        "/latest/plugins/rcp-be-lol-game-data/global/default/v1/${iconPath.toLowerCase()}";
+    try {
+      return API.rawDataDragonUrl + path;
+    } catch (e) {
+      return "";
+    }
+  }
 }

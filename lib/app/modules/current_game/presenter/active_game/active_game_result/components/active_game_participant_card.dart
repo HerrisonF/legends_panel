@@ -40,67 +40,233 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: widget.participant.teamId == BLUE_TEAM
-            ? Colors.blue[800]
-            : Color(0xFF7A1712),
-        border: Border.all(
-          color: Colors.black,
-          width: 0.5,
+    return InkWell(
+      onTap: () {
+        _bottomSheet();
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: widget.participant.teamId == BLUE_TEAM
+              ? Colors.blue[800]
+              : Color(0xFF7A1712),
+          border: Border.all(
+            color: Colors.black,
+            width: 0.5,
+          ),
+        ),
+        padding: EdgeInsets.only(top: 10, bottom: 5),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Row(
+                    children: [
+                      Container(
+                        color: Colors.black,
+                        margin: EdgeInsets.only(left: 5),
+                        child: _summonerChampionBadge(),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: Colors.black,
+                        ),
+                        margin: EdgeInsets.only(right: 5),
+                        child: Row(
+                          children: [
+                            _summonerSpells(),
+                            _summonerPerks(),
+                          ],
+                        ),
+                      ),
+                      _summonerName(),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _userTierEmblem(),
+                      Expanded(child: _userTierName()),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: _summonerWinRate(),
+                ),
+              ],
+            )
+          ],
         ),
       ),
-      padding: EdgeInsets.only(top: 10, bottom: 5),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Row(
-                  children: [
-                    Container(
-                      color: Colors.black,
-                      margin: EdgeInsets.only(left: 5),
-                      child: _summonerChampionBadge(),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: Colors.black,
-                      ),
-                      margin: EdgeInsets.only(right: 5),
-                      child: Row(
-                        children: [
-                          _summonerSpells(),
-                          _summonerPerks(),
-                        ],
-                      ),
-                    ),
-                    _summonerName(),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _userTierEmblem(),
-                    Expanded(child: _userTierName()),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: _summonerWinRate(),
-              ),
-            ],
-          )
-        ],
+    );
+  }
+
+  _bottomSheet() {
+    double iconSize = 40;
+    showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
       ),
+      showDragHandle: true,
+      context: context,
+      builder: (context) {
+        return Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 10, bottom: 10),
+              child: Text(
+                "${widget.participant.summonerName} - ${AppLocalizations.of(context)!.perk}",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                children: _activeGameParticipantController
+                    .generalController.lolConstantsModel.perks!
+                    .map(
+                      (perkClasse) => Visibility(
+                        visible: _activeGameParticipantController
+                            .generalController
+                            .checkPerkIsAssigned(
+                          options: [
+                            widget.participant.perk!.perkStyle,
+                            widget.participant.perk!.perkSubStyle,
+                          ],
+                          perkCorrente: perkClasse.id,
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.blueGrey,
+                          ),
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 5,
+                            vertical: 5,
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.symmetric(vertical: 10),
+                                    padding: EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                    child: Image.network(
+                                      _activeGameParticipantController
+                                          .generalController
+                                          .getPerkStyleBadgeUrl(
+                                        perkId: perkClasse.id,
+                                      ),
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return SizedBox.shrink();
+                                      },
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 10),
+                                    child: Text(perkClasse.name),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: perkClasse.slotModels
+                                    .map(
+                                      (slot) => Container(
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 5),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: slot.runeModels
+                                              .map(
+                                                (runa) => Stack(
+                                                  children: [
+                                                    Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                        horizontal: 2,
+                                                      ),
+                                                      height: iconSize,
+                                                      width: iconSize,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.black,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(100),
+                                                      ),
+                                                      child: Image.network(
+                                                        _activeGameParticipantController
+                                                            .generalController
+                                                            .getPerkDetailBadgeUrl(
+                                                          iconPath: runa.icon,
+                                                        ),
+                                                        errorBuilder: (context,
+                                                            error, stackTrace) {
+                                                          return SizedBox
+                                                              .shrink();
+                                                        },
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                        horizontal: 2,
+                                                      ),
+                                                      height: iconSize,
+                                                      width: iconSize,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.grey.withOpacity(
+                                                            _activeGameParticipantController
+                                                                    .generalController
+                                                                    .checkPerkIsAssigned(
+                                                          options: widget
+                                                              .participant
+                                                              .perk!
+                                                              .perkIds,
+                                                          perkCorrente: runa.id,
+                                                        )
+                                                                ? 0
+                                                                : 0.85),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(100),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                              .toList(),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
