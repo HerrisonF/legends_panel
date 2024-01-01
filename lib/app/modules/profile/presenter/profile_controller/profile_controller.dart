@@ -1,58 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:legends_panel/app/modules/profile/data/repositories/profile_repository.dart';
+import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_puuid_and_summonerID_from_riot_usecase.dart';
+import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_summoner_profile_by_puuid_usecase.dart';
 
 class ProfileController {
   ValueNotifier<bool> isLoadingProfile = ValueNotifier(false);
   ValueNotifier<bool> isProfileFound = ValueNotifier(false);
   ValueNotifier<bool> isShowingMessage = ValueNotifier(false);
-  ValueNotifier<bool> isShowingMessageUserIsNotPlaying = ValueNotifier(false);
+  ValueNotifier<bool> isShowingMessageUserNotExist = ValueNotifier(false);
   ValueNotifier<bool> lockNewLoadings = ValueNotifier(false);
   ValueNotifier<bool> isLoadingNewMatches = ValueNotifier(false);
 
-  late ProfileRepository profileRepository;
+  ValueNotifier<String> selectedRegion = ValueNotifier('EUN1');
+
+  late final FetchPUUIDAndSummonerIDFromRiotUsecase
+      fetchPUUIDAndSummonerIDFromRiotUsecase;
+  late final FetchSummonerProfileByPUUIDUsecase
+      fetchSummonerProfileByPUUIDUsecase;
 
   ProfileController({
-    required this.profileRepository,
+    required this.fetchPUUIDAndSummonerIDFromRiotUsecase,
+    required this.fetchSummonerProfileByPUUIDUsecase,
   });
 
-  starLoadingProfile() {
+  _starLoadingProfile() {
     isLoadingProfile.value = true;
   }
 
-  stopLoadingProfile() {
+  _stopLoadingProfile() {
     isLoadingProfile.value = false;
   }
 
   _showUserNotFoundMessage() {
-    stopLoadingProfile();
+    _starLoadingProfile();
     isShowingMessage.value = true;
     Future.delayed(Duration(seconds: 3)).then((value) {
+      _stopLoadingProfile();
       isShowingMessage.value = false;
     });
   }
 
-//   startProfileController() async {
-//     await checkIsUserStored();
-//   }
-//   checkIsUserStored() async {
-//     if (_masterController.userProfileExist()) {
-//       if (_masterController.userForProfile.region.isNotEmpty) {
-//         isUserFound.value = true;
-//         final region = _masterController.userForProfile.region;
-//         starUserLoading();
-//         await getUserTierInformation(
-//             _masterController.storedRegion.getKeyFromRegion(region)!);
-//         await getMasteryChampions(
-//             _masterController.storedRegion.getKeyFromRegion(region)!);
-//         await getMatchListIds(
-//             _masterController.storedRegion.getKeyFromRegion(region)!);
-//         await getMatches(
-//             _masterController.storedRegion.getKeyFromRegion(region)!);
-//         stopUserLoading();
-//       }
-//     }
-//   }
-//
+  searchProfile({
+    required String summonerName,
+    required String tag,
+  }) async {
+    _starLoadingProfile();
+    final fetchPUUID = await fetchPUUIDAndSummonerIDFromRiotUsecase(
+      summonerName: summonerName,
+      tagLine: tag,
+    );
+    fetchPUUID.fold(
+      (_) => _showUserNotFoundMessage(),
+      (summonerIdentification) async {
+        /// Depois de ter a identificação, posso procurar pelo
+        /// profile do usuário.
+        final result = await fetchSummonerProfileByPUUIDUsecase(
+          puuid: summonerIdentification.puuid,
+          region: selectedRegion.value,
+        );
+        result.fold(
+          (_) => _showUserNotFoundMessage(),
+          (profile) async {
+            _stopLoadingProfile();
+            print(profile.name);
+          },
+        );
+      },
+    );
+  }
+
 //   getUserTierInformation(String keyRegion) async {
 //     userTierList.value = await _profileRepository.getUserTier(
 //         _masterController.userForProfile.id, keyRegion);

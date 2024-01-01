@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:legends_panel/app/core/constants/regions_constants.dart';
 import 'package:legends_panel/app/core/general_controller/general_repository.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
@@ -148,7 +149,7 @@ class _ActiveGameSearchPageState extends State<ActiveGameSearchPage> {
                           itemHeight: 50,
                           value:
                               _activeGameSearchController.selectedRegion.value,
-                          items: _activeGameSearchController.regions
+                          items: RegionsConstants.regions
                               .map((String region) {
                             return DropdownMenuItem<String>(
                               value: region,

@@ -10,7 +10,7 @@ abstract class RoutesPath {
 
   /// SUB TELAS
   static const ACTIVE_GAME_RESULT = "/active_game_result";
-  static const PROFILE_SUB = "/profile_found_result";
+  static const PROFILE_RESULT = "/profile_found_result";
 
   /// Essas variáveis servem para substituir os números mágicos de cada página
   /// no menuNavigator.
