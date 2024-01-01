@@ -6,6 +6,7 @@ import 'package:legends_panel/app/modules/current_game/data/repositories/active_
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_participant_model.dart';
 import 'package:legends_panel/app/modules/current_game/presenter/active_game/active_game_result/components/active_game_participant_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:legends_panel/app/modules/current_game/presenter/active_game/active_game_result/components/bottom_sheet_runes.dart';
 
 class ActiveGameParticipantCard extends StatefulWidget {
   final ActiveGameParticipantModel participant;
@@ -110,7 +111,6 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
   }
 
   _bottomSheet() {
-    double iconSize = 40;
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -118,153 +118,8 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
       showDragHandle: true,
       context: context,
       builder: (context) {
-        return Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 10, bottom: 10),
-              child: Text(
-                "${widget.participant.summonerName} - ${AppLocalizations.of(context)!.perk}",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                children: _activeGameParticipantController
-                    .generalController.lolConstantsModel.perks!
-                    .map(
-                      (perkClasse) => Visibility(
-                        visible: _activeGameParticipantController
-                            .generalController
-                            .checkPerkIsAssigned(
-                          options: [
-                            widget.participant.perk!.perkStyle,
-                            widget.participant.perk!.perkSubStyle,
-                          ],
-                          perkCorrente: perkClasse.id,
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Colors.blueGrey,
-                          ),
-                          margin: EdgeInsets.symmetric(
-                            horizontal: 5,
-                            vertical: 5,
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.symmetric(vertical: 10),
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                    child: Image.network(
-                                      _activeGameParticipantController
-                                          .generalController
-                                          .getPerkStyleBadgeUrl(
-                                        perkId: perkClasse.id,
-                                      ),
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                        return SizedBox.shrink();
-                                      },
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(left: 10),
-                                    child: Text(perkClasse.name),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: perkClasse.slotModels
-                                    .map(
-                                      (slot) => Container(
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 5),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: slot.runeModels
-                                              .map(
-                                                (runa) => Stack(
-                                                  children: [
-                                                    Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                        horizontal: 2,
-                                                      ),
-                                                      height: iconSize,
-                                                      width: iconSize,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.black,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(100),
-                                                      ),
-                                                      child: Image.network(
-                                                        _activeGameParticipantController
-                                                            .generalController
-                                                            .getPerkDetailBadgeUrl(
-                                                          iconPath: runa.icon,
-                                                        ),
-                                                        errorBuilder: (context,
-                                                            error, stackTrace) {
-                                                          return SizedBox
-                                                              .shrink();
-                                                        },
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                        horizontal: 2,
-                                                      ),
-                                                      height: iconSize,
-                                                      width: iconSize,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.grey.withOpacity(
-                                                            _activeGameParticipantController
-                                                                    .generalController
-                                                                    .checkPerkIsAssigned(
-                                                          options: widget
-                                                              .participant
-                                                              .perk!
-                                                              .perkIds,
-                                                          perkCorrente: runa.id,
-                                                        )
-                                                                ? 0
-                                                                : 0.85),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(100),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              )
-                                              .toList(),
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
-              ),
-            ),
-          ],
+        return BottomSheetRunes(
+          activeGameParticipantController: _activeGameParticipantController,
         );
       },
     );
