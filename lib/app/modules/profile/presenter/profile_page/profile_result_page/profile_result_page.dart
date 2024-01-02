@@ -1,32 +1,35 @@
-// import 'package:flutter/material.dart';
-// import 'package:get_it/get_it.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:legends_panel/app/core/constants/assets.dart';
-// import 'package:legends_panel/app/modules/app_initialization/presenter/master_page/master_controller.dart';
-// import 'package:legends_panel/app/modules/profile/presenter/profile_controller/profile_controller.dart';
-//
-// import 'item_match_list_game_card.dart';
-// import 'mastery_champions.dart';
-//
-// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-//
-// class FoundUserComponent extends StatefulWidget {
-//   const FoundUserComponent({Key? key}) : super(key: key);
-//
-//   @override
-//   State<FoundUserComponent> createState() => _FoundUserComponentState();
-// }
-//
-// class _FoundUserComponentState extends State<FoundUserComponent> {
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:legends_panel/app/core/constants/assets.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_profile_model.dart';
+import 'package:legends_panel/app/modules/profile/presenter/profile_page/profile_result_page/profile_result_page_controller.dart';
+
+class ProfileResultPage extends StatefulWidget {
+  final SummonerProfileModel summonerProfileModel;
+
+  const ProfileResultPage({
+    required this.summonerProfileModel,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<ProfileResultPage> createState() => _ProfileResultPageState();
+}
+
+class _ProfileResultPageState extends State<ProfileResultPage> {
 //   final ScrollController _scrollController = ScrollController();
-//   final ProfileController _profileController = GetIt.I<ProfileController>();
-//   final MasterController _masterController = GetIt.I<MasterController>();
-//
-//   @override
-//   void initState() {
-//     this._scrollController.addListener(this._scrollListenerFunction);
-//     super.initState();
-//   }
+
+  late final ProfileResultController profileResultController;
+
+  @override
+  void initState() {
+    //this._scrollController.addListener(this._scrollListenerFunction);
+    profileResultController = ProfileResultController(
+      summonerProfileModel: widget.summonerProfileModel,
+    );
+    super.initState();
+  }
+
 //
 //   @override
 //   void dispose() {
@@ -51,51 +54,54 @@
 //         !this._scrollController.position.outOfRange;
 //   }
 //
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       decoration: BoxDecoration(
-//         image: DecorationImage(
-//             image: AssetImage(imageBackgroundProfilePage), fit: BoxFit.cover),
-//       ),
-//       child: Column(
-//         children: [
-//           Stack(
-//             children: [
-//               Container(
-//                 height: MediaQuery.of(context).size.height / 3,
-//                 child: summonerPanel(context),
-//               ),
-//               Positioned(
-//                 left: 25,
-//                 top: 20,
-//                 child: _outButton(),
-//               ),
-//             ],
-//           ),
-//           MasteryChampions(),
-//           ValueListenableBuilder(
-//               valueListenable: _profileController.matchList,
-//               builder: (context, value, _) {
-//                 return _profileController.matchList.value.length > 0
-//                     ? Expanded(
-//                         child: Container(
-//                           margin: EdgeInsets.only(bottom: 45),
-//                           child: ListView.builder(
-//                             itemCount: _hasMoreMatchesToLoad(),
-//                             controller: this._scrollController,
-//                             itemBuilder: (_, myCurrentPosition) {
-//                               return _isLoadingGameCard(myCurrentPosition);
-//                             },
-//                           ),
-//                         ),
-//                       )
-//                     : CircularProgressIndicator();
-//               }),
-//         ],
-//       ),
-//     );
-//   }
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(imageBackgroundProfilePage),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Column(
+        children: [
+          Stack(
+            children: [
+              // Container(
+              //   height: MediaQuery.of(context).size.height / 3,
+              //   child: summonerPanel(context),
+              // ),
+              // Positioned(
+              //   left: 25,
+              //   top: 20,
+              //   child: _outButton(),
+              // ),
+            ],
+          ),
+          //MasteryChampions(),
+          // ValueListenableBuilder(
+          //   valueListenable: _profileController.matchList,
+          //   builder: (context, value, _) {
+          //     return _profileController.matchList.value.length > 0
+          //         ? Expanded(
+          //             child: Container(
+          //               margin: EdgeInsets.only(bottom: 45),
+          //               child: ListView.builder(
+          //                 itemCount: _hasMoreMatchesToLoad(),
+          //                 controller: this._scrollController,
+          //                 itemBuilder: (_, myCurrentPosition) {
+          //                   return _isLoadingGameCard(myCurrentPosition);
+          //                 },
+          //               ),
+          //             ),
+          //           )
+          //         : CircularProgressIndicator();
+          //   },
+          // ),
+        ],
+      ),
+    );
+  }
 //
 //   Widget _isLoadingGameCard(int myCurrentPosition) {
 //     if (myCurrentPosition < this._profileController.matchList.value.length) {
@@ -400,5 +406,4 @@
 //         ],
 //       ),
 //     );
-//   }
-// }
+}

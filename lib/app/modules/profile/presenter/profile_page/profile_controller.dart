@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_puuid_and_summonerID_from_riot_usecase.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_summoner_profile_by_puuid_usecase.dart';
+import 'package:legends_panel/app/modules/current_game/domain/usecases/user_tier/fetch_user_tier_by_summoner_id.dart';
 
 class ProfileController {
   ValueNotifier<bool> isLoadingProfile = ValueNotifier(false);
@@ -12,14 +13,19 @@ class ProfileController {
 
   ValueNotifier<String> selectedRegion = ValueNotifier('EUN1');
 
+  Function goToProfileResultCallback;
+
   late final FetchPUUIDAndSummonerIDFromRiotUsecase
       fetchPUUIDAndSummonerIDFromRiotUsecase;
   late final FetchSummonerProfileByPUUIDUsecase
       fetchSummonerProfileByPUUIDUsecase;
+  late final FetchUserTierBySummonerIdUsecase fetchUserTierBySummonerIdUsecase;
 
   ProfileController({
     required this.fetchPUUIDAndSummonerIDFromRiotUsecase,
     required this.fetchSummonerProfileByPUUIDUsecase,
+    required this.fetchUserTierBySummonerIdUsecase,
+    required this.goToProfileResultCallback,
   });
 
   _starLoadingProfile() {
@@ -60,27 +66,30 @@ class ProfileController {
         result.fold(
           (_) => _showUserNotFoundMessage(),
           (profile) async {
-            _stopLoadingProfile();
-            print(profile.name);
+            /// Antes de ir para os results, tenho que chamar algum outro método
+            /// que devolva o summonerID para conseguir pegar os LeagueEntries.
+            /// A chamada de champion Mastery retorna o summonerID. Esse atributo
+            /// vai ser necessário em todas as requests subsequentes.
+            // fetchUserTierBySummonerIdUsecase(
+            //   summonerId: profile.accountId,
+            //   region: selectedRegion.value,
+            // ).then(
+            //   (result) {
+            //     result.fold(
+            //       (l) => _showUserNotFoundMessage(),
+            //       (leagueEntries) {
+            //         profile.setLeagueEntriesModel(leagueEntries);
+            //         goToProfileResultCallback(profile);
+            //         _stopLoadingProfile();
+            //       },
+            //     );
+            //   },
+            // );
           },
         );
       },
     );
   }
-
-//   getUserTierInformation(String keyRegion) async {
-//     userTierList.value = await _profileRepository.getUserTier(
-//         _masterController.userForProfile.id, keyRegion);
-//     for (UserTier userTier in userTierList.value) {
-//       if (userTier.queueType == StringConstants.rankedSolo) {
-//         userTierRankedSolo.value = userTier;
-//         userTierRankedSolo.notifyListeners();
-//       } else if (userTier.queueType == StringConstants.rankedFlex) {
-//         userTierRankedFlex.value = userTier;
-//         userTierRankedFlex.notifyListeners();
-//       }
-//     }
-//   }
 //
 //   bool isUserGreaterThanPlatinum() {
 //     String elo = userTierRankedSolo.value.tier.toLowerCase();
@@ -136,21 +145,6 @@ class ProfileController {
 //           _masterController.storedRegion.getKeyFromRegion(region)!);
 //       stopLoadingNewMatches();
 //     }
-//   }
-//
-//   String getChampionImage(int championId) {
-//     String returnedChampion =
-//         _masterController.getChampionById(championId.toString()).detail.id;
-//     return _profileRepository.getChampionImage(returnedChampion);
-//   }
-//
-//   String getCircularChampionImage(int championId) {
-//     String returnedChampion = _masterController
-//         .getChampionById(championId.toString())
-//         .detail
-//         .id
-//         .toString();
-//     return _profileRepository.getCircularChampionImage(returnedChampion);
 //   }
 //
 //   String getMasteryImage(int index) {

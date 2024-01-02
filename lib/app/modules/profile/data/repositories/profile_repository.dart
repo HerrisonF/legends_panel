@@ -26,35 +26,6 @@ class ProfileRepository {
     }
   }
 
-  // Future<List<UserTier>> getUserTier(
-  //   String encryptedSummonerId,
-  //   String keyRegion,
-  // ) async {
-  //   final String path =
-  //       "/lol/league/v4/entries/by-summoner/$encryptedSummonerId";
-  //   List<UserTier> listTier = [];
-  //   try {
-  //     final response = await httpServices.get(
-  //       url: API.riotAmericasUrl,
-  //       path: path,
-  //       origin: origin,
-  //     );
-  //
-  //     return response.fold((l) {
-  //       logger.logDEBUG("SummonerTier not found ...");
-  //       return listTier;
-  //     }, (r) {
-  //       for (dynamic tier in r.data) {
-  //         listTier.add(UserTier.fromJson(tier));
-  //       }
-  //       return listTier;
-  //     });
-  //   } catch (e) {
-  //     logger.logDEBUG("Error to get SummonerTier ... $e");
-  //     return [];
-  //   }
-  // }
-
   Future<List<ChampionMastery>> getChampionMastery(
     String summonerId,
     String keyRegion,
@@ -85,28 +56,6 @@ class ProfileRepository {
     } catch (e) {
       logger.logDEBUG("Error to get Champion Mastery");
       return championMasteryList;
-    }
-  }
-
-  String getChampionImage(String championId) {
-    final String path = "/cdn/img/champion/splash/${championId}_0.jpg";
-    logger.logDEBUG("building Image Champion for mastery URL...");
-    try {
-      return API.riotDragonUrl + path;
-    } catch (e) {
-      logger.logDEBUG("Error to build Image Champion for mastery Url $e");
-      return "";
-    }
-  }
-
-  String getCircularChampionImage(String championId) {
-    final String path = "/cdn/latest/img/champion/$championId.png";
-    logger.logDEBUG("building Image Champion for mastery URL...");
-    try {
-      return API.riotDragonUrl + path;
-    } catch (e) {
-      logger.logDEBUG("Error to build Image Champion for mastery Url $e");
-      return "";
     }
   }
 

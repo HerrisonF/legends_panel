@@ -5,8 +5,10 @@ import 'package:legends_panel/app/modules/about/presenter/about_page/about_page.
 import 'package:legends_panel/app/modules/app_initialization/presenter/menu_navigator/menu_navigator_container.dart';
 import 'package:legends_panel/app/modules/app_initialization/presenter/splashscreen_page/splashscreen.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/active_game/active_game_info_model.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_profile_model.dart';
 import 'package:legends_panel/app/modules/current_game/presenter/active_game/active_game_search_page.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_page/profile_page.dart';
+import 'package:legends_panel/app/modules/profile/presenter/profile_page/profile_result_page/profile_result_page.dart';
 
 import '../../modules/current_game/presenter/active_game/active_game_result/active_game_result_page.dart';
 
@@ -56,6 +58,27 @@ class Routes {
                   return CustomTransitionPage(
                     key: state.pageKey,
                     child: ProfilePage(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) =>
+                            FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    ),
+                  );
+                },
+              ),
+              GoRoute(
+                parentNavigatorKey: _shellNavigatorKey,
+                path: RoutesPath.PROFILE_RESULT,
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  SummonerProfileModel profile =
+                      state.extra as SummonerProfileModel;
+
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: ProfileResultPage(
+                      summonerProfileModel: profile,
+                    ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) =>
                             FadeTransition(

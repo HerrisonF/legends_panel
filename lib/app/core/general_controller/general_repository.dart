@@ -66,7 +66,8 @@ class GeneralRepository {
     }
   }
 
-  String getTierEmblemUrl({
+  /// Aqui são as mini-emblems.
+  String getTierMiniEmblemUrl({
     required String tier,
   }) {
     final String path = "latest/plugins/rcp-fe-lol-static-assets/"
@@ -121,6 +122,7 @@ class GeneralRepository {
     }
   }
 
+  /// Aqui é o estilo da perk.
   String getPerkUrl(String iconName) {
     final String path = "/cdn/img/$iconName";
     try {
@@ -130,6 +132,7 @@ class GeneralRepository {
     }
   }
 
+  /// São as perks que o usuário selecionou.
   String getPerkDetailUrl({
     required String iconPath,
   }) {

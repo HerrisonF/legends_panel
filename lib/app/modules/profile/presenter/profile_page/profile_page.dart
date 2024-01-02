@@ -4,15 +4,18 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
 import 'package:legends_panel/app/core/constants/regions_constants.dart';
+import 'package:legends_panel/app/core/general_controller/general_repository.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:legends_panel/app/core/routes/routes_path.dart';
 import 'package:legends_panel/app/modules/current_game/data/repositories/active_game_search_repository_impl.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_profile_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_puuid_and_summonerID_from_riot_usecase_impl.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_summoner_profile_by_puuid_usecase_impl.dart';
+import 'package:legends_panel/app/modules/current_game/domain/usecases/user_tier/fetch_user_tier_by_summoner_id_usecase_impl.dart';
 import 'package:legends_panel/app/modules/profile/data/repositories/profile_repository.dart';
-import 'package:legends_panel/app/modules/profile/presenter/profile_controller/profile_controller.dart';
+import 'package:legends_panel/app/modules/profile/presenter/profile_page/profile_controller.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -48,6 +51,10 @@ class _ProfilePageState extends State<ProfilePage> {
           FetchPUUIDAndSummonerIDFromRiotUsecaseImpl(
         activeGameSearchRepository: _repositoryActiveGame,
       ),
+      fetchUserTierBySummonerIdUsecase: FetchUserTierBySummonerIdUsecaseImpl(
+        generalRepository: GetIt.I<GeneralRepository>(),
+      ),
+      goToProfileResultCallback: goToProfilePageResult,
     );
     super.initState();
   }
@@ -330,9 +337,10 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  goToProfilePageResult() {
+  goToProfilePageResult(SummonerProfileModel summonerProfileModel) {
     context.push(
       RoutesPath.PROFILE_RESULT,
+      extra: summonerProfileModel,
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_identification_model.dart';
+import 'package:legends_panel/app/modules/current_game/domain/models/user_tier_entries/league_entry_model.dart';
 
 class SummonerProfileModel {
   String accountId;
@@ -8,6 +9,10 @@ class SummonerProfileModel {
   String puuid;
   int summonerLevel;
   SummonerIdentificationModel? summonerIdentificationModel;
+
+  /// Esses dados não são originais do objeto
+
+  List<LeagueEntryModel>? leagueEntries;
 
   SummonerProfileModel({
     required this.accountId,
@@ -26,5 +31,12 @@ class SummonerProfileModel {
       gameName: model.gameName,
       tagLine: model.tagLine,
     );
+  }
+
+  /// É uma lista de entries que significa as rankes.
+  /// Ex: Ranked solo -> master Ranked Flex -> Bronze.
+  setLeagueEntriesModel(List<LeagueEntryModel> entries){
+    this.leagueEntries = [];
+    this.leagueEntries!.addAll(entries);
   }
 }
