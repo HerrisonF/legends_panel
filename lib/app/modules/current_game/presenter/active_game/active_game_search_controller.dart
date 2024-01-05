@@ -92,7 +92,7 @@ class ActiveGameSearchController {
                 ActiveGameParticipantModel model = gameInfo
                     .activeGameParticipants
                     .where((element) =>
-                        element.puuid == gameInfo.summonerProfileModel!.puuid)
+                        element.puuid == gameInfo.summonerProfileModel!.summonerIdentificationModel!.puuid)
                     .first;
 
                 model.setSummonerProfile(profile);

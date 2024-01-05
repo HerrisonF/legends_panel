@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:legends_panel/app/core/general_controller/general_controller.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/champion_mastery.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/champion_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_puuid_and_summonerID_from_riot_usecase.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_summoner_profile_by_puuid_usecase.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/user_tier/fetch_user_tier_by_summoner_id.dart';
@@ -23,12 +26,14 @@ class ProfileController {
   late final FetchUserTierBySummonerIdUsecase fetchUserTierBySummonerIdUsecase;
   late final FetchUserChampionMasteriesUsecase
       fetchUserChampionMasteriesUsecase;
+  late final GeneralController generalController;
 
   ProfileController({
     required this.fetchPUUIDAndSummonerIDFromRiotUsecase,
     required this.fetchSummonerProfileByPUUIDUsecase,
     required this.fetchUserTierBySummonerIdUsecase,
     required this.fetchUserChampionMasteriesUsecase,
+    required this.generalController,
     required this.goToProfileResultCallback,
   });
 
@@ -81,18 +86,34 @@ class ProfileController {
 
             result.fold(
               (l) => _showUserNotFoundMessage(),
-              (r) {
+              (championMasteries) {
                 fetchUserTierBySummonerIdUsecase(
-                  summonerId: r.first.summonerId,
+                  summonerId: profile.id,
                   region: selectedRegion.value,
                 ).then(
                   (result) {
                     result.fold(
                       (l) => _showUserNotFoundMessage(),
                       (leagueEntries) {
-                        print(leagueEntries);
-                        // profile.setLeagueEntriesModel(leagueEntries);
-                        // goToProfileResultCallback(profile);
+                        profile.setLeagueEntriesModel(leagueEntries);
+                        profile
+                            .setSummonerIdentification(summonerIdentification);
+                        profile.setChampionMasteriesModel(championMasteries);
+                        if (profile.masteries != null) {
+                          for (ChampionMastery championMastery
+                              in profile.masteries!) {
+                            ChampionModel? champion = generalController
+                                .lolConstantsModel
+                                .getChampionById(
+                              championMastery.championId,
+                            );
+                            if (champion != null) {
+                              championMastery.setChampion(champion);
+                            }
+                          }
+                        }
+                        profile.summonerId = championMasteries.first.summonerId;
+                        goToProfileResultCallback(profile);
                         _stopLoadingProfile();
                       },
                     );

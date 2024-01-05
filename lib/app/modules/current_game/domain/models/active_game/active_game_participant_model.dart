@@ -65,7 +65,6 @@ class ActiveGameParticipantModel {
       profileIconId: model.profileIconId,
       name: model.name,
       id: model.id,
-      puuid: model.puuid,
       summonerLevel: model.summonerLevel,
     );
   }

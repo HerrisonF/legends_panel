@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:legends_panel/app/core/constants/assets.dart';
 import 'package:legends_panel/app/core/constants/regions_constants.dart';
+import 'package:legends_panel/app/core/general_controller/general_controller.dart';
 import 'package:legends_panel/app/core/general_controller/general_repository.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
@@ -16,7 +17,6 @@ import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_
 import 'package:legends_panel/app/modules/current_game/domain/usecases/user_tier/fetch_user_tier_by_summoner_id_usecase_impl.dart';
 import 'package:legends_panel/app/modules/profile/data/repositories/profile_repository.dart';
 import 'package:legends_panel/app/modules/profile/domain/usecases/fetch_user_champion_masteries_impl.dart';
-import 'package:legends_panel/app/modules/profile/domain/usecases/fetch_user_champion_masteries_usecase.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_page/profile_controller.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -60,6 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
         profileRepository: _profileRepository,
       ),
       goToProfileResultCallback: goToProfilePageResult,
+      generalController: GetIt.I<GeneralController>(),
     );
     super.initState();
   }

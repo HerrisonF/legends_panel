@@ -185,7 +185,6 @@ class ActiveGameSearchRepositoryImpl extends ActiveGameSearchRepository {
           profileIconId: dto.profileIconId,
           name: dto.name,
           id: dto.id,
-          puuid: dto.puuid,
           summonerLevel: dto.summonerLevel,
         );
 

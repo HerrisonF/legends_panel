@@ -1,3 +1,5 @@
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/champion_model.dart';
+
 class ChampionMastery {
   int championId;
   int championLevel;
@@ -8,6 +10,7 @@ class ChampionMastery {
   bool chestGranted;
   int tokensEarned;
   String summonerId;
+  ChampionModel? championModel;
 
   ChampionMastery({
     required this.tokensEarned,
@@ -20,4 +23,20 @@ class ChampionMastery {
     required this.chestGranted,
     required this.championPointsUntilNextLevel,
   });
+
+  setChampion(ChampionModel receivedChampion) {
+    championModel = ChampionModel(
+      version: receivedChampion.version,
+      id: receivedChampion.id,
+      key: receivedChampion.key,
+      name: receivedChampion.name,
+      title: receivedChampion.title,
+      blurb: receivedChampion.blurb,
+      info: receivedChampion.info,
+      image: receivedChampion.image,
+      tags: receivedChampion.tags,
+      partype: receivedChampion.partype,
+      stats: receivedChampion.stats,
+    );
+  }
 }
