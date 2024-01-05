@@ -1,8 +1,12 @@
+import 'package:dartz/dartz.dart';
+import 'package:legends_panel/app/core/error_base/failure.dart';
 import 'package:legends_panel/app/core/http_configuration/api_endpoints.dart';
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
+import 'package:legends_panel/app/core/http_configuration/region_endpoints_enum.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/champion_mastery.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/match_detail.dart';
+import 'package:legends_panel/app/modules/profile/data/dtos/champion_mastery_dto.dart';
 
 class ProfileRepository {
   late Logger logger;
@@ -26,36 +30,52 @@ class ProfileRepository {
     }
   }
 
-  Future<List<ChampionMastery>> getChampionMastery(
-    String summonerId,
-    String keyRegion,
-  ) async {
+  Future<Either<Failure, List<ChampionMastery>>> getChampionMastery({
+    required String encryptedPUUID,
+    required String region,
+  }) async {
     final String path =
-        "/lol/champion-mastery/v4/champion-masteries/by-summoner/$summonerId";
+        "/lol/champion-mastery/v4/champion-masteries/by-puuid/$encryptedPUUID/top";
 
     List<ChampionMastery> championMasteryList = [];
 
     try {
       final response = await httpServices.get(
-        url: API.riotAmericasUrl,
+        url: RegionEndpoints.fromString(region),
         path: path,
         origin: origin,
       );
 
       return response.fold((l) {
-        logger.logDEBUG("Error to get Champion Mastery");
-        return championMasteryList;
+        return Left(
+          Failure(message: "Champion Mastery não encontrada"),
+        );
       }, (r) {
         for (dynamic championMastery in r.data) {
-          championMasteryList.add(
-            ChampionMastery.fromJson(championMastery),
-          );
+          ChampionMasteryDTO dto = ChampionMasteryDTO.fromJson(championMastery);
+
+          championMasteryList.add(ChampionMastery(
+            tokensEarned: dto.tokensEarned,
+            championPointsSinceLastLevel: dto.championPointsSinceLastLevel,
+            championPoints: dto.championPoints,
+            championLevel: dto.championLevel,
+            summonerId: dto.summonerId,
+            lastPlayTime: dto.lastPlayTime,
+            championId: dto.championId,
+            chestGranted: dto.chestGranted,
+            championPointsUntilNextLevel: dto.championPointsUntilNextLevel,
+          ));
         }
-        return championMasteryList;
+        return Right(championMasteryList);
       });
     } catch (e) {
       logger.logDEBUG("Error to get Champion Mastery");
-      return championMasteryList;
+      return Left(
+        Failure(
+          error: e.toString(),
+          message: "Error to get Champion Mastery",
+        ),
+      );
     }
   }
 

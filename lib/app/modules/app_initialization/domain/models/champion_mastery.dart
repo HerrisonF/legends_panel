@@ -1,30 +1,23 @@
 class ChampionMastery {
-  dynamic championId = 0;
-  dynamic championLevel = 0;
-  dynamic championPoints = 0;
-  dynamic lastPlayTime = 0;
-  dynamic championPointsSinceLastLevel = 0;
-  dynamic championPointsUntilNextLevel = 0;
-  dynamic chestGranted = false;
-  dynamic tokensEarned = 0;
-  dynamic summonerId = "";
+  int championId;
+  int championLevel;
+  int championPoints;
+  int lastPlayTime;
+  int championPointsSinceLastLevel;
+  int championPointsUntilNextLevel;
+  bool chestGranted;
+  int tokensEarned;
+  String summonerId;
 
-  ChampionMastery();
-
-  ChampionMastery.fromJson(Map<String, dynamic> json){
-    championId = json['championId']??0;
-    championLevel = json['championLevel']??0;
-    championPoints = json['championPoints']??0;
-    lastPlayTime = json['lastPlayTime']??0;
-    championPointsSinceLastLevel = json['championPointsSinceLastLevel']??0;
-    championPointsUntilNextLevel = json['championPointsUntilNextLevel']??0;
-    chestGranted = json['chestGranted']?? false;
-    tokensEarned = json['tokensEarned']?? 0;
-    summonerId = json['summonerId']??"";
-  }
-
-  @override
-  String toString() {
-    return 'ChampionMastery{championId: $championId, championLevel: $championLevel, championPoints: $championPoints, lastPlayTime: $lastPlayTime, championPointsSinceLastLevel: $championPointsSinceLastLevel, championPointsUntilNextLevel: $championPointsUntilNextLevel, chestGranted: $chestGranted, tokensEarned: $tokensEarned, summonerId: $summonerId}';
-  }
+  ChampionMastery({
+    required this.tokensEarned,
+    required this.championPointsSinceLastLevel,
+    required this.championPoints,
+    required this.championLevel,
+    required this.summonerId,
+    required this.lastPlayTime,
+    required this.championId,
+    required this.chestGranted,
+    required this.championPointsUntilNextLevel,
+  });
 }

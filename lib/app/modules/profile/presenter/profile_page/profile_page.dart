@@ -15,6 +15,8 @@ import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_summoner_profile_by_puuid_usecase_impl.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/user_tier/fetch_user_tier_by_summoner_id_usecase_impl.dart';
 import 'package:legends_panel/app/modules/profile/data/repositories/profile_repository.dart';
+import 'package:legends_panel/app/modules/profile/domain/usecases/fetch_user_champion_masteries_impl.dart';
+import 'package:legends_panel/app/modules/profile/domain/usecases/fetch_user_champion_masteries_usecase.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_page/profile_controller.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -53,6 +55,9 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       fetchUserTierBySummonerIdUsecase: FetchUserTierBySummonerIdUsecaseImpl(
         generalRepository: GetIt.I<GeneralRepository>(),
+      ),
+      fetchUserChampionMasteriesUsecase: FetchUserChampionMasteriesUseCaseImpl(
+        profileRepository: _profileRepository,
       ),
       goToProfileResultCallback: goToProfilePageResult,
     );

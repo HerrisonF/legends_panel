@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_puuid_and_summonerID_from_riot_usecase.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_summoner_profile_by_puuid_usecase.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/user_tier/fetch_user_tier_by_summoner_id.dart';
+import 'package:legends_panel/app/modules/profile/domain/usecases/fetch_user_champion_masteries_usecase.dart';
 
 class ProfileController {
   ValueNotifier<bool> isLoadingProfile = ValueNotifier(false);
@@ -20,11 +21,14 @@ class ProfileController {
   late final FetchSummonerProfileByPUUIDUsecase
       fetchSummonerProfileByPUUIDUsecase;
   late final FetchUserTierBySummonerIdUsecase fetchUserTierBySummonerIdUsecase;
+  late final FetchUserChampionMasteriesUsecase
+      fetchUserChampionMasteriesUsecase;
 
   ProfileController({
     required this.fetchPUUIDAndSummonerIDFromRiotUsecase,
     required this.fetchSummonerProfileByPUUIDUsecase,
     required this.fetchUserTierBySummonerIdUsecase,
+    required this.fetchUserChampionMasteriesUsecase,
     required this.goToProfileResultCallback,
   });
 
@@ -70,21 +74,32 @@ class ProfileController {
             /// que devolva o summonerID para conseguir pegar os LeagueEntries.
             /// A chamada de champion Mastery retorna o summonerID. Esse atributo
             /// vai ser necessário em todas as requests subsequentes.
-            // fetchUserTierBySummonerIdUsecase(
-            //   summonerId: profile.accountId,
-            //   region: selectedRegion.value,
-            // ).then(
-            //   (result) {
-            //     result.fold(
-            //       (l) => _showUserNotFoundMessage(),
-            //       (leagueEntries) {
-            //         profile.setLeagueEntriesModel(leagueEntries);
-            //         goToProfileResultCallback(profile);
-            //         _stopLoadingProfile();
-            //       },
-            //     );
-            //   },
-            // );
+            final result = await fetchUserChampionMasteriesUsecase(
+              region: selectedRegion.value,
+              puuid: summonerIdentification.puuid,
+            );
+
+            result.fold(
+              (l) => _showUserNotFoundMessage(),
+              (r) {
+                fetchUserTierBySummonerIdUsecase(
+                  summonerId: r.first.summonerId,
+                  region: selectedRegion.value,
+                ).then(
+                  (result) {
+                    result.fold(
+                      (l) => _showUserNotFoundMessage(),
+                      (leagueEntries) {
+                        print(leagueEntries);
+                        // profile.setLeagueEntriesModel(leagueEntries);
+                        // goToProfileResultCallback(profile);
+                        _stopLoadingProfile();
+                      },
+                    );
+                  },
+                );
+              },
+            );
           },
         );
       },
