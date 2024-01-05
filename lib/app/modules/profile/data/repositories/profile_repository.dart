@@ -19,8 +19,11 @@ class ProfileRepository {
 
   static const String origin = "ProfileRepository";
 
-  String getProfileImage(String profileIconId) {
-    final String path = "/cdn/latest/img/profileicon/$profileIconId.png";
+  String getProfileImage({
+    required String profileIconId,
+    required String version,
+  }) {
+    final String path = "/cdn/$version/img/profileicon/$profileIconId.png";
     logger.logDEBUG("building Image profile Url ...");
     try {
       return API.riotDragonUrl + path;

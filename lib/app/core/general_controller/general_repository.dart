@@ -91,6 +91,15 @@ class GeneralRepository {
     }
   }
 
+  String getChampionBigImage({required String championName}) {
+    final String path = "/cdn/img/champion/splash/${championName}_0.jpg";
+    try {
+      return API.riotDragonUrl + path;
+    } catch (e) {
+      return "";
+    }
+  }
+
   String getItemUrl(String itemId) {
     final String path = "/cdn/latest/img/item/$itemId.png";
     try {

@@ -133,7 +133,7 @@ class ActiveGameSearchController {
     isShowingMessageUserIsNotPlaying.value = true;
     Future.delayed(Duration(seconds: 3)).then((value) {
       isShowingMessageUserIsNotPlaying.value = false;
-      _stopUserLoading();
+      isLoadingUser.notifyListeners();
     });
   }
 }

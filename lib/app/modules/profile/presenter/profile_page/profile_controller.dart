@@ -10,7 +10,6 @@ import 'package:legends_panel/app/modules/profile/domain/usecases/fetch_user_cha
 class ProfileController {
   ValueNotifier<bool> isLoadingProfile = ValueNotifier(false);
   ValueNotifier<bool> isProfileFound = ValueNotifier(false);
-  ValueNotifier<bool> isShowingMessage = ValueNotifier(false);
   ValueNotifier<bool> isShowingMessageUserNotExist = ValueNotifier(false);
   ValueNotifier<bool> lockNewLoadings = ValueNotifier(false);
   ValueNotifier<bool> isLoadingNewMatches = ValueNotifier(false);
@@ -46,11 +45,11 @@ class ProfileController {
   }
 
   _showUserNotFoundMessage() {
-    _starLoadingProfile();
-    isShowingMessage.value = true;
+    _stopLoadingProfile();
+    isShowingMessageUserNotExist.value = true;
     Future.delayed(Duration(seconds: 3)).then((value) {
-      _stopLoadingProfile();
-      isShowingMessage.value = false;
+      isShowingMessageUserNotExist.value = false;
+      isLoadingProfile.notifyListeners();
     });
   }
 
@@ -136,14 +135,6 @@ class ProfileController {
 //         elo != 'platinum';
 //   }
 //
-//   getMasteryChampions(String keyRegion) async {
-//     championMasteryList.value.addAll(
-//       await _profileRepository.getChampionMastery(
-//           _masterController.userForProfile.id, keyRegion),
-//     );
-//     championMasteryList.value
-//         .sort((b, a) => a.championPoints.compareTo(b.championPoints));
-//   }
 //
 //   getMatchListIds(String keyRegion) async {
 //     this.newIndex.value += AMOUNT_MATCHES_TO_FIND;
@@ -188,33 +179,4 @@ class ProfileController {
 //         championMasteryList.value[index].championLevel.toString());
 //   }
 //
-//   getUser(String region) async {
-//     starUserLoading();
-//     await _masterController.getUserProfileOnCloud(userNameInputController.text,
-//         _masterController.storedRegion.getKeyFromRegion(region)!);
-//     _masterController.saveUserProfile(region);
-//     if (_masterController.userProfileExist()) {
-//       await getUserTierInformation(
-//           _masterController.storedRegion.getKeyFromRegion(region)!);
-//       await getMasteryChampions(
-//           _masterController.storedRegion.getKeyFromRegion(region)!);
-//       await getMatchListIds(
-//           _masterController.storedRegion.getKeyFromRegion(region)!);
-//       await getMatches(
-//           _masterController.storedRegion.getKeyFromRegion(region)!);
-//       setUserRegion(region);
-//       changeCurrentProfilePageTo(FOUND_USER_COMPONENT);
-//       userNameInputController.clear();
-//       stopUserLoading();
-//     } else {
-//       _showUserNotFoundMessage();
-//     }
-//   }
-//
-//
-//   String getUserProfileImage() {
-//     return _profileRepository.getProfileImage(
-//       _masterController.userForProfile.profileIconId.toString(),
-//     );
-//   }
 }

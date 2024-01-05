@@ -1,7 +1,11 @@
+import 'package:legends_panel/app/core/general_controller/general_controller.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_profile_model.dart';
+import 'package:legends_panel/app/modules/profile/data/repositories/profile_repository.dart';
 
 class ProfileResultController {
   late SummonerProfileModel? summonerProfileModel;
+  late final ProfileRepository profileRepository;
+  late final GeneralController generalController;
 
   // ValueNotifier<MatchDetail> matchDetail = ValueNotifier(MatchDetail());
   // ValueNotifier<Participant> currentParticipant = ValueNotifier(Participant());
@@ -14,7 +18,16 @@ class ProfileResultController {
 
   ProfileResultController({
     required this.summonerProfileModel,
+    required this.profileRepository,
+    required this.generalController,
   });
+
+  String getUserProfileImage() {
+    return profileRepository.getProfileImage(
+      profileIconId: summonerProfileModel!.profileIconId.toString(),
+      version: generalController.lolConstantsModel.getLatestLolVersion(),
+    );
+  }
 
 // getParticipantById(String summonerId) {
 //   if (matchDetail.value.matchInfo.participants.length > 0) {

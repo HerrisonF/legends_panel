@@ -46,6 +46,12 @@ class GeneralController {
     );
   }
 
+  String getChampionBigImage({required String championName}) {
+    return generalRepository.getChampionBigImage(
+      championName: championName,
+    );
+  }
+
   getSpellBadgeUrl(int spellId) {
     return generalRepository.getSpellBadgeUrl(
       version: lolConstantsModel.getLatestLolVersion(),
