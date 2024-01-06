@@ -121,14 +121,18 @@
   },
   "spell": "Spell",
   "@spell": {
-    "descriptions" : "Spell"
+    "descriptions": "Spell"
   },
   "perk": "Runes",
-  "@perk" : {
-    "description" : "Runes"
+  "@perk": {
+    "description": "Runes"
+  },
+  "leaguePoints": "League Points",
+  "@leaguePoints": {
+    "description": "League Points"
   },
   "abilityOrder": "Ability order",
-  "@abilityOrder" : {
-    "description" : "Ability order"
+  "@abilityOrder": {
+    "description": "Ability order"
   }
 }

@@ -31,5 +31,6 @@
   "championName" : "Nome do champion",
   "spell" : "Feitiços",
   "perk" : "Runas",
+  "leaguePoints" : "Pontos de Liga",
   "abilityOrder" : "Ordem de habilidades"
 }

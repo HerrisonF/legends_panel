@@ -81,7 +81,7 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
           Stack(
             children: [
               Container(
-                height: 250,
+                height: 280,
                 child: summonerPanel(),
               ),
               Positioned(
@@ -155,243 +155,277 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
 //
   Widget summonerPanel() {
     return Stack(
+      alignment: Alignment.center,
       children: [
         Positioned(
           top: 0,
           left: 0,
           right: 0,
-          child: ShaderMask(
-            shaderCallback: (rect) {
-              return LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.black, Colors.transparent],
-              ).createShader(
-                Rect.fromLTRB(
-                  0,
-                  0,
-                  rect.width,
-                  rect.height,
-                ),
-              );
-            },
-            blendMode: BlendMode.dstIn,
-            child: ClipRRect(
-              child: profileResultController.summonerProfileModel!.masteries !=
-                          null &&
-                      profileResultController
-                          .summonerProfileModel!.masteries!.isNotEmpty
-                  ? Container(
-                      height: 230,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            profileResultController.generalController
-                                .getChampionBigImage(
-                              championName: profileResultController
-                                  .summonerProfileModel!
-                                  .masteries!
-                                  .first
-                                  .championModel!
-                                  .id,
-                            ),
-                          ),
-                          fit: BoxFit.cover,
-                          colorFilter: ColorFilter.mode(
-                            Colors.black26,
-                            BlendMode.overlay,
-                          ),
-                        ),
-                      ),
-                    )
-                  : SizedBox.shrink(),
-            ),
-          ),
+          child: _backgroundChampionMask(),
         ),
-        _profileImage(),
-        _profileName(context)
-        // _masterController.userForProfile.summonerLevel != "" &&
-        //         _profileController.userTierList.value.length > 0
-        //     ? _profileStatistics()
-        //     : SizedBox.shrink(),
-        // _playerRankedEloEmblem(context),
+        Positioned(
+          top: 55,
+          child: _playerRankedEloEmblem(),
+        ),
+        Positioned(
+          top: 20,
+          child: _profileBadge(),
+        ),
+        Positioned(
+          top: 50,
+          left: 0,
+          right: 0,
+          child: _profileStatistics(),
+        ),
       ],
     );
   }
 
-//   Positioned _playerRankedEloEmblem(BuildContext context) {
-//     return Positioned(
-//       top: MediaQuery.of(context).size.height / 5,
-//       left: 0,
-//       right: 0,
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           ValueListenableBuilder(
-//             valueListenable: _profileController.userTierRankedSolo,
-//             builder: (context, value, _) {
-//               return Container(
-//                 height: MediaQuery.of(context).size.height / 8,
-//                 child:
-//                     _profileController.userTierRankedSolo.value.tier.isNotEmpty
-//                         ? Image.asset(
-//                             "images/emblem_${_profileController.userTierRankedSolo.value.tier.toLowerCase()}.png",
-//                           )
-//                         : SizedBox.shrink(),
-//               );
-//             },
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-//
-//   Container _profileStatistics() {
-//     return Container(
-//       margin: EdgeInsets.only(
-//           top: MediaQuery.of(context).size.height / 14,
-//           left: MediaQuery.of(context).size.width / 10,
-//           right: MediaQuery.of(context).size.width / 9),
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-//           Column(
-//             children: [
-//               Container(
-//                 margin: EdgeInsets.only(
-//                     top: MediaQuery.of(context).size.height / 20),
-//                 decoration: BoxDecoration(boxShadow: [
-//                   BoxShadow(
-//                       color: Colors.black,
-//                       offset: Offset(1.0, 0.0),
-//                       blurRadius: 25)
-//                 ]),
-//                 child: Text(
-//                   AppLocalizations.of(context)!.level +
-//                       " ${_masterController.userForProfile.summonerLevel}",
-//                   style: GoogleFonts.montserrat(
-//                       color: Colors.white,
-//                       fontWeight: FontWeight.w600,
-//                       fontSize: 12),
-//                 ),
-//               )
-//             ],
-//           ),
-//           Column(
-//             children: [
-//               Container(
-//                 decoration: BoxDecoration(boxShadow: [
-//                   BoxShadow(
-//                       color: Colors.black,
-//                       offset: Offset(1.0, 0.0),
-//                       blurRadius: 25)
-//                 ]),
-//                 child: Text(
-//                   AppLocalizations.of(context)!.victory,
-//                   style: GoogleFonts.montserrat(
-//                       color: Colors.white,
-//                       fontWeight: FontWeight.w600,
-//                       fontSize: 12),
-//                 ),
-//               ),
-//               Container(
-//                 child: Text(
-//                   _profileController.userTierRankedSolo.value.wins.toString(),
-//                   style: GoogleFonts.montserrat(
-//                       color: Colors.white,
-//                       fontWeight: FontWeight.w600,
-//                       fontSize: 12),
-//                 ),
-//               ),
-//               Container(
-//                 height: 50,
-//               ),
-//               Container(
-//                 decoration: BoxDecoration(boxShadow: [
-//                   BoxShadow(
-//                       color: Colors.black,
-//                       offset: Offset(1.0, 0.0),
-//                       blurRadius: 25)
-//                 ]),
-//                 child: Text(
-//                   AppLocalizations.of(context)!.lose,
-//                   style: GoogleFonts.montserrat(
-//                     color: Colors.white,
-//                     fontWeight: FontWeight.w600,
-//                     fontSize: 12,
-//                   ),
-//                 ),
-//               ),
-//               Container(
-//                 child: Text(
-//                   _profileController.userTierRankedSolo.value.losses.toString(),
-//                   style: GoogleFonts.montserrat(
-//                     color: Colors.white,
-//                     fontWeight: FontWeight.w600,
-//                     fontSize: 12,
-//                   ),
-//                 ),
-//               )
-//             ],
-//           )
-//         ],
-//       ),
-//     );
-//   }
-//
-  Positioned _profileName(BuildContext context) {
-    return Positioned(
-      top: 130,
-      left: 0,
-      right: 0,
-      child: Container(
-        alignment: Alignment.center,
-        child: Text(
-          profileResultController.summonerProfileModel!.name,
-          style: GoogleFonts.montserrat(
-            fontSize: 20,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+  ShaderMask _backgroundChampionMask() {
+    return ShaderMask(
+      shaderCallback: (rect) {
+        return LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.black,
+            Colors.transparent,
+          ],
+        ).createShader(
+          Rect.fromLTRB(
+            0,
+            0,
+            rect.width,
+            rect.height,
           ),
+        );
+      },
+      blendMode: BlendMode.dstIn,
+      child: ClipRRect(
+        child:
+            profileResultController.summonerProfileModel!.masteries != null &&
+                    profileResultController
+                        .summonerProfileModel!.masteries!.isNotEmpty
+                ? Container(
+                    height: 280,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          profileResultController.generalController
+                              .getChampionBigImage(
+                            championName: profileResultController
+                                .summonerProfileModel!
+                                .masteries!
+                                .first
+                                .championModel!
+                                .id,
+                          ),
+                        ),
+                        fit: BoxFit.cover,
+                        colorFilter: ColorFilter.mode(
+                          Colors.black26,
+                          BlendMode.overlay,
+                        ),
+                      ),
+                    ),
+                  )
+                : SizedBox.shrink(),
+      ),
+    );
+  }
+
+  Container _playerRankedEloEmblem() {
+    return Container(
+      height: 200,
+      child: Image.network(
+        profileResultController.getRankedSoloTierBadge(),
+        errorBuilder: (context, error, stackTrace) {
+          return SizedBox.shrink();
+        },
+      ),
+    );
+  }
+
+  Container _profileStatistics() {
+    return Container(
+      margin: EdgeInsets.only(
+        right: 5,
+        left: 5,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            children: [
+              _summonerLevel(),
+              _summonerLeaguePoints(),
+            ],
+          ),
+          Column(
+            children: [
+              _summonerVictory(),
+              _summonerLosses(),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Container _summonerLosses() {
+    return Container(
+      margin: EdgeInsets.only(top: 30),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black,
+            offset: Offset(1.0, 0.0),
+            blurRadius: 40,
+          )
+        ],
+      ),
+      child: Text(
+        AppLocalizations.of(context)!.lose +
+            "\n" +
+            profileResultController.getLosses().toString(),
+        textAlign: TextAlign.center,
+        style: GoogleFonts.montserrat(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+          fontSize: 12,
         ),
       ),
     );
   }
 
-  SafeArea _profileImage() {
-    return SafeArea(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            margin: EdgeInsets.only(
-              top: 15,
-            ),
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(
-                  profileResultController.getUserProfileImage(),
-                ),
-                onError: (exception, stackTrace) => SizedBox.shrink(),
-              ),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.elliptical(50, 60),
-                bottomRight: Radius.elliptical(50, 60),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.white,
-                  spreadRadius: 1,
-                  blurRadius: 5,
-                  offset: Offset(0, 2), // changes position of shadow
-                ),
-              ],
-            ),
-          ),
+  Container _summonerVictory() {
+    return Container(
+      margin: EdgeInsets.only(top: 35),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black,
+            offset: Offset(1.0, 0.0),
+            blurRadius: 30,
+          )
         ],
       ),
+      child: Text(
+        AppLocalizations.of(context)!.victory +
+            "\n" +
+            profileResultController.getWins().toString(),
+        textAlign: TextAlign.center,
+        style: GoogleFonts.montserrat(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+          fontSize: 12,
+        ),
+      ),
+    );
+  }
+
+  Container _summonerLeaguePoints() {
+    return Container(
+      margin: EdgeInsets.only(top: 25),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black,
+            offset: Offset(1.0, 0.0),
+            blurRadius: 40,
+          )
+        ],
+      ),
+      child: Text(
+        "${AppLocalizations.of(context)!.leaguePoints} \n" +
+            profileResultController.getLeaguePoints().toString(),
+        textAlign: TextAlign.center,
+        style: GoogleFonts.montserrat(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+          fontSize: 12,
+        ),
+      ),
+    );
+  }
+
+  Container _summonerLevel() {
+    return Container(
+      margin: EdgeInsets.only(top: 40),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black,
+            offset: Offset(1.0, 0.0),
+            blurRadius: 40,
+          )
+        ],
+      ),
+      child: Text(
+        AppLocalizations.of(context)!.level +
+            " \n ${profileResultController.summonerProfileModel!.summonerLevel}",
+        style: GoogleFonts.montserrat(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+          fontSize: 12,
+        ),
+      ),
+    );
+  }
+
+  _profileBadge() {
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 10),
+          width: 200,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black,
+                offset: Offset(1.0, 0.0),
+                blurRadius: 60,
+              )
+            ],
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            profileResultController.summonerProfileModel!.name,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.montserrat(
+              fontSize: 20,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Container(
+          width: 80,
+          height: 80,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(
+                profileResultController.getUserProfileImage(),
+              ),
+              onError: (exception, stackTrace) => SizedBox.shrink(),
+            ),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.elliptical(50, 60),
+              bottomRight: Radius.elliptical(50, 60),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.white,
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: Offset(0, 2), // changes position of shadow
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

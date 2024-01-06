@@ -24,9 +24,20 @@ class ProfileRepository {
     required String version,
   }) {
     final String path = "/cdn/$version/img/profileicon/$profileIconId.png";
-    logger.logDEBUG("building Image profile Url ...");
     try {
       return API.riotDragonUrl + path;
+    } catch (e) {
+      logger.logDEBUG("Error to build Image Profile URL ... $e");
+      return "";
+    }
+  }
+
+  String getRankedTierBadge({
+    required String tier,
+  }) {
+    final String path = "/latest/plugins/rcp-fe-lol-shared-components/global/default/${tier.toLowerCase()}.png";
+    try {
+      return API.rawDataDragonUrl + path;
     } catch (e) {
       logger.logDEBUG("Error to build Image Profile URL ... $e");
       return "";
@@ -90,7 +101,6 @@ class ProfileRepository {
     }
     final String path =
         "/latest/game/assets/ux/mastery/mastery_icon_$championLevel.png";
-    logger.logDEBUG("building Image Champion for mastery URL...");
     try {
       return API.rawDataDragonUrl + path;
     } catch (e) {
