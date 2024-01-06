@@ -12,13 +12,6 @@ class ProfileResultController {
   List<LeagueEntryModel> tempList = [];
 
   // ValueNotifier<MatchDetail> matchDetail = ValueNotifier(MatchDetail());
-  // ValueNotifier<Participant> currentParticipant = ValueNotifier(Participant());
-
-  // startProfileResultGame(MatchDetail matchDetail) async {
-  //   this.matchDetail.value = matchDetail;
-  //
-  //   //getParticipantById(_masterController.userForProfile.id);
-  // }
 
   ProfileResultController({
     required this.summonerProfileModel,
@@ -77,17 +70,6 @@ class ProfileResultController {
   String getRankedSoloTierBadge(){
     return profileRepository.getRankedTierBadge(tier: tempList.first.tier);
   }
-
-
-// getParticipantById(String summonerId) {
-//   if (matchDetail.value.matchInfo.participants.length > 0) {
-//     var list = matchDetail.value.matchInfo.participants.where((element) => element.summonerId == summonerId);
-//     if(list.length > 0){
-//       this.currentParticipant.value = list.first;
-//       currentParticipant.notifyListeners();
-//     }
-//   }
-// }
 
 // getSpellImage(int spellId) {
 //   // return _currentGameParticipantController.getSpellUrl(

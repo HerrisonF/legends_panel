@@ -165,7 +165,7 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
           child: _backgroundChampionMask(),
         ),
         Positioned(
-          top: 55,
+          top: 70,
           child: _playerRankedEloEmblem(),
         ),
         Positioned(
@@ -384,7 +384,7 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(bottom: 10),
+          margin: EdgeInsets.only(bottom: 5),
           width: 200,
           decoration: BoxDecoration(
             boxShadow: [
@@ -397,7 +397,7 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
           ),
           alignment: Alignment.center,
           child: Text(
-            profileResultController.summonerProfileModel!.name,
+            profileResultController.summonerProfileModel!.summonerIdentificationModel!.gameName,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,

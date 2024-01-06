@@ -111,7 +111,10 @@ class ProfileController {
                             }
                           }
                         }
-                        profile.summonerId = championMasteries.first.summonerId;
+                        if(championMasteries.isNotEmpty) {
+                          profile.summonerId =
+                              championMasteries.first.summonerId;
+                        }
                         goToProfileResultCallback(profile);
                         _stopLoadingProfile();
                       },
