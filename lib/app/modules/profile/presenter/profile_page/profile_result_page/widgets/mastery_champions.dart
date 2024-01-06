@@ -21,7 +21,7 @@ class MasteryChampions extends StatelessWidget {
                 )
                 .toList(),
           )
-        : CircularProgressIndicator();
+        : SizedBox.shrink();
   }
 
   Container _championBadge(ChampionMastery championMastery) {

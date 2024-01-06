@@ -8,9 +8,13 @@ import 'package:legends_panel/app/core/general_controller/general_controller.dar
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/core/routes/routes_path.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/match_detail.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_profile_model.dart';
 import 'package:legends_panel/app/modules/profile/data/repositories/profile_repository.dart';
+import 'package:legends_panel/app/modules/profile/domain/usecases/fetch_user_matches_ids_usecase_impl.dart';
+import 'package:legends_panel/app/modules/profile/domain/usecases/fetch_user_matches_usecase_impl.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_page/profile_result_page/profile_result_page_controller.dart';
+import 'package:legends_panel/app/modules/profile/presenter/profile_page/profile_result_page/widgets/item_match_game_card.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_page/profile_result_page/widgets/mastery_champions.dart';
 
 class ProfileResultPage extends StatefulWidget {
@@ -26,48 +30,52 @@ class ProfileResultPage extends StatefulWidget {
 }
 
 class _ProfileResultPageState extends State<ProfileResultPage> {
-//   final ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   late final ProfileResultController profileResultController;
 
   @override
   void initState() {
-    //this._scrollController.addListener(this._scrollListenerFunction);
+    this._scrollController.addListener(this._scrollListenerFunction);
+    ProfileRepository profileRepository = ProfileRepository(
+      logger: GetIt.I<Logger>(),
+      httpServices: GetIt.I<HttpServices>(),
+    );
     profileResultController = ProfileResultController(
       summonerProfileModel: widget.summonerProfileModel,
-      profileRepository: ProfileRepository(
-        logger: GetIt.I<Logger>(),
-        httpServices: GetIt.I<HttpServices>(),
-      ),
+      fetchUserMatchesIdsUsecase:
+          FetchUserMatchesIdsUseCaseImpl(profileRepository: profileRepository),
+      profileRepository: profileRepository,
       generalController: GetIt.I<GeneralController>(),
+      fetchUserMatchesUsecase: FetchUserMatchesUseCaseImpl(
+        profileRepository: profileRepository,
+      ),
     );
     super.initState();
   }
 
-//
-//   @override
-//   void dispose() {
-//     this._scrollController.removeListener(this._scrollListenerFunction);
-//     this._scrollController.dispose();
-//     super.dispose();
-//   }
-//
-//   _scrollListenerFunction() {
-//     if (isUserScrollingDown() &&
-//         (this._profileController.newIndex ==
-//             this._profileController.oldIndex)) {
-//       this
-//           ._profileController
-//           .loadMoreMatches(_masterController.userForProfile.region);
-//     }
-//   }
-//
-//   bool isUserScrollingDown() {
-//     return (this._scrollController.offset * 1.3) >=
-//             this._scrollController.position.maxScrollExtent &&
-//         !this._scrollController.position.outOfRange;
-//   }
-//
+  @override
+  void dispose() {
+    this._scrollController.removeListener(this._scrollListenerFunction);
+    this._scrollController.dispose();
+    super.dispose();
+  }
+
+  _scrollListenerFunction() {
+    // if (isUserScrollingDown() &&
+    //     (this._profileController.newIndex ==
+    //         this._profileController.oldIndex)) {
+    //   this
+    //       .loadMoreMatches(_masterController.userForProfile.region);
+    // }
+  }
+
+  // bool isUserScrollingDown() {
+  //   return (this._scrollController.offset * 1.3) >=
+  //           this._scrollController.position.maxScrollExtent &&
+  //       !this._scrollController.position.outOfRange;
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -93,44 +101,51 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
               ),
             ],
           ),
-          // ValueListenableBuilder(
-          //   valueListenable: _profileController.matchList,
-          //   builder: (context, value, _) {
-          //     return _profileController.matchList.value.length > 0
-          //         ? Expanded(
-          //             child: Container(
-          //               margin: EdgeInsets.only(bottom: 45),
-          //               child: ListView.builder(
-          //                 itemCount: _hasMoreMatchesToLoad(),
-          //                 controller: this._scrollController,
-          //                 itemBuilder: (_, myCurrentPosition) {
-          //                   return _isLoadingGameCard(myCurrentPosition);
-          //                 },
-          //               ),
-          //             ),
-          //           )
-          //         : CircularProgressIndicator();
-          //   },
-          // ),
+          ValueListenableBuilder(
+            valueListenable: profileResultController.matches,
+            builder: (context, matches, _) {
+              return matches.isNotEmpty
+                  ? Expanded(
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 45),
+                        child: ListView.builder(
+                          itemCount: matches.length,
+                          controller: this._scrollController,
+                          itemBuilder: (_, myCurrentPosition) {
+                            return _isLoadingGameCard(
+                              myCurrentPosition,
+                              matches,
+                            );
+                          },
+                        ),
+                      ),
+                    )
+                  : CircularProgressIndicator();
+            },
+          ),
         ],
       ),
     );
   }
 
-//
-//   Widget _isLoadingGameCard(int myCurrentPosition) {
-//     if (myCurrentPosition < this._profileController.matchList.value.length) {
-//       return ItemMatchListGameCard(
-//           _profileController.matchList.value[myCurrentPosition]);
-//     } else {
-//       return Container(
-//         padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-//         margin: EdgeInsets.only(bottom: 30),
-//         child: CircularProgressIndicator(),
-//       );
-//     }
-//   }
-//
+  Widget _isLoadingGameCard(
+    int myCurrentPosition,
+    List<MatchDetail> matches,
+  ) {
+    if (myCurrentPosition < matches.length) {
+      return ItemMatchGameCard(
+        matchDetail: matches[myCurrentPosition],
+        summonerProfile: profileResultController.summonerProfileModel!,
+      );
+    } else {
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+        margin: EdgeInsets.only(bottom: 30),
+        child: CircularProgressIndicator(),
+      );
+    }
+  }
+
   _outButton() {
     return IconButton(
       icon: Icon(
@@ -144,16 +159,17 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
     );
   }
 
-//   int _hasMoreMatchesToLoad() {
-//     if (_profileController.lockNewLoadings.value) {
-//       return _profileController.matchList.value.length;
-//     }
-//     if (_profileController.isLoadingNewMatches.value) {
-//       return _profileController.matchList.value.length + 1;
-//     }
-//     return _profileController.matchList.value.length;
-//   }
-//
+  // int _hasMoreMatchesToLoad() {
+  //   if (profileResultController.lockNewLoadings.value) {
+  //     return profileResultController.matches.value.length;
+  //   }
+  //   if (profileResultController.isLoadingNewMatches.value) {
+  //     return profileResultController.matches.value.length + 1;
+  //   }
+  //   return profileResultController.matches.value.length;
+  //   ;
+  // }
+
   Widget summonerPanel() {
     return Stack(
       alignment: Alignment.center,
@@ -371,6 +387,7 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
       child: Text(
         AppLocalizations.of(context)!.level +
             " \n ${profileResultController.summonerProfileModel!.summonerLevel}",
+        textAlign: TextAlign.center,
         style: GoogleFonts.montserrat(
           color: Colors.white,
           fontWeight: FontWeight.w600,
@@ -397,7 +414,8 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
           ),
           alignment: Alignment.center,
           child: Text(
-            profileResultController.summonerProfileModel!.summonerIdentificationModel!.gameName,
+            profileResultController
+                .summonerProfileModel!.summonerIdentificationModel!.gameName,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,

@@ -12,6 +12,7 @@ class SummonerProfileModel {
   List<LeagueEntryModel>? leagueEntries;
   List<ChampionMastery>? masteries;
   String? summonerId;
+  String? selectedRegion;
 
   SummonerProfileModel({
     required this.accountId,

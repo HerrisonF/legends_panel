@@ -115,6 +115,7 @@ class ProfileController {
                           profile.summonerId =
                               championMasteries.first.summonerId;
                         }
+                        profile.selectedRegion = selectedRegion.value;
                         goToProfileResultCallback(profile);
                         _stopLoadingProfile();
                       },
@@ -128,16 +129,6 @@ class ProfileController {
       },
     );
   }
-//
-//   bool isUserGreaterThanPlatinum() {
-//     String elo = userTierRankedSolo.value.tier.toLowerCase();
-//     return elo != 'iron' &&
-//         elo != 'bronze' &&
-//         elo != 'gold' &&
-//         elo != 'silver' &&
-//         elo != 'platinum';
-//   }
-//
 //
 //   getMatchListIds(String keyRegion) async {
 //     this.newIndex.value += AMOUNT_MATCHES_TO_FIND;

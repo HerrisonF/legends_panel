@@ -112,7 +112,7 @@ class ProfileRepository {
     }
   }
 
-  Future<List<String>> getMatchListIds({
+  Future<Either<Failure, List<String>>> getMatchListIds({
     required String puuid,
     required int start,
     required int count,
@@ -154,20 +154,27 @@ class ProfileRepository {
 
       return response.fold((l) {
         logger.logDEBUG("Error to get MatchList");
-        return matchListId;
+        return Left(l);
       }, (r) {
         for (String id in r.data) {
           matchListId.add(id);
         }
-        return matchListId;
+        return Right(matchListId);
       });
     } catch (e) {
-      logger.logDEBUG("Error to get MatchList $e");
-      return matchListId;
+      return Left(
+        Failure(
+          message: "Error to get MatchList",
+          error: e.toString(),
+        ),
+      );
     }
   }
 
-  Future<MatchDetail> getMatchById(String matchId, String keyRegion) async {
+  Future<Either<Failure, MatchDetail>> getMatchById({
+    required String matchId,
+    required String keyRegion,
+  }) async {
     final String path = "/lol/match/v5/matches/$matchId";
 
     String url = "";
@@ -195,13 +202,19 @@ class ProfileRepository {
 
       return response.fold((l) {
         logger.logDEBUG("Error to get Match by id");
-        return MatchDetail();
+        return Left(l);
       }, (r) {
-        return MatchDetail.fromJson(r.data);
+        return Right(
+          MatchDetail.fromJson(r.data),
+        );
       });
     } catch (e) {
-      logger.logDEBUG("Error to get MAtch by id $e");
-      return MatchDetail();
+      return Left(
+        Failure(
+          message: "Error to get MAtch by id",
+          error: e.toString(),
+        ),
+      );
     }
   }
 }
