@@ -11,6 +11,7 @@ import 'package:legends_panel/app/core/routes/routes_path.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_profile_model.dart';
 import 'package:legends_panel/app/modules/profile/data/repositories/profile_repository.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_page/profile_result_page/profile_result_page_controller.dart';
+import 'package:legends_panel/app/modules/profile/presenter/profile_page/profile_result_page/widgets/mastery_champions.dart';
 
 class ProfileResultPage extends StatefulWidget {
   final SummonerProfileModel summonerProfileModel;
@@ -73,6 +74,7 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage(imageBackgroundProfilePage),
+          opacity: 0.85,
           fit: BoxFit.cover,
         ),
       ),
@@ -81,7 +83,7 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
           Stack(
             children: [
               Container(
-                height: 280,
+                height: 320,
                 child: summonerPanel(),
               ),
               Positioned(
@@ -91,7 +93,6 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
               ),
             ],
           ),
-          //MasteryChampions(),
           // ValueListenableBuilder(
           //   valueListenable: _profileController.matchList,
           //   builder: (context, value, _) {
@@ -166,6 +167,12 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
         Positioned(
           top: 55,
           child: _playerRankedEloEmblem(),
+        ),
+        Positioned(
+          bottom: 0,
+          child: MasteryChampions(
+            profileResultController: profileResultController,
+          ),
         ),
         Positioned(
           top: 20,

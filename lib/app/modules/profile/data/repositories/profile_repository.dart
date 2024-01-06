@@ -35,7 +35,8 @@ class ProfileRepository {
   String getRankedTierBadge({
     required String tier,
   }) {
-    final String path = "/latest/plugins/rcp-fe-lol-shared-components/global/default/${tier.toLowerCase()}.png";
+    final String path =
+        "/latest/plugins/rcp-fe-lol-shared-components/global/default/${tier.toLowerCase()}.png";
     try {
       return API.rawDataDragonUrl + path;
     } catch (e) {
@@ -93,7 +94,9 @@ class ProfileRepository {
     }
   }
 
-  String getMasteryImage(String championLevel) {
+  String getMasteryImage({
+    required String championLevel,
+  }) {
     if (championLevel == "3") {
       final String path =
           "/latest/game/assets/ux/mastery/mastery_icon_default.png";
