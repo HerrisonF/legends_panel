@@ -28,6 +28,7 @@ class _ItemMatchGameCardState extends State<ItemMatchGameCard> {
     widget.matchDetail.info!.getProfileFromParticipant(
       puuid: widget.summonerProfile.summonerIdentificationModel!.puuid,
     );
+    widget.matchDetail.info!.currentParticipant!.setItemIdIntoListItems();
     super.initState();
   }
 
@@ -47,46 +48,19 @@ class _ItemMatchGameCardState extends State<ItemMatchGameCard> {
         child: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _championBadgeAndSpell(),
                 Row(
-                  children: [
-                    // _itemBase(
-                    //   item: _profileResultGameDetailController
-                    //       .currentParticipant.value.item0,
-                    // ),
-                    // _itemBase(
-                    //   item: _profileResultGameDetailController
-                    //       .currentParticipant.value.item1,
-                    // ),
-                    // _itemBase(
-                    //   item: _profileResultGameDetailController
-                    //       .currentParticipant.value.item2,
-                    // ),
-                    // _itemBase(
-                    //   item: _profileResultGameDetailController
-                    //       .currentParticipant.value.item3,
-                    // ),
-                    // _itemBase(
-                    //   item: _profileResultGameDetailController
-                    //       .currentParticipant.value.item4,
-                    // ),
-                    // _itemBase(
-                    //   item: _profileResultGameDetailController
-                    //       .currentParticipant.value.item5,
-                    // ),
-                    // _itemBase(
-                    //   item: _profileResultGameDetailController
-                    //       .currentParticipant.value.item6,
-                    //   last: true,
-                    // ),
-                  ],
+                  children: widget.matchDetail.info!.currentParticipant!.items!
+                      .map((e) => _item(
+                            itemId: e,
+                          ))
+                      .toList(),
                 ),
-                // _userPosition(),
+                _userPosition(),
               ],
             ),
-            //_userKDA(),
+            _userKDA(),
           ],
         ),
       ),
@@ -115,103 +89,79 @@ class _ItemMatchGameCardState extends State<ItemMatchGameCard> {
 //     },
 //   );
 // }
-//
-// _userKDA() {
-//   return Container(
-//     child: Row(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//         Container(
-//           child: Text(
-//             _profileResultGameDetailController.currentParticipant.value.win
-//                 ? "${AppLocalizations.of(context)!.gameVictory}"
-//                 : "${AppLocalizations.of(context)!.gameDefeat}",
-//             style: GoogleFonts.montserrat(
-//               color: Colors.yellow,
-//               fontWeight: FontWeight.w400,
-//               fontSize: 13,
-//             ),
-//             overflow: TextOverflow.ellipsis,
-//           ),
-//         ),
-//         Container(
-//           margin: EdgeInsets.only(left: 15),
-//           child: Text(
-//             "${_profileResultGameDetailController.currentParticipant.value.kills} / ${_profileResultGameDetailController.currentParticipant.value.deaths} / ${_profileResultGameDetailController.currentParticipant.value.assists}",
-//             style: GoogleFonts.montserrat(
-//               color: Colors.yellow,
-//               fontWeight: FontWeight.w400,
-//               fontSize: 12,
-//             ),
-//             overflow: TextOverflow.ellipsis,
-//           ),
-//         ),
-//       ],
-//     ),
-//   );
-// }
-//
-// Container _userPosition() {
-//   return Container(
-//     height: 20,
-//     width: 20,
-//     child: _profileResultGameDetailController
-//                 .currentParticipant.value.teamPosition !=
-//             ""
-//         ? Image.network(
-//             _profileResultGameDetailController.getPositionUrl(
-//               _profileResultGameDetailController
-//                   .currentParticipant.value.teamPosition,
-//             ),
-//             width: MediaQuery.of(context).size.width / 16,
-//           )
-//         : Image.asset(
-//             imageIconItemNone,
-//             width: MediaQuery.of(context).size.width / 16,
-//           ),
-//   );
-// }
-//
-// _itemBase({required dynamic item, bool last = false}) {
-//   return Container(
-//     height: 25,
-//     width: 25,
-//     margin: EdgeInsets.only(left: last ? 10 : 0),
-//     child: Container(
-//       child: item > 0
-//           ? Image.network(
-//               _profileResultGameDetailController.getItemUrl(item.toString()),
-//               width: MediaQuery.of(context).size.width / 16,
-//               fit: BoxFit.cover,
-//             )
-//           : Image.asset(
-//               imageIconItemNone,
-//               width: MediaQuery.of(context).size.width / 16,
-//               fit: BoxFit.cover,
-//             ),
-//     ),
-//   );
-// }
-//
-// _spellImage2(BuildContext context) {
-//   return Container(
-//     height: 16,
-//     width: 16,
-//     margin: EdgeInsets.only(right: 5),
-//     child: _profileResultGameDetailController
-//                 .currentParticipant.value.summoner2Id !=
-//             ""
-//         ? Image.network(
-//             _profileResultGameDetailController.getSpellImage(2),
-//             width: MediaQuery.of(context).size.width / 20,
-//           )
-//         : Image.network(
-//             imageIconItemNone,
-//             width: MediaQuery.of(context).size.width / 20,
-//           ),
-//   );
-// }
-//
+
+  _userKDA() {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            child: Text(
+              widget.matchDetail.info!.currentParticipant!.win
+                  ? "${AppLocalizations.of(context)!.gameVictory}"
+                  : "${AppLocalizations.of(context)!.gameDefeat}",
+              style: GoogleFonts.montserrat(
+                color: Colors.yellow,
+                fontWeight: FontWeight.w400,
+                fontSize: 13,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 15),
+            child: Text(
+              "${widget.matchDetail.info!.currentParticipant!.kills} / ${widget.matchDetail.info!.currentParticipant!.deaths} / ${widget.matchDetail.info!.currentParticipant!.assists}",
+              style: GoogleFonts.montserrat(
+                color: Colors.yellow,
+                fontWeight: FontWeight.w400,
+                fontSize: 12,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container _userPosition() {
+    return Container(
+      margin: EdgeInsets.only(left: 5),
+      height: 20,
+      width: 20,
+      child: Image.network(
+        widget.profileResultController.generalController.getPositionUrl(
+          position: widget.matchDetail.info!.currentParticipant!.teamPosition,
+        ),
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            color: Colors.black45,
+          );
+        },
+        width: MediaQuery.of(context).size.width / 16,
+      ),
+    );
+  }
+
+  Container _item({required int itemId}) {
+    return Container(
+      margin: EdgeInsets.only(left: 5),
+      child: Container(
+        height: 25,
+        width: 25,
+        child: Image.network(
+          widget.profileResultController.generalController.getItemUrl(
+            itemId: itemId,
+          ),
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => Container(
+            color: Colors.black45,
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _championBadgeAndSpell() {
     return Row(

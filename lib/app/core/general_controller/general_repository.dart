@@ -100,8 +100,11 @@ class GeneralRepository {
     }
   }
 
-  String getItemUrl(String itemId) {
-    final String path = "/cdn/latest/img/item/$itemId.png";
+  String getItemUrl({
+    required int itemId,
+    required String version,
+  }) {
+    final String path = "/cdn/$version/img/item/$itemId.png";
     try {
       return API.riotDragonUrl + path;
     } catch (e) {
@@ -109,7 +112,9 @@ class GeneralRepository {
     }
   }
 
-  String getPositionUrl(String position) {
+  String getPositionUrl({
+    required String position,
+  }) {
     final String path = "/latest/plugins/rcp-fe-lol-clash/global/default/"
         "assets/images/position-selector/positions/icon-position-${position.toLowerCase()}.png";
     try {

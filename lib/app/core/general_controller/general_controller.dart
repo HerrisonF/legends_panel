@@ -59,6 +59,23 @@ class GeneralController {
     );
   }
 
+  String getItemUrl({
+    required int itemId,
+  }) {
+    return generalRepository.getItemUrl(
+      itemId: itemId,
+      version: lolConstantsModel.getLatestLolVersion(),
+    );
+  }
+
+  String getPositionUrl({
+    required String position,
+  }) {
+    return generalRepository.getPositionUrl(
+      position: position,
+    );
+  }
+
   bool checkPerkIsAssigned({
     required List<int> options,
     required int perkCorrente,

@@ -225,6 +225,8 @@ class ParticipantModel {
   int wardsPlaced;
   bool win;
 
+  List<int>? items;
+
   ParticipantModel({
     required this.championId,
     required this.kills,
@@ -332,6 +334,18 @@ class ParticipantModel {
     required this.wardsKilled,
     required this.wardsPlaced,
   });
+
+  /// Essa função cria uma lista de itens que vieram da item0,item1,item2 ...
+  setItemIdIntoListItems(){
+    items = [];
+    items!.add(item0);
+    items!.add(item1);
+    items!.add(item2);
+    items!.add(item3);
+    items!.add(item4);
+    items!.add(item5);
+    items!.add(item6);
+  }
 }
 
 class PerksModel {

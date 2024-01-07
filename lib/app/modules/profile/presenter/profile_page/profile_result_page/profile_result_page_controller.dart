@@ -108,14 +108,6 @@ class ProfileResultController {
     return "";
   }
 
-// String getItemUrl(String itemId){
-//   return _currentGameParticipantController.getItemUrl(itemId);
-// }
-//
-// String getPositionUrl(String position){
-//   return _currentGameParticipantController.getPositionUrl(position);
-// }
-
 // String _getParticipantSpellId(int id) {
 //   if (id == 1) {
 //     return currentParticipant.value.summoner1Id.toString();
