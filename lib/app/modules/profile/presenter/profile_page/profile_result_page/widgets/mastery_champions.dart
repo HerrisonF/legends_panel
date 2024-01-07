@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/champion_mastery.dart';
+import 'package:legends_panel/app/modules/profile/domain/models/champion_mastery_model.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_page/profile_result_page/profile_result_page_controller.dart';
 
 class MasteryChampions extends StatelessWidget {
@@ -24,7 +24,7 @@ class MasteryChampions extends StatelessWidget {
         : SizedBox.shrink();
   }
 
-  Container _championBadge(ChampionMastery championMastery) {
+  Container _championBadge(ChampionMasteryModel championMastery) {
     return Container(
       height: 90,
       child: Stack(

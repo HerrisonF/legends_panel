@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:legends_panel/app/core/general_controller/general_controller.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/champion_mastery.dart';
+import 'package:legends_panel/app/modules/profile/domain/models/champion_mastery_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/champion_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_puuid_and_summonerID_from_riot_usecase.dart';
 import 'package:legends_panel/app/modules/current_game/domain/usecases/summoner_identification/fetch_summoner_profile_by_puuid_usecase.dart';
@@ -99,7 +99,7 @@ class ProfileController {
                             .setSummonerIdentification(summonerIdentification);
                         profile.setChampionMasteriesModel(championMasteries);
                         if (profile.masteries != null) {
-                          for (ChampionMastery championMastery
+                          for (ChampionMasteryModel championMastery
                               in profile.masteries!) {
                             ChampionModel? champion = generalController
                                 .lolConstantsModel

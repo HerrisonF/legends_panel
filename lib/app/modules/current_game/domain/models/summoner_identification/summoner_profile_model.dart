@@ -1,4 +1,4 @@
-import 'package:legends_panel/app/modules/app_initialization/domain/models/champion_mastery.dart';
+import 'package:legends_panel/app/modules/profile/domain/models/champion_mastery_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_identification_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/user_tier_entries/league_entry_model.dart';
 
@@ -10,7 +10,7 @@ class SummonerProfileModel {
   int summonerLevel;
   SummonerIdentificationModel? summonerIdentificationModel;
   List<LeagueEntryModel>? leagueEntries;
-  List<ChampionMastery>? masteries;
+  List<ChampionMasteryModel>? masteries;
   String? summonerId;
   String? selectedRegion;
 
@@ -39,7 +39,7 @@ class SummonerProfileModel {
     this.leagueEntries!.addAll(entries);
   }
 
-  setChampionMasteriesModel(List<ChampionMastery> masteries){
+  setChampionMasteriesModel(List<ChampionMasteryModel> masteries){
     this.masteries = [];
     this.masteries!.addAll(masteries);
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/match_detail.dart';
+import 'package:legends_panel/app/modules/profile/domain/models/match_detail_model.dart';
 import 'package:legends_panel/app/modules/profile/data/repositories/general_vision_repository.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -11,17 +11,17 @@ class GeneralVisionController {
         logger: GetIt.I<Logger>(),
       );
 
-  late MatchDetail matchDetail;
-  late Participant participant;
+  late MatchDetailModel matchDetail;
+  late ParticipantModel participant;
 
   ValueNotifier<bool> isLoadingTeamInfo = ValueNotifier(false);
 
-  ValueNotifier<List<Participant>> blueTeam = ValueNotifier([]);
-  ValueNotifier<List<Participant>> redTeam = ValueNotifier([]);
+  ValueNotifier<List<ParticipantModel>> blueTeam = ValueNotifier([]);
+  ValueNotifier<List<ParticipantModel>> redTeam = ValueNotifier([]);
 
   static const BLUE_TEAM = 100;
 
-  startInitialData(MatchDetail matchDetail, Participant participant) {
+  startInitialData(MatchDetailModel matchDetail, ParticipantModel participant) {
     blueTeam.value.clear();
     redTeam.value.clear();
     isLoadingTeamInfo.value = true;
@@ -51,11 +51,11 @@ class GeneralVisionController {
   }
 
   detachParticipantsIntoTeams() {
-    for (int i = 0; i < matchDetail.matchInfo.participants.length; i++) {
-      if (matchDetail.matchInfo.participants[i].teamId == BLUE_TEAM) {
-        blueTeam.value.add(matchDetail.matchInfo.participants[i]);
+    for (int i = 0; i < matchDetail.info!.participants.length; i++) {
+      if (matchDetail.info!.participants[i].teamId == BLUE_TEAM) {
+        blueTeam.value.add(matchDetail.info!.participants[i]);
       } else {
-        redTeam.value.add(matchDetail.matchInfo.participants[i]);
+        redTeam.value.add(matchDetail.info!.participants[i]);
       }
     }
     isLoadingTeamInfo.value = false;

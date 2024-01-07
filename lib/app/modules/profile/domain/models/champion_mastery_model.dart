@@ -1,6 +1,6 @@
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/champion_model.dart';
 
-class ChampionMastery {
+class ChampionMasteryModel {
   int championId;
   int championLevel;
   int championPoints;
@@ -12,7 +12,7 @@ class ChampionMastery {
   String summonerId;
   ChampionModel? championModel;
 
-  ChampionMastery({
+  ChampionMasteryModel({
     required this.tokensEarned,
     required this.championPointsSinceLastLevel,
     required this.championPoints,

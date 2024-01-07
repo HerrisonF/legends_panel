@@ -8,7 +8,7 @@ import 'package:legends_panel/app/core/general_controller/general_controller.dar
 import 'package:legends_panel/app/core/http_configuration/http_services.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 import 'package:legends_panel/app/core/routes/routes_path.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/match_detail.dart';
+import 'package:legends_panel/app/modules/profile/domain/models/match_detail_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_profile_model.dart';
 import 'package:legends_panel/app/modules/profile/data/repositories/profile_repository.dart';
 import 'package:legends_panel/app/modules/profile/domain/usecases/fetch_user_matches_ids_usecase_impl.dart';
@@ -130,12 +130,13 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
 
   Widget _isLoadingGameCard(
     int myCurrentPosition,
-    List<MatchDetail> matches,
+    List<MatchDetailModel> matches,
   ) {
     if (myCurrentPosition < matches.length) {
       return ItemMatchGameCard(
         matchDetail: matches[myCurrentPosition],
         summonerProfile: profileResultController.summonerProfileModel!,
+        profileResultController: profileResultController,
       );
     } else {
       return Container(

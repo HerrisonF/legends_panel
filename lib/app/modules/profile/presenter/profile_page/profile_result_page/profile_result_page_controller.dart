@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:legends_panel/app/core/constants/string_constants.dart';
 import 'package:legends_panel/app/core/general_controller/general_controller.dart';
-import 'package:legends_panel/app/modules/app_initialization/domain/models/match_detail.dart';
+import 'package:legends_panel/app/modules/profile/domain/models/match_detail_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_profile_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/user_tier_entries/league_entry_model.dart';
 import 'package:legends_panel/app/modules/profile/data/repositories/profile_repository.dart';
@@ -18,7 +18,7 @@ class ProfileResultController {
 
   List<LeagueEntryModel> tempList = [];
   List<String> matchesIds = [];
-  ValueNotifier<List<MatchDetail>> matches = ValueNotifier([]);
+  ValueNotifier<List<MatchDetailModel>> matches = ValueNotifier([]);
   ValueNotifier<bool> isLoadingNewMatches = ValueNotifier(false);
 
   ProfileResultController({
@@ -45,7 +45,10 @@ class ProfileResultController {
         ).then((value) {
           value.fold(
             (l) => id,
-            (r) => matches.value.add(r),
+            (r) {
+              matches.value.add(r);
+              matches.notifyListeners();
+            },
           );
         });
       });
@@ -99,17 +102,11 @@ class ProfileResultController {
   }
 
   String getRankedSoloTierBadge() {
-    if(tempList.isNotEmpty) {
+    if (tempList.isNotEmpty) {
       return profileRepository.getRankedTierBadge(tier: tempList.first.tier);
     }
     return "";
   }
-
-// getSpellImage(int spellId) {
-//   // return _currentGameParticipantController.getSpellUrl(
-//   //   _getParticipantSpellId(spellId),
-//   // );
-// }
 
 // String getItemUrl(String itemId){
 //   return _currentGameParticipantController.getItemUrl(itemId);
@@ -125,11 +122,5 @@ class ProfileResultController {
 //   } else {
 //     return currentParticipant.value.summoner2Id.toString();
 //   }
-// }
-
-// String getChampionBadgeUrl() {
-//   return _currentGameParticipantController.getChampionBadgeUrl(
-//       currentParticipant.value.championId.toString()
-//   );
 // }
 }
