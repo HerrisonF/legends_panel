@@ -62,19 +62,11 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
   }
 
   _scrollListenerFunction() {
-    // if (isUserScrollingDown() &&
-    //     (this._profileController.newIndex ==
-    //         this._profileController.oldIndex)) {
-    //   this
-    //       .loadMoreMatches(_masterController.userForProfile.region);
-    // }
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      profileResultController.loadMoreMatches();
+    }
   }
-
-  // bool isUserScrollingDown() {
-  //   return (this._scrollController.offset * 1.3) >=
-  //           this._scrollController.position.maxScrollExtent &&
-  //       !this._scrollController.position.outOfRange;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -106,18 +98,15 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
             builder: (context, matches, _) {
               return matches.isNotEmpty
                   ? Expanded(
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 45),
-                        child: ListView.builder(
-                          itemCount: matches.length,
-                          controller: this._scrollController,
-                          itemBuilder: (_, myCurrentPosition) {
-                            return _isLoadingGameCard(
-                              myCurrentPosition,
-                              matches,
-                            );
-                          },
-                        ),
+                      child: ListView.builder(
+                        itemCount: matches.length,
+                        controller: this._scrollController,
+                        itemBuilder: (_, myCurrentPosition) {
+                          return _isLoadingGameCard(
+                            myCurrentPosition,
+                            matches,
+                          );
+                        },
                       ),
                     )
                   : CircularProgressIndicator();

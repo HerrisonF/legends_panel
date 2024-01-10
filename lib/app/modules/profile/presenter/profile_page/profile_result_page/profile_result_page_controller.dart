@@ -15,6 +15,8 @@ class ProfileResultController {
   late final GeneralController generalController;
   late final FetchUserMatchesIdsUsecase fetchUserMatchesIdsUsecase;
   late final FetchUserMatchesUsecase fetchUserMatchesUsecase;
+  int ultimoValorPesquisado = 0;
+  int quantidadePorPesquisa = 10;
 
   List<LeagueEntryModel> tempList = [];
   List<String> matchesIds = [];
@@ -29,30 +31,42 @@ class ProfileResultController {
     required this.fetchUserMatchesUsecase,
   }) {
     getRankedSoloTier();
-    fetchUserMatchesIdsUsecase(
-      puuid: summonerProfileModel!.summonerIdentificationModel!.puuid,
-      region: summonerProfileModel!.selectedRegion!,
-      count: 10,
-      start: 0,
-    ).then((value) {
-      value.fold((l) => id, (r) {
-        matchesIds.addAll(r);
-      });
-      matchesIds.forEach((e) {
-        fetchUserMatchesUsecase(
-          matchId: e,
-          region: summonerProfileModel!.selectedRegion!,
-        ).then((value) {
-          value.fold(
-            (l) => id,
-            (r) {
-              matches.value.add(r);
-              matches.notifyListeners();
-            },
-          );
+    loadMoreMatches();
+  }
+
+  /// O inicio é o último ponto carregado da lista.
+  void loadMoreMatches() {
+    if(!isLoadingNewMatches.value) {
+      startLoadingMatches();
+      fetchUserMatchesIdsUsecase(
+        puuid: summonerProfileModel!.summonerIdentificationModel!.puuid,
+        region: summonerProfileModel!.selectedRegion!,
+        count: quantidadePorPesquisa,
+        start: ultimoValorPesquisado,
+      ).then((value) {
+        value.fold((l) => id, (r) {
+          matchesIds.addAll(r);
+        });
+        matchesIds.forEach((e) {
+          fetchUserMatchesUsecase(
+            matchId: e,
+            region: summonerProfileModel!.selectedRegion!,
+          ).then((value) {
+            value.fold(
+                  (l) {
+                    stopLoadingMatches();
+                  },
+                  (r) {
+                matches.value.add(r);
+                ultimoValorPesquisado += quantidadePorPesquisa;
+                stopLoadingMatches();
+                matches.notifyListeners();
+              },
+            );
+          });
         });
       });
-    });
+    }
   }
 
   getRankedSoloTier() {
@@ -108,11 +122,11 @@ class ProfileResultController {
     return "";
   }
 
-// String _getParticipantSpellId(int id) {
-//   if (id == 1) {
-//     return currentParticipant.value.summoner1Id.toString();
-//   } else {
-//     return currentParticipant.value.summoner2Id.toString();
-//   }
-// }
+  startLoadingMatches(){
+    isLoadingNewMatches.value = true;
+  }
+
+  stopLoadingMatches(){
+    isLoadingNewMatches.value = false;
+  }
 }
