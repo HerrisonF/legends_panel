@@ -149,17 +149,6 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
     );
   }
 
-  // int _hasMoreMatchesToLoad() {
-  //   if (profileResultController.lockNewLoadings.value) {
-  //     return profileResultController.matches.value.length;
-  //   }
-  //   if (profileResultController.isLoadingNewMatches.value) {
-  //     return profileResultController.matches.value.length + 1;
-  //   }
-  //   return profileResultController.matches.value.length;
-  //   ;
-  // }
-
   Widget summonerPanel() {
     return Stack(
       alignment: Alignment.center,

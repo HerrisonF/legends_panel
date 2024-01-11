@@ -1,4 +1,5 @@
-// import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+
 // import 'package:get/get.dart';
 // import 'package:get_it/get_it.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -11,26 +12,26 @@
 // import 'package:legends_panel/app/modules/profile/presenter/profile_controller/general_vision_controller.dart';
 // import 'package:legends_panel/app/modules/profile/presenter/profile_controller/profile_result_game_detail_controller.dart';
 //
-// class GeneralVisionComponent extends StatefulWidget {
+class MatchDetailComponent extends StatefulWidget {
 //   final MatchDetail matchDetail;
 //   final String primaryStylePerk;
 //   final String subStylePerk;
 //   final Participant participant;
 //   final formatter = NumberFormat.decimalPattern('hi');
 //
-//   GeneralVisionComponent(
-//       {Key? key,
-//       required this.matchDetail,
-//       required this.participant,
-//       this.primaryStylePerk = "",
-//       this.subStylePerk = ""})
+//   GeneralVisionComponent({Key? key,
+//     required this.matchDetail,
+//     required this.participant,
+//     this.primaryStylePerk = "",
+//     this.subStylePerk = "",})
 //       : super(key: key);
+
+  @override
+  State<MatchDetailComponent> createState() => _MatchDetailComponentState();
+}
+
 //
-//   @override
-//   State<GeneralVisionComponent> createState() => _GeneralVisionComponentState();
-// }
-//
-// class _GeneralVisionComponentState extends State<GeneralVisionComponent> {
+class _MatchDetailComponentState extends State<MatchDetailComponent> {
 //   // final GeneralVisionController _generalVisionController =
 //   //     Get.put(GeneralVisionController());
 //   final CurrentGameParticipantController _currentGameParticipantController =
@@ -39,43 +40,45 @@
 //       ProfileResultGameDetailController();
 //   final QueuesController _queuesController = GetIt.I.get<QueuesController>();
 //
-//   static const BLUE_TEAM = 100;
-//
-//   @override
-//   void initState() {
-//     // _generalVisionController.startInitialData(
-//     //     widget.matchDetail, widget.participant);
-//     super.initState();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//         height: MediaQuery.of(context).size.height * 0.9,
-//         decoration: BoxDecoration(
-//           borderRadius: BorderRadius.only(
-//             topLeft: const Radius.circular(20),
-//             topRight: const Radius.circular(20),
-//           ),
-//           color: Colors.white,
-//         ),
-//         child: _generalVisionController.isLoadingTeamInfo.value
-//             ? CircularProgressIndicator()
-//             : Column(
-//                 children: [
-//                   _header(),
-//                   Expanded(
-//                     child: ListView(
-//                       children: [
-//                         //_gameInfo(),
-//                         _listTeams(),
-//                       ],
-//                     ),
-//                   ),
-//                 ],
-//               ));
-//   }
-//
+  static const BLUE_TEAM = 100;
+
+  @override
+  void initState() {
+    // _generalVisionController.startInitialData(
+    //     widget.matchDetail, widget.participant);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.9,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: const Radius.circular(20),
+          topRight: const Radius.circular(20),
+        ),
+        color: Colors.white,
+      ),
+      child: Center(child: CircularProgressIndicator()),
+      // _generalVisionController.isLoadingTeamInfo.value
+      //     ? CircularProgressIndicator()
+      //     : Column(
+      //         children: [
+      //           _header(),
+      //           Expanded(
+      //             child: ListView(
+      //               children: [
+      //                 //_gameInfo(),
+      //                 _listTeams(),
+      //               ],
+      //             ),
+      //           ),
+      //         ],
+      //       ),
+    );
+  }
+
 //   _header() {
 //     return Stack(
 //       children: [
@@ -531,5 +534,4 @@
 //             imageNoChampion,
 //             width: 20,
 //           );
-//   }
-// }
+}

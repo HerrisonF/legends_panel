@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:legends_panel/app/modules/profile/domain/models/match_detail_model.dart';
 import 'package:legends_panel/app/modules/current_game/domain/models/summoner_identification/summoner_profile_model.dart';
+import 'package:legends_panel/app/modules/profile/presenter/profile_page/match_detail_component/match_detail_component.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_page/profile_result_page/profile_result_page_controller.dart';
 
 class ItemMatchGameCard extends StatefulWidget {
@@ -21,8 +22,6 @@ class ItemMatchGameCard extends StatefulWidget {
 }
 
 class _ItemMatchGameCardState extends State<ItemMatchGameCard> {
-  static const BLUE_TEAM = 100;
-
   @override
   void initState() {
     widget.matchDetail.info!.getProfileFromParticipant(
@@ -36,7 +35,7 @@ class _ItemMatchGameCardState extends State<ItemMatchGameCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // _showModalGeneralVision();
+        onTapShowModalMatchDetail();
       },
       child: Container(
         height: 75,
@@ -47,78 +46,79 @@ class _ItemMatchGameCardState extends State<ItemMatchGameCard> {
             : Colors.red.withOpacity(0.2),
         child: Column(
           children: [
+            Expanded(
+              child: _userKDA(),
+            ),
             Row(
               children: [
-                _championBadgeAndSpell(),
-                Row(
-                  children: widget.matchDetail.info!.currentParticipant!.items!
-                      .map((e) => _item(
-                            itemId: e,
-                          ))
-                      .toList(),
+                Expanded(
+                  child: _championBadgeAndSpell(),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Row(
+                    children:
+                        widget.matchDetail.info!.currentParticipant!.items!
+                            .map((e) => _item(
+                                  itemId: e,
+                                ))
+                            .toList(),
+                  ),
                 ),
                 _userPosition(),
               ],
             ),
-            _userKDA(),
           ],
         ),
       ),
     );
   }
 
-// _showModalGeneralVision() {
-//   showModalBottomSheet(
-//     isScrollControlled: true,
-//     context: context,
-//     enableDrag: true,
-//     shape: RoundedRectangleBorder(
-//       borderRadius: BorderRadius.only(
-//         topLeft: const Radius.circular(20),
-//         topRight: const Radius.circular(20),
-//       ),
-//     ),
-//     builder: (BuildContext context) {
-//       return GeneralVisionComponent(
-//         matchDetail: widget.matchDetail,
-//         participant:
-//             _profileResultGameDetailController.currentParticipant.value,
-//         primaryStylePerk: _profileResultGameDetailController.getSpellImage(1),
-//         subStylePerk: _profileResultGameDetailController.getSpellImage(2),
-//       );
-//     },
-//   );
-// }
+  onTapShowModalMatchDetail() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      enableDrag: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: const Radius.circular(20),
+          topRight: const Radius.circular(20),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return MatchDetailComponent();
+      },
+    );
+  }
 
   _userKDA() {
     return Container(
+      margin: EdgeInsets.only(right: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
+            margin: EdgeInsets.only(right: 10),
             child: Text(
               widget.matchDetail.info!.currentParticipant!.win
                   ? "${AppLocalizations.of(context)!.gameVictory}"
                   : "${AppLocalizations.of(context)!.gameDefeat}",
               style: GoogleFonts.montserrat(
                 color: Colors.yellow,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.bold,
                 fontSize: 13,
               ),
-              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.right,
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(left: 15),
-            child: Text(
-              "${widget.matchDetail.info!.currentParticipant!.kills} / ${widget.matchDetail.info!.currentParticipant!.deaths} / ${widget.matchDetail.info!.currentParticipant!.assists}",
-              style: GoogleFonts.montserrat(
-                color: Colors.yellow,
-                fontWeight: FontWeight.w400,
-                fontSize: 12,
-              ),
-              overflow: TextOverflow.ellipsis,
+          Text(
+            "${widget.matchDetail.info!.currentParticipant!.kills} / ${widget.matchDetail.info!.currentParticipant!.deaths} / ${widget.matchDetail.info!.currentParticipant!.assists}",
+            style: GoogleFonts.montserrat(
+              color: Colors.yellow,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
             ),
+            textAlign: TextAlign.right,
           ),
         ],
       ),
@@ -127,7 +127,7 @@ class _ItemMatchGameCardState extends State<ItemMatchGameCard> {
 
   Container _userPosition() {
     return Container(
-      margin: EdgeInsets.only(left: 5),
+      margin: EdgeInsets.only(right: 15),
       height: 20,
       width: 20,
       child: Image.network(
@@ -139,17 +139,16 @@ class _ItemMatchGameCardState extends State<ItemMatchGameCard> {
             color: Colors.black45,
           );
         },
-        width: MediaQuery.of(context).size.width / 16,
       ),
     );
   }
 
   Container _item({required int itemId}) {
     return Container(
-      margin: EdgeInsets.only(left: 5),
+      margin: EdgeInsets.only(left: 3),
       child: Container(
-        height: 25,
-        width: 25,
+        height: 30,
+        width: 30,
         child: Image.network(
           widget.profileResultController.generalController.getItemUrl(
             itemId: itemId,
@@ -167,14 +166,39 @@ class _ItemMatchGameCardState extends State<ItemMatchGameCard> {
     return Row(
       children: [
         Container(
-          height: 32,
-          width: 32,
-          child: Image.network(
-            widget.profileResultController.generalController
-                .getChampionBadgeUrl(
-              widget.matchDetail.info!.currentParticipant!.championId,
-            ),
-            width: MediaQuery.of(context).size.width / 10,
+          height: 50,
+          width: 50,
+          child: Stack(
+            children: [
+              Container(
+                child: Image.network(
+                  widget.profileResultController.generalController
+                      .getChampionBadgeUrl(
+                    widget.matchDetail.info!.currentParticipant!.championId,
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                child: Container(
+                  padding: EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(4),
+                    ),
+                  ),
+                  child: Text(
+                    widget.matchDetail.info!.currentParticipant!.champLevel
+                        .toString(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         Column(
@@ -194,12 +218,10 @@ class _ItemMatchGameCardState extends State<ItemMatchGameCard> {
 
   _spellImage(int id) {
     return Container(
-      height: 16,
-      width: 16,
-      margin: EdgeInsets.only(right: 5),
+      height: 25,
+      width: 25,
       child: Image.network(
         widget.profileResultController.generalController.getSpellBadgeUrl(id),
-        width: MediaQuery.of(context).size.width / 20,
       ),
     );
   }
