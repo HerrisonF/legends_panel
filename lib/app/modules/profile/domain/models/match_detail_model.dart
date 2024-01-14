@@ -39,6 +39,12 @@ class InfoModel {
   /// Esse modelo é referente ao Profile pesquisado
   ParticipantModel? currentParticipant;
 
+  /// Esses atributos ajudam a saber o placar do jogo.
+  int computedMatchAssistBlueTeam = 0;
+  int computedMatchAssistRedTeam = 0;
+  int computedMatchDeathBlueTeam = 0;
+  int computedMatchDeathRedTeam = 0;
+
   InfoModel({
     required this.gameCreation,
     required this.gameDuration,
@@ -63,6 +69,18 @@ class InfoModel {
         participants.where((element) => element.puuid == puuid).toList();
     currentParticipant = participantsTemp.first;
     return currentParticipant!;
+  }
+
+  doPlacar(){
+    participants.forEach((element) {
+      if(element.teamId == 100){
+        computedMatchAssistBlueTeam = computedMatchAssistBlueTeam + element.assists;
+        computedMatchDeathRedTeam = computedMatchDeathRedTeam + element.kills;
+      }else{
+        computedMatchAssistRedTeam = computedMatchAssistRedTeam + element.assists;
+        computedMatchDeathBlueTeam = computedMatchDeathBlueTeam + element.kills;
+      }
+    });
   }
 }
 

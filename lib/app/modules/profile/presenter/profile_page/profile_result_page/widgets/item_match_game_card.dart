@@ -86,7 +86,9 @@ class _ItemMatchGameCardState extends State<ItemMatchGameCard> {
         ),
       ),
       builder: (BuildContext context) {
-        return MatchDetailComponent();
+        return MatchDetailComponent(
+          matchDetail: widget.matchDetail,
+        );
       },
     );
   }

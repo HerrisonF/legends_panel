@@ -6,7 +6,6 @@ abstract class API {
 
   /// ENDPOINTS ESTRANGEIROS PARA PEGAR DADOS, COMO: IMAGENS.
   static const String rawDataDragonUrl = "https://raw.communitydragon.org";
-  static const String opGGUrl = "https://opgg-static.akamaized.net";
 
   /// CONSIGO ARQUIVOS ESTÁTICOS POR MEIO DESSE ENDPOINT
   static const String riotStaticDataUrl = "https://static.developer.riotgames.com";

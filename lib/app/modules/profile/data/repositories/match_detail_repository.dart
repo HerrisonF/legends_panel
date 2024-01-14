@@ -1,18 +1,18 @@
 import 'package:legends_panel/app/core/http_configuration/api_endpoints.dart';
 import 'package:legends_panel/app/core/logger/logger.dart';
 
-class GeneralVisionRepository {
+class MatchDetailRepository {
   late Logger logger;
 
-  GeneralVisionRepository({
+  MatchDetailRepository({
     required this.logger,
   });
 
   String getBaronIcon() {
-    final String path = "/images/site/summoner/icon-baron-b.png";
+    final String path = "/latest/plugins/rcp-fe-lol-match-history/global/default/baron-100.png";
     logger.logDEBUG("building Image Baron Url ...");
     try {
-      return API.opGGUrl + path;
+      return API.rawDataDragonUrl + path;
     } catch (e) {
       logger.logDEBUG("Error to build Baron Image URL ...");
       return "";
@@ -20,21 +20,32 @@ class GeneralVisionRepository {
   }
 
   String getDragonIcon() {
-    final String path = "/images/site/summoner/icon-dragon-b.png";
+    final String path = "/latest/plugins/rcp-fe-lol-match-history/global/default/dragon-100.png";
     logger.logDEBUG("building Image Dragon Url ...");
     try {
-      return API.opGGUrl + path;
+      return API.rawDataDragonUrl + path;
     } catch (e) {
       logger.logDEBUG("Error to build Dragon Image URL ...");
       return "";
     }
   }
 
+  String getInhibitorIcon() {
+    final String path = "/latest/plugins/rcp-fe-lol-match-history/global/default/inhibitor-100.png";
+    logger.logDEBUG("building Inhibitor Url ...");
+    try {
+      return API.rawDataDragonUrl + path;
+    } catch (e) {
+      logger.logDEBUG("Error to build Inhibitor Image URL ...");
+      return "";
+    }
+  }
+
   String getTowerIcon() {
-    final String path = "/images/site/summoner/icon-tower-b.png";
+    final String path = "/latest/plugins/rcp-fe-lol-match-history/global/default/tower-100.png";
     logger.logDEBUG("building Image Tower Url ...");
     try {
-      return API.opGGUrl + path;
+      return API.rawDataDragonUrl + path;
     } catch (e) {
       logger.logDEBUG("Error to build Tower Image URL ...");
       return "";
@@ -43,34 +54,12 @@ class GeneralVisionRepository {
 
   String getKillIcon() {
     final String path =
-        "/latest/game/assets/ux/traiticons/trait_icon_blademaster.png";
+        "/latest/plugins/rcp-fe-lol-match-history/global/default/kills.png";
     logger.logDEBUG("building Image Kill Url ...");
     try {
       return API.rawDataDragonUrl + path;
     } catch (e) {
       logger.logDEBUG("Error to build Kill Image URL ...");
-      return "";
-    }
-  }
-
-  String getPerkStyleUrl(String perkStyle) {
-    final String path = "/images/lol/perkStyle/$perkStyle.png";
-    logger.logDEBUG("building Image Perk Style Url ...");
-    try {
-      return API.opGGUrl + path;
-    } catch (e) {
-      logger.logDEBUG("Error to build Perk Style Image URL ...");
-      return "";
-    }
-  }
-
-  String getPerkUrl(String perk) {
-    final String path = "/images/lol/perk/$perk.png";
-    logger.logDEBUG("building Image Perk Url ...");
-    try {
-      return API.opGGUrl + path;
-    } catch (e) {
-      logger.logDEBUG("Error to build Perk Image URL ...");
       return "";
     }
   }
