@@ -155,7 +155,7 @@ class _ActiveGameSearchPageState extends State<ActiveGameSearchPage> {
                               value: region,
                               alignment: Alignment.center,
                               child: Text(
-                                region,
+                                region.replaceAll("1", ""),
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.yellow,

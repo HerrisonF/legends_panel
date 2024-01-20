@@ -332,13 +332,11 @@ class _MatchDetailComponentState extends State<MatchDetailComponent> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    participant.summonerName + participant.riotIdTagline,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                Text(
+                  participant.summonerName + participant.riotIdTagline,
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 _userKDA(participant: participant),

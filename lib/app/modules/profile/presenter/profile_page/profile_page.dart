@@ -170,7 +170,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               value: region,
                               alignment: Alignment.center,
                               child: Text(
-                                region,
+                                region.replaceAll("1", ""),
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.yellow,
