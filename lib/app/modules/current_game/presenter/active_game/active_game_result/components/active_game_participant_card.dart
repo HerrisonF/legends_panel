@@ -48,63 +48,78 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
       child: Container(
         decoration: BoxDecoration(
           color: widget.participant.teamId == BLUE_TEAM
-              ? Colors.blue[800]
-              : Color(0xFF7A1712),
+              ? Colors.blue.withOpacity(0.7)
+              : Colors.redAccent.withOpacity(0.7),
           border: Border.all(
             color: Colors.black,
-            width: 0.5,
+            width: 0.1,
           ),
         ),
-        padding: EdgeInsets.only(top: 10, bottom: 5),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Row(
-                    children: [
-                      Container(
-                        color: Colors.black,
-                        margin: EdgeInsets.only(left: 5),
-                        child: _summonerChampionBadge(),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.2),
+          ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      margin: EdgeInsets.only(right: 5),
+                      child: Row(
+                        children: [
+                          Container(
+                            color: Colors.black,
+                            child: _summonerChampionBadge(),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: Colors.black,
+                            ),
+                            margin: EdgeInsets.only(right: 5),
+                            child: Row(
+                              children: [
+                                _summonerSpells(),
+                                _summonerPerks(),
+                              ],
+                            ),
+                          ),
+                          _summonerName(),
+                        ],
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: Colors.black,
-                        ),
-                        margin: EdgeInsets.only(right: 5),
-                        child: Row(
-                          children: [
-                            _summonerSpells(),
-                            _summonerPerks(),
-                          ],
-                        ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(right: 5),
+                      decoration: BoxDecoration(
+                          color: Colors.black45,
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _userTierEmblem(),
+                          Expanded(
+                            child: _userTierName(),
+                          ),
+                        ],
                       ),
-                      _summonerName(),
-                    ],
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _userTierEmblem(),
-                      Expanded(child: _userTierName()),
-                    ],
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: _summonerWinRate(),
                   ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: _summonerWinRate(),
-                ),
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -201,40 +216,40 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
     );
   }
 
-  Container _summonerName() {
-    return Container(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        widget.participant.getSummonerName(),
-        textAlign: TextAlign.start,
-        maxLines: 2,
-        style: GoogleFonts.montserrat(
-          fontSize: 14,
-          color: widget.isToPaintUserName ? Colors.yellow : Colors.white,
-          fontWeight: FontWeight.bold,
-        ),
-        overflow: TextOverflow.ellipsis,
+  Text _summonerName() {
+    return Text(
+      widget.participant.getSummonerName(),
+      textAlign: TextAlign.start,
+      maxLines: 2,
+      style: GoogleFonts.montserrat(
+        fontSize: 14,
+        color: widget.isToPaintUserName ? Colors.yellow : Colors.black,
+        fontWeight: FontWeight.bold,
       ),
+      overflow: TextOverflow.ellipsis,
     );
   }
 
   _summonerWinRate() {
     return Container(
-      margin: EdgeInsets.only(left: 5, top: 5),
+      margin: EdgeInsets.only(top: 5),
+      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
       child: Row(
         children: [
           Text(
             "${_activeGameParticipantController.getUserWinRate()}%",
             style: GoogleFonts.montserrat(
               fontSize: 12,
-              color: Colors.white,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
             ),
           ),
           Text(
             " ( ${_activeGameParticipantController.getPlaySum()} ${AppLocalizations.of(context)!.played} )",
             style: GoogleFonts.montserrat(
               fontSize: 12,
-              color: Colors.white,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ],
@@ -268,7 +283,9 @@ class _ActiveGameParticipantCardState extends State<ActiveGameParticipantCard> {
 
   _userTierEmblem() {
     return Container(
-      height: 30,
+      height: 40,
+      decoration: BoxDecoration(
+          color: Colors.black45, borderRadius: BorderRadius.circular(8)),
       child: Image.network(
         _activeGameParticipantController.getTierMiniEmblem(),
         errorBuilder: (context, error, stackTrace) {
