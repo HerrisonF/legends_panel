@@ -26,6 +26,11 @@ if (flutterTargetSdkVersion == null) {
     flutterTargetSdkVersion = '33'
 }
 
+def flutterMinSdkVersion = localProperties.getProperty('flutter.minSdkVersion')
+if (flutterMinSdkVersion == null) {
+    flutterMinSdkVersion = '28'
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
@@ -37,8 +42,6 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion flutterTargetSdkVersion.toInteger()
-
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -46,7 +49,8 @@ android {
 
     defaultConfig {
         applicationId "com.herrison.legends_panel"
-        minSdkVersion flutterTargetSdkVersion.toInteger()
+        minSdkVersion flutterMinSdkVersion.toInteger()
+        compileSdkVersion flutterTargetSdkVersion.toInteger()
         targetSdkVersion flutterTargetSdkVersion.toInteger()
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
