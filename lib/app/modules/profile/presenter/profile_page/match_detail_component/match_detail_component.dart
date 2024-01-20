@@ -9,6 +9,7 @@ import 'package:legends_panel/app/modules/profile/data/repositories/match_detail
 import 'package:legends_panel/app/modules/profile/domain/models/match_detail_model.dart';
 import 'package:legends_panel/app/modules/profile/presenter/profile_page/match_detail_component/match_detail_component_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MatchDetailComponent extends StatefulWidget {
   final MatchDetailModel matchDetail;
@@ -53,7 +54,7 @@ class _MatchDetailComponentState extends State<MatchDetailComponent> {
         valueListenable: _matchDetailComponentController.isLoadingTeamInfo,
         builder: (context, isLoading, _) {
           return isLoading
-              ? Center(child: CircularProgressIndicator())
+              ? Center(child: _shimmerTemplate())
               : Column(
                   children: [
                     _header(),
@@ -302,63 +303,65 @@ class _MatchDetailComponentState extends State<MatchDetailComponent> {
     required ParticipantModel participant,
   }) {
     return Container(
-      padding: EdgeInsets.only(left: 10),
+      margin: EdgeInsets.only(left: 5),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              _userChampionDetail(participant: participant),
-              Container(
-                margin: EdgeInsets.only(right: 5),
-                child: Column(
+          Expanded(
+            child: Row(
+              children: [
+                _userChampionDetail(participant: participant),
+                Column(
                   children: [
                     _spellIcon(spellId: participant.summoner1Id),
                     _spellIcon(spellId: participant.summoner2Id),
                   ],
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.only(right: 5),
-                child: Column(
-                  children: participant.perks!.styles
-                      .map(
-                        (e) => _perkStyleIcon(perkStyleId: e.style),
-                      )
-                      .toList(),
+                Container(
+                  margin: EdgeInsets.only(left: 3),
+                  child: Column(
+                    children: participant.perks!.styles
+                        .map((e) => _perkStyleIcon(perkStyleId: e.style))
+                        .toList(),
+                  ),
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      participant.summonerName + participant.riotIdTagline,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    participant.summonerName + participant.riotIdTagline,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  _userKDA(participant: participant),
-                ],
-              ),
-            ],
+                ),
+                _userKDA(participant: participant),
+              ],
+            ),
           ),
-          Container(
-            margin: EdgeInsets.only(right: 8, top: 22),
+          Expanded(
+            flex: 2,
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    _itemBase(item: participant.item0),
-                    _itemBase(item: participant.item1),
-                    _itemBase(item: participant.item2),
-                    _itemBase(item: participant.item3),
-                    _itemBase(item: participant.item4),
-                    _itemBase(item: participant.item5),
-                    _itemBase(item: participant.item6),
-                  ],
+                Container(
+                  margin: EdgeInsets.only(top: 20),
+                  child: Row(
+                    children: [
+                      _itemBase(item: participant.item0),
+                      _itemBase(item: participant.item1),
+                      _itemBase(item: participant.item2),
+                      _itemBase(item: participant.item3),
+                      _itemBase(item: participant.item4),
+                      _itemBase(item: participant.item5),
+                      _itemBase(item: participant.item6),
+                    ],
+                  ),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 5),
@@ -482,7 +485,7 @@ class _MatchDetailComponentState extends State<MatchDetailComponent> {
             participant.deaths.toString() +
             "/" +
             participant.assists.toString(),
-        style: TextStyle(fontSize: 10),
+        style: TextStyle(fontSize: 12),
       ),
     );
   }
@@ -558,5 +561,109 @@ class _MatchDetailComponentState extends State<MatchDetailComponent> {
         return "${AppLocalizations.of(context)!.gameDefeatedRedTeam}";
       }
     }
+  }
+
+  _shimmerTemplate() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey,
+      highlightColor: Colors.white,
+      child: Container(
+        height: MediaQuery.sizeOf(context).height,
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 50,
+              width: MediaQuery.sizeOf(context).width,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            Container(
+              height: 20,
+              margin: EdgeInsets.only(top: 20),
+              width: MediaQuery.sizeOf(context).width / 3,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            Container(
+              height: 20,
+              margin: EdgeInsets.only(top: 20),
+              width: MediaQuery.sizeOf(context).width / 3,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            Container(
+              height: 20,
+              margin: EdgeInsets.only(top: 20),
+              width: MediaQuery.sizeOf(context).width / 2,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            Container(
+              height: 20,
+              margin: EdgeInsets.only(top: 20),
+              width: MediaQuery.sizeOf(context).width / 2,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            Container(
+              height: 80,
+              margin: EdgeInsets.only(top: 20),
+              width: MediaQuery.sizeOf(context).width,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            Container(
+              height: 80,
+              margin: EdgeInsets.only(top: 20),
+              width: MediaQuery.sizeOf(context).width,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            Container(
+              height: 80,
+              margin: EdgeInsets.only(top: 20),
+              width: MediaQuery.sizeOf(context).width,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            Container(
+              height: 80,
+              margin: EdgeInsets.only(top: 20),
+              width: MediaQuery.sizeOf(context).width,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            Container(
+              height: 80,
+              margin: EdgeInsets.only(top: 20),
+              width: MediaQuery.sizeOf(context).width,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
