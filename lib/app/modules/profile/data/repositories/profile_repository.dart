@@ -62,28 +62,32 @@ class ProfileRepository {
         origin: origin,
       );
 
-      return response.fold((l) {
-        return Left(
-          Failure(message: "Champion Mastery não encontrada"),
-        );
-      }, (r) {
-        for (dynamic championMastery in r.data) {
-          ChampionMasteryDTO dto = ChampionMasteryDTO.fromJson(championMastery);
+      return response.fold(
+        (l) {
+          return Left(
+            Failure(message: "Champion Mastery não encontrada"),
+          );
+        },
+        (r) {
+          for (dynamic championMastery in r.data) {
+            ChampionMasteryDTO dto =
+                ChampionMasteryDTO.fromJson(championMastery);
 
-          championMasteryList.add(ChampionMasteryModel(
-            tokensEarned: dto.tokensEarned,
-            championPointsSinceLastLevel: dto.championPointsSinceLastLevel,
-            championPoints: dto.championPoints,
-            championLevel: dto.championLevel,
-            summonerId: dto.summonerId,
-            lastPlayTime: dto.lastPlayTime,
-            championId: dto.championId,
-            chestGranted: dto.chestGranted,
-            championPointsUntilNextLevel: dto.championPointsUntilNextLevel,
-          ));
-        }
-        return Right(championMasteryList);
-      });
+            championMasteryList.add(
+              ChampionMasteryModel(
+                tokensEarned: dto.tokensEarned,
+                championPointsSinceLastLevel: dto.championPointsSinceLastLevel,
+                championPoints: dto.championPoints,
+                championLevel: dto.championLevel,
+                lastPlayTime: dto.lastPlayTime,
+                championId: dto.championId,
+                championPointsUntilNextLevel: dto.championPointsUntilNextLevel,
+              ),
+            );
+          }
+          return Right(championMasteryList);
+        },
+      );
     } catch (e) {
       logger.logDEBUG("Error to get Champion Mastery");
       return Left(
@@ -96,17 +100,18 @@ class ProfileRepository {
   }
 
   String getMasteryImage({
-    required String championLevel,
+    required int championLevel,
   }) {
-    if (championLevel == "3") {
-      final String path =
-          "/latest/game/assets/ux/mastery/mastery_icon_default.png";
-      return API.rawDataDragonUrl + path;
+    if (championLevel <= 3) {
+      return "images/champion_mastery/masterycrest_0.png";
+    }
+    if(championLevel >= 10){
+      return "images/champion_mastery/masterycrest_10.png";
     }
     final String path =
-        "/latest/game/assets/ux/mastery/mastery_icon_$championLevel.png";
+        "images/champion_mastery/masterycrest_$championLevel.png";
     try {
-      return API.rawDataDragonUrl + path;
+      return path;
     } catch (e) {
       logger.logDEBUG("Error to build Image Champion for mastery Url $e");
       return "";

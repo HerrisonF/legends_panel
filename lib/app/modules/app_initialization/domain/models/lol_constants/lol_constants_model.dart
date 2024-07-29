@@ -121,6 +121,8 @@ class LolConstantsModel {
     return "en_US";
   }
 
+  /// Com o id do champion, iremos percorrer a lista e pegar apenas os champions
+  /// que correspondem à esse ID
   ChampionModel? getChampionById(int id) {
     List<ChampionModel> championsTemp =
         champions!.where((element) => element.key == id.toString()).toList();

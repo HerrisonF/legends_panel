@@ -30,13 +30,13 @@ class ProfileResultPage extends StatefulWidget {
 }
 
 class _ProfileResultPageState extends State<ProfileResultPage> {
-  final ScrollController _scrollController = ScrollController();
+  final ScrollController scrollController = ScrollController();
 
   late final ProfileResultController profileResultController;
 
   @override
   void initState() {
-    this._scrollController.addListener(this._scrollListenerFunction);
+    scrollController.addListener(this._scrollListenerFunction);
     ProfileRepository profileRepository = ProfileRepository(
       logger: GetIt.I<Logger>(),
       httpServices: GetIt.I<HttpServices>(),
@@ -56,14 +56,14 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
 
   @override
   void dispose() {
-    this._scrollController.removeListener(this._scrollListenerFunction);
-    this._scrollController.dispose();
+    scrollController.removeListener(this._scrollListenerFunction);
+    scrollController.dispose();
     super.dispose();
   }
 
   _scrollListenerFunction() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
       profileResultController.loadMoreMatches();
     }
   }
@@ -99,8 +99,8 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
               return matches.isNotEmpty
                   ? Expanded(
                       child: ListView.builder(
-                        itemCount: matches.length,
-                        controller: this._scrollController,
+                        itemCount: matches.length + 1,
+                        controller: scrollController,
                         itemBuilder: (_, myCurrentPosition) {
                           return _isLoadingGameCard(
                             myCurrentPosition,
@@ -117,21 +117,23 @@ class _ProfileResultPageState extends State<ProfileResultPage> {
     );
   }
 
+  /// O +1 é o espaço para o loader
   Widget _isLoadingGameCard(
     int myCurrentPosition,
     List<MatchDetailModel> matches,
   ) {
-    if (myCurrentPosition < matches.length) {
+    if (myCurrentPosition + 1 <= matches.length) {
       return ItemMatchGameCard(
         matchDetail: matches[myCurrentPosition],
         summonerProfile: profileResultController.summonerProfileModel!,
         profileResultController: profileResultController,
       );
     } else {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-        margin: EdgeInsets.only(bottom: 30),
-        child: CircularProgressIndicator(),
+      return Center(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+          child: CircularProgressIndicator(),
+        ),
       );
     }
   }

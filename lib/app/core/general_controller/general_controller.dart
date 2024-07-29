@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:legends_panel/app/core/general_controller/general_repository.dart';
+import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/champion_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/lol_constants_model.dart';
 import 'package:legends_panel/app/modules/app_initialization/domain/models/lol_constants/perk_style_model.dart';
 
@@ -40,10 +41,14 @@ class GeneralController {
   }
 
   String getChampionBadgeUrl(int championId) {
-    return generalRepository.getChampionBadgeUrl(
-      championId: lolConstantsModel.getChampionById(championId)!.image.full,
-      version: lolConstantsModel.getLatestLolVersion(),
-    );
+    ChampionModel? championModel = lolConstantsModel.getChampionById(championId);
+    if(championModel != null) {
+      return generalRepository.getChampionBadgeUrl(
+        championId: championModel.image.full,
+        version: lolConstantsModel.getLatestLolVersion(),
+      );
+    }
+    return "";
   }
 
   String getChampionBigImage({required String championName}) {

@@ -17,8 +17,8 @@ class SummonerProfileModel {
   SummonerProfileModel({
     required this.accountId,
     required this.profileIconId,
-    required this.name,
     required this.id,
+    this.name = "",
     required this.summonerLevel,
   });
 

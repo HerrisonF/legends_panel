@@ -74,10 +74,6 @@ class ProfileController {
         result.fold(
           (_) => _showUserNotFoundMessage(),
           (profile) async {
-            /// Antes de ir para os results, tenho que chamar algum outro método
-            /// que devolva o summonerID para conseguir pegar os LeagueEntries.
-            /// A chamada de champion Mastery retorna o summonerID. Esse atributo
-            /// vai ser necessário em todas as requests subsequentes.
             final result = await fetchUserChampionMasteriesUsecase(
               region: selectedRegion.value,
               puuid: summonerIdentification.puuid,
@@ -111,10 +107,6 @@ class ProfileController {
                             }
                           }
                         }
-                        if(championMasteries.isNotEmpty) {
-                          profile.summonerId =
-                              championMasteries.first.summonerId;
-                        }
                         profile.selectedRegion = selectedRegion.value;
                         goToProfileResultCallback(profile);
                         _stopLoadingProfile();
@@ -129,48 +121,4 @@ class ProfileController {
       },
     );
   }
-//
-//   getMatchListIds(String keyRegion) async {
-//     this.newIndex.value += AMOUNT_MATCHES_TO_FIND;
-//     List<String> tempMatchIdList = [];
-//
-//     tempMatchIdList = await _profileRepository.getMatchListIds(
-//       puuid: _masterController.userForProfile.puuid,
-//       start: this.oldIndex.value,
-//       count: AMOUNT_MATCHES_TO_FIND,
-//       keyRegion: keyRegion,
-//     );
-//     if (tempMatchIdList.isNotEmpty) {
-//       oldIndex.value = oldIndex.value + AMOUNT_MATCHES_TO_FIND;
-//       matchIdList.addAll(tempMatchIdList);
-//     } else {
-//       newIndex.value = oldIndex.value;
-//       lockNewLoadings.value = true;
-//     }
-//   }
-//
-//   getMatches(String keyRegion) async {
-//     for (int i = matchList.value.length; i < matchIdList.length; i++) {
-//       MatchDetail matchDetail =
-//           await _profileRepository.getMatchById(matchIdList[i], keyRegion);
-//       matchList.value.add(matchDetail);
-//     }
-//   }
-//
-//   loadMoreMatches(String region) async {
-//     if (!isLoadingNewMatches.value) {
-//       startLoadingNewMatches();
-//       await getMatchListIds(
-//           _masterController.storedRegion.getKeyFromRegion(region)!);
-//       await getMatches(
-//           _masterController.storedRegion.getKeyFromRegion(region)!);
-//       stopLoadingNewMatches();
-//     }
-//   }
-//
-//   String getMasteryImage(int index) {
-//     return _profileRepository.getMasteryImage(
-//         championMasteryList.value[index].championLevel.toString());
-//   }
-//
 }

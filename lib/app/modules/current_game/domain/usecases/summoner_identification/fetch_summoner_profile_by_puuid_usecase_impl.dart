@@ -22,8 +22,11 @@ class FetchSummonerProfileByPUUIDUsecaseImpl
       region: region,
     );
 
-    return result.fold((l) => Left(false), (r) {
-      return Right(r);
-    });
+    return result.fold(
+      (l) => Left(false),
+      (r) {
+        return Right(r);
+      },
+    );
   }
 }

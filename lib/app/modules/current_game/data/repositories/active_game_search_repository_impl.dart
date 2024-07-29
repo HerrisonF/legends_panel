@@ -167,29 +167,31 @@ class ActiveGameSearchRepositoryImpl extends ActiveGameSearchRepository {
         origin: "CURRENT_GAME_REPOSITORY",
       );
 
-      return response.fold((l) {
-        logger.logDEBUG("Summoner Profile not found ${l.status}");
-        return Left(
-          Failure(
-            message: "Houve falta de autorização ou erro de configuração "
-                "no momento de buscar a identificação.",
-          ),
-        );
-      }, (r) {
-        logger.logDEBUG("Summoner Profile found ...");
+      return response.fold(
+        (l) {
+          logger.logDEBUG("Summoner Profile not found ${l.status}");
+          return Left(
+            Failure(
+              message: "Houve falta de autorização ou erro de configuração "
+                  "no momento de buscar a identificação.",
+            ),
+          );
+        },
+        (r) {
+          logger.logDEBUG("Summoner Profile found ...");
 
-        SummonerProfileDTO dto = SummonerProfileDTO.fromJson(r.data);
+          SummonerProfileDTO dto = SummonerProfileDTO.fromJson(r.data);
 
-        SummonerProfileModel model = SummonerProfileModel(
-          accountId: dto.accountId,
-          profileIconId: dto.profileIconId,
-          name: dto.name,
-          id: dto.id,
-          summonerLevel: dto.summonerLevel,
-        );
+          SummonerProfileModel model = SummonerProfileModel(
+            accountId: dto.accountId,
+            profileIconId: dto.profileIconId,
+            id: dto.id,
+            summonerLevel: dto.summonerLevel,
+          );
 
-        return Right(model);
-      });
+          return Right(model);
+        },
+      );
     } catch (e) {
       logger.logDEBUG("Error to fetch Summoner Profile ${e.toString()}");
       return Left(

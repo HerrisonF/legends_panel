@@ -83,8 +83,8 @@ class GeneralRepository {
     required String championId,
     required String version,
   }) {
-    final String path = "/cdn/$version/img/champion/$championId";
     try {
+      final String path = "/cdn/$version/img/champion/$championId";
       return API.riotDragonUrl + path;
     } catch (e) {
       return "";

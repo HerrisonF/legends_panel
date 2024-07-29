@@ -53,9 +53,9 @@ class MasteryChampions extends StatelessWidget {
             bottom: 0,
             child: Container(
               height: 30,
-              child: Image.network(
+              child: Image.asset(
                 profileResultController.profileRepository.getMasteryImage(
-                  championLevel: championMastery.championLevel.toString(),
+                  championLevel: championMastery.championLevel,
                 ),
               ),
             ),

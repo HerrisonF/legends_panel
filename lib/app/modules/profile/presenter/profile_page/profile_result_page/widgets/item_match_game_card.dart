@@ -134,7 +134,7 @@ class _ItemMatchGameCardState extends State<ItemMatchGameCard> {
       width: 20,
       child: Image.network(
         widget.profileResultController.generalController.getPositionUrl(
-          position: widget.matchDetail.info!.currentParticipant!.teamPosition,
+          position: widget.matchDetail.info!.currentParticipant!.lane,
         ),
         errorBuilder: (context, error, stackTrace) {
           return Container(
@@ -173,12 +173,20 @@ class _ItemMatchGameCardState extends State<ItemMatchGameCard> {
           child: Stack(
             children: [
               Container(
-                child: Image.network(
-                  widget.profileResultController.generalController
-                      .getChampionBadgeUrl(
-                    widget.matchDetail.info!.currentParticipant!.championId,
-                  ),
-                ),
+                child: widget.profileResultController.generalController
+                        .getChampionBadgeUrl(
+                          widget
+                              .matchDetail.info!.currentParticipant!.championId,
+                        )
+                        .isNotEmpty
+                    ? Image.network(
+                        widget.profileResultController.generalController
+                            .getChampionBadgeUrl(
+                          widget
+                              .matchDetail.info!.currentParticipant!.championId,
+                        ),
+                      )
+                    : Container(color: Colors.black54),
               ),
               Positioned(
                 bottom: 0,

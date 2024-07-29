@@ -7,9 +7,7 @@ class ChampionMasteryModel {
   int lastPlayTime;
   int championPointsSinceLastLevel;
   int championPointsUntilNextLevel;
-  bool chestGranted;
   int tokensEarned;
-  String summonerId;
   ChampionModel? championModel;
 
   ChampionMasteryModel({
@@ -17,10 +15,8 @@ class ChampionMasteryModel {
     required this.championPointsSinceLastLevel,
     required this.championPoints,
     required this.championLevel,
-    required this.summonerId,
     required this.lastPlayTime,
     required this.championId,
-    required this.chestGranted,
     required this.championPointsUntilNextLevel,
   });
 
