@@ -132,7 +132,6 @@ class ProfileRepository {
     String url = "";
 
     if (keyRegion == "KR" ||
-        keyRegion == "RU" ||
         keyRegion == "JP1" ||
         keyRegion == "TR1" ||
         keyRegion == "OC1") {
@@ -186,7 +185,6 @@ class ProfileRepository {
     String url = "";
 
     if (keyRegion == "KR" ||
-        keyRegion == "RU" ||
         keyRegion == "JP1" ||
         keyRegion == "TR1" ||
         keyRegion == "OC1") {

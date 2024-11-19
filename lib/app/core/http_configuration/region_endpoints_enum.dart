@@ -9,7 +9,6 @@ enum RegionEndpoints {
   NA1('https://na1.api.riotgames.com'),
   OC1('https://oc1.api.riotgames.com'),
   TR1('https://tr1.api.riotgames.com'),
-  RU('https://ru.api.riotgames.com'),
   PH2('https://ph2.api.riotgames.com'),
   SG2('https://sg2.api.riotgames.com'),
   TH2('https://th2.api.riotgames.com'),

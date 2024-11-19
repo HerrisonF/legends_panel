@@ -100,7 +100,7 @@ class AboutPage extends StatelessWidget {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.background,
+                          color: Theme.of(context).primaryColor,
                           borderRadius: BorderRadius.circular(8)),
                       margin: EdgeInsets.only(top: 40, bottom: 100),
                       child: IconButton(

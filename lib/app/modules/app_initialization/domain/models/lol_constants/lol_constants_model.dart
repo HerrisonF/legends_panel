@@ -36,7 +36,6 @@ class LolConstantsModel {
     'NA1',
     'OC1',
     'TR1',
-    'RU',
     'PH2',
     'SG2',
     'TH2',
